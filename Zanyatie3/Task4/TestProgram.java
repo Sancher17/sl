@@ -33,7 +33,6 @@ public class TestProgram {
         // конец блока №1
 
         //Блок №2
-
         // Пункт задания: a
         System.out.println("Пункт задания: a - добавить книгу в библиотеку");
         library.addBookToLibrary(new Book(4,"Threads",true));
