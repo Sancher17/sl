@@ -51,7 +51,6 @@ public class Library {
     }
 
     public void addUserToLibrary(User user){
-
         int count = 0;
         for (int i = 0; i < users.length; i++) {
             if (users[i] != null ){
@@ -125,8 +124,6 @@ public class Library {
             if (usingBooks[i] != null) {
                 System.out.println("Книга - " + usingBooks[i].getBook().getName() +
                         " находится у - " + usingBooks[i].getUser().getName());
-
-
             }
         }
     }

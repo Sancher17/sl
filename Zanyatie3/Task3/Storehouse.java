@@ -7,7 +7,7 @@ public class Storehouse {
     private int grossWeightOfGoods = 0;
 
     public void printFreeVolumeInStorehouse() {
-        System.out.println("Свободное место на складе - " + (MAX_VOLUME_OF_STOREHOUSE - grossVolumeOfGoods));
+        System.out.println("Свободное объем на складе - " + (MAX_VOLUME_OF_STOREHOUSE - grossVolumeOfGoods));
     }
 
     public void printGrossWeightOffGoodsInStorehouse() {

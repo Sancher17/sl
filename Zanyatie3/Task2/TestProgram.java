@@ -33,8 +33,8 @@ public class TestProgram {
     }
 
     private static void printArray(int[] array) {
-        for (int i = 0; i < array.length; i++) {
-            System.out.println(array[i]);
+        for (int anArray : array) {
+            System.out.println(anArray);
         }
     }
 }

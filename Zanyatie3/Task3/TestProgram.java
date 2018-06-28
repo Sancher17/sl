@@ -15,7 +15,7 @@ public class TestProgram {
         storehouse.printGrossWeightOffGoodsInStorehouse();
         storehouse.printFreeVolumeInStorehouse();
 
-        System.out.println("\nЕще есть свободное место\nДобавим еще товар\n");
+        System.out.println("\nЕще есть свободный объем\nДобавим еще товар\n");
 
         storehouse.addGoodsToStorehouse(milk, 12);
         storehouse.printFreeVolumeInStorehouse();
