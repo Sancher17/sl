@@ -11,7 +11,7 @@ public class Library {
     public void getUsersList() {
         System.out.println("List of users");
         for (int i = 0; i < users.length; i++) {
-            System.out.println(i+". "+users[i]);
+            System.out.println(i + ". " + users[i]);
         }
         System.out.println();
     }
@@ -19,7 +19,7 @@ public class Library {
     public void getBooksList() {
         System.out.println("List of books");
         for (int i = 0; i < books.length; i++) {
-            System.out.println(i+". "+books[i]);
+            System.out.println(i + ". " + books[i]);
         }
         System.out.println();
     }
@@ -27,116 +27,116 @@ public class Library {
     public void getUsingBookList() {
         System.out.println("List of books and users who use books");
         for (int i = 0; i < usingBooks.length; i++) {
-            System.out.println(i+". "+usingBooks[i]);
+            System.out.println(i + ". " + usingBooks[i]);
         }
         System.out.println();
     }
 
-    public void addBookToLibrary(Book book){
+    public void addBookToLibrary(Book book) {
         int count = 0;
-        for (int i = 0; i < books.length; i++) {
-            if (books[i] != null ){
+        for (Book book1 : books) {
+            if (book1 != null) {
                 count++;
             }
         }
-        if (books.length - count < 3){
+        if (books.length - count < 3) {
             checkSizeOfArray(books);
         }
         int index = checkNullRow(books);
         books[index] = book;
     }
 
-    public void removeBookFromLibraryByRowIndex(int index){
+    public void removeBookFromLibraryByRowIndex(int index) {
         System.arraycopy(books, index + 1, books, index, books.length - 1 - index);
     }
 
-    public void addUserToLibrary(User user){
+    public void addUserToLibrary(User user) {
         int count = 0;
-        for (int i = 0; i < users.length; i++) {
-            if (users[i] != null ){
+        for (User user1 : users) {
+            if (user1 != null) {
                 count++;
             }
         }
-        if (users.length - count < 3){
+        if (users.length - count < 3) {
             checkSizeOfArray(users);
         }
         int index = checkNullRow(users);
         users[index] = user;
     }
 
-    private void checkSizeOfArray(Object[] obj){
+    private <T> void checkSizeOfArray(T[] array) {
         int count = 0;
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i] != null ){
+        for (Object obj : array) {
+            if (obj != null) {
                 count++;
             }
         }
-        if (obj.length - count < 3){
-          if (Arrays.equals(obj, users)){
-              changeSizeOfUserArray(users);
-          }else if(Arrays.equals(obj, books)){
-              changeSizeOfBookArray(books);
-          }else if (Arrays.equals(obj, usingBooks)){
-              changeSizeOfUsingBookArray(usingBooks);
-          }
+        if (array.length - count < 3) {
+            if (array == users) {
+                increaseSizeOfArray(users);
+            } else if (array == books) {
+                increaseSizeOfArray(books);
+            } else if (array == usingBooks) {
+                increaseSizeOfArray(usingBooks);
+            }
         }
     }
 
-    public void removeUserFromLibraryByRowIndex(int index){
+    public void removeUserFromLibraryByRowIndex(int index) {
         System.arraycopy(users, index + 1, users, index, users.length - 1 - index);
     }
 
-    public void getBooksWhichUseUser(User user){
-        for (int i = 0; i < usingBooks.length; i++) {
-            if(usingBooks[i] != null){
-                User findUser = usingBooks[i].getUser();
-                if (findUser.equals(user)){
-                    System.out.println("Пользователь " + usingBooks[i].getUser().getName() +
-                            " читает " + usingBooks[i].getBook().getName());
+    public void getBooksWhichUseUser(User user) {
+        for (UsingBook usingBook : usingBooks) {
+            if (usingBook != null) {
+                User findUser = usingBook.getUser();
+                if (findUser.equals(user)) {
+                    System.out.println("Пользователь " + usingBook.getUser().getName() +
+                            " читает " + usingBook.getBook().getName());
                 }
             }
         }
     }
 
-    public void getUserWhichUseBook(Book book){
-        for (int i = 0; i < usingBooks.length; i++) {
-            if(usingBooks[i] != null){
-                Book findBook = usingBooks[i].getBook();
-                if (findBook.equals(book)){
-                    System.out.println("Книга " + usingBooks[i].getBook().getName() +
-                            " на руках у " + usingBooks[i].getUser().getName());
+    public void getUserWhichUseBook(Book book) {
+        for (UsingBook usingBook : usingBooks) {
+            if (usingBook != null) {
+                Book findBook = usingBook.getBook();
+                if (findBook.equals(book)) {
+                    System.out.println("Книга " + usingBook.getBook().getName() +
+                            " на руках у " + usingBook.getUser().getName());
                 }
             }
         }
     }
 
-    public void getBooksListByUser(){
+    public void getBooksListByUser() {
 
-        for (int i = 0; i < books.length; i++) {
-            if (books[i] != null){
-                if (books[i].isState()){
-                    System.out.println("Книга - "+books[i].getName()+ " находится в - библиотеке");
+        for (Book book : books) {
+            if (book != null) {
+                if (book.isState()) {
+                    System.out.println("Книга - " + book.getName() + " находится в - библиотеке");
                 }
             }
         }
 
-        for (int i = 0; i < usingBooks.length; i++) {
-            if (usingBooks[i] != null) {
-                System.out.println("Книга - " + usingBooks[i].getBook().getName() +
-                        " находится у - " + usingBooks[i].getUser().getName());
+        for (UsingBook usingBook : usingBooks) {
+            if (usingBook != null) {
+                System.out.println("Книга - " + usingBook.getBook().getName() +
+                        " находится у - " + usingBook.getUser().getName());
             }
         }
     }
-    
+
     public void addBookToUser(Book book, User user) {
 
         int count = 0;
-        for (int i = 0; i < usingBooks.length; i++) {
-            if (usingBooks[i] != null ){
+        for (UsingBook usingBook : usingBooks) {
+            if (usingBook != null) {
                 count++;
             }
         }
-        if (usingBooks.length - count < 3){
+        if (usingBooks.length - count < 3) {
             checkSizeOfArray(usingBooks);
         }
         int index = checkNullRow(usingBooks);
@@ -152,26 +152,27 @@ public class Library {
 
     private int checkNullRow(Object[] obj) {
         int count = 0;
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i] != null) {
+        for (Object anObj : obj) {
+            if (anObj != null) {
                 count++;
             }
         }
         return count;
     }
 
-    private void changeSizeOfUserArray(User[] user){
-      users = Arrays.copyOf(user, users.length+5);
-    }
-    private void changeSizeOfBookArray(Book[] book){
-        books = Arrays.copyOf(book, books.length+5);
-    }
-    private void changeSizeOfUsingBookArray(UsingBook[] usingBook){
-        usingBooks = Arrays.copyOf(usingBook, usingBooks.length+5);
+    private <T> void increaseSizeOfArray(T[] array) {
+        int increase = 5;
+        if (array == usingBooks) {
+            usingBooks = Arrays.copyOf(usingBooks, usingBooks.length + increase);
+        }else if (array ==users){
+            users = Arrays.copyOf(users, users.length + increase);
+        }else if (array == books){
+            books = Arrays.copyOf(books, books.length + increase);
+        }
     }
 
 
-    //G-S
+    //getters - setters
     public Book[] getBooks() {
         return books;
     }
