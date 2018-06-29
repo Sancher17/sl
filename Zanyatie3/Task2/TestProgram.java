@@ -1,5 +1,7 @@
 package Zanyatie3.Task2;
 
+import java.util.Random;
+
 public class TestProgram {
 
     public static void main(String[] args) {
@@ -11,25 +13,17 @@ public class TestProgram {
     }
 
     private static void generateNumbers(int[] array) {
-        int min = 100;
-        int max = 1000;
-        max -= min;
-        for (int i = 0; i < array.length; i++) {
-            array[i] = (int) (Math.random() * max) + min;
+        for (int i = 0; i < 3; i++) {
+            array[i] = (new Random().nextInt(900)+100)/100;
         }
     }
 
     private static void sum(int[] array) {
         int sum = 0;
         for (int anArray : array) {
-            sum += parseArray(anArray);
+            sum += anArray;
         }
         System.out.println("Сумма первых трех цифр - "+sum);
-    }
-
-    private static int parseArray(int number) {
-        char ch = String.valueOf(number).charAt(0);
-        return Integer.parseInt(String.valueOf(ch));
     }
 
     private static void printArray(int[] array) {

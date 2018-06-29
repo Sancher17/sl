@@ -2,7 +2,7 @@ package Zanyatie3.Task4;
 
 import java.util.Objects;
 
-public class Book  {
+public class Book extends TypeOfResourse {
 
 	private int id;
 	private String name;
