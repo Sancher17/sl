@@ -2,16 +2,26 @@ package Zanyatie3.Task4;
 
 import java.util.Objects;
 
-public class Book extends TypeOfResourse {
+public class Book extends TypeOfResource {
 
 	private int id;
 	private String name;
 	private boolean state;
+	private TypeOfCover cover;
 
-    public Book(int id, String name, boolean state) {
-        this.id = id;
-        this.name = name;
-        this.state = state;
+	public Book(int id, String name, boolean state) {
+		super(id, name, state);
+		this.id = id;
+		this.name = name;
+		this.state = state;
+	}
+
+    public TypeOfCover getCover() {
+        return cover;
+    }
+
+    public void setCover(TypeOfCover cover) {
+        this.cover = cover;
     }
 
     public int getId() {
@@ -38,16 +48,17 @@ public class Book extends TypeOfResourse {
 		this.state = state;
 	}
 
-	@Override
-	public String toString() {
-		return "Book{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", state=" + state +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", state=" + state +
+                ", cover=" + cover +
+                '}';
+    }
 
-	@Override
+    @Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;

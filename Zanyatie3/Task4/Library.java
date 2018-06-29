@@ -34,8 +34,8 @@ public class Library {
 
     public void addBookToLibrary(Book book) {
         int count = 0;
-        for (Book book1 : books) {
-            if (book1 != null) {
+        for (Book aBook : books) {
+            if (aBook != null) {
                 count++;
             }
         }
@@ -52,8 +52,8 @@ public class Library {
 
     public void addUserToLibrary(User user) {
         int count = 0;
-        for (User user1 : users) {
-            if (user1 != null) {
+        for (User anUser : users) {
+            if (anUser != null) {
                 count++;
             }
         }
@@ -62,24 +62,6 @@ public class Library {
         }
         int index = checkNullRow(users);
         users[index] = user;
-    }
-
-    private <T> void checkSizeOfArray(T[] array) {
-        int count = 0;
-        for (Object obj : array) {
-            if (obj != null) {
-                count++;
-            }
-        }
-        if (array.length - count < 3) {
-            if (array == users) {
-                increaseSizeOfArray(users);
-            } else if (array == books) {
-                increaseSizeOfArray(books);
-            } else if (array == usingBooks) {
-                increaseSizeOfArray(usingBooks);
-            }
-        }
     }
 
     public void removeUserFromLibraryByRowIndex(int index) {
@@ -158,6 +140,24 @@ public class Library {
             }
         }
         return count;
+    }
+
+    private <T> void checkSizeOfArray(T[] array) {
+        int count = 0;
+        for (Object obj : array) {
+            if (obj != null) {
+                count++;
+            }
+        }
+        if (array.length - count < 3) {
+            if (array == users) {
+                increaseSizeOfArray(users);
+            } else if (array == books) {
+                increaseSizeOfArray(books);
+            } else if (array == usingBooks) {
+                increaseSizeOfArray(usingBooks);
+            }
+        }
     }
 
     private <T> void increaseSizeOfArray(T[] array) {

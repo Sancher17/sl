@@ -1,7 +1,11 @@
 package Zanyatie3.Task4;
 
+
 public class TestProgram {
+
+
     public static void main(String[] args) {
+
 
         // Блок №1 инициализации объектов и начальных данных
         Library library = new Library();
@@ -15,9 +19,10 @@ public class TestProgram {
         userArray[2] = new User(3, "Nick");
 
         //создаем 3 книги // поле state для задания f
+
         booksArray[0] = new Book(1, "Java", true);
         booksArray[1] = new Book(2, "Hibernate", true);
-        booksArray[2] = new Book(3, "Oracle",true);
+        booksArray[2] = new Book(3, "Oracle", true);
 
         //сетим все данные в библиотеку
         library.setBooks(booksArray);
@@ -35,8 +40,8 @@ public class TestProgram {
         //Блок №2
         // Пункт задания: a
         System.out.println("Пункт задания: a - добавить книгу в библиотеку");
-        library.addBookToLibrary(new Book(4,"Threads",true));
-        library.addBookToLibrary(new Book(5,"Martin Fowler", true));
+        library.addBookToLibrary(new Book(4, "Threads", true));
+        library.addBookToLibrary(new Book(5, "Martin Fowler", true));
         library.getBooksList();
 
         System.out.println("удалить книгу из библиотеки");
@@ -45,7 +50,7 @@ public class TestProgram {
 
         // Пункт задания: b
         System.out.println("Пункт задания: b - добавить пользователя в библиотеку");
-        library.addUserToLibrary(new User(4,"Dima"));
+        library.addUserToLibrary(new User(4, "Dima"));
         library.getUsersList();
 
         System.out.println("удалить пользователя из библиотеки");
