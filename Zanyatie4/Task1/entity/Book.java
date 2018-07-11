@@ -1,5 +1,6 @@
 package Zanyatie4.Task1.entity;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -7,22 +8,21 @@ import java.util.GregorianCalendar;
 public class Book {
 
     private String name;
-    private GregorianCalendar dateOfPublication;
-    private GregorianCalendar dateAddedBookToStorehouse;
+    private Calendar dateOfPublication;
+    private Calendar dateAddedBookToStore;
     private double price;
     private boolean isAvailable;
     private String description;
 
-    public Book(String name, GregorianCalendar dateOfPublication, GregorianCalendar dateAddedBookToStorehouse, double price, boolean isAvailable) {
+    public Book(String name, Calendar dateOfPublication, Calendar dateAddedBookToStore, double price, String description) {
         this.name = name;
         this.dateOfPublication = dateOfPublication;
         this.price = price;
-        this.isAvailable = isAvailable;
-        this.dateAddedBookToStorehouse = dateAddedBookToStorehouse;
+        this.isAvailable = true;
+        this.dateAddedBookToStore = dateAddedBookToStore;
+        this.description = description;
     }
 
-    public Book(String fillData) {
-    }
 
 
     //getters setters
@@ -34,7 +34,7 @@ public class Book {
         this.name = name;
     }
 
-    public GregorianCalendar getDateOfPublication() {
+    public Calendar getDateOfPublication() {
         return dateOfPublication;
     }
 
@@ -58,12 +58,12 @@ public class Book {
         isAvailable = available;
     }
 
-    public GregorianCalendar getDateAddedBookToStorehouse() {
-        return dateAddedBookToStorehouse;
+    public Calendar getDateAddedBookToStore() {
+        return dateAddedBookToStore;
     }
 
-    public void setDateAddedBookToStorehouse(GregorianCalendar dateAddedBookToStorehouse) {
-        this.dateAddedBookToStorehouse = dateAddedBookToStorehouse;
+    public void setDateAddedBookToStore(GregorianCalendar dateAddedBookToStore) {
+        this.dateAddedBookToStore = dateAddedBookToStore;
     }
 
     public String getDescription() {
@@ -81,7 +81,7 @@ public class Book {
                 ", dateOfPublication=" + convertDate(dateOfPublication) +
                 ", price=" + price +
                 ", isAvailable=" + isAvailable +
-                ", dateAddedBookToStorehouse =" + convertDate(dateAddedBookToStorehouse) +
+                ", dateAddedBookToStore =" + convertDate(dateAddedBookToStore) +
                 '}';
     }
 
