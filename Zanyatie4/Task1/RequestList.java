@@ -31,7 +31,7 @@ public class RequestList {
                     String nameOfRequire = request.getRequireNameBook();
                     String nameFromList = requests[i].getRequireNameBook();
                     if (nameOfRequire.equals(nameFromList)) {
-                        requests[i].setRequireQuantity(quantity(request));
+                        requests[i].setRequireQuantity(quantityOfCoincide(request));
                     } else {
                         requests[index] = request;
 
@@ -124,16 +124,16 @@ public class RequestList {
         System.arraycopy(requests, id + 1, requests, id, requests.length - 1 - id);
     }
 
-    private int quantity(Request request) {
-        int quantityOfCoincide = 1;
+    private int quantityOfCoincide(Request request) {
+        int count = 1;
         for (Request aRequest : requests) {
             if (aRequest != null) {
                 if (aRequest.getRequireNameBook() == request.getRequireNameBook()) {
-                    quantityOfCoincide++;
+                    count++;
                 }
             }
         }
-        return quantityOfCoincide;
+        return count;
     }
 
     private int checkNullRow(Object[] obj) {

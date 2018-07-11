@@ -33,7 +33,7 @@ public class OrderList {
     public void printCompletedOrders() {
         for (Order anOrder : orders) {
             if (anOrder != null) {
-                if (anOrder.isCompleted()) {
+                if (anOrder.isCompletedOrder()) {
                     System.out.println(anOrder);
                 }
             }
@@ -66,13 +66,13 @@ public class OrderList {
         System.arraycopy(orders, id + 1, orders, id, orders.length - 1 - id);
     }
 
-    public void completedOrderById(int id) {
-        orders[id].setCompleted(true);
+    public void setCompletedOrderById(int id) {
+        orders[id].setCompletedOrder(true);
         orders[id].setDateOfCompletedOrder(new GregorianCalendar());
     }
 
-    public void completedOrderById(int id, GregorianCalendar dateOfCompleted) {
-        orders[id].setCompleted(true);
+    public void setCompletedOrderById(int id, GregorianCalendar dateOfCompleted) {
+        orders[id].setCompletedOrder(true);
         orders[id].setDateOfCompletedOrder(dateOfCompleted);
     }
 
@@ -89,12 +89,12 @@ public class OrderList {
     }
 
     public void sortOrdersByState() {
-        Comparator<Order> ordersComp = Comparator.comparing(Order::isCompleted);
+        Comparator<Order> ordersComp = Comparator.comparing(Order::isCompletedOrder);
         Comparator<Order> ordersComp_nullLast = Comparator.nullsLast(ordersComp);
         Arrays.sort(orders, ordersComp_nullLast);
     }
 
-    public void fullAmountOfPeriod(GregorianCalendar startDate, GregorianCalendar endDate) {
+    public void getFullAmountByPeriod(GregorianCalendar startDate, GregorianCalendar endDate) {
         double amount = 0;
         for (Order anOrder : orders) {
             if (anOrder != null) {
@@ -106,7 +106,7 @@ public class OrderList {
         System.out.println("За период времени c " + startDate.getTime() + " по " + endDate.getTime() + "\nСУММА заработанных средств по выполненым заказам составила: " + amount);
     }
 
-    public void quantityCompletedOrdersByPeriod(GregorianCalendar startDate, GregorianCalendar endDate) {
+    public void getQuantityCompletedOrdersByPeriod(GregorianCalendar startDate, GregorianCalendar endDate) {
         int count = 0;
         for (Order anOrder : orders) {
             if (anOrder != null) {

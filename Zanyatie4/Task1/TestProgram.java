@@ -19,6 +19,8 @@ public class TestProgram {
     private static Storehouse books = new Storehouse();  //Хранилище книг - список книг
     private static OrderList orders = new OrderList(); //Заказы - список заказов
 
+    static String[] booksString = new String[10];
+
     public static void main(String[] args) {
 
         /**
@@ -69,14 +71,14 @@ public class TestProgram {
         orders.addOrder(new Order(books.getBookById(2))); //конструктор ставит дату заказа автоматически в момент создания заказа
         orders.addOrder(new Order(new GregorianCalendar(2018, 5, 11), books.getBookById(0)));
         orders.addOrder(new Order(new GregorianCalendar(2018, 1, 05), books.getBookById(1)));
-        orders.addOrder(new Order(new GregorianCalendar(), books.getBookById(1)));
+        orders.addOrder(new Order(books.getBookById(1)));
         orders.addOrder(new Order(books.getBookById(1)));
         System.out.println("\nВсе заказы");
         orders.printOrders();
 
         System.out.println("\n13. Укомплектовать заказ и изменить его статус");
-        orders.completedOrderById(2);
-        orders.completedOrderById(4, new GregorianCalendar(2018, 06, 06));
+        orders.setCompletedOrderById(2);
+        orders.setCompletedOrderById(4, new GregorianCalendar(2018, 06, 06));
         System.out.println("Все заказы после комплектовки (completed = true)");
         orders.printOrders();
 
@@ -131,10 +133,10 @@ public class TestProgram {
         orders.printCompletedOrdersSortedByPriceOfPeriod(new GregorianCalendar(2018, 01, 8), new GregorianCalendar());
 
         System.out.println("\n5. Сумму заработанных средств за период времени");
-        orders.fullAmountOfPeriod(new GregorianCalendar(2018, 05, 8), new GregorianCalendar());
+        orders.getFullAmountByPeriod(new GregorianCalendar(2018, 05, 8), new GregorianCalendar());
 
         System.out.println("\n6. Количество выполненных заказов за период времени");
-        orders.quantityCompletedOrdersByPeriod(new GregorianCalendar(2018, 05, 8), new GregorianCalendar());
+        orders.getQuantityCompletedOrdersByPeriod(new GregorianCalendar(2018, 05, 8), new GregorianCalendar());
 
         System.out.println("\n7.1. Список «залежавшихся» книг не проданы больше чем 6 мес. (сортировать по дате поступления)");
         books.printBooksPeriodMoreSixMonthByDate();
@@ -162,6 +164,20 @@ public class TestProgram {
         System.out.println();
         writeDataToFile(requests.getRequests());
         readDataFromFile(requests.getRequests());
+
+
+        System.out.println();
+        readDataFromFileTest(booksString);
+
+        for(String aBook: booksString){
+            System.out.println(aBook);
+        }
+
+//        String fillData = "dasdad";
+//        Book[] bookNew = new Book[10];
+//        bookNew[0] = new Book(fillData);
+
+
     }
 
     private static void writeDataToFile(Object[] obj) {
@@ -176,9 +192,12 @@ public class TestProgram {
         }
         try {
             TextFileWorker fileWorker = new TextFileWorker(file);
-            String[] str = new String[1];
-            str[0] = Arrays.toString(obj);
-            fileWorker.writeToFile(str);
+
+            String str = Arrays.toString(obj);
+//            str = str.substring(1, str.indexOf("]"));
+//            str = str.substring(0, str.indexOf("null"));
+            String[] subStr = str.split("}, ");
+            fileWorker.writeToFile(subStr);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -188,6 +207,19 @@ public class TestProgram {
         String path = Constants.PATH + obj.getClass().getSimpleName() + ".txt";
         TextFileWorker fileWorker = new TextFileWorker(path);
         Object[] read = fileWorker.readFromFile();
-        System.out.println(read[0]);
+        System.out.println(read[0]+"}");
+
+
+    }
+
+    private static void readDataFromFileTest(Object[] obj) {
+//        String path = Constants.PATH + obj.getClass().getSimpleName() + ".txt";
+
+        String path1 = "G:\\Java\\SenlaNew\\src\\Zanyatie4\\Task1\\data\\Book[].txt";
+        TextFileWorker fileWorker = new TextFileWorker(path1);
+        Object[] read = fileWorker.readFromFile();
+        for (int i = 0; i < read.length; i++) {
+            obj[i] = read[i] +"}";
+        }
     }
 }

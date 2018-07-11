@@ -1,7 +1,5 @@
 package Zanyatie4.Task1.entity;
 
-import Zanyatie4.Task1.entity.Book;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -10,7 +8,7 @@ public class Order {
 
     private Calendar dateOfStartedOrder;
     private Calendar dateOfCompletedOrder;
-    private boolean completed;
+    private boolean isCompletedOrder;
     private Book book;
     private double priceOfOrder;
 
@@ -18,13 +16,13 @@ public class Order {
         this.dateOfStartedOrder = dateOfStartedOrder;
         this.book = book;
         priceOfOrder = book.getPrice();
-        completed = false;
+        isCompletedOrder = false;
         dateOfCompletedOrder = new GregorianCalendar(0,0,1);//чтобы не получить NPE
     }
 
     public Order(Book book) {
         this.book = book;
-        completed = false;
+        isCompletedOrder = false;
         priceOfOrder = book.getPrice();
         dateOfStartedOrder = new GregorianCalendar();
         dateOfCompletedOrder = new GregorianCalendar(0,0,1);//чтобы не получить NPE
@@ -40,12 +38,12 @@ public class Order {
         this.dateOfStartedOrder = dateOfStartedOrder;
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public boolean isCompletedOrder() {
+        return isCompletedOrder;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void setCompletedOrder(boolean completedOrder) {
+        this.isCompletedOrder = completedOrder;
     }
 
     public Calendar getDateOfCompletedOrder() {
@@ -77,7 +75,7 @@ public class Order {
         return "Order{" +
                 "dateOfStartedOrder=" + convertDate(dateOfStartedOrder) +
                 ", nameOfBook=" + book.getName() +
-                ", completed=" + completed +
+                ", isCompletedOrder=" + isCompletedOrder +
                 ", price=" + priceOfOrder +
                 ", dateOfCompletedOrder=" + convertDate(dateOfCompletedOrder) +
                 '}';

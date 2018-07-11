@@ -21,6 +21,9 @@ public class Book {
         this.dateAddedBookToStorehouse = dateAddedBookToStorehouse;
     }
 
+    public Book(String fillData) {
+    }
+
 
     //getters setters
     public String getName() {
@@ -81,6 +84,7 @@ public class Book {
                 ", dateAddedBookToStorehouse =" + convertDate(dateAddedBookToStorehouse) +
                 '}';
     }
+
 
     private String convertDate(Calendar date) {
         return new SimpleDateFormat("dd.MM.Y").format(date.getTime());
