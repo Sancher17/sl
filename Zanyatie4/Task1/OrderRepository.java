@@ -11,9 +11,7 @@ public class OrderRepository {
 
     private Order[] orders = new Order[4];
 
-
     //CRUD
-
     public void create(Order order){
     }
 
@@ -27,15 +25,9 @@ public class OrderRepository {
         return orders[id];
     }
 
-
-    public Order[] getAll(){
+    public Order[] getOrders(){
         return orders;
     }
-
-
-
-
-
 
 
     public void addOrder(Order order) {
@@ -58,7 +50,7 @@ public class OrderRepository {
         }
     }
 
-    public void printCompletedOrders() {
+//    public void printCompletedOrders() {
         for (Order anOrder : orders) {
             if (anOrder != null) {
                 if (anOrder.isCompletedOrder()) {
@@ -69,7 +61,7 @@ public class OrderRepository {
         }
     }
 
-    public void printCompletedOrdersSortedByDateOfPeriod(GregorianCalendar startDate, GregorianCalendar endDate) {
+//    public void printCompletedOrdersSortedByDateOfPeriod(GregorianCalendar startDate, GregorianCalendar endDate) {
         for (Order anOrder : orders) {
             if (anOrder != null) {
                 if (anOrder.getDateOfCompletedOrder().after(startDate) & anOrder.getDateOfCompletedOrder().before(endDate)) {
@@ -79,7 +71,7 @@ public class OrderRepository {
         }
     }
 
-    public void printCompletedOrdersSortedByPriceOfPeriod(GregorianCalendar startDate, GregorianCalendar endDate) {
+//   public void printCompletedOrdersSortedByPriceOfPeriod(GregorianCalendar startDate, GregorianCalendar endDate) {
         sortOrdersByPrice();
         for (Order anOrder : orders) {
             if (anOrder != null) {
@@ -94,15 +86,7 @@ public class OrderRepository {
         System.arraycopy(orders, id + 1, orders, id, orders.length - 1 - id);
     }
 
-    public void setCompletedOrderById(int id) {
-        orders[id].setCompletedOrder(true);
-        orders[id].setDateOfCompletedOrder(new GregorianCalendar());
-    }
-
-    public void setCompletedOrderById(int id, GregorianCalendar dateOfCompleted) {
-        orders[id].setCompletedOrder(true);
-        orders[id].setDateOfCompletedOrder(dateOfCompleted);
-    }
+    
 
     public void sortCompleteOrdersByDate() {
         Comparator<Order> ordersComp = Comparator.comparing(Order::getDateOfCompletedOrder);
