@@ -1,14 +1,42 @@
 package Zanyatie4.Task1;
 
 import Zanyatie4.Task1.entity.Order;
+import com.sun.org.apache.xpath.internal.operations.Or;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 
-public class OrderList {
+public class OrderRepository {
 
     private Order[] orders = new Order[4];
+
+
+    //CRUD
+
+    public void create(Order order){
+    }
+
+    public void delete(Order order){
+
+    }
+
+    public void update(Order order){}
+
+    public Order getOrder(int id){
+        return orders[id];
+    }
+
+
+    public Order[] getAll(){
+        return orders;
+    }
+
+
+
+
+
+
 
     public void addOrder(Order order) {
         int count = 0;
@@ -164,7 +192,7 @@ public class OrderList {
 
     @Override
     public String toString() {
-        return "OrderList{" +
+        return "OrderRepository{" +
                 "orders=" + Arrays.toString(orders) +
                 '}';
     }

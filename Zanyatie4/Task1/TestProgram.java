@@ -17,7 +17,7 @@ public class TestProgram {
 
     private static RequestList requests = new RequestList(); //список запросов / заявок
     private static Storehouse books = new Storehouse();  //Хранилище книг - список книг
-    private static OrderList orders = new OrderList(); //Заказы - список заказов
+    private static OrderRepository orders = new OrderRepository(); //Заказы - список заказов
 
     static String[] booksString = new String[10];
 
