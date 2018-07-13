@@ -6,7 +6,7 @@ import Zanyatie4.Task1.repository.BookRepository;
 
 import java.util.*;
 
-public class BookService {
+public class BookService extends Service {
 
     private BookRepository books = new BookRepository();
     private ParseBook parseBook = new ParseBook();
