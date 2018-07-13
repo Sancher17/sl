@@ -8,7 +8,7 @@ import java.util.Calendar;
 
 public class EBookShop {
 
-    private BookService bookService = new BookService();
+    private Service bookService = new BookService();
     private OrderService orderService = new OrderService(bookService);
     private RequestService requestService = new RequestService();
 
