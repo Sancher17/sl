@@ -14,8 +14,8 @@ public class EBookShop {
 
     //BOOK
 
-    public void addBook(String name, Calendar date, Calendar date1, double price, String description) {
-        bookService.addBook(name, date, date1, price, description);
+    public void addBook(String nameBook, Calendar dateOfPublication, Calendar dateAddedBookToStore, double price, String description) {
+        bookService.addBook(nameBook, dateOfPublication, dateAddedBookToStore, price, description);
     }
 
     public void deleteBookById(int bookId){
@@ -135,6 +135,13 @@ public class EBookShop {
 
     public void sortRequestsByAlphabet() {
         requestService.sortRequestsByQuantity();
+    }
+
+
+    //read write
+
+    public void writeBookToFile(){
+        bookService.writeBookToFile();
     }
 
 }

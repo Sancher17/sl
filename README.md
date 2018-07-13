@@ -2,7 +2,7 @@
 
 ## Git global setup
 ```
-git config --global user.name "your_name"
+git config --global user.nameBook "your_name"
 git config --global user.email "your_email"
 ```
 

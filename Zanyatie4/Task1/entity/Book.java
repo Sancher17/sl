@@ -5,17 +5,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class Book {
+public class Book implements Serializable {
 
-    private String name;
+    private String nameBook;
     private Calendar dateOfPublication;
     private Calendar dateAddedBookToStore;
     private double price;
     private boolean isAvailable;
     private String description;
 
-    public Book(String name, Calendar dateOfPublication, Calendar dateAddedBookToStore, double price, String description) {
-        this.name = name;
+    public Book(String nameBook, Calendar dateOfPublication, Calendar dateAddedBookToStore, double price, String description) {
+        this.nameBook = nameBook;
         this.dateOfPublication = dateOfPublication;
         this.price = price;
         this.isAvailable = true;
@@ -23,15 +23,23 @@ public class Book {
         this.description = description;
     }
 
+    public Book(String nameBook, Calendar dateOfPublication, Calendar dateAddedBookToStore, double price, boolean isAvailable, String description) {
+        this.nameBook = nameBook;
+        this.dateOfPublication = dateOfPublication;
+        this.price = price;
+        this.isAvailable = isAvailable;
+        this.dateAddedBookToStore = dateAddedBookToStore;
+        this.description = description;
+    }
 
 
     //getters setters
-    public String getName() {
-        return name;
+    public String getNameBook() {
+        return nameBook;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameBook(String nameBook) {
+        this.nameBook = nameBook;
     }
 
     public Calendar getDateOfPublication() {
@@ -74,15 +82,25 @@ public class Book {
         this.description = description;
     }
 
+//    @Override
+//    public String toString() {
+//        return "Book{" +
+//                "nameBook='" + nameBook + '\'' +
+//                ", dateOfPublication=" + convertDate(dateOfPublication) +
+//                ", price=" + price +
+//                ", isAvailable=" + isAvailable +
+//                ", dateAddedBookToStore =" + convertDate(dateAddedBookToStore) +
+//                '}';
+//    }
+
     @Override
     public String toString() {
-        return "Book{" +
-                "name='" + name + '\'' +
-                ", dateOfPublication=" + convertDate(dateOfPublication) +
-                ", price=" + price +
-                ", isAvailable=" + isAvailable +
-                ", dateAddedBookToStore =" + convertDate(dateAddedBookToStore) +
-                '}';
+        return nameBook + "/" +
+                convertDate(dateOfPublication) + "/" +
+                price + "/" +
+                isAvailable + "/" +
+                convertDate(dateAddedBookToStore) +"/"+
+                description;
     }
 
 

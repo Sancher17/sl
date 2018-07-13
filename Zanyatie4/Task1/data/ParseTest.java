@@ -1,23 +1,22 @@
-//package Zanyatie4.Task1;
+//package Zanyatie4.Task1.data;
 //
 //import Zanyatie4.Task1.entity.Book;
 //import com.danco.training.TextFileWorker;
 //
-//import java.io.*;
-//import java.nio.file.Files;
-//import java.nio.file.Path;
-//import java.nio.file.Paths;
+//import java.io.IOException;
+//import java.nio.filePath.Files;
+//import java.nio.filePath.Path;
+//import java.nio.filePath.Paths;
 //import java.util.Arrays;
-//import java.util.Date;
 //import java.util.GregorianCalendar;
 //
-//public class Serial {
+//public class ParseTest {
 //
-//    private static Book[] finalData = new Book[5];
-//    private static String[] tempData;
-//    private static TextFileWorker fileWorker;
+//    private Book[] finalData = new Book[5];
+//    private String[] tempData;
+//    private TextFileWorker fileWorker;
 //
-//    public static void main(String[] args) {
+//    public void test() {
 //
 //        Book[] book = new Book[4];
 //        book[0] = new Book("Alex", new GregorianCalendar(), new GregorianCalendar(), 555, "jgjgj");
@@ -25,10 +24,10 @@
 //        book[2] = new Book("Alex", new GregorianCalendar(), new GregorianCalendar(), 555, "jgjgj");
 //        book[3] = new Book("Alex", new GregorianCalendar(), new GregorianCalendar(), 555, "jgjgj");
 //
-//        String file = "g:/test.txt";
-//        fileWorker = new TextFileWorker(file);
+//        String filePath = "g:/test.txt";
+//        fileWorker = new TextFileWorker(filePath);
 //
-//        write(book, file);
+//        write(book, filePath);
 //        readDataFromFile();
 //
 //        System.out.println("create object in finalData");
@@ -37,10 +36,10 @@
 //        }
 //    }
 //
-//    private static void createObject(String str) {
+//    private void createObject(String str) {
 //        String[] temp = str.split("/");
 //
-//        String name = temp[0].replaceAll("\\s+","");
+//        String name = temp[0].replaceAll("\\s+", "");
 //        String date = temp[1];
 //        String price = temp[2];
 //        String isAvailable = temp[3];
@@ -52,7 +51,7 @@
 //        }
 //    }
 //
-//    private static GregorianCalendar parseDate(String date) {
+//    private GregorianCalendar parseDate(String date) {
 //        String[] dates = date.split("\\.");
 //        int year = Integer.parseInt(dates[2]);
 //        int month = Integer.parseInt(dates[1]);
@@ -60,16 +59,16 @@
 //        return new GregorianCalendar(year, month, day);
 //    }
 //
-//    private static double parsePrice(String price){
+//    private double parsePrice(String price) {
 //        return Double.parseDouble(price);
 //    }
 //
-//    private static boolean parseBoolean(String isAvailable){
+//    private boolean parseBoolean(String isAvailable) {
 //        return Boolean.parseBoolean(isAvailable);
 //    }
 //
-//    private static void write(Book[] book, String file) {
-//        Path filePath = Paths.get(file);
+//    private void write(Book[] book, String filePath) {
+//        Path filePath = Paths.get(filePath);
 //        try {
 //            Files.deleteIfExists(filePath);
 //            Files.createFile(filePath);
@@ -77,7 +76,7 @@
 //            e.printStackTrace();
 //        }
 //        try {
-//            TextFileWorker fileWorker = new TextFileWorker(file);
+//            TextFileWorker fileWorker = new TextFileWorker(filePath);
 //            String str = Arrays.toString(book);
 //            System.out.println("write all array " + str);
 //            str = str.substring(1, str.indexOf("]"));
@@ -91,7 +90,9 @@
 //        System.out.println("write - " + book[1]);
 //    }
 //
-//    private static void readDataFromFile() {
+//    private void readDataFromFile() {
 //        tempData = fileWorker.readFromFile();
 //    }
+//
+//
 //}

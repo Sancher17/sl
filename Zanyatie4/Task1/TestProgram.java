@@ -1,6 +1,8 @@
 package Zanyatie4.Task1;
 
 
+import Zanyatie4.Task1.data.ParseBook;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -88,5 +90,15 @@ public class TestProgram {
         eBookShop.printNotCompletedRequests();
         eBookShop.sortRequestsByQuantity();
         eBookShop.sortRequestsByAlphabet();
+
+
+
+        eBookShop.writeBookToFile();
+
+        eBookShop.addBook("Alex", DATE_TWO_MONTH_AGO,DATE_TODAY,123, "Обо мне" );
+
+        eBookShop.writeBookToFile();
+        eBookShop.printBooks();
+
     }
 }

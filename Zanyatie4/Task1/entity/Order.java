@@ -74,7 +74,7 @@ public class Order {
     public String toString() {
         return "Order{" +
                 "dateOfStartedOrder=" + convertDate(dateOfStartedOrder) +
-                ", nameOfBook=" + book.getName() +
+                ", nameOfBook=" + book.getNameBook() +
                 ", isCompletedOrder=" + isCompletedOrder +
                 ", price=" + priceOfOrder +
                 ", dateOfCompletedOrder=" + convertDate(dateOfCompletedOrder) +

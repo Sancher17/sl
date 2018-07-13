@@ -28,7 +28,7 @@ public class BookRepository {
 //        //проверка по запросам, если name книги совпадает то из запросов книга снимется (requireIsCompleted = true)
 //        for (Request aRequestList : requestRepository.getRequests()) {
 //            if (aRequestList != null) {
-//                if (Objects.equals(aRequestList.getRequireNameBook(), book.getName())) {
+//                if (Objects.equals(aRequestList.getRequireNameBook(), book.getNameBook())) {
 //                    aRequestList.setRequireIsCompleted(true);
 //                }
 //            }
@@ -36,7 +36,7 @@ public class BookRepository {
 //    }
 //
 //    public void sortBooksByAlphabet() {
-//        Comparator<Book> booksComp = Comparator.comparing(Book::getName);
+//        Comparator<Book> booksComp = Comparator.comparing(Book::getNameBook);
 //        Comparator<Book> booksComp_nullLast = Comparator.nullsLast(booksComp);
 //        Arrays.sort(books, booksComp_nullLast);
 //    }
@@ -144,6 +144,7 @@ public class BookRepository {
 ////            books = Arrays.copyOf(books, books.length + increase);
 ////        }
 //    }
+
 
 
     public void increaseArray() {

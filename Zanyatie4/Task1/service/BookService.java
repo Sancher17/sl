@@ -1,5 +1,6 @@
 package Zanyatie4.Task1.service;
 
+import Zanyatie4.Task1.data.ParseBook;
 import Zanyatie4.Task1.entity.Book;
 import Zanyatie4.Task1.repository.BookRepository;
 
@@ -8,6 +9,15 @@ import java.util.*;
 public class BookService {
 
     private BookRepository books = new BookRepository();
+    private ParseBook parseBook = new ParseBook();
+
+    // TODO: 12.07.2018 тестим работу с массивом
+
+    public void writeBookToFile(){
+        parseBook.writeBookToFile(books.getBooks());
+    }
+
+
 
     // TODO: 11.07.2018 запросы
     public void addBook(String name, Calendar datePublication, Calendar dateAddedBookToStore, double price, String description) {
@@ -19,7 +29,7 @@ public class BookService {
         //проверка по запросам, если name книги совпадает то из запросов книга снимется (requireIsCompleted = true)
 //        for (Request aRequestList : requestRepository.getRequests()) {
 //            if (aRequestList != null) {
-//                if (Objects.equals(aRequestList.getRequireNameBook(), book.getName())) {
+//                if (Objects.equals(aRequestList.getRequireNameBook(), book.getNameBook())) {
 //                    aRequestList.setRequireIsCompleted(true);
 //                }
 //            }
@@ -27,7 +37,7 @@ public class BookService {
     }
 
     public void sortByAlphabet() {
-        Comparator<Book> booksComp = Comparator.comparing(Book::getName);
+        Comparator<Book> booksComp = Comparator.comparing(Book::getNameBook);
         Comparator<Book> booksComp_nullLast = Comparator.nullsLast(booksComp);
         Arrays.sort(books.getBooks(), booksComp_nullLast);
     }
@@ -114,16 +124,5 @@ public class BookService {
         }
         return count;
     }
-
-
-    public static void main(String[] args) {
-
-
-
-
-
-    }
-
-
 
 }
