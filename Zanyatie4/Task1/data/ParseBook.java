@@ -50,21 +50,21 @@ public class ParseBook {
         }
     }
 
-    private GregorianCalendar parseDate(String date) {
-        String[] dates = date.split("\\.");
-        int year = Integer.parseInt(dates[2]);
-        int month = Integer.parseInt(dates[1]);
-        int day = Integer.parseInt(dates[0]);
-        return new GregorianCalendar(year, month, day);
-    }
+    // private GregorianCalendar parseDate(String date) {
+    //     String[] dates = date.split("\\.");
+    //     int year = Integer.parseInt(dates[2]);
+    //     int month = Integer.parseInt(dates[1]);
+    //     int day = Integer.parseInt(dates[0]);
+    //     return new GregorianCalendar(year, month, day);
+    // }
 
-    private double parsePrice(String price) {
-        return Double.parseDouble(price);
-    }
+    // private double parsePrice(String price) {
+    //     return Double.parseDouble(price);
+    // }
 
-    private boolean parseBoolean(String isAvailable) {
-        return Boolean.parseBoolean(isAvailable);
-    }
+    // private boolean parseBoolean(String isAvailable) {
+    //     return Boolean.parseBoolean(isAvailable);
+    // }
 
     private void write(Book[] book, String file) {
         Path filePath = Paths.get(file);
@@ -89,13 +89,13 @@ public class ParseBook {
         tempData = fileWorker.readFromFile();
     }
 
-    private int checkNullRow(Book[] books){
-        int count = 0;
-        for (Book book : books) {
-            if (book != null) {
-                count++;
-            }
-        }
-        return count;
-    }
+    // private int checkNullRow(Book[] books){
+    //     int count = 0;
+    //     for (Book book : books) {
+    //         if (book != null) {
+    //             count++;
+    //         }
+    //     }
+    //     return count;
+    // }
 }
