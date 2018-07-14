@@ -3,21 +3,34 @@ package Zanyatie4.Task1.service;
 import Zanyatie4.Task1.data.ParseBook;
 import Zanyatie4.Task1.entity.Book;
 import Zanyatie4.Task1.repository.BookRepository;
+import com.danco.training.TextFileWorker;
 
 import java.util.*;
 
 public class BookService extends Service {
 
+    private String filePath = "g:/testBoook.txt";
+
     private BookRepository books = new BookRepository();
-    private ParseBook parseBook = new ParseBook();
+    private ParseBook parseBook = new ParseBook(filePath);
 
-    // TODO: 12.07.2018 тестим работу с массивом
+    private Book[] tempBook;
+    private String[] tempData;
 
-    public void writeBookToFile(){
-        parseBook.writeBookToFile(books.getBooks());
+    public void writeBookToFile() {
+        parseBook.writeObjectToFile(books.getBooks());
     }
 
-
+    public void readBookFromFileFillData() {
+        TextFileWorker fileWorker = new TextFileWorker(filePath);
+        tempData = fileWorker.readFromFile();
+        tempBook = new Book[tempData.length];
+        for (int i = 0; i < tempData.length; i++) {
+            tempBook[i] = parseBook.createObject(tempData[i]);
+        }
+        books.deleteAll();
+        books.setBooks(tempBook);
+    }
 
     // TODO: 11.07.2018 запросы
     public void addBook(String name, Calendar datePublication, Calendar dateAddedBookToStore, double price, String description) {
@@ -64,13 +77,22 @@ public class BookService extends Service {
         return books.getBooks()[id];
     }
 
+    public Book getBookByName(String name) {
+        for (Book book : books.getBooks()) {
+            if (name.equals(book.getNameBook())) {
+                return book;
+            }
+        }
+        return null;
+    }
+
     public void deleteBookById(int id) {
         System.arraycopy(books.getBooks(), id + 1, books.getBooks(), id, books.getBooks().length - 1 - id);
     }
 
     public String printBooks() {
         StringBuilder builder = new StringBuilder();
-        if(books.getBooks()[0] != null){
+        if (books.getBooks()[0] != null) {
             for (Book book : books.getBooks()) {
                 if (book != null) {
                     builder.append(book + "\n");
@@ -124,5 +146,4 @@ public class BookService extends Service {
         }
         return count;
     }
-
 }

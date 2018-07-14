@@ -32,6 +32,10 @@ public class Book implements Serializable {
         this.description = description;
     }
 
+    public Book(Book[] bookObject) {
+
+    }
+
 
     //getters setters
     public String getNameBook() {

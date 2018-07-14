@@ -5,12 +5,14 @@ import Zanyatie4.Task1.service.OrderService;
 import Zanyatie4.Task1.service.RequestService;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class EBookShop {
 
-    private Service bookService = new BookService();
+    private BookService bookService = new BookService();
     private OrderService orderService = new OrderService(bookService);
     private RequestService requestService = new RequestService();
+
 
     //BOOK
 
@@ -18,11 +20,12 @@ public class EBookShop {
         bookService.addBook(nameBook, dateOfPublication, dateAddedBookToStore, price, description);
     }
 
-    public void deleteBookById(int bookId){
+    public void deleteBookById(int bookId) {
         bookService.deleteBookById(bookId);
     }
 
     public void printBooks() {
+        printBookHead();
         System.out.println(bookService.printBooks());
     }
 
@@ -43,15 +46,17 @@ public class EBookShop {
     }
 
     public void printBooksPeriodMoreSixMonthByDate() {
+        printBookHead();
         System.out.println(bookService.printBooksPeriodMoreSixMonthByDate());
     }
 
     public void printBooksPeriodMoreSixMonthByPrice() {
+        printBookHead();
         System.out.println(bookService.printBooksPeriodMoreSixMonthByPrice());
     }
 
     public void printBookDescriptionById(int id) {
-
+        printBookHead();
         System.out.println(bookService.getBookDescriptionById(id));
     }
 
@@ -65,19 +70,38 @@ public class EBookShop {
         orderService.addOrder(bookId);
     }
 
+    public void addOrder(Calendar startOrder, int bookId) {
+        orderService.addOrder(startOrder, bookId);
+    }
+
+
+    public void setCompletedOrderById(int orderId) {
+        orderService.setCompletedOrderById(orderId);
+
+    }
+
+    public void setCompletedOrderById(int orderId, GregorianCalendar dateOfCompleted) {
+        orderService.setCompletedOrderById(orderId, dateOfCompleted);
+
+    }
+
     public void printOrders() {
+        printOrderHead();
         System.out.println(orderService.printOrders());
     }
 
     public void printCompletedOrders() {
+        printOrderHead();
         System.out.println(orderService.printCompletedOrders());
     }
 
     public void printCompletedOrdersSortedByDateOfPeriod(Calendar dateStart, Calendar dateEnd) {
+        printOrderHead();
         System.out.println(orderService.printCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd));
     }
 
     public void printCompletedOrdersSortedByPriceOfPeriod(Calendar dateStart, Calendar dateEnd) {
+        printOrderHead();
         System.out.println(orderService.printCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd));
     }
 
@@ -108,12 +132,26 @@ public class EBookShop {
     }
 
     public void printOrderById(int id) {
+        printOrderHead();
         System.out.println(orderService.printOrderById(id));
+    }
+
+    private void printOrderHead() {
+        System.out.println("Дата заказа/книга/отметка выполнения заказа/стоимость заказа/дата выполнения заказа");
+    }
+
+    private void printBookHead() {
+        System.out.println("Название/дата публикации/цена/наличие/дата добавления в магазин/описание");
+    }
+
+    private void printRequestHead() {
+        System.out.println("Название книги/удовлетворен запрос/количество запросов");
     }
 
     // Requests
 
     public void printRequests() {
+        printRequestHead();
         System.out.println(requestService.printRequests());
     }
 
@@ -122,10 +160,12 @@ public class EBookShop {
     }
 
     public void printCompletedRequests() {
+        printRequestHead();
         requestService.printCompletedRequests();
     }
 
     public void printNotCompletedRequests() {
+        printRequestHead();
         requestService.printCompletedRequests();
     }
 
@@ -140,8 +180,28 @@ public class EBookShop {
 
     //read write
 
-    public void writeBookToFile(){
+    public void writeBookToFile() {
         bookService.writeBookToFile();
+    }
+
+    public void readBookFromFile(){
+        bookService.readBookFromFileFillData();
+    }
+
+    public void writeOrderToFile() {
+        orderService.writeOrderToFile();
+    }
+
+    public void readOrderFromFile(){
+        orderService.readOrderFromFileFillData();
+    }
+
+    public void writeRequestToFile() {
+        requestService.writeRequestToFile();
+    }
+
+    public void readRequestFromFile(){
+        requestService.readRequestFromFileFillData();
     }
 
 }

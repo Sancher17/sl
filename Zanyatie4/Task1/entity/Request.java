@@ -11,6 +11,11 @@ public class Request {
         this.requireIsCompleted = false;
     }
 
+    public Request(String requireNameBook, boolean requireIsCompleted, int requireQuantity) {
+        this.requireNameBook = requireNameBook;
+        this.requireIsCompleted = requireIsCompleted;
+        this.requireQuantity = requireQuantity;
+    }
 
     //getters setters
     public String getRequireNameBook() {
@@ -37,12 +42,11 @@ public class Request {
         this.requireQuantity = requireQuantity;
     }
 
+
     @Override
     public String toString() {
-        return "Request{" +
-                "requireNameBook='" + requireNameBook + '\'' +
-                ", requireIsCompleted=" + requireIsCompleted +
-                ", requireQuantity=" + requireQuantity +
-                '}';
+        return requireNameBook + "/" +
+                requireIsCompleted + "/" +
+                requireQuantity;
     }
 }

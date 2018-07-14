@@ -10,7 +10,7 @@ import java.util.GregorianCalendar;
 
 public class OrderRepository {
 
-    private Order[] orders = new Order[4];
+    private Order[] orders = new Order[1];
 
     public void increaseArray() {
         int count = orders.length - checkNullRow();
@@ -27,6 +27,12 @@ public class OrderRepository {
             }
         }
         return count;
+    }
+
+    public void deleteAll() {
+        for (int i = 0; i < orders.length; i++) {
+            orders[i] = null;
+        }
     }
 
     public Order[] getOrders() {

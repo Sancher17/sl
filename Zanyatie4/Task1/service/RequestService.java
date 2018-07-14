@@ -1,14 +1,42 @@
 package Zanyatie4.Task1.service;
 
+import Zanyatie4.Task1.data.ParseRequest;
+import Zanyatie4.Task1.entity.Book;
 import Zanyatie4.Task1.entity.Request;
 import Zanyatie4.Task1.repository.RequestRepository;
+import com.danco.training.TextFileWorker;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
 public class RequestService {
 
+
+    private String filePath = "g:/testRequest.txt";
+
     private RequestRepository requests = new RequestRepository();
+    private ParseRequest parseRequest = new ParseRequest(filePath);
+
+    private Request[] tempRequest;
+    private String[] tempData;
+
+
+    public void writeRequestToFile() {
+        parseRequest.writeObjectToFile(requests.getRequests());
+    }
+
+    public void readRequestFromFileFillData() {
+        TextFileWorker fileWorker = new TextFileWorker(filePath);
+        tempData = fileWorker.readFromFile();
+        tempRequest = new Request[tempData.length];
+        for (int i = 0; i < tempData.length; i++) {
+            tempRequest[i] = parseRequest.createObject(tempData[i]);
+        }
+        requests.deleteAll();
+        requests.setRequests(tempRequest);
+    }
+
+
 
     // TODO: 09.07.2018 исправить
     public void addBookRequest(String nameRequireBook) {

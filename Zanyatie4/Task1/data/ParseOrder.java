@@ -1,101 +1,35 @@
 package Zanyatie4.Task1.data;
 
+import Zanyatie4.Task1.entity.Book;
 import Zanyatie4.Task1.entity.Order;
-import com.danco.training.TextFileWorker;
+import Zanyatie4.Task1.service.OrderService;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.GregorianCalendar;
+public class ParseOrder extends Parse {
 
-public class ParseOrder {
+    private Order[] tempData = new Order[1];
 
-    private Order[] finalData = new Order[1];
-    private String[] tempData;
-    private String filePath = "g:/testOrder.txt";
-    private TextFileWorker fileWorker;
+    private OrderService orderService;
 
-    public Order[] writeOrderToFile(Order[] arrayOrders){
-
-        write(arrayOrders, filePath);
-        fileWorker = new TextFileWorker(filePath);
-
-        readDataFromFile();
-
-        for (int i = 0; i < checkNullRow(arrayOrders); i++) {
-            createBookObject(tempData[i]);
-        }
-        return arrayOrders;
+    public ParseOrder(String filePath, OrderService orderService) {
+        super(filePath);
+        this.orderService = orderService;
     }
 
-    private void createBookObject(String str) {
+    @Override
+    public Order createObject(String str) {
         String[] temp = str.split("/");
-
-        String name = temp[0].replaceAll("\\s+", "");;
-        String dateOfPublication = temp[1];
-        String price = temp[2];
-        String isAvailable = temp[3];
-        String dateAddedBookToStore = temp[4];
-        String description = temp[5];
-
-        for (int i = 0; i < 1; i++) {
-            finalData[i] = new Book(name,
-                    parseDate(dateOfPublication),
-                    parseDate(dateAddedBookToStore),
-                    parsePrice(price),
-                    parseBoolean(isAvailable),
-                    description);
+        String checkNull = " null";
+        if (!temp[0].equals(checkNull)) {
+            String dateOfStartedOrder = temp[0];
+            String nameBook = temp[1].replaceAll("\\s+", "");
+            String isCompletedOrder = temp[2];
+            String dateOfCompletedOrder = temp[4];
+            for (int i = 0; i < 1; i++) {
+                Book book = orderService.getBooks().getBookByName(nameBook);
+                tempData[i] = new Order(parseDate(dateOfStartedOrder), book, parseBoolean(isCompletedOrder), parseDate(dateOfCompletedOrder));
+            }
+            return tempData[0];
         }
+        return null;
     }
-
-    // private GregorianCalendar parseDate(String date) {
-    //     String[] dates = date.split("\\.");
-    //     int year = Integer.parseInt(dates[2]);
-    //     int month = Integer.parseInt(dates[1]);
-    //     int day = Integer.parseInt(dates[0]);
-    //     return new GregorianCalendar(year, month, day);
-    // }
-
-    // private double parsePrice(String price) {
-    //     return Double.parseDouble(price);
-    // }
-
-    // private boolean parseBoolean(String isAvailable) {
-    //     return Boolean.parseBoolean(isAvailable);
-    // }
-
-    private void write(Order[] order, String file) {
-        Path filePath = Paths.get(file);
-        try {
-            Files.deleteIfExists(filePath);
-            Files.createFile(filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            fileWorker = new TextFileWorker(file);
-            String str = Arrays.toString(book);
-            str = str.substring(1, str.indexOf("]"));
-            String[] subStr = str.split(",");
-            fileWorker.writeToFile(subStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void readDataFromFile() {
-        tempData = fileWorker.readFromFile();
-    }
-
-    // private int checkNullRow(Order[] orders){
-    //     int count = 0;
-    //     for (Order order : orders) {
-    //         if (book != null) {
-    //             count++;
-    //         }
-    //     }
-    //     return count;
-    // }
 }

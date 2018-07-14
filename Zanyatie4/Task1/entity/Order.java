@@ -17,7 +17,7 @@ public class Order {
         this.book = book;
         priceOfOrder = book.getPrice();
         isCompletedOrder = false;
-        dateOfCompletedOrder = new GregorianCalendar(0,0,1);//чтобы не получить NPE
+        dateOfCompletedOrder = new GregorianCalendar(0, 0, 1);//чтобы не получить NPE
     }
 
     public Order(Book book) {
@@ -25,7 +25,15 @@ public class Order {
         isCompletedOrder = false;
         priceOfOrder = book.getPrice();
         dateOfStartedOrder = new GregorianCalendar();
-        dateOfCompletedOrder = new GregorianCalendar(0,0,1);//чтобы не получить NPE
+        dateOfCompletedOrder = new GregorianCalendar(0, 0, 1);//чтобы не получить NPE
+    }
+
+    public Order(Calendar dateOfStartedOrder, Book book, boolean isCompletedOrder, Calendar dateOfCompletedOrder) {
+        this.dateOfStartedOrder = dateOfStartedOrder;
+        this.book = book;
+        priceOfOrder = book.getPrice();
+        this.isCompletedOrder = isCompletedOrder;
+        this.dateOfCompletedOrder = dateOfCompletedOrder;
     }
 
 
@@ -69,16 +77,25 @@ public class Order {
     public void setPriceOfOrder(double priceOfOrder) {
         this.priceOfOrder = priceOfOrder;
     }
+//
+//    @Override
+//    public String toString() {
+//        return "Order{" +
+//                "dateOfStartedOrder=" + convertDate(dateOfStartedOrder) +
+//                ", nameOfBook=" + book.getNameBook() +
+//                ", isCompletedOrder=" + isCompletedOrder +
+//                ", price=" + priceOfOrder +
+//                ", dateOfCompletedOrder=" + convertDate(dateOfCompletedOrder) +
+//                '}';
+//    }
 
     @Override
     public String toString() {
-        return "Order{" +
-                "dateOfStartedOrder=" + convertDate(dateOfStartedOrder) +
-                ", nameOfBook=" + book.getNameBook() +
-                ", isCompletedOrder=" + isCompletedOrder +
-                ", price=" + priceOfOrder +
-                ", dateOfCompletedOrder=" + convertDate(dateOfCompletedOrder) +
-                '}';
+        return convertDate(dateOfStartedOrder) + "/" +
+                        book.getNameBook() + "/" +
+                        isCompletedOrder + "/" +
+                        priceOfOrder + "/" +
+                        convertDate(dateOfCompletedOrder);
     }
 
     private String convertDate(Calendar date) {

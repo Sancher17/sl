@@ -33,6 +33,12 @@ public class RequestRepository {
         this.requests = requests;
     }
 
+    public void deleteAll() {
+        for (int i = 0; i < requests.length; i++) {
+            requests[i] = null;
+        }
+    }
+
     @Override
     public String toString() {
         return "RequestRepository{" +

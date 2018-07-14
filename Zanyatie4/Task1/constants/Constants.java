@@ -9,4 +9,10 @@ public enum Constants {
         }
     },
 
+    PATH_BOOK{
+        public String toString() {
+            return "G:testboook.txt";
+        }
+    },
+
 }

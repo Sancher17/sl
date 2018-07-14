@@ -146,7 +146,6 @@ public class BookRepository {
 //    }
 
 
-
     public void increaseArray() {
         int count = books.length - checkNullRow();
         if (books.length - count < 3) {
@@ -170,6 +169,12 @@ public class BookRepository {
 
     public void setBooks(Book[] books) {
         this.books = books;
+    }
+
+    public void deleteAll() {
+        for (int i = 0; i < books.length; i++) {
+            books[i] = null;
+        }
     }
 
     @Override
