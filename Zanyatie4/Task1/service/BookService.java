@@ -2,20 +2,28 @@ package Zanyatie4.Task1.service;
 
 import Zanyatie4.Task1.data.ParseBook;
 import Zanyatie4.Task1.entity.Book;
+import Zanyatie4.Task1.entity.Request;
 import Zanyatie4.Task1.repository.BookRepository;
 import com.danco.training.TextFileWorker;
 
 import java.util.*;
 
+import static Zanyatie4.Task1.constants.Constants.PATH_BOOK_DATA;
+
 public class BookService extends Service {
 
-    private String filePath = "g:/testBoook.txt";
+    private String filePath = PATH_BOOK_DATA + "";
 
     private BookRepository books = new BookRepository();
     private ParseBook parseBook = new ParseBook(filePath);
+    private RequestService requestService;
 
     private Book[] tempBook;
     private String[] tempData;
+
+    public BookService(RequestService requestService) {
+        this.requestService = requestService;
+    }
 
     public void writeBookToFile() {
         parseBook.writeObjectToFile(books.getBooks());
@@ -39,14 +47,17 @@ public class BookService extends Service {
         int index = checkNullRow();
         books.getBooks()[index] = new Book(name, datePublication, dateAddedBookToStore, price, description);
 
-        //проверка по запросам, если name книги совпадает то из запросов книга снимется (requireIsCompleted = true)
-//        for (Request aRequestList : requestRepository.getRequests()) {
-//            if (aRequestList != null) {
-//                if (Objects.equals(aRequestList.getRequireNameBook(), book.getNameBook())) {
-//                    aRequestList.setRequireIsCompleted(true);
-//                }
-//            }
-//        }
+//        проверка по запросам, если name книги совпадает то из запросов книга снимется (requireIsCompleted = true)
+        for (Request request : requestService.getRequests().getRequests()) {
+            if (request != null) {
+                for (int i = 0; i < books.getBooks().length; i++) {
+                    if (request.getRequireNameBook().equals(books.getBooks()[0].getNameBook())) {
+                        request.setRequireIsCompleted(true);
+                    }
+                }
+
+            }
+        }
     }
 
     public void sortByAlphabet() {

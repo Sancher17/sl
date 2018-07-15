@@ -10,9 +10,11 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 
+import static Zanyatie4.Task1.constants.Constants.PATH_ORDER_DATA;
+
 public class OrderService extends Service {
 
-    private String filePath = "g:/testOrder.txt";
+    private String filePath = PATH_ORDER_DATA+"";
     private OrderRepository orders = new OrderRepository();
 
     private BookService books;
@@ -132,7 +134,6 @@ public class OrderService extends Service {
         System.arraycopy(orders.getOrders(), id + 1, orders.getOrders(), id, orders.getOrders().length - 1 - id);
     }
 
-    // TODO: 12.07.2018 надо корректировать
     public void sortCompletedOrdersByDate() {
         Comparator<Order> ordersComp = Comparator.comparing(Order::getDateOfCompletedOrder);
         Comparator<Order> ordersComp_nullLast = Comparator.nullsLast(ordersComp);

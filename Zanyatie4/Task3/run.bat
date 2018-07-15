@@ -1,0 +1,1 @@
+java -cp textFileWorker.jar;./* Zanyatie4.Task1.TestProgram

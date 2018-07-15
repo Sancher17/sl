@@ -9,10 +9,19 @@ import java.util.GregorianCalendar;
 
 public class EBookShop {
 
-    private BookService bookService = new BookService();
-    private OrderService orderService = new OrderService(bookService);
+    private BookService bookService;
+    private OrderService orderService;
     private RequestService requestService = new RequestService();
 
+
+    public EBookShop() {
+        init();
+    }
+
+    void init(){
+        bookService = new BookService(requestService);
+        orderService = new OrderService(bookService);
+    }
 
     //BOOK
 
@@ -161,12 +170,12 @@ public class EBookShop {
 
     public void printCompletedRequests() {
         printRequestHead();
-        requestService.printCompletedRequests();
+        System.out.println(requestService.printCompletedRequests());
     }
 
     public void printNotCompletedRequests() {
         printRequestHead();
-        requestService.printCompletedRequests();
+        System.out.println(requestService.printNotCompletedRequests());
     }
 
     public void sortRequestsByQuantity() {

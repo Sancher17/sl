@@ -20,22 +20,21 @@ public class TestProgram {
 
         EBookShop eBookShop = new EBookShop();
 
-
         firstStepInit(eBookShop);
 
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("\nREAD - WRITE block ++++++++++++++++++++++++++++++++++++++++++");
 
-        //write - read BOOK
+        System.out.println("Чтение - запись BOOK");
         eBookShop.writeBookToFile();
         eBookShop.readBookFromFile();
         eBookShop.printBooks();
 
-        //write - read ORDER
+        System.out.println("Чтение - запись ORDER");
         eBookShop.writeOrderToFile();
         eBookShop.readOrderFromFile();
         eBookShop.printOrders();
 
-        //write - read request
+        System.out.println("Чтение - запись REQUEST");
         eBookShop.writeRequestToFile();
         eBookShop.readRequestFromFile();
         eBookShop.printRequests();
@@ -52,23 +51,30 @@ public class TestProgram {
         System.out.println("printBooks");
         eBookShop.printBooks();
 
+        System.out.println("sortBooksByAlphabet + deleteBookById (1)");
         eBookShop.sortBooksByAlphabet();
         eBookShop.deleteBookById(1);
-        System.out.println("sortBooksByAlphabet + deleteBookById (1)");
         eBookShop.printBooks();
-        eBookShop.sortBooksByDatePublication();
+
+
         System.out.println("sortBooksByDatePublication");
+        eBookShop.sortBooksByDatePublication();
         eBookShop.printBooks();
-        eBookShop.sortBooksByPrice();
+
         System.out.println("sortBooksByPrice");
+        eBookShop.sortBooksByPrice();
         eBookShop.printBooks();
-        eBookShop.sortBooksByAvailability();
+
         System.out.println("sortBooksByAvailability");
+        eBookShop.sortBooksByAvailability();
         eBookShop.printBooks();
+
         System.out.println("printBooksPeriodMoreSixMonthByDate");
         eBookShop.printBooksPeriodMoreSixMonthByDate();
+
         System.out.println("printBooksPeriodMoreSixMonthByPrice");
         eBookShop.printBooksPeriodMoreSixMonthByPrice();
+
         System.out.println("printBookDescriptionById - 1");
         eBookShop.printBookDescriptionById(1);
 
@@ -89,7 +95,6 @@ public class TestProgram {
         System.out.println("printOrders");
         eBookShop.printOrders();
 
-
         System.out.println("printCompletedOrders");
         eBookShop.printCompletedOrders();
 
@@ -105,7 +110,7 @@ public class TestProgram {
 
         System.out.println("sortCompletedOrdersByDate");
         eBookShop.sortCompletedOrdersByDate();
-        eBookShop.printOrders();
+        eBookShop.printCompletedOrders();
 
         System.out.println("sortOrdersByPrice");
         eBookShop.sortOrdersByPrice();
@@ -127,11 +132,21 @@ public class TestProgram {
         /** Request */
         System.out.println("\nRequest");
         eBookShop.printRequests();
+
         eBookShop.addRequest("JavaScript");
         eBookShop.printRequests();
+
+        System.out.println("printCompletedRequests");
         eBookShop.printCompletedRequests();
+
+        System.out.println("printNotCompletedRequests");
         eBookShop.printNotCompletedRequests();
+
         eBookShop.sortRequestsByQuantity();
         eBookShop.sortRequestsByAlphabet();
+
+        eBookShop.addRequest("Oracle");
+        eBookShop.addRequest("Kotlin");
+        eBookShop.printRequests();
     }
 }

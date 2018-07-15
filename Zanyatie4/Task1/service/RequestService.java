@@ -9,10 +9,11 @@ import com.danco.training.TextFileWorker;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import static Zanyatie4.Task1.constants.Constants.PATH_REQUEST_DATA;
+
 public class RequestService {
 
-
-    private String filePath = "g:/testRequest.txt";
+    private String filePath = PATH_REQUEST_DATA + "";
 
     private RequestRepository requests = new RequestRepository();
     private ParseRequest parseRequest = new ParseRequest(filePath);
@@ -36,9 +37,6 @@ public class RequestService {
         requests.setRequests(tempRequest);
     }
 
-
-
-    // TODO: 09.07.2018 исправить
     public void addBookRequest(String nameRequireBook) {
         requests.increaseArray();
         int index = checkNullRow();
@@ -51,7 +49,7 @@ public class RequestService {
                 if (requests.getRequests()[i] != null) {
                     String nameFromList = requests.getRequests()[i].getRequireNameBook();
                     if (nameRequireBook.equals(nameFromList)) {
-                        requests.getRequests()[i].setRequireQuantity(quantityOfCoincide());
+                        requests.getRequests()[i].setRequireQuantity(1);
                     } else {
                         requests.getRequests()[index] = new Request(nameRequireBook);
                     }
@@ -61,12 +59,11 @@ public class RequestService {
         }
     }
 
-    // TODO: 09.07.2018 исправить вместе с addRequest ()
     private void deleteCopy() {
         int index = checkNullRow();
-        for (int i = 0; i < index-1; i++) {
-            if (requests != null){
-                if (requests.getRequests()[i].getRequireNameBook().equals(requests.getRequests()[i+1].getRequireNameBook())){
+        for (int i = 0; i < index - 1; i++) {
+            if (requests != null) {
+                if (requests.getRequests()[i].getRequireNameBook().equals(requests.getRequests()[i + 1].getRequireNameBook())) {
                     deleteRequestById(i);
 //                    i--;
                 }
@@ -76,7 +73,7 @@ public class RequestService {
 
     public String printRequests() {
         StringBuilder builder = new StringBuilder();
-        if(requests.getRequests()[0] != null){
+        if (requests.getRequests()[0] != null) {
             for (Request request : requests.getRequests()) {
                 if (request != null && requests.getRequests()[0] != null) {
                     builder.append(request + "\n");
@@ -150,17 +147,18 @@ public class RequestService {
         System.arraycopy(requests, id + 1, requests, id, requests.getRequests().length - 1 - id);
     }
 
-    private int quantityOfCoincide() {
-        int count = 1;
-        for (Request request : requests.getRequests()) {
-            if (request != null) {
-                if (request.getRequireNameBook().equals(request.getRequireNameBook())) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
+    // TODO: 15.07.2018
+//    private int quantityOfCoincide(String nameRequireBook) {
+////        int count = 1;
+////        for (Request request: requests.getRequests()){
+////            if (requests.getRequests() != null){
+////                if (request.getRequireNameBook().equals(nameRequireBook)){
+////                    count++;
+////                }
+////            }
+////        }
+////        return count;
+//    }
 
     private int checkNullRow() {
         int count = 0;
@@ -170,5 +168,13 @@ public class RequestService {
             }
         }
         return count;
+    }
+
+    public RequestRepository getRequests() {
+        return requests;
+    }
+
+    public void setRequests(RequestRepository requests) {
+        this.requests = requests;
     }
 }
