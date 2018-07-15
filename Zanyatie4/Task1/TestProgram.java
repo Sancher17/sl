@@ -1,6 +1,6 @@
 package Zanyatie4.Task1;
 
-
+import Zanyatie4.Task1.constants.Constants;
 import Zanyatie4.Task1.data.ParseBook;
 import Zanyatie4.Task1.service.BookService;
 
@@ -13,34 +13,20 @@ public class TestProgram {
     private static final Calendar DATE_TODAY = new GregorianCalendar();
     private static final Calendar DATE_SIX_MONTH_AGO = new GregorianCalendar();
 
+
     public static void main(String[] args) {
+
+        for (int i = 0; i < args.length; i++) {
+            System.out.println(Constants.PATH_BOOK_DATA);
+            System.out.println(Constants.PATH_ORDER_DATA);
+            System.out.println(Constants.PATH_REQUEST_DATA);
+        }
 
         DATE_TWO_MONTH_AGO.add(Calendar.MONTH, -2);
         DATE_SIX_MONTH_AGO.add(Calendar.MONTH, -6);
 
         EBookShop eBookShop = new EBookShop();
 
-        firstStepInit(eBookShop);
-
-        System.out.println("\nREAD - WRITE block ++++++++++++++++++++++++++++++++++++++++++");
-
-        System.out.println("Чтение - запись BOOK");
-        eBookShop.writeBookToFile();
-        eBookShop.readBookFromFile();
-        eBookShop.printBooks();
-
-        System.out.println("Чтение - запись ORDER");
-        eBookShop.writeOrderToFile();
-        eBookShop.readOrderFromFile();
-        eBookShop.printOrders();
-
-        System.out.println("Чтение - запись REQUEST");
-        eBookShop.writeRequestToFile();
-        eBookShop.readRequestFromFile();
-        eBookShop.printRequests();
-    }
-
-    private static void firstStepInit(EBookShop eBookShop) {
         /** Book */
         eBookShop.addBook("Java", new GregorianCalendar(2015, 1, 5), DATE_TODAY, 150, "Книга о Java");
         eBookShop.addBook("MySql", new GregorianCalendar(2016, 2, 9), DATE_TODAY, 135, "Книга о MySql");
@@ -55,7 +41,6 @@ public class TestProgram {
         eBookShop.sortBooksByAlphabet();
         eBookShop.deleteBookById(1);
         eBookShop.printBooks();
-
 
         System.out.println("sortBooksByDatePublication");
         eBookShop.sortBooksByDatePublication();
@@ -87,7 +72,6 @@ public class TestProgram {
         eBookShop.addOrder(0);
         System.out.println("\nprintOrders");
         eBookShop.printOrders();
-
 
         System.out.println("setCompletedOrderById 0, 1 ");
         eBookShop.setCompletedOrderById(0);// дата выполнения ставиться автоматом TODAY
@@ -147,6 +131,23 @@ public class TestProgram {
 
         eBookShop.addRequest("Oracle");
         eBookShop.addRequest("Kotlin");
+        eBookShop.printRequests();
+
+        System.out.println("\nREAD - WRITE block ++++++++++++++++++++++++++++++++++++++++++");
+
+        System.out.println("Чтение - запись BOOK");
+        eBookShop.writeBookToFile();
+        eBookShop.readBookFromFile();
+        eBookShop.printBooks();
+
+        System.out.println("Чтение - запись ORDER");
+        eBookShop.writeOrderToFile();
+        eBookShop.readOrderFromFile();
+        eBookShop.printOrders();
+
+        System.out.println("Чтение - запись REQUEST");
+        eBookShop.writeRequestToFile();
+        eBookShop.readRequestFromFile();
         eBookShop.printRequests();
     }
 }

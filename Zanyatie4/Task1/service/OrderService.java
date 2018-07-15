@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
 
 import static Zanyatie4.Task1.constants.Constants.PATH_ORDER_DATA;
 
-public class OrderService extends Service {
+public class OrderService {
 
     private String filePath = PATH_ORDER_DATA+"";
     private OrderRepository orders = new OrderRepository();

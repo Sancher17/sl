@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class Book implements Serializable {
+public class Book  {
 
     private String nameBook;
     private Calendar dateOfPublication;

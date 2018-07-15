@@ -10,7 +10,7 @@ import java.util.*;
 
 import static Zanyatie4.Task1.constants.Constants.PATH_BOOK_DATA;
 
-public class BookService extends Service {
+public class BookService  {
 
     private String filePath = PATH_BOOK_DATA + "";
 
