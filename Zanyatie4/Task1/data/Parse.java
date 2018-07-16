@@ -72,7 +72,6 @@ public abstract class Parse {
         return Integer.parseInt(integer);
     }
 
-
     public boolean parseBoolean(String aBoolean) {
         return Boolean.parseBoolean(aBoolean);
     }

@@ -23,6 +23,7 @@ public class BookService implements Service{
     private Book[] tempBook;
     private String[] tempData;
 
+
     public BookService(RequestService requestService) {
         this.requestService = requestService;
     }
@@ -59,7 +60,6 @@ public class BookService implements Service{
                         request.setRequireIsCompleted(true);
                     }
                 }
-
             }
         }
     }

@@ -1,5 +1,8 @@
 package Zanyatie4.Task1.repository;
 
+import Zanyatie4.Task1.entity.Book;
+import Zanyatie4.Task1.entity.Request;
+
 import java.util.Arrays;
 
 public abstract class Repository {
