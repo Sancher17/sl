@@ -1,1 +1,1 @@
-java -cp textFileWorker.jar;./* Zanyatie4.Task1.TestProgram arg0
+java -cp textFileWorker.jar;./* Zanyatie4.Task1.TestProgram G:\Java\SenlaNew\src\Zanyatie4\Task3\bookData.txt G:\Java\SenlaNew\src\Zanyatie4\Task3\orderData.txt G:\Java\SenlaNew\src\Zanyatie4\Task3\requestData.txt

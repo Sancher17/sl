@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
 
 import static Zanyatie4.Task1.constants.Constants.PATH_ORDER_DATA;
 
-public class OrderService {
+public class OrderService  {
 
     private String filePath = PATH_ORDER_DATA+"";
     private OrderRepository orders = new OrderRepository();
@@ -32,19 +32,16 @@ public class OrderService {
         parseOrder.writeObjectToFile(orders.getOrders());
     }
 
-    public void readOrderFromFileFillData() {
-        TextFileWorker fileWorker = new TextFileWorker(filePath);
+    public void readOrderFromFileFillData(String path) {
+        TextFileWorker fileWorker = new TextFileWorker(path);
         tempData = fileWorker.readFromFile();
         tempOrder = new Order[tempData.length];
         for (int i = 0; i < tempData.length; i++) {
             tempOrder[i] = parseOrder.createObject(tempData[i]);
         }
-        orders.deleteAll();
+        orders.deleteAll(orders.getOrders());
         orders.setOrders(tempOrder);
     }
-
-
-
 
 
     public void setCompletedOrderById(int orderId) {
@@ -58,19 +55,18 @@ public class OrderService {
         orders.getOrders()[orderId].setDateOfCompletedOrder(dateOfCompleted);
     }
 
-
     public Order getOrder(int id) {
         return orders.getOrders()[id];
     }
 
     public void addOrder(int bookId) {
-        orders.increaseArray();
+        orders.setOrders((Order[]) orders.increaseArray(orders.getOrders()));
         int index = checkNullRow();
         orders.getOrders()[index] = new Order(books.getBookById(bookId));
     }
 
     public void addOrder(Calendar startOrder, int bookId) {
-        orders.increaseArray();
+        orders.setOrders((Order[]) orders.increaseArray(orders.getOrders()));
         int index = checkNullRow();
         orders.getOrders()[index] = new Order(startOrder, books.getBookById(bookId));
     }

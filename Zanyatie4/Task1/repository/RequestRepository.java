@@ -4,26 +4,9 @@ import Zanyatie4.Task1.entity.Request;
 
 import java.util.Arrays;
 
-public class RequestRepository {
+public class RequestRepository extends Repository {
 
     private Request[] requests = new Request[1];
-
-    public void increaseArray() {
-        int count = requests.length - checkNullRow();
-        if (requests.length - count < 3) {
-            requests = Arrays.copyOf(requests, requests.length * 2);
-        }
-    }
-
-    private int checkNullRow() {
-        int count = 0;
-        for (Request request : requests) {
-            if (request != null) {
-                count++;
-            }
-        }
-        return count;
-    }
 
     public Request[] getRequests() {
         return requests;
@@ -31,12 +14,6 @@ public class RequestRepository {
 
     public void setRequests(Request[] requests) {
         this.requests = requests;
-    }
-
-    public void deleteAll() {
-        for (int i = 0; i < requests.length; i++) {
-            requests[i] = null;
-        }
     }
 
     @Override

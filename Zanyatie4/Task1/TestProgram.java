@@ -13,13 +13,16 @@ public class TestProgram {
     private static final Calendar DATE_TODAY = new GregorianCalendar();
     private static final Calendar DATE_SIX_MONTH_AGO = new GregorianCalendar();
 
-
     public static void main(String[] args) {
 
-        for (int i = 0; i < args.length; i++) {
-            System.out.println(Constants.PATH_BOOK_DATA);
-            System.out.println(Constants.PATH_ORDER_DATA);
-            System.out.println(Constants.PATH_REQUEST_DATA);
+        String bookPathData = Constants.PATH_BOOK_DATA + "";
+        String orderPathData = Constants.PATH_ORDER_DATA + "";
+        String requestPathData = Constants.PATH_REQUEST_DATA + "";
+
+        if (args.length > 1) {
+            bookPathData = args[0];
+            orderPathData = args[1];
+            requestPathData = args[2];
         }
 
         DATE_TWO_MONTH_AGO.add(Calendar.MONTH, -2);
@@ -75,7 +78,7 @@ public class TestProgram {
 
         System.out.println("setCompletedOrderById 0, 1 ");
         eBookShop.setCompletedOrderById(0);// дата выполнения ставиться автоматом TODAY
-        eBookShop.setCompletedOrderById(1, new GregorianCalendar(2018, 06,1));//устанавливаем дату выполнения вручную - чтобы протестит сортировку по дате выполнения
+        eBookShop.setCompletedOrderById(1, new GregorianCalendar(2018, 06, 1));//устанавливаем дату выполнения вручную - чтобы протестит сортировку по дате выполнения
         System.out.println("printOrders");
         eBookShop.printOrders();
 
@@ -137,17 +140,17 @@ public class TestProgram {
 
         System.out.println("Чтение - запись BOOK");
         eBookShop.writeBookToFile();
-        eBookShop.readBookFromFile();
+        eBookShop.readBookFromFile(bookPathData);
         eBookShop.printBooks();
 
         System.out.println("Чтение - запись ORDER");
         eBookShop.writeOrderToFile();
-        eBookShop.readOrderFromFile();
+        eBookShop.readOrderFromFile(orderPathData);
         eBookShop.printOrders();
 
         System.out.println("Чтение - запись REQUEST");
         eBookShop.writeRequestToFile();
-        eBookShop.readRequestFromFile();
+        eBookShop.readRequestFromFile(requestPathData);
         eBookShop.printRequests();
     }
 }

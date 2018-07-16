@@ -193,24 +193,24 @@ public class EBookShop {
         bookService.writeBookToFile();
     }
 
-    public void readBookFromFile(){
-        bookService.readBookFromFileFillData();
+    public void readBookFromFile(String bookPathData){
+        bookService.readBookFromFileFillData(bookPathData);
     }
 
     public void writeOrderToFile() {
         orderService.writeOrderToFile();
     }
 
-    public void readOrderFromFile(){
-        orderService.readOrderFromFileFillData();
+    public void readOrderFromFile(String orderPathData){
+        orderService.readOrderFromFileFillData(orderPathData);
     }
 
     public void writeRequestToFile() {
         requestService.writeRequestToFile();
     }
 
-    public void readRequestFromFile(){
-        requestService.readRequestFromFileFillData();
+    public void readRequestFromFile(String requestPathData){
+        requestService.readRequestFromFileFillData(requestPathData);
     }
 
 }

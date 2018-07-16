@@ -26,19 +26,19 @@ public class RequestService {
         parseRequest.writeObjectToFile(requests.getRequests());
     }
 
-    public void readRequestFromFileFillData() {
-        TextFileWorker fileWorker = new TextFileWorker(filePath);
+    public void readRequestFromFileFillData(String path) {
+        TextFileWorker fileWorker = new TextFileWorker(path);
         tempData = fileWorker.readFromFile();
         tempRequest = new Request[tempData.length];
         for (int i = 0; i < tempData.length; i++) {
             tempRequest[i] = parseRequest.createObject(tempData[i]);
         }
-        requests.deleteAll();
+        requests.deleteAll(requests.getRequests());
         requests.setRequests(tempRequest);
     }
 
     public void addBookRequest(String nameRequireBook) {
-        requests.increaseArray();
+        requests.setRequests((Request[]) requests.increaseArray(requests.getRequests()));
         int index = checkNullRow();
 
         if (requests.getRequests()[0] == null) {

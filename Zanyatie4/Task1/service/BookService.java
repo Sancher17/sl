@@ -4,6 +4,7 @@ import Zanyatie4.Task1.data.ParseBook;
 import Zanyatie4.Task1.entity.Book;
 import Zanyatie4.Task1.entity.Request;
 import Zanyatie4.Task1.repository.BookRepository;
+import Zanyatie4.Task1.repository.Repository;
 import com.danco.training.TextFileWorker;
 
 import java.util.*;
@@ -29,22 +30,24 @@ public class BookService  {
         parseBook.writeObjectToFile(books.getBooks());
     }
 
-    public void readBookFromFileFillData() {
-        TextFileWorker fileWorker = new TextFileWorker(filePath);
+    public void readBookFromFileFillData(String path) {
+        TextFileWorker fileWorker = new TextFileWorker(path);
         tempData = fileWorker.readFromFile();
         tempBook = new Book[tempData.length];
         for (int i = 0; i < tempData.length; i++) {
             tempBook[i] = parseBook.createObject(tempData[i]);
         }
-        books.deleteAll();
+        books.deleteAll(books.getBooks());//убирает все предыдущие записи в массиве
         books.setBooks(tempBook);
     }
 
     // TODO: 11.07.2018 запросы
     public void addBook(String name, Calendar datePublication, Calendar dateAddedBookToStore, double price, String description) {
-        books.increaseArray();
+        //переписываем массив т.к. метод increaseArray возвращает новый массив из абстракного класса
+        books.setBooks((Book[]) books.increaseArray(books.getBooks()));
         //определяем следующий пустой индекс в который будет вставлена запись
-        int index = checkNullRow();
+        int index = books.checkNullRow(books.getBooks());
+
         books.getBooks()[index] = new Book(name, datePublication, dateAddedBookToStore, price, description);
 
 //        проверка по запросам, если name книги совпадает то из запросов книга снимется (requireIsCompleted = true)
@@ -146,15 +149,5 @@ public class BookService  {
 
     public String getBookDescriptionById(int id) {
         return books.getBooks()[id].getDescription();
-    }
-
-    private int checkNullRow() {
-        int count = 0;
-        for (Book book : books.getBooks()) {
-            if (book != null) {
-                count++;
-            }
-        }
-        return count;
     }
 }

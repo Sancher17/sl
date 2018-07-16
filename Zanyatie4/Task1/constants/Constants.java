@@ -9,6 +9,8 @@ public enum Constants {
         }
     },
 
+
+
     PATH_ORDER_DATA{
         public String toString() {
             return "g:\\Java\\SenlaNew\\src\\Zanyatie4\\Task3\\orderData.txt";
@@ -20,7 +22,4 @@ public enum Constants {
             return "g:\\Java\\SenlaNew\\src\\Zanyatie4\\Task3\\requestData.txt";
         }
     },
-
-
-
 }
