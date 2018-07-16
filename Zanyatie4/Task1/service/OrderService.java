@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
 
 import static Zanyatie4.Task1.constants.Constants.PATH_ORDER_DATA;
 
-public class OrderService  {
+public class OrderService implements Service {
 
     private String filePath = PATH_ORDER_DATA+"";
     private OrderRepository orders = new OrderRepository();
@@ -28,11 +28,11 @@ public class OrderService  {
         this.books = books;
     }
 
-    public void writeOrderToFile() {
+    public void writeToFile() {
         parseOrder.writeObjectToFile(orders.getOrders());
     }
 
-    public void readOrderFromFileFillData(String path) {
+    public void readFromFileFillData(String path) {
         TextFileWorker fileWorker = new TextFileWorker(path);
         tempData = fileWorker.readFromFile();
         tempOrder = new Order[tempData.length];

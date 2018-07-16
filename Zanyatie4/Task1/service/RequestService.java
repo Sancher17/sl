@@ -11,7 +11,7 @@ import java.util.Comparator;
 
 import static Zanyatie4.Task1.constants.Constants.PATH_REQUEST_DATA;
 
-public class RequestService {
+public class RequestService implements Service {
 
     private String filePath = PATH_REQUEST_DATA + "";
 
@@ -22,11 +22,11 @@ public class RequestService {
     private String[] tempData;
 
 
-    public void writeRequestToFile() {
+    public void writeToFile() {
         parseRequest.writeObjectToFile(requests.getRequests());
     }
 
-    public void readRequestFromFileFillData(String path) {
+    public void readFromFileFillData(String path) {
         TextFileWorker fileWorker = new TextFileWorker(path);
         tempData = fileWorker.readFromFile();
         tempRequest = new Request[tempData.length];

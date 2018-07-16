@@ -8,10 +8,11 @@ import Zanyatie4.Task1.repository.Repository;
 import com.danco.training.TextFileWorker;
 
 import java.util.*;
+import java.util.function.Function;
 
 import static Zanyatie4.Task1.constants.Constants.PATH_BOOK_DATA;
 
-public class BookService  {
+public class BookService implements Service{
 
     private String filePath = PATH_BOOK_DATA + "";
 
@@ -26,11 +27,11 @@ public class BookService  {
         this.requestService = requestService;
     }
 
-    public void writeBookToFile() {
+    public void writeToFile() {
         parseBook.writeObjectToFile(books.getBooks());
     }
 
-    public void readBookFromFileFillData(String path) {
+    public void readFromFileFillData(String path) {
         TextFileWorker fileWorker = new TextFileWorker(path);
         tempData = fileWorker.readFromFile();
         tempBook = new Book[tempData.length];
@@ -63,8 +64,19 @@ public class BookService  {
         }
     }
 
+    // TODO: 16.07.2018 sort общий пробую сделтаь, можно потом уменьшить количество методов сортировок
+
+    public void sort(Comparator comparator){
+        Arrays.sort(books.getBooks(),comparator);
+    }
+
     public void sortByAlphabet() {
-        Comparator<Book> booksComp = Comparator.comparing(Book::getNameBook);
+        Comparator<Book> booksComp = Comparator.comparing(new Function<Book, String>() {
+            @Override
+            public String apply(Book book) {
+                return book.getNameBook();
+            }
+        });
         Comparator<Book> booksComp_nullLast = Comparator.nullsLast(booksComp);
         Arrays.sort(books.getBooks(), booksComp_nullLast);
     }
