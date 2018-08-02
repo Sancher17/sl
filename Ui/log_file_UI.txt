@@ -1,0 +1,4 @@
+2018-08-02 20:27:02 INFO  MenuFactory:34 - Выбрано не существующее меню java.lang.ClassNotFoundException
+2018-08-02 20:28:00 INFO  MenuFactory:34 - Выбрано не существующее меню java.lang.ClassNotFoundException
+2018-08-02 20:36:23 INFO  MenuFactory:34 - Выбрано не существующее меню java.lang.ClassNotFoundException
+2018-08-02 22:45:20 INFO  MenuFactory:34 - Выбрано не существующее меню java.lang.ClassNotFoundException
