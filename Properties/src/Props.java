@@ -1,3 +1,5 @@
+import entities.Book;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -13,13 +15,12 @@ public class Props {
         try( FileInputStream fileInputStream = new FileInputStream(PATH_TO_PROPERTIES)) {
 
             prop.load(fileInputStream);
-            prop.setProperty("site", "tut.by");
+            prop.setProperty("site", "Alex");
 
-            String site = prop.getProperty("site");
-            String loginToSite = prop.getProperty("login");
-            String passwordToSite = prop.getProperty("password");
+            Book book = new Book();
 
-            printProperties(site, loginToSite, passwordToSite);
+
+            printProperties(prop);
 
         } catch (IOException e) {
             System.out.println("Ошибка в программе: файл " + PATH_TO_PROPERTIES + " не обнаружен");
@@ -27,11 +28,10 @@ public class Props {
         }
     }
 
-    private static void printProperties(String site, String loginToSite, String passwordToSite) {
-        System.out.println(
-                "site: " + site
-                        + "\nloginToSite: " + loginToSite
-                        + "\npasswordToSite: " + passwordToSite
-        );
+    private static void printProperties(Properties prop) {
+        for(String key : prop.stringPropertyNames()) {
+            String value = prop.getProperty(key);
+            System.out.println(key + " = " + value);
+        }
     }
 }
