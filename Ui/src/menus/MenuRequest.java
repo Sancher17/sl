@@ -2,6 +2,7 @@ package menus;
 
 
 import facade.EBookShop;
+import util.Printer;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -38,6 +39,8 @@ public class MenuRequest extends Menu implements Observer {
                     break;
                 case SORT_REQUEST_BY_QUANTITY: getEBookShop().sortRequestsByQuantity();
                     break;
+                default: printMenu();
+                    break;
             }
             nextOperation();
         }
@@ -45,23 +48,23 @@ public class MenuRequest extends Menu implements Observer {
     }
 
     private void addRequest(EBookShop eBookShop) {
-        getPrinter().print("введите название искомой книги: ");
+        Printer.print("введите название искомой книги: ");
         String nameBook = scannerString();
         eBookShop.addRequest(nameBook);
     }
 
     @Override
     public void printMenu() {
-        getPrinter().println("\n***Меню Request***");
-        getPrinter().println(MENU_MAIN + " - главное меню");
-        getPrinter().println(ADD_REQUEST + " - добавить запрос");
-        getPrinter().println(PRINT_REQUESTS + " - вывести на экран все запросы");
-        getPrinter().println(PRINT_COMPLETED_REQUESTS + " - вывести на экран все выполненые запросы");
-        getPrinter().println(PRINT_NOT_COMPLETED_REQUESTS + " - вывести на экран все не выполненые запросы");
-        getPrinter().println(SORT_REQUEST_BY_ALPHABET + " - сортировать запросы по алфавиту");
-        getPrinter().println(SORT_REQUEST_BY_QUANTITY + " - сортировать запросы по количеству");
-        getPrinter().println(EXIT + " - завершение работы");
-        getPrinter().print("выберите следующую операцию: ");
+        Printer.println("\n***Меню Request***");
+        Printer.println(MENU_MAIN + " - главное меню");
+        Printer.println(ADD_REQUEST + " - добавить запрос");
+        Printer.println(PRINT_REQUESTS + " - вывести на экран все запросы");
+        Printer.println(PRINT_COMPLETED_REQUESTS + " - вывести на экран все выполненые запросы");
+        Printer.println(PRINT_NOT_COMPLETED_REQUESTS + " - вывести на экран все не выполненые запросы");
+        Printer.println(SORT_REQUEST_BY_ALPHABET + " - сортировать запросы по алфавиту");
+        Printer.println(SORT_REQUEST_BY_QUANTITY + " - сортировать запросы по количеству");
+        Printer.println(EXIT + " - завершение работы");
+        Printer.print("выберите следующую операцию: ");
     }
 
     @Override

@@ -1,5 +1,7 @@
 package facade;
 
+import entities.Book;
+import entities.Order;
 import services.IServiceBook;
 import services.IServiceOrder;
 import services.IServiceRequest;
@@ -12,22 +14,22 @@ import util.fileWorker.FileWorker;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class EBookShop {
+public class EBookShopOld {
 
     private IServiceBook bookService = ServiceBook.getInstance();
     private IServiceOrder orderService;
     private IServiceRequest requestService;
     private FileWorker fileWorker;
-    private static EBookShop instance = null;
-    public static EBookShop getInstance() {
+    private static EBookShopOld instance = null;
+    public static EBookShopOld getInstance() {
         if (instance == null) {
-            instance = new EBookShop();
+            instance = new EBookShopOld();
         }
         return instance;
     }
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
-    private EBookShop() {
+    private EBookShopOld() {
         orderService = ServiceOrder.getInstance();
         requestService = ServiceRequest.getInstance();
         fileWorker = new FileWorker();
@@ -39,6 +41,13 @@ public class EBookShop {
     }
     public void deleteBookById(Long bookId) {
         bookService.deleteBookById(bookId);
+    }
+
+    public void printBooks() {
+        printBookHead();
+        for (Book book: bookService.getRepositoryBook().getBooks()) {
+            Printer.println(book.toString());
+        }
     }
     public void sortBooksByAlphabet() {
         bookService.sortByAlphabet();
@@ -52,16 +61,21 @@ public class EBookShop {
     public void sortBooksByAvailability() {
         bookService.sortByAvailability();
     }
-    public String getBooksPeriodMoreSixMonthByDate() {
-        return bookService.getBooksPeriodMoreSixMonthByDate();
+    public void printBooksPeriodMoreSixMonthByDate() {
+        printBookHead();
+        Printer.println(bookService.getBooksPeriodMoreSixMonthByDate());
     }
-    public String getBooksPeriodMoreSixMonthByPrice() {
-        return bookService.getBooksPeriodMoreSixMonthByPrice();
+    public void printBooksPeriodMoreSixMonthByPrice() {
+        printBookHead();
+        Printer.println(bookService.getBooksPeriodMoreSixMonthByPrice());
     }
-    public String getBookDescriptionById(Long id) {
-        return bookService.getBookDescriptionById(id);
+    public void printBookDescriptionById(Long id) {
+        Printer.print("Описание книги: ");
+        Printer.println(bookService.getBookDescriptionById(id));
     }
-
+    private void printBookHead() {
+        Printer.println("id/Название/дата публикации/цена/наличие/дата добавления в магазин/описание");
+    }
 
     // ORDER
     public void addOrder(Long bookId) {
@@ -70,14 +84,33 @@ public class EBookShop {
     public void addOrder(Date startOrder, Long bookId) {
         orderService.addOrder(startOrder, bookId);
     }
-    public void deleteOrderById(Long id) {
-        orderService.deleteOrderById(id);
-    }
     public void setOrderCompleteById(Long orderId) {
         orderService.setCompleteOrderById(orderId);
     }
     public void setOrderCompleteById(Long orderId, Date dateOfCompleted) {
         orderService.setCompleteOrderById(orderId, dateOfCompleted);
+
+    }
+    public void printOrders() {
+        printOrderHead();
+        for (Order order: orderService.getRepositoryOrder().getOrders()) {
+            Printer.println(order.toString());
+        }
+    }
+    public void printCompletedOrders() {
+        printOrderHead();
+        Printer.println(orderService.getCompletedOrders());
+    }
+    public void printCompletedOrdersSortedByDateOfPeriod(Date dateStart, Date dateEnd) {
+        printOrderHead();
+        Printer.println(orderService.getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd));
+    }
+    public void printCompletedOrdersSortedByPriceOfPeriod(Date dateStart, Date dateEnd) {
+        printOrderHead();
+        Printer.println(orderService.getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd));
+    }
+    public void deleteOrderById(Long id) {
+        orderService.deleteOrderById(id);
     }
     public void sortCompletedOrdersByDate() {
         orderService.sortCompletedOrdersByDate();
@@ -88,25 +121,20 @@ public class EBookShop {
     public void sortOrdersByState() {
         orderService.sortOrdersByState();
     }
-    public String getCompletedOrders() {
-        return orderService.getCompletedOrders();
-    }
-    public String getCompletedOrdersSortedByDateOfPeriod(Date dateStart, Date dateEnd) {
-        return orderService.getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd);
-    }
-    public String getCompletedOrdersSortedByPriceOfPeriod(Date dateStart, Date dateEnd) {
-        return orderService.getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd);
-    }
-    public String getOrdersFullAmountByPeriod(Date startDate, Date endDate) {
+    public void printOrdersFullAmountByPeriod(Date startDate, Date endDate) {
         String amount = orderService.getOrdersFullAmountByPeriod(startDate, endDate);
-        return "За период времени c " + sdf.format(startDate) + " по " + sdf.format(endDate) + "\nСУММА заработанных средств по выполненым заказам составила: " + amount;
+        Printer.println("За период времени c " + sdf.format(startDate) + " по " + sdf.format(endDate) + "\nСУММА заработанных средств по выполненым заказам составила: " + amount);
     }
-    public String getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
+    public void printQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
         String quantity = orderService.getQuantityCompletedOrdersByPeriod(startDate, endDate);
-        return  "За период времени c " + sdf.format(startDate) + " по " + sdf.format(endDate) + "\nКоличество выполненных заказов составило: " + quantity;
+        Printer.println("За период времени c " + sdf.format(startDate) + " по " + sdf.format(endDate) + "\nКоличество выполненных заказов составило: " + quantity);
     }
-    public String getOrderById(Long id) {
-       return orderService.getOrderById(id);
+    public void printOrderById(Long id) {
+        printOrderHead();
+        Printer.println(orderService.getOrderById(id));
+    }
+    private void printOrderHead() {
+        Printer.println("id/Дата заказа/книга/отметка выполнения заказа/стоимость заказа/дата выполнения заказа");
     }
 
     //REQUEST

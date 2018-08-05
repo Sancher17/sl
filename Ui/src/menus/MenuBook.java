@@ -1,11 +1,12 @@
 package menus;
 
+import entities.Book;
 import facade.EBookShop;
+import util.Printer;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Observable;
-import java.util.Observer;
+import java.text.ParseException;
+import java.util.*;
+
 import static constant.UiConstants.*;
 
 public class MenuBook extends Menu implements Observer {
@@ -16,7 +17,7 @@ public class MenuBook extends Menu implements Observer {
     }
 
     @Override
-    public void createMenu() {
+    public void createMenu()  {
         printMenu();
         setOPERATION(scannerInteger(getScanner()));
         while (getOPERATION() != EXIT) {
@@ -26,13 +27,13 @@ public class MenuBook extends Menu implements Observer {
                     runMenuController(MENU_MAIN);
                     break;
                 case ADD_BOOK:
-                    addBook(getEBookShop());
+                    addBook();
                     break;
                 case DELETE_BOOK:
-                    deleteBook(getEBookShop());
+                    deleteBook();
                     break;
                 case PRINT_BOOKS:
-                    getEBookShop().printBooks();
+                    printBooks();
                     break;
                 case SORT_BOOKS_BY_ALPHABET:
                     getEBookShop().sortBooksByAlphabet();
@@ -47,13 +48,15 @@ public class MenuBook extends Menu implements Observer {
                     getEBookShop().sortBooksByAvailability();
                     break;
                 case PRINT_BOOKS_PERIOD_MORE_SIX_MONTH_SORTED_BY_DATE:
-                    getEBookShop().printBooksPeriodMoreSixMonthByDate();
+                    printBooksPeriodMoreSixMonthByDate();
                     break;
                 case PRINT_BOOKS_PERIOD_MORE_SIX_MONTH_SORTED_BY_PRICE:
-                    getEBookShop().printBooksPeriodMoreSixMonthByPrice();
+                    printBooksPeriodMoreSixMonthByPrice();
                     break;
                 case PRINT_BOOK_DESCRIPTION:
-                    printBookDescriptionById(getEBookShop());
+                    printBookDescriptionById();
+                break;
+                default: printMenu();
                     break;
             }
             nextOperation();
@@ -63,57 +66,78 @@ public class MenuBook extends Menu implements Observer {
 
     @Override
     public void printMenu() {
-        getPrinter().println("\n***Меню Book***");
-        getPrinter().println(MENU_MAIN + " - главное меню");
-        getPrinter().println(ADD_BOOK + " - добавить книгу");
-        getPrinter().println(DELETE_BOOK + " - удалить книгу");
-        getPrinter().println(PRINT_BOOKS + " - вывести на экран все книги");
-        getPrinter().println(SORT_BOOKS_BY_ALPHABET + " - сортировать книги по алфавиту");
-        getPrinter().println(SORT_BOOKS_BY_PUBLICATION_DATE + " - сортировать книги по дате публикации");
-        getPrinter().println(SORT_BOOKS_BY_PRICE + " - сортировать книги по цене");
-        getPrinter().println(SORT_BOOKS_BY_AVAILABILITY + " - сортировать книги по наличию");
-        getPrinter().println(PRINT_BOOKS_PERIOD_MORE_SIX_MONTH_SORTED_BY_DATE + " - вывести на экран книги добавленные более 6 месяцев назад / сортировка по дате");
-        getPrinter().println(PRINT_BOOKS_PERIOD_MORE_SIX_MONTH_SORTED_BY_PRICE + " - вывести на экран книги добавленные более 6 месяцев назад / сортировка по цене");
-        getPrinter().println(PRINT_BOOK_DESCRIPTION + " - вывести описание книги");
-        getPrinter().println(EXIT + " - завершение работы");
-        getPrinter().print("выберите следующую операцию: ");
+        Printer.println("\n***Меню Book***");
+        Printer.println(MENU_MAIN + " - главное меню");
+        Printer.println(ADD_BOOK + " - добавить книгу");
+        Printer.println(DELETE_BOOK + " - удалить книгу");
+        Printer.println(PRINT_BOOKS + " - вывести на экран все книги");
+        Printer.println(SORT_BOOKS_BY_ALPHABET + " - сортировать книги по алфавиту");
+        Printer.println(SORT_BOOKS_BY_PUBLICATION_DATE + " - сортировать книги по дате публикации");
+        Printer.println(SORT_BOOKS_BY_PRICE + " - сортировать книги по цене");
+        Printer.println(SORT_BOOKS_BY_AVAILABILITY + " - сортировать книги по наличию");
+        Printer.println(PRINT_BOOKS_PERIOD_MORE_SIX_MONTH_SORTED_BY_DATE + " - вывести на экран книги добавленные более 6 месяцев назад / сортировка по дате");
+        Printer.println(PRINT_BOOKS_PERIOD_MORE_SIX_MONTH_SORTED_BY_PRICE + " - вывести на экран книги добавленные более 6 месяцев назад / сортировка по цене");
+        Printer.println(PRINT_BOOK_DESCRIPTION + " - вывести описание книги");
+        Printer.println(EXIT + " - завершение работы");
+        Printer.print("выберите следующую операцию: ");
     }
 
-    private void addBook(EBookShop eBookShop) {
-        getPrinter().print("введите название книги: ");
+    private void addBook() {
+        Printer.println("Добавить новую книгу");
+        Printer.print("введите название книги: ");
         String nameBook = scannerString();
 
-        getPrinter().print("введите дату публикации в формате (01.01.2018): ");
+        Printer.print("введите дату публикации в формате (01.01.2018): ");
         String datePublic = scannerString();
-        Calendar datePublication = scannerDate(datePublic);
-        if (datePublication.equals(new GregorianCalendar(0,0,0))){
-            addBook(eBookShop);
+        Date datePublication = scannerDate(datePublic);
+        if (datePublication == null){
+            addBook();
             return;
         }
 
-        getPrinter().print("введите цену в формате (55.05 или 55): ");
+        Printer.print("введите цену в формате (55.05 или 55): ");
         double price = scannerDouble(getScanner());
         if (price == -1.0){
-            addBook(eBookShop);
+            addBook();
             return;
         }
 
-        getPrinter().print("введите описание книги: ");
+        Printer.print("введите описание книги: ");
         String description = scannerString();
 
-        eBookShop.addBook(nameBook, datePublication, TODAY, price, description);
+        getEBookShop().addBook(nameBook, datePublication, TODAY, price, description, true);
     }
-
-    private void deleteBook(EBookShop eBookShop) {
-        getPrinter().print("введите позицию в списке книг которую хотите удалить: ");
-        int rowBookInArray = scannerInteger(getScanner());
-        eBookShop.deleteBookById(rowBookInArray);
+    private void deleteBook() {
+        Printer.println("Удалить книгу");
+        Printer.print("введите ID книги которую хотите удалить: ");
+        Long id = scannerLong(getScanner());
+        getEBookShop().deleteBookById(id);
     }
-
-    private void printBookDescriptionById(EBookShop eBookShop){
-        getPrinter().print("введите позицию книги описание кооторой хотите посмотреть: ");
-        int rowBookInArray = scannerInteger(getScanner());
-        eBookShop.printBookDescriptionById(rowBookInArray);
+    private void printBookDescriptionById(){
+        Printer.println("Описание книги по ID");
+        Printer.print("введите ID книги описание которой хотите посмотреть: ");
+        Long id = scannerLong(getScanner());
+        Printer.println(getEBookShop().getBookDescriptionById(id));
+    }
+    private void printBooks(){
+        Printer.println("Все книги");
+        printBookHead();
+        for (Book book: getEBookShop().getBookService().getAll()){
+            Printer.println(book.toString());
+        }
+    }
+    private void printBooksPeriodMoreSixMonthByDate() {
+        Printer.println("Книги которые добавлены более 6 месяцев назад / сортировка по дате");
+        printBookHead();
+        Printer.println(getEBookShop().getBooksPeriodMoreSixMonthByDate());
+    }
+    private void printBooksPeriodMoreSixMonthByPrice() {
+        Printer.println("Книги которые добавлены более 6 месяцев назад / сортировка по цене");
+        printBookHead();
+        Printer.println(getEBookShop().getBooksPeriodMoreSixMonthByPrice());
+    }
+    private void printBookHead() {
+        Printer.println("id/Название/дата публикации/цена/наличие/дата добавления в магазин/описание");
     }
 
     @Override

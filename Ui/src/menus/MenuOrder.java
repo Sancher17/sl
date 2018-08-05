@@ -1,19 +1,16 @@
 package menus;
 
 
+import entities.Order;
 import facade.EBookShop;
+import util.Printer;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 import static constant.UiConstants.*;
 
 public class MenuOrder extends Menu implements Observer {
-
-    private static final GregorianCalendar TODAY = new GregorianCalendar();
-
+    
     public MenuOrder() {
         super("MenuOrder");
         getEBookShop().getOrderService().addObserver(this);
@@ -28,23 +25,23 @@ public class MenuOrder extends Menu implements Observer {
                 case MENU_MAIN: getEBookShop().getOrderService().deleteObserver(this);
                     runMenuController(MENU_MAIN);
                     break;
-                case ADD_ORDER: addOrder(getEBookShop());
+                case ADD_ORDER: addOrder();
                     break;
-                case DELETE_ORDER: deleteOrder(getEBookShop());
+                case DELETE_ORDER: deleteOrder();
                     break;
-                case PRINT_ORDERS: getEBookShop().printOrders();
+                case PRINT_ORDERS: printOrders();
                     break;
-                case PRINT_ORDERS_COMPLETED: getEBookShop().printCompletedOrders();
+                case PRINT_ORDERS_COMPLETED: printCompletedOrders();
                     break;
-                case PRINT_ORDERS_COMPLETED_SORTED_BY_DATE_OF_PERIOD: printCompletedOrdersSortedByDateOfPeriod(getEBookShop());
+                case PRINT_ORDERS_COMPLETED_SORTED_BY_DATE_OF_PERIOD: printCompletedOrdersSortedByDateOfPeriod();
                     break;
-                case PRINT_ORDERS_COMPLETED_SORTED_BY_PRICE_OF_PERIOD: printCompletedOrdersSortedByPriceOfPeriod(getEBookShop());
+                case PRINT_ORDERS_COMPLETED_SORTED_BY_PRICE_OF_PERIOD: printCompletedOrdersSortedByPriceOfPeriod();
                     break;
-                case PRINT_FULL_AMOUNT_OF_ORDERS_BY_PERIOD: printOrdersFullAmountByPeriod(getEBookShop());
+                case PRINT_FULL_AMOUNT_OF_ORDERS_BY_PERIOD: printOrdersFullAmountByPeriod();
                     break;
-                case PRINT_QUANTITY_COMPLETED_ORDERS_BY_PERIOD: printQuantityCompletedOrdersByPeriod(getEBookShop());
+                case PRINT_QUANTITY_COMPLETED_ORDERS_BY_PERIOD: printQuantityCompletedOrdersByPeriod();
                     break;
-                case PRINT_ORDER_BY_ID: printOrderById(getEBookShop());
+                case PRINT_ORDER_BY_ID: printOrderById();
                     break;
                 case SORT_COMPLETED_ORDERS_BY_DATE: getEBookShop().sortCompletedOrdersByDate();
                     break;
@@ -52,7 +49,9 @@ public class MenuOrder extends Menu implements Observer {
                     break;
                 case SORT_ORDERS_BY_PRICE: getEBookShop().sortOrdersByPrice();
                     break;
-                case SET_ORDER_COMPLETE_BY_ID: setOrderCompleteById(getEBookShop());
+                case SET_ORDER_COMPLETE_BY_ID: setOrderCompleteById();
+                    break;
+                default: printMenu();
                     break;
             }
             nextOperation();
@@ -62,115 +61,131 @@ public class MenuOrder extends Menu implements Observer {
 
     @Override
     public void printMenu() {
-        getPrinter().println("\n***Меню Order***");
-        getPrinter().println(MENU_MAIN + " - главное меню");
-        getPrinter().println(ADD_ORDER + " - добавить заказ");
-        getPrinter().println(DELETE_ORDER + " - удалить заказ");
-        getPrinter().println(PRINT_ORDERS + " - вывести на экран все заказы");
-        getPrinter().println(PRINT_ORDERS_COMPLETED + " - вывести на экран все выполненые заказы");
-        getPrinter().println(PRINT_ORDERS_COMPLETED_SORTED_BY_DATE_OF_PERIOD + " - вывести на экран все выполненые заказы / сортировка по дате");
-        getPrinter().println(PRINT_ORDERS_COMPLETED_SORTED_BY_PRICE_OF_PERIOD + " - вывести на экран все выполненые заказы / сортировка по цене");
-        getPrinter().println(PRINT_FULL_AMOUNT_OF_ORDERS_BY_PERIOD + " - вывести на экран сумму всех заказов за период");
-        getPrinter().println(PRINT_QUANTITY_COMPLETED_ORDERS_BY_PERIOD + " - вывести на экран количество всех выполненых заказов");
-        getPrinter().println(PRINT_ORDER_BY_ID  + " - вывести на экран заказ");
-        getPrinter().println(SORT_COMPLETED_ORDERS_BY_DATE + " - сортировать выполненые заказы по дате");
-        getPrinter().println(SORT_ORDERS_BY_STATE + " - сортировать заказы по текущему состоянию");
-        getPrinter().println(SORT_ORDERS_BY_PRICE + " - сортировать заказы по цене");
-        getPrinter().println(SET_ORDER_COMPLETE_BY_ID + " - отметить заказы выполненым");
-        getPrinter().println(EXIT + " - завершение работы");
-        getPrinter().print("выберите следующую операцию: ");
+        Printer.println("\n***Меню Order***");
+        Printer.println(MENU_MAIN + " - главное меню");
+        Printer.println(ADD_ORDER + " - добавить заказ");
+        Printer.println(DELETE_ORDER + " - удалить заказ");
+        Printer.println(PRINT_ORDERS + " - вывести на экран все заказы");
+        Printer.println(PRINT_ORDERS_COMPLETED + " - вывести на экран все выполненые заказы");
+        Printer.println(PRINT_ORDERS_COMPLETED_SORTED_BY_DATE_OF_PERIOD + " - вывести на экран все выполненые заказы / сортировка по дате");
+        Printer.println(PRINT_ORDERS_COMPLETED_SORTED_BY_PRICE_OF_PERIOD + " - вывести на экран все выполненые заказы / сортировка по цене");
+        Printer.println(PRINT_FULL_AMOUNT_OF_ORDERS_BY_PERIOD + " - вывести на экран сумму всех заказов за период");
+        Printer.println(PRINT_QUANTITY_COMPLETED_ORDERS_BY_PERIOD + " - вывести на экран количество всех выполненых заказов");
+        Printer.println(PRINT_ORDER_BY_ID  + " - вывести на экран заказ");
+        Printer.println(SORT_COMPLETED_ORDERS_BY_DATE + " - сортировать выполненые заказы по дате");
+        Printer.println(SORT_ORDERS_BY_STATE + " - сортировать заказы по текущему состоянию");
+        Printer.println(SORT_ORDERS_BY_PRICE + " - сортировать заказы по цене");
+        Printer.println(SET_ORDER_COMPLETE_BY_ID + " - отметить заказы выполненым");
+        Printer.println(EXIT + " - завершение работы");
+        Printer.print("выберите следующую операцию: ");
     }
 
-    private void addOrder(EBookShop eBookShop) {
-        getPrinter().print("введите номер книги из списка: ");
-        int idBook = scannerInteger(getScanner());
-        eBookShop.addOrder(TODAY, idBook);
+    private void addOrder() {
+        Printer.println("Добавить новый заказ");
+        Printer.print("введите ID книги для добавления в заказ: ");
+        Long idBook = scannerLong(getScanner());
+        getEBookShop().addOrder(TODAY, idBook);
     }
-
-    private void deleteOrder(EBookShop eBookShop) {
-        getPrinter().print("введите позицию в списке заказов которую хотите удалить: ");
-        int rowBookInArray = scannerInteger(getScanner());
-        eBookShop.deleteOrderById(rowBookInArray);
+    private void deleteOrder() {
+        Printer.println("Удалить заказ");
+        Printer.print("введите ID заказа который хотите удалить: ");
+        Long id = scannerLong(getScanner());
+        getEBookShop().deleteOrderById(id);
     }
-
-    private void printCompletedOrdersSortedByDateOfPeriod(EBookShop eBookShop){
-        getPrinter().print("введите начальную дату в формате (01.01.2018): ");
-        Calendar dateStart = scannerDate(scannerString());
-        if (dateStart.equals(new GregorianCalendar(0,0,0))){
-            printCompletedOrdersSortedByDateOfPeriod(eBookShop);
+    private void printOrders(){
+        Printer.println("Все заказы");
+        printOrderHead();
+        for (Order order: getEBookShop().getOrderService().getAll()){
+            Printer.println(order.toString());
+        }
+    }
+    private void printOrderHead(){
+        Printer.println("id/Дата заказа/книга/отметка выполнения заказа/стоимость заказа/дата выполнения заказа");
+    }
+    private void printCompletedOrders() {
+        Printer.println("Выполненые заказы:");
+        printOrderHead();
+        Printer.println(getEBookShop().getCompletedOrders());
+    }
+    private void printCompletedOrdersSortedByDateOfPeriod(){
+        Printer.println("Выполненые заказы за период / сортировка по дате");
+        Printer.print("введите начальную дату в формате (01.01.2018): ");
+        Date dateStart = scannerDate(scannerString());
+        if (dateStart == null){
+            printCompletedOrdersSortedByDateOfPeriod();
             return;
         }
 
-        getPrinter().print("введите конечную дату в формате (01.01.2018): ");
-        Calendar dateEnd = scannerDate(scannerString());
-        if (dateEnd.equals(new GregorianCalendar(0,0,0))){
-            printCompletedOrdersSortedByDateOfPeriod(eBookShop);
+        Printer.print("введите конечную дату в формате (01.01.2018): ");
+        Date dateEnd = scannerDate(scannerString());
+        if (dateEnd == null){
+            printCompletedOrdersSortedByDateOfPeriod();
             return;
         }
-        eBookShop.printCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd);
+        Printer.print(getEBookShop().getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd));
     }
-
-    private void printCompletedOrdersSortedByPriceOfPeriod(EBookShop eBookShop){
-        getPrinter().print("введите начальную дату в формате (01.01.2018): ");
-        Calendar dateStart = scannerDate(scannerString());
-        if (dateStart.equals(new GregorianCalendar(0,0,0))){
-            printCompletedOrdersSortedByPriceOfPeriod(eBookShop);
+    private void printCompletedOrdersSortedByPriceOfPeriod(){
+        Printer.println("Выполненые заказы за период / сортировка по цене");
+        Printer.print("введите начальную дату в формате (01.01.2018): ");
+        Date dateStart = scannerDate(scannerString());
+        if (dateStart == null){
+            printCompletedOrdersSortedByPriceOfPeriod();
             return;
         }
 
-        getPrinter().print("введите конечную дату в формате (01.01.2018): ");
-        Calendar dateEnd = scannerDate(scannerString());
-        if (dateEnd.equals(new GregorianCalendar(0,0,0))){
-            printCompletedOrdersSortedByPriceOfPeriod(eBookShop);
+        Printer.print("введите конечную дату в формате (01.01.2018): ");
+        Date dateEnd = scannerDate(scannerString());
+        if (dateEnd == null){
+            printCompletedOrdersSortedByPriceOfPeriod();
             return;
         }
-        eBookShop.printCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd);
+        Printer.print(getEBookShop().getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd));
     }
-
-    private void printOrdersFullAmountByPeriod(EBookShop eBookShop){
-        getPrinter().print("введите начальную дату в формате (01.01.2018): ");
-        Calendar dateStart = scannerDate(scannerString());
-        if (dateStart.equals(new GregorianCalendar(0,0,0))){
-            printOrdersFullAmountByPeriod(eBookShop);
+    private void printOrdersFullAmountByPeriod(){
+        Printer.println("Сумма заказов зв период");
+        Printer.print("введите начальную дату в формате (01.01.2018): ");
+        Date dateStart = scannerDate(scannerString());
+        if (dateStart == null){
+            printOrdersFullAmountByPeriod();
             return;
         }
 
-        getPrinter().print("введите конечную дату в формате (01.01.2018): ");
-        Calendar dateEnd = scannerDate(scannerString());
-        if (dateEnd.equals(new GregorianCalendar(0,0,0))){
-            printOrdersFullAmountByPeriod(eBookShop);
+        Printer.print("введите конечную дату в формате (01.01.2018): ");
+        Date dateEnd = scannerDate(scannerString());
+        if (dateEnd == null){
+            printOrdersFullAmountByPeriod();
             return;
         }
-        eBookShop.printOrdersFullAmountByPeriod(dateStart, dateEnd);
+        Printer.print(getEBookShop().getOrdersFullAmountByPeriod(dateStart, dateEnd));
     }
-
-    private void printQuantityCompletedOrdersByPeriod(EBookShop eBookShop){
-        getPrinter().print("введите начальную дату в формате (01.01.2018): ");
-        Calendar dateStart = scannerDate(scannerString());
-        if (dateStart.equals(new GregorianCalendar(0,0,0))){
-            printQuantityCompletedOrdersByPeriod(eBookShop);
+    private void printQuantityCompletedOrdersByPeriod(){
+        Printer.println("Количество выполненых заказов за период");
+        Printer.print("введите начальную дату в формате (01.01.2018): ");
+        Date dateStart = scannerDate(scannerString());
+        if (dateStart == null){
+            printQuantityCompletedOrdersByPeriod();
             return;
         }
 
-        getPrinter().print("введите конечную дату в формате (01.01.2018): ");
-        Calendar dateEnd = scannerDate(scannerString());
-        if (dateEnd.equals(new GregorianCalendar(0,0,0))){
-            printQuantityCompletedOrdersByPeriod(eBookShop);
+        Printer.print("введите конечную дату в формате (01.01.2018): ");
+        Date dateEnd = scannerDate(scannerString());
+        if (dateEnd == null){
+            printQuantityCompletedOrdersByPeriod();
             return;
         }
-        eBookShop.printQuantityCompletedOrdersByPeriod(dateStart, dateEnd);
+        Printer.print(getEBookShop().getQuantityCompletedOrdersByPeriod(dateStart, dateEnd));
     }
-
-    private void printOrderById(EBookShop eBookShop){
-        getPrinter().print("введите позицию в списке заказов которую хотите посмотреть: ");
-        int rowBookInArray = scannerInteger(getScanner());
-        eBookShop.printOrderById(rowBookInArray);
+    private void printOrderById(){
+        Printer.println("Заказ по ID");
+        Printer.print("введите позицию в списке заказов которую хотите посмотреть: ");
+        Long id = scannerLong(getScanner());
+        Printer.print(getEBookShop().getOrderById(id));
     }
-
-    private void setOrderCompleteById(EBookShop eBookShop){
-        getPrinter().print("введите позицию в списке заказов которую хотите отметить как выполненная: ");
-        int rowBookInArray = scannerInteger(getScanner());
-        eBookShop.setOrderCompleteById(rowBookInArray);
+    private void setOrderCompleteById( ){
+        Printer.println("Отметить заказ как выполненный");
+        Printer.print("введите ID заказа который хотите отметить как выполненный: ");
+        Long id = scannerLong(getScanner());
+        getEBookShop().setOrderCompleteById(id);
     }
 
     @Override

@@ -1,6 +1,10 @@
+package testProgram;
+
 import data.ILoadData;
 import data.LoadDataFromFile;
 import menus.MenuController;
+
+import java.text.ParseException;
 
 import static constant.UiConstants.*;
 
@@ -16,7 +20,11 @@ public class Program {
 //        PATH_REQUEST_DATA = args[2];
 
         data = new LoadDataFromFile();
-        data.load();
+        try {
+            data.load();
+        } catch (ParseException e) {
+        e.printStackTrace(); // TODO: 04.08.2018 убрать от сюда
+    }
 
         controller = new MenuController();
         controller.run(MENU_MAIN);

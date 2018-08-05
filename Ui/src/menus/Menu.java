@@ -4,9 +4,11 @@ import org.apache.log4j.Logger;
 import facade.EBookShop;
 import util.Printer;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
-
 
 public abstract class Menu {
 
@@ -16,13 +18,13 @@ public abstract class Menu {
     private Scanner scanner = new Scanner(System.in);
     private int OPERATION;
     private MenuController controller = new MenuController();
-    private Printer printer = new Printer();
+
 
     public Menu(String title) {
         this.title = title;
     }
 
-    public abstract void createMenu();
+    public abstract void createMenu() throws ParseException;
 
     public abstract void printMenu();
 
@@ -31,11 +33,11 @@ public abstract class Menu {
     }
 
     public void nextOperation() {
-        printer.print("\nвыберите следующую операцию: ");
+        Printer.print("\nвыберите следующую операцию: ");
         try {
             setOPERATION(Integer.parseInt(getScanner().next()));
         } catch (NumberFormatException e) {
-            printer.println("не корректный ввод !!!");
+            Printer.println("не корректный ввод !!!");
             log.info("Не корректные введены данные " + e);
             nextOperation();
         }
@@ -52,7 +54,7 @@ public abstract class Menu {
             number = Double.parseDouble(in.next());
             return number;
         } catch (NumberFormatException e) {
-            getPrinter().println("не корректные даные");
+            Printer.println("не корректные даные");
             log.info("Не корректные введены данные " + e);
         }
         return number;
@@ -64,14 +66,27 @@ public abstract class Menu {
             number = Integer.parseInt(in.next());
             return number;
         } catch (NumberFormatException e) {
-            getPrinter().println("не корректные даные");
+            Printer.println("не корректные даные");
             log.info("Не корректные введены данные " + e);
         }
         return number;
     }
 
-    public GregorianCalendar scannerDate(String date) {
+    public Long scannerLong(Scanner in) {
+        Long number = -1L;
+        try {
+            number = Long.parseLong(in.next());
+            return number;
+        } catch (NumberFormatException e) {
+            Printer.println("не корректные даные");
+            log.info("Не корректные введены данные " + e);
+        }
+        return number;
+    }
 
+    public Date scannerDate(String date) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy");
         try {
             String[] dates = date.split("\\.");
             if (dates[2].length() != 4) {
@@ -89,12 +104,17 @@ public abstract class Menu {
             if (day < 1 || day > 31) {
                 throw new NumberFormatException();
             }
-            return new GregorianCalendar(year, month - 1, day);
+            try {
+                return sdf.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                log.error("scannerDate "+ e);
+            }
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-            getPrinter().println("не корректные даные");
+            Printer.println("не корректные даные");
             log.info("Не корректные введены данные " + e);
         }
-        return new GregorianCalendar(0, 0, 0);
+        return null;
     }
 
     //getters - setters
@@ -112,10 +132,6 @@ public abstract class Menu {
 
     public void setOPERATION(int OPERATION) {
         this.OPERATION = OPERATION;
-    }
-
-    public Printer getPrinter() {
-        return printer;
     }
 
     @Override

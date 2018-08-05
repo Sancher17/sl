@@ -1,10 +1,10 @@
 package constant;
 
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 public class UiConstants {
 
-    public static final GregorianCalendar TODAY = new GregorianCalendar();
+    public static final Date TODAY = new Date();
 
     //menus
     public static final int MENU_MAIN = 0;
@@ -49,9 +49,7 @@ public class UiConstants {
     public static final int SORT_REQUEST_BY_QUANTITY = 6;
 
     //files_paths
-    public static String PATH_BOOK_DATA = "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\data\\bookData.txt";
-    public static String PATH_ORDER_DATA = "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\data\\orderData.txt";
-    public static String PATH_REQUEST_DATA = "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\data\\requestData.txt";
-
-
+    public static String PATH_BOOK_DATA = "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\bookData.txt";
+    public static String PATH_ORDER_DATA = "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\orderData.txt";
+    public static String PATH_REQUEST_DATA = "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\requestData.txt";
 }

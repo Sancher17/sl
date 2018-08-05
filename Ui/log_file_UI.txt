@@ -2,3 +2,10 @@
 2018-08-02 20:28:00 INFO  MenuFactory:34 - Выбрано не существующее меню java.lang.ClassNotFoundException
 2018-08-02 20:36:23 INFO  MenuFactory:34 - Выбрано не существующее меню java.lang.ClassNotFoundException
 2018-08-02 22:45:20 INFO  MenuFactory:34 - Выбрано не существующее меню java.lang.ClassNotFoundException
+2018-08-04 21:49:36 ERROR FileWorker:51 - readBookFromFile java.lang.IllegalArgumentException: File not found
+2018-08-04 22:32:26 INFO  Menu:116 - Не корректные введены данные java.lang.ArrayIndexOutOfBoundsException: 2
+2018-08-04 22:32:38 INFO  Menu:58 - Не корректные введены данные java.lang.NumberFormatException: For input string: "dhfgdgf"
+2018-08-04 23:49:38 INFO  MenuFactory:34 - Выбрано не существующее меню java.lang.ClassNotFoundException
+2018-08-04 23:57:15 ERROR ServiceOrder:43 - setCompleteOrderById java.lang.NullPointerException
+2018-08-05 00:14:12 INFO  MenuFactory:34 - Выбрано не существующее меню java.lang.ClassNotFoundException
+2018-08-05 00:14:40 INFO  ServiceBook:141 - Нет книги с данным ID java.lang.NullPointerException

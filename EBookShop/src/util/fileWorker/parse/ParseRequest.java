@@ -1,5 +1,4 @@
-package data.parse;
-
+package util.fileWorker.parse;
 
 import entities.Request;
 

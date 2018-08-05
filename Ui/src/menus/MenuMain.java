@@ -1,6 +1,8 @@
 package menus;
 
 
+import util.Printer;
+
 import static constant.UiConstants.*;
 
 public class MenuMain extends Menu {
@@ -18,10 +20,10 @@ public class MenuMain extends Menu {
 
     @Override
     public void printMenu() {
-        getPrinter().println("\n***Основное меню****");
-        getPrinter().println(MENU_BOOK + " - Меню книги");
-        getPrinter().println(MENU_ORDER + " - Меню заказы");
-        getPrinter().println(MENU_REQUEST + " - Меню запросы");
-        getPrinter().println(EXIT + " - завершение работы");
+        Printer.println("\n***Основное меню****");
+        Printer.println(MENU_BOOK + " - Меню книги");
+        Printer.println(MENU_ORDER + " - Меню заказы");
+        Printer.println(MENU_REQUEST + " - Меню запросы");
+        Printer.println(EXIT + " - завершение работы");
     }
 }

@@ -2,25 +2,27 @@ package entities;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 
 public class Book  {
 
     private String nameBook;
-    private Calendar dateOfPublication;
-    private Calendar dateAddedBookToStore;
-    private double price;
-    private boolean isAvailable;
+    private Date dateOfPublication;
+    private Date dateAddedBookToStore;
+    private Double price;
+    private Boolean isAvailable;
     private String description;
     private Long id;
 
     public Book(){}
 
-    public Book(String nameBook, Calendar dateOfPublication, Calendar dateAddedBookToStore, double price, String description) {
+    public Book(String nameBook, Date dateOfPublication, Date dateAddedBookToStore, Double price, String description, Boolean isAvailable) {
         this.nameBook = nameBook;
         this.dateOfPublication = dateOfPublication;
         this.price = price;
-        this.isAvailable = true;
+        this.isAvailable = isAvailable;
         this.dateAddedBookToStore = dateAddedBookToStore;
         this.description = description;
     }
@@ -34,11 +36,11 @@ public class Book  {
         this.nameBook = nameBook;
     }
 
-    public Calendar getDateOfPublication() {
+    public Date getDateOfPublication() {
         return dateOfPublication;
     }
 
-    public void setDateOfPublication(GregorianCalendar dateOfPublication) {
+    public void setDateOfPublication(Date dateOfPublication) {
         this.dateOfPublication = dateOfPublication;
     }
 
@@ -58,11 +60,11 @@ public class Book  {
         isAvailable = available;
     }
 
-    public Calendar getDateAddedBookToStore() {
+    public Date getDateAddedBookToStore() {
         return dateAddedBookToStore;
     }
 
-    public void setDateAddedBookToStore(GregorianCalendar dateAddedBookToStore) {
+    public void setDateAddedBookToStore(Date dateAddedBookToStore) {
         this.dateAddedBookToStore = dateAddedBookToStore;
     }
 
@@ -82,12 +84,14 @@ public class Book  {
         this.id = id;
     }
 
-    private String convertDate(Calendar date) {
+    private String convertDate(Date date) {
         return new SimpleDateFormat("dd.MM.Y").format(date.getTime());
     }
 
+
     @Override
     public String toString() {
+
         return  id +"/"+
                 nameBook + "/" +
                 convertDate(dateOfPublication) + "/" +
@@ -95,5 +99,18 @@ public class Book  {
                 isAvailable + "/" +
                 convertDate(dateAddedBookToStore) +"/"+
                 description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(id, book.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

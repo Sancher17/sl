@@ -1,43 +1,31 @@
-package services;
+package services.impl;
 
-import com.danco.training.TextFileWorker;
-import data.parse.ParseRequest;
 import entities.Request;
-import repositories.RepositoryRequest;
+import repositories.IRepositoryRequest;
+import repositories.impl.RepositoryRequest;
+import services.IServiceRequest;
 
 import java.util.*;
 
-import static constants.Constants.*;
+public class ServiceRequest extends Observable implements IServiceRequest {
 
+    private IRepositoryRequest requests = RepositoryRequest.getInstance();
 
-public class ServiceRequest extends Observable implements Service {
+    private static ServiceRequest instance = null;
 
-    private String filePath = PATH_REQUEST_DATA + "";
+    public static ServiceRequest getInstance() {
+        if (instance == null) {
+            instance = new ServiceRequest();
+        }
+        return instance;
+    }
 
-    private RepositoryRequest requests = new RepositoryRequest();
-    private ParseRequest parseRequest = new ParseRequest(filePath);
-
-    private Request[] tempRequest;
-    private String[] tempData;
+    private ServiceRequest() {
+    }
 
     private List<Observer> subscribers = new ArrayList<>();
 
-    public void writeToFile() {
-        parseRequest.writeObjectToFile(requests.getRequests().toArray());
-    }
-
-    public void readFromFileFillData(String path) {
-        TextFileWorker fileWorker = new TextFileWorker(path);
-        tempData = fileWorker.readFromFile();
-        tempRequest = new Request[tempData.length];
-        for (int i = 0; i < tempData.length; i++) {
-            tempRequest[i] = parseRequest.createObject(tempData[i]);
-        }
-        requests.deleteAll(requests.getRequests());
-        List<Request> tempList = new ArrayList<>(Arrays.asList(tempRequest));
-        requests.setRequests(tempList);
-    }
-
+    @Override
     public void addBookRequest(String nameRequireBook) {
         Request newRequest = new Request(nameRequireBook);
         notifyObservers("Добавлен запрос на книгу: " + newRequest.getRequireNameBook());
@@ -57,7 +45,8 @@ public class ServiceRequest extends Observable implements Service {
         }
     }
 
-    public String printRequests() {
+    @Override
+    public String getRequests() {
         StringBuilder builder = new StringBuilder();
         if (requests.getRequests().size() > 0) {
             for (Request request : requests.getRequests()) {
@@ -68,7 +57,8 @@ public class ServiceRequest extends Observable implements Service {
         return "nothing to show";
     }
 
-    public String printCompletedRequests() {
+    @Override
+    public String getCompletedRequests() {
         StringBuilder builder = new StringBuilder();
         for (Request request : requests.getRequests()) {
             if (request.isRequireIsCompleted()) {
@@ -82,7 +72,8 @@ public class ServiceRequest extends Observable implements Service {
         }
     }
 
-    public String printNotCompletedRequests() {
+    @Override
+    public String getNotCompletedRequests() {
         StringBuilder builder = new StringBuilder();
         for (Request request : requests.getRequests()) {
             if (request != null) {
@@ -98,6 +89,7 @@ public class ServiceRequest extends Observable implements Service {
         }
     }
 
+    @Override
     public void sortRequestsByQuantity() {
         Comparator<Request> requestComp = Comparator.comparing(Request::getRequireQuantity);
         Comparator<Request> requestComp_nullLast = Comparator.nullsLast(requestComp);
@@ -105,6 +97,7 @@ public class ServiceRequest extends Observable implements Service {
         notifyObservers("Запросы отсортированы по количеству запросов");
     }
 
+    @Override
     public void sortRequestsByAlphabet() {
         Comparator<Request> requestComp = Comparator.comparing(Request::getRequireNameBook);
         Comparator<Request> requestComp_nullLast = Comparator.nullsLast(requestComp);
@@ -113,18 +106,18 @@ public class ServiceRequest extends Observable implements Service {
     }
 
 
-    public RepositoryRequest getRequests() {
-        return requests;
-    }
+//    public IRepositoryRequest getRequests() {
+//        return requests;
+//    }
 
 
     @Override
-    public synchronized void addObserver(Observer o) {
+    public void addObserver(Observer o) {
         subscribers.add(o);
     }
 
     @Override
-    public synchronized void deleteObserver(Observer o) {
+    public void deleteObserver(Observer o) {
         subscribers.remove(o);
     }
 

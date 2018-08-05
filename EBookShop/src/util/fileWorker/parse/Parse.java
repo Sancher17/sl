@@ -1,4 +1,4 @@
-package data.parse;
+package util.fileWorker.parse;
 
 import com.danco.training.TextFileWorker;
 import org.apache.log4j.Logger;
@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public abstract class Parse {
@@ -20,18 +23,15 @@ public abstract class Parse {
         this.filePath = filePath;
     }
 
-    abstract Object createObject(String str);
+    abstract Object createObject(String str) throws ParseException;
 
     public void writeObjectToFile(Object[] array) {
         write(array, filePath);
     }
 
-    GregorianCalendar parseDate(String date) {
-        String[] dates = date.split("\\.");
-        int year = Integer.parseInt(dates[2]);
-        int month = Integer.parseInt(dates[1]);
-        int day = Integer.parseInt(dates[0].replaceAll("\\s+", ""));
-        return new GregorianCalendar(year, month-1, day);
+    Date parseDate(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy");
+        return sdf.parse(date);
     }
 
     double parseDouble(String aDouble) {

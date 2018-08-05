@@ -1,7 +1,9 @@
 package data;
 
+import java.text.ParseException;
+
 public interface ILoadData {
 
-    void load();
+    void load() throws ParseException;
 
 }

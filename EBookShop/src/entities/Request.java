@@ -3,8 +3,8 @@ package entities;
 public class Request {
 
     private String requireNameBook;
-    private boolean requireIsCompleted;
-    private int requireQuantity;
+    private Boolean requireIsCompleted;
+    private Integer requireQuantity;
     private Long id;
 
     public Request() {

@@ -1,6 +1,8 @@
-package data.parse;
+package util.fileWorker.parse;
 
 import entities.Book;
+
+import java.text.ParseException;
 
 public class ParseBook extends Parse {
 
@@ -11,7 +13,7 @@ public class ParseBook extends Parse {
     }
 
     @Override
-    public Book createObject(String str) {
+    public Book createObject(String str) throws ParseException {
         String[] temp = str.split("/");
         String checkNull = " null";
         if (!temp[0].equals(checkNull)){
