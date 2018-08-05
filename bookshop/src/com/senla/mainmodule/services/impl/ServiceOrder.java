@@ -1,17 +1,16 @@
 package com.senla.mainmodule.services.impl;
 
 
-import entities.Order;
+import com.senla.mainmodule.entities.Order;
+import com.senla.mainmodule.repositories.IRepositoryBook;
+import com.senla.mainmodule.repositories.IRepositoryOrder;
+import com.senla.mainmodule.repositories.impl.RepositoryBook;
+import com.senla.mainmodule.repositories.impl.RepositoryOrder;
+import com.senla.mainmodule.services.IServiceOrder;
+import com.senla.mainmodule.util.comparators.order.ComparatorCompletedOrdersByDate;
+import com.senla.mainmodule.util.comparators.order.ComparatorOrdersByPrice;
+import com.senla.mainmodule.util.comparators.order.ComparatorOrdersByState;
 import org.apache.log4j.Logger;
-import repositories.IRepositoryBook;
-import repositories.IRepositoryOrder;
-import repositories.impl.RepositoryBook;
-import repositories.impl.RepositoryOrder;
-import services.IServiceOrder;
-import util.comparators.order.ComparatorCompletedOrdersByDate;
-import util.comparators.order.ComparatorOrdersByPrice;
-import util.comparators.order.ComparatorOrdersByState;
-
 import java.util.*;
 
 public class ServiceOrder extends Service implements IServiceOrder {

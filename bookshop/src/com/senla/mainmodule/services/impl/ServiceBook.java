@@ -1,17 +1,18 @@
 package com.senla.mainmodule.services.impl;
 
-import entities.Book;
-import entities.Request;
+
+import com.senla.mainmodule.entities.Book;
+import com.senla.mainmodule.entities.Request;
+import com.senla.mainmodule.repositories.IRepositoryBook;
+import com.senla.mainmodule.repositories.IRepositoryRequest;
+import com.senla.mainmodule.repositories.impl.RepositoryBook;
+import com.senla.mainmodule.repositories.impl.RepositoryRequest;
+import com.senla.mainmodule.services.IServiceBook;
+import com.senla.mainmodule.util.comparators.book.ComparatorBookByAlphabet;
+import com.senla.mainmodule.util.comparators.book.ComparatorBookByAvailability;
+import com.senla.mainmodule.util.comparators.book.ComparatorBookByDatePublication;
+import com.senla.mainmodule.util.comparators.book.ComparatorBookByPrice;
 import org.apache.log4j.Logger;
-import repositories.IRepositoryBook;
-import repositories.IRepositoryRequest;
-import repositories.impl.RepositoryBook;
-import repositories.impl.RepositoryRequest;
-import services.IServiceBook;
-import util.comparators.book.ComparatorBookByAlphabet;
-import util.comparators.book.ComparatorBookByAvailability;
-import util.comparators.book.ComparatorBookByDatePublication;
-import util.comparators.book.ComparatorBookByPrice;
 
 import java.util.*;
 

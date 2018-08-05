@@ -1,6 +1,6 @@
 package com.senla.mainmodule.repositories;
 
-import entities.Order;
+import com.senla.mainmodule.entities.Order;
 
 import java.util.List;
 

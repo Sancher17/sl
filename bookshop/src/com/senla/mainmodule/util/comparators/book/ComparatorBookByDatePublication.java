@@ -1,9 +1,8 @@
 package com.senla.mainmodule.util.comparators.book;
 
-import entities.Book;
+import com.senla.mainmodule.entities.Book;
 
 import java.util.Comparator;
-import java.util.Date;
 
 public class ComparatorBookByDatePublication implements Comparator<Book> {
 

@@ -1,27 +1,27 @@
 package com.senla.mainmodule.util.fileWorker;
 
 import com.danco.training.TextFileWorker;
-import entities.Book;
-import entities.Order;
-import entities.Request;
+
+import com.senla.mainmodule.entities.Book;
+import com.senla.mainmodule.entities.Order;
+import com.senla.mainmodule.entities.Request;
+import com.senla.mainmodule.repositories.IRepositoryBook;
+import com.senla.mainmodule.repositories.IRepositoryOrder;
+import com.senla.mainmodule.repositories.IRepositoryRequest;
+import com.senla.mainmodule.repositories.impl.RepositoryBook;
+import com.senla.mainmodule.repositories.impl.RepositoryOrder;
+import com.senla.mainmodule.repositories.impl.RepositoryRequest;
+import com.senla.mainmodule.util.Printer;
+import com.senla.mainmodule.util.fileWorker.parse.ParseBook;
+import com.senla.mainmodule.util.fileWorker.parse.ParseOrder;
+import com.senla.mainmodule.util.fileWorker.parse.ParseRequest;
 import org.apache.log4j.Logger;
-import repositories.IRepositoryBook;
-import repositories.IRepositoryOrder;
-import repositories.IRepositoryRequest;
-import repositories.impl.RepositoryBook;
-import repositories.impl.RepositoryOrder;
-import repositories.impl.RepositoryRequest;
-import util.Printer;
-import util.fileWorker.parse.ParseBook;
-import util.fileWorker.parse.ParseOrder;
-import util.fileWorker.parse.ParseRequest;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-import static constants.Constants.*;
+import static com.senla.mainmodule.constants.Constants.*;
+
 
 public class FileWorker {
 

@@ -1,11 +1,10 @@
 package com.senla.mainmodule.util.fileWorker.parse;
 
 
-import entities.Book;
-import entities.Order;
-import repositories.IRepositoryBook;
-import repositories.impl.RepositoryBook;
-import services.impl.ServiceOrder;
+import com.senla.mainmodule.entities.Book;
+import com.senla.mainmodule.entities.Order;
+import com.senla.mainmodule.repositories.IRepositoryBook;
+import com.senla.mainmodule.repositories.impl.RepositoryBook;
 
 import java.text.ParseException;
 

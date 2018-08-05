@@ -1,6 +1,6 @@
 package com.senla.mainmodule.util.fileWorker.parse;
 
-import entities.Book;
+import com.senla.mainmodule.entities.Book;
 
 import java.text.ParseException;
 

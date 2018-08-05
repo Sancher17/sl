@@ -1,11 +1,8 @@
 package com.senla.mainmodule.services;
 
-import entities.Order;
-import repositories.IRepositoryOrder;
-
-import java.util.Calendar;
+import com.senla.mainmodule.entities.Order;
+import com.senla.mainmodule.repositories.IRepositoryOrder;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public interface IServiceOrder {

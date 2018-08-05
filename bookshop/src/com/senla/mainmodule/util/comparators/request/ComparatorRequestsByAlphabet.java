@@ -1,6 +1,6 @@
 package com.senla.mainmodule.util.comparators.request;
 
-import entities.Request;
+import com.senla.mainmodule.entities.Request;
 
 import java.util.Comparator;
 

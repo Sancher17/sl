@@ -1,6 +1,6 @@
 package com.senla.mainmodule.repositories;
 
-import entities.Book;
+import com.senla.mainmodule.entities.Book;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.senla.mainmodule.repositories.impl;
 
-import entities.Book;
-import repositories.IRepositoryBook;
-import repositories.util.ID;
+import com.senla.mainmodule.entities.Book;
+import com.senla.mainmodule.repositories.IRepositoryBook;
+import com.senla.mainmodule.repositories.util.ID;
 
 import java.util.ArrayList;
 import java.util.List;

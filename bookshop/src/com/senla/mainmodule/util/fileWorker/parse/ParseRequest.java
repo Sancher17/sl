@@ -1,6 +1,6 @@
 package com.senla.mainmodule.util.fileWorker.parse;
 
-import entities.Request;
+import com.senla.mainmodule.entities.Request;
 
 public class ParseRequest extends Parse {
 

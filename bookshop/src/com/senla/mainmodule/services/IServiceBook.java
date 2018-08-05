@@ -1,9 +1,7 @@
 package com.senla.mainmodule.services;
 
-import entities.Book;
-import repositories.IRepositoryBook;
-
-import java.util.Calendar;
+import com.senla.mainmodule.entities.Book;
+import com.senla.mainmodule.repositories.IRepositoryBook;
 import java.util.Date;
 import java.util.List;
 

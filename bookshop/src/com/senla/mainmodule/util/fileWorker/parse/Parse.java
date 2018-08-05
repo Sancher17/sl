@@ -1,6 +1,9 @@
 package com.senla.mainmodule.util.fileWorker.parse;
 
 import com.danco.training.TextFileWorker;
+import com.senla.mainmodule.entities.Book;
+import com.senla.mainmodule.entities.Order;
+import com.senla.mainmodule.entities.Request;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 

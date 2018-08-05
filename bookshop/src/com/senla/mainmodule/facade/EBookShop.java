@@ -1,15 +1,15 @@
 package com.senla.mainmodule.facade;
 
-import entities.Book;
-import entities.Order;
-import entities.Request;
-import services.IServiceBook;
-import services.IServiceOrder;
-import services.IServiceRequest;
-import services.impl.ServiceBook;
-import services.impl.ServiceOrder;
-import services.impl.ServiceRequest;
-import util.fileWorker.FileWorker;
+import com.senla.mainmodule.entities.Book;
+import com.senla.mainmodule.entities.Order;
+import com.senla.mainmodule.entities.Request;
+import com.senla.mainmodule.services.IServiceBook;
+import com.senla.mainmodule.services.IServiceOrder;
+import com.senla.mainmodule.services.IServiceRequest;
+import com.senla.mainmodule.services.impl.ServiceBook;
+import com.senla.mainmodule.services.impl.ServiceOrder;
+import com.senla.mainmodule.services.impl.ServiceRequest;
+import com.senla.mainmodule.util.fileWorker.FileWorker;
 
 import java.util.Date;
 import java.util.List;
