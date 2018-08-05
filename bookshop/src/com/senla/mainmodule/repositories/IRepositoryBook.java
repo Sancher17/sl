@@ -8,9 +8,9 @@ public interface IRepositoryBook {
 
     void add(Book book);
 
-    Book getById(Long id);
-
     void deleteById(Long id);
+
+    Book getById(Long id);
 
     Book getBookByName(String name);
 

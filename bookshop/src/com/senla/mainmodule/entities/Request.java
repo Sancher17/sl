@@ -24,19 +24,19 @@ public class Request {
         this.requireNameBook = requireNameBook;
     }
 
-    public boolean isRequireIsCompleted() {
+    public Boolean getRequireIsCompleted() {
         return requireIsCompleted;
     }
 
-    public void setRequireIsCompleted(boolean requireIsCompleted) {
+    public void setRequireIsCompleted(Boolean requireIsCompleted) {
         this.requireIsCompleted = requireIsCompleted;
     }
 
-    public int getRequireQuantity() {
+    public Integer getRequireQuantity() {
         return requireQuantity;
     }
 
-    public void setRequireQuantity(int requireQuantity) {
+    public void setRequireQuantity(Integer requireQuantity) {
         this.requireQuantity = requireQuantity;
     }
 

@@ -25,8 +25,6 @@ public interface IServiceOrder {
 
     List<Order> getAll();
 
-    IRepositoryOrder getRepositoryOrder();
-
     List<Order> getCompletedOrders();
 
     List<Order> getCompletedOrdersSortedByDateOfPeriod(Date startDate, Date endDate);
@@ -38,4 +36,7 @@ public interface IServiceOrder {
     Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate);
 
     Order getOrderById(Long id);
+
+    IRepositoryOrder getRepositoryOrder();
+
 }

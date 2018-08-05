@@ -1,7 +1,7 @@
 package com.senla.mainmodule.testProgram;
 
 import com.senla.mainmodule.constants.Constants;
-import com.senla.mainmodule.facade.EBookShopOld;
+import com.senla.mainmodule.facade.forDebaging.EBookShopOld;
 import com.senla.mainmodule.util.fileWorker.FileWorker;
 
 import java.text.ParseException;

@@ -31,31 +31,6 @@ public class ServiceOrder extends Service implements IServiceOrder {
     }
 
     @Override
-    public void setCompleteOrderById(Long id) {
-        try {
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.HOUR, -1);
-            Date todayMinusHour = cal.getTime();
-            orders.getById(id).setCompletedOrder(true);
-            orders.getById(id).setDateOfCompletedOrder(todayMinusHour);
-            notifyObservers("Заказ отмечен выполненым \n" + orders.getById(id));
-        } catch (NullPointerException e) {
-            notifyObservers("Заказа с таким ID нет !!!");
-            log.error("setCompleteOrderById " + e);
-        }
-    }
-
-    @Override
-    public void setCompleteOrderById(Long id, Date dateOfCompleted) {
-        orders.getById(id).setCompletedOrder(true);
-        orders.getById(id).setDateOfCompletedOrder(dateOfCompleted);
-    }
-
-    public Order getOrder(int id) {
-        return orders.getOrders().get(id);
-    }
-
-    @Override
     public void addOrder(Long bookId) {
         try {
             Order newOrder = new Order(repositoryBook.getById(bookId));
@@ -80,10 +55,64 @@ public class ServiceOrder extends Service implements IServiceOrder {
     }
 
     @Override
+    public void deleteOrderById(Long id) {
+        try {
+            notifyObservers("Удален заказ: " + orders.getById(id));
+            orders.deleteById(id);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            notifyObservers("Заказа с таким индексом нет !!!");
+        }
+    }
+
+    @Override
+    public void setCompleteOrderById(Long id) {
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.HOUR, -1);
+            Date todayMinusHour = cal.getTime();
+            orders.getById(id).setCompletedOrder(true);
+            orders.getById(id).setDateOfCompletedOrder(todayMinusHour);
+            notifyObservers("Заказ отмечен выполненым \n" + orders.getById(id));
+        } catch (NullPointerException e) {
+            notifyObservers("Заказа с таким ID нет !!!");
+            log.error("setCompleteOrderById " + e);
+        }
+    }
+
+    @Override
+    public void setCompleteOrderById(Long id, Date dateOfCompleted) {
+        orders.getById(id).setCompletedOrder(true);
+        orders.getById(id).setDateOfCompletedOrder(dateOfCompleted);
+    }
+
+    @Override
+    public void sortCompletedOrdersByDate() {
+        orders.getOrders().sort(new ComparatorCompletedOrdersByDate());
+        notifyObservers("Заказы отсортированы по дате исполнения");
+    }
+
+    @Override
+    public void sortOrdersByPrice() {
+        orders.getOrders().sort(new ComparatorOrdersByPrice());
+        notifyObservers("Заказы отсортированы по цене");
+    }
+
+    @Override
+    public void sortOrdersByState() {
+        orders.getOrders().sort(new ComparatorOrdersByState());
+        notifyObservers("Заказы отсортированы по состоянию выполнения");
+    }
+
+    @Override
+    public List<Order> getAll() {
+        return orders.getOrders();
+    }
+
+    @Override
     public List<Order> getCompletedOrders() {
         List<Order> ordersList = new ArrayList<>();
         for (Order order : orders.getOrders()) {
-            if (order.isCompletedOrder()) {
+            if (order.getCompletedOrder()) {
                 ordersList.add(order);
             }
         }
@@ -97,7 +126,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
         for (Order order : orders.getOrders()) {
             if (order.getDateOfCompletedOrder() != null) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
-                    if (order.isCompletedOrder()) {
+                    if (order.getCompletedOrder()) {
                         ordersList.add(order);
                     }
                 }
@@ -121,44 +150,6 @@ public class ServiceOrder extends Service implements IServiceOrder {
     }
 
     @Override
-    public IRepositoryOrder getRepositoryOrder() {
-        return orders;
-    }
-
-    @Override
-    public void deleteOrderById(Long id) {
-        try {
-            notifyObservers("Удален заказ: " + orders.getById(id));
-            orders.deleteById(id);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            notifyObservers("Заказа с таким индексом нет !!!");
-        }
-    }
-
-    @Override
-    public List<Order> getAll() {
-        return orders.getOrders();
-    }
-
-    @Override
-    public void sortCompletedOrdersByDate() {
-        orders.getOrders().sort(new ComparatorCompletedOrdersByDate());
-        notifyObservers("Заказы отсортированы по дате исполнения");
-    }
-
-    @Override
-    public void sortOrdersByPrice() {
-        orders.getOrders().sort(new ComparatorOrdersByPrice());
-        notifyObservers("Заказы отсортированы по цене");
-    }
-
-    @Override
-    public void sortOrdersByState() {
-        orders.getOrders().sort(new ComparatorOrdersByState());
-        notifyObservers("Заказы отсортированы по состоянию выполнения");
-    }
-
-    @Override
     public Double getOrdersFullAmountByPeriod(Date startDate, Date endDate) {
         double amount = 0;
         for (Order order : orders.getOrders()) {
@@ -175,7 +166,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
     public Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
         int quantity = 0;
         for (Order order : orders.getOrders()) {
-            if (order.isCompletedOrder()) {
+            if (order.getCompletedOrder()) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
                     quantity++;
                 }
@@ -187,5 +178,10 @@ public class ServiceOrder extends Service implements IServiceOrder {
     @Override
     public Order getOrderById(Long id) {
         return orders.getById(id);
+    }
+
+    @Override
+    public IRepositoryOrder getRepositoryOrder() {
+        return orders;
     }
 }

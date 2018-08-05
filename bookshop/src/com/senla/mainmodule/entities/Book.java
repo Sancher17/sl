@@ -42,28 +42,28 @@ public class Book  {
         this.dateOfPublication = dateOfPublication;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-    public void setAvailable(boolean available) {
-        isAvailable = available;
-    }
-
     public Date getDateAddedBookToStore() {
         return dateAddedBookToStore;
     }
 
     public void setDateAddedBookToStore(Date dateAddedBookToStore) {
         this.dateAddedBookToStore = dateAddedBookToStore;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Boolean getAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(Boolean available) {
+        isAvailable = available;
     }
 
     public String getDescription() {

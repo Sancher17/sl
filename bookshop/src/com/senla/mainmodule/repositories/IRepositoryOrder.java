@@ -8,9 +8,9 @@ public interface IRepositoryOrder {
 
     void add(Order order);
 
-    Order getById(Long id);
-
     void deleteById(Long id);
+
+    Order getById(Long id);
 
     List<Order> getOrders();
 

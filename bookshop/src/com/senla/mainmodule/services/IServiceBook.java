@@ -21,8 +21,6 @@ public interface IServiceBook {
 
     List<Book> getAll();
 
-    IRepositoryBook getRepositoryBook();
-
     Book getBookById(Long id);
 
     List<Book> getBooksPeriodMoreSixMonthByDate();
@@ -30,4 +28,6 @@ public interface IServiceBook {
     List<Book> getBooksPeriodMoreSixMonthByPrice();
 
     String getBookDescriptionById(Long id);
+
+    IRepositoryBook getRepositoryBook();
 }

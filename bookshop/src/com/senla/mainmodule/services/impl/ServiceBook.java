@@ -1,6 +1,5 @@
 package com.senla.mainmodule.services.impl;
 
-
 import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.entities.Request;
 import com.senla.mainmodule.repositories.IRepositoryBook;
@@ -40,11 +39,21 @@ public class ServiceBook extends Service implements IServiceBook {
         books.add(newBook);
         notifyObservers("Добавлена книга: " + newBook);
 
-       //проверка по запросам, если Name книги совпадает то в запрос помечается как выполненный (requireIsCompleted = true)
-        for (Request request: repositoryRequest.getRequests()) {
-            if (newBook.getNameBook().equals(request.getRequireNameBook())){
+        //проверка по запросам, если Name книги совпадает то в запрос помечается как выполненный (requireIsCompleted = true)
+        for (Request request : repositoryRequest.getRequests()) {
+            if (newBook.getNameBook().equals(request.getRequireNameBook())) {
                 request.setRequireIsCompleted(true);
             }
+        }
+    }
+
+    @Override
+    public void deleteBookById(Long id) {
+        try {
+            notifyObservers("Удалена книга: " + books.getById(id));
+            books.deleteById(id);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            notifyObservers("Книги с таким индексом нет !!!");
         }
     }
 
@@ -73,18 +82,13 @@ public class ServiceBook extends Service implements IServiceBook {
     }
 
     @Override
-    public void deleteBookById(Long id) {
-        try {
-            notifyObservers("Удалена книга: " + books.getById(id));
-            books.deleteById(id);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            notifyObservers("Книги с таким индексом нет !!!");
-        }
+    public List<Book> getAll() {
+        return books.getBooks();
     }
 
     @Override
-    public List<Book> getAll() {
-        return books.getBooks();
+    public Book getBookById(Long id) {
+        return books.getById(id);
     }
 
     @Override
@@ -118,12 +122,7 @@ public class ServiceBook extends Service implements IServiceBook {
                 }
             }
         }
-       return bookList;
-    }
-
-    @Override
-    public Book getBookById(Long id) {
-        return books.getById(id);
+        return bookList;
     }
 
     @Override
@@ -131,7 +130,7 @@ public class ServiceBook extends Service implements IServiceBook {
         return books.getById(id).getDescription();
     }
 
-   @Override
+    @Override
     public IRepositoryBook getRepositoryBook() {
         return books;
     }

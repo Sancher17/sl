@@ -46,6 +46,18 @@ public class ServiceRequest extends Service implements IServiceRequest {
     }
 
     @Override
+    public void sortRequestsByQuantity() {
+        requests.getRequests().sort(new ComparatorRequestsByQuantity());
+        notifyObservers("Запросы отсортированы по количеству запросов");
+    }
+
+    @Override
+    public void sortRequestsByAlphabet() {
+        requests.getRequests().sort(new ComparatorRequestsByAlphabet());
+        notifyObservers("Запросы отсортированы по алфавиту");
+    }
+
+    @Override
     public List<Request> getAll() {
         return requests.getRequests();
     }
@@ -57,10 +69,10 @@ public class ServiceRequest extends Service implements IServiceRequest {
     }
 
     @Override
-    public  List<Request> getCompletedRequests() {
+    public List<Request> getCompletedRequests() {
         List<Request> requestList = new ArrayList<>();
         for (Request request : requests.getRequests()) {
-            if (request.isRequireIsCompleted()) {
+            if (request.getRequireIsCompleted()) {
                 requestList.add(request);
             }
         }
@@ -69,25 +81,13 @@ public class ServiceRequest extends Service implements IServiceRequest {
     }
 
     @Override
-    public  List<Request> getNotCompletedRequests() {
+    public List<Request> getNotCompletedRequests() {
         List<Request> requestList = new ArrayList<>();
         for (Request request : requests.getRequests()) {
-            if (!request.isRequireIsCompleted()) {
+            if (!request.getRequireIsCompleted()) {
                 requestList.add(request);
             }
         }
         return requestList;
-    }
-
-    @Override
-    public void sortRequestsByQuantity() {
-        requests.getRequests().sort(new ComparatorRequestsByQuantity());
-        notifyObservers("Запросы отсортированы по количеству запросов");
-    }
-
-    @Override
-    public void sortRequestsByAlphabet() {
-        requests.getRequests().sort(new ComparatorRequestsByAlphabet());
-        notifyObservers("Запросы отсортированы по алфавиту");
     }
 }

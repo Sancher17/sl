@@ -32,6 +32,11 @@ public class RepositoryOrder implements IRepositoryOrder {
     }
 
     @Override
+    public void deleteById(Long id) {
+        orders.removeIf(order -> order.getId().equals(id));
+    }
+
+    @Override
     public Order getById(Long id) {
         for(Order order: orders){
             if(order.getId().equals(id)){
@@ -39,11 +44,6 @@ public class RepositoryOrder implements IRepositoryOrder {
             }
         }
         return null;
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        orders.removeIf(order -> order.getId().equals(id));
     }
 
     @Override

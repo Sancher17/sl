@@ -26,7 +26,6 @@ public class Order {
         this.dateOfStartedOrder = new Date();
     }
 
-
     //getters setters
     public Date getDateOfStartedOrder() {
         return dateOfStartedOrder;
@@ -34,14 +33,6 @@ public class Order {
 
     public void setDateOfStartedOrder(Date dateOfStartedOrder) {
         this.dateOfStartedOrder = dateOfStartedOrder;
-    }
-
-    public boolean isCompletedOrder() {
-        return isCompletedOrder;
-    }
-
-    public void setCompletedOrder(boolean completedOrder) {
-        this.isCompletedOrder = completedOrder;
     }
 
     public Date getDateOfCompletedOrder() {
@@ -52,6 +43,14 @@ public class Order {
         this.dateOfCompletedOrder = dateOfCompletedOrder;
     }
 
+    public Boolean getCompletedOrder() {
+        return isCompletedOrder;
+    }
+
+    public void setCompletedOrder(Boolean completedOrder) {
+        isCompletedOrder = completedOrder;
+    }
+
     public Book getBook() {
         return book;
     }
@@ -59,7 +58,6 @@ public class Order {
     public void setBook(Book book) {
         this.book = book;
     }
-
 
     public Long getId() {
         return id;
