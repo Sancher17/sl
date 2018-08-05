@@ -76,7 +76,7 @@ public class ServiceBook extends Service implements IServiceBook {
         try {
             notifyObservers("Удалена книга: " + books.getById(id));
             books.deleteById(id);
-        } catch (ArrayIndexOutOfBoundsException e) { // TODO: 03.08.2018 заменить на коллекции
+        } catch (ArrayIndexOutOfBoundsException e) {
             notifyObservers("Книги с таким индексом нет !!!");
         }
     }
@@ -106,10 +106,9 @@ public class ServiceBook extends Service implements IServiceBook {
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByPrice() {
         sortByPrice();
-        Date periodSixMonth;
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, -6);
-        periodSixMonth = cal.getTime();
+        Date periodSixMonth = cal.getTime();
         List<Book> bookList = new ArrayList<>();
         for (Book book : books.getBooks()) {
             if (book != null) {

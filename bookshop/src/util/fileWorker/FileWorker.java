@@ -11,6 +11,7 @@ import repositories.IRepositoryRequest;
 import repositories.impl.RepositoryBook;
 import repositories.impl.RepositoryOrder;
 import repositories.impl.RepositoryRequest;
+import util.Printer;
 import util.fileWorker.parse.ParseBook;
 import util.fileWorker.parse.ParseOrder;
 import util.fileWorker.parse.ParseRequest;
@@ -45,6 +46,7 @@ public class FileWorker {
         try {
             fileWorker = new TextFileWorker(bookPathData);
         }catch (IllegalArgumentException e){
+            Printer.println("Файл не найден");
             log.error("readBookFromFile " + e);
         }
         tempData = fileWorker.readFromFile();
@@ -53,7 +55,8 @@ public class FileWorker {
             try {
                 tempBook[i] = parseBook.createObject(tempData[i]);
             } catch (ParseException e) {
-                log.error("readBookFromFile " + e); // TODO: 04.08.2018 если упадет, у пользователя выдать сообщение
+                Printer.println("Ошибка при чтении данных файла");
+                log.error("readBookFromFile " + e);
             }
         }
         repositoryBook.getBooks().clear();
@@ -77,6 +80,8 @@ public class FileWorker {
             fileWorker = new TextFileWorker(orderPathData);
         }catch (IllegalArgumentException e){
             log.error("readOrderFromFile " + e);
+            Printer.println("Файл не найден");
+
         }
         tempData = fileWorker.readFromFile();
         Order[] tempOrder = new Order[tempData.length];
@@ -84,7 +89,8 @@ public class FileWorker {
             try {
                 tempOrder[i] = parseOrder.createObject(tempData[i]);
             } catch (ParseException e) {
-                log.error("readBookFromFile " + e); // TODO: 04.08.2018 если упадет, у пользователя выдать сообщение
+                log.error("readBookFromFile " + e);
+                Printer.println("Ошибка при чтении данных файла");
             }
         }
         repositoryOrder.getOrders().clear();
@@ -108,6 +114,7 @@ public class FileWorker {
             fileWorker = new TextFileWorker(requestPathData);
         }catch (IllegalArgumentException e){
             log.error("readRequestFromFile " + e);
+            Printer.println("Файл не найден");
         }
         tempData = fileWorker.readFromFile();
         Request [] tempRequest = new Request[tempData.length];

@@ -14,7 +14,7 @@ public abstract class Menu implements Observer {
     private String title;
     private EBookShop eBookShop = EBookShop.getInstance();
     private Scanner scanner = new Scanner(System.in);
-    private int OPERATION;
+    private int operation;
     private MenuController controller = new MenuController();
 
     public Menu(String title) {
@@ -32,7 +32,7 @@ public abstract class Menu implements Observer {
     public void nextOperation() {
         Printer.print("\nвыберите следующую операцию: ");
         try {
-            setOPERATION(Integer.parseInt(getScanner().next()));
+            setOperation(Integer.parseInt(getScanner().next()));
         } catch (NumberFormatException e) {
             Printer.println("не корректный ввод !!!");
             log.info("Не корректные введены данные " + e);
@@ -123,12 +123,12 @@ public abstract class Menu implements Observer {
         return scanner;
     }
 
-    public int getOPERATION() {
-        return OPERATION;
+    public int getOperation() {
+        return operation;
     }
 
-    public void setOPERATION(int OPERATION) {
-        this.OPERATION = OPERATION;
+    public void setOperation(int operation) {
+        this.operation = operation;
     }
 
     @Override

@@ -15,7 +15,7 @@ public class MenuMain extends Menu {
     public void createMenu() {
         printMenu();
         nextOperation();
-        runMenuController(getOPERATION());
+        runMenuController(getOperation());
     }
 
     @Override

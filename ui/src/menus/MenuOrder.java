@@ -17,9 +17,9 @@ public class MenuOrder extends Menu {
     @Override
     public void createMenu()  {
         printMenu();
-        setOPERATION(scannerInteger(getScanner()));
-        while (getOPERATION() != EXIT) {
-            switch (getOPERATION()){
+        setOperation(scannerInteger(getScanner()));
+        while (getOperation() != EXIT) {
+            switch (getOperation()){
                 case MENU_MAIN: getEBookShop().getOrderService().deleteObserver(this);
                     runMenuController(MENU_MAIN);
                     break;
