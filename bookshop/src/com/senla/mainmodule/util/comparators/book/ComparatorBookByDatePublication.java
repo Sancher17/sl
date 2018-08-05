@@ -1,0 +1,14 @@
+package com.senla.mainmodule.util.comparators.book;
+
+import entities.Book;
+
+import java.util.Comparator;
+import java.util.Date;
+
+public class ComparatorBookByDatePublication implements Comparator<Book> {
+
+    @Override
+    public int compare(Book o1, Book o2) {
+        return o1.getDateOfPublication().compareTo(o2.getDateOfPublication());
+    }
+}
