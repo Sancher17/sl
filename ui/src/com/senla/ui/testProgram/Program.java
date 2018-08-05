@@ -6,7 +6,7 @@ import com.senla.ui.menus.MenuController;
 
 import java.text.ParseException;
 
-import static com.senla.ui.UiConstants.*;
+import static com.senla.ui.constant.UiConstants.*;
 
 public class Program {
 
@@ -23,7 +23,7 @@ public class Program {
         try {
             data.load();
         } catch (ParseException e) {
-        e.printStackTrace(); // TODO: 04.08.2018 убрать от сюда
+        e.printStackTrace();
     }
 
         controller = new MenuController();

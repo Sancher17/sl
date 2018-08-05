@@ -3,7 +3,7 @@ package com.senla.ui.menus;
 import org.apache.log4j.Logger;
 import com.senla.ui.util.Printer;
 
-import static com.senla.ui.UiConstants.*;
+import static com.senla.ui.constant.UiConstants.*;
 
 
 public class MenuFactory {

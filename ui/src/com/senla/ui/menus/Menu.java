@@ -1,7 +1,7 @@
 package com.senla.ui.menus;
 
+import com.senla.mainmodule.facade.EBookShop;
 import org.apache.log4j.Logger;
-import facade.EBookShop;
 import com.senla.ui.util.Printer;
 
 import java.text.ParseException;

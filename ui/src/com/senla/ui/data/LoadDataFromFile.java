@@ -1,9 +1,9 @@
 package com.senla.ui.data;
 
-import facade.EBookShop;
+import com.senla.mainmodule.facade.EBookShop;
 import org.apache.log4j.Logger;
 
-import static com.senla.ui.UiConstants.*;
+import static com.senla.ui.constant.UiConstants.*;
 
 public class LoadDataFromFile implements ILoadData {
 

@@ -1,9 +1,9 @@
 package com.senla.ui.menus;
 
-import entities.Book;
+import com.senla.mainmodule.entities.Book;
 import com.senla.ui.util.Printer;
 import java.util.Date;
-import static com.senla.ui.UiConstants.*;
+import static com.senla.ui.constant.UiConstants.*;
 
 public class MenuBook extends Menu {
 

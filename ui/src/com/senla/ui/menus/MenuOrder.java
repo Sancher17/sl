@@ -1,11 +1,11 @@
 package com.senla.ui.menus;
 
-import entities.Order;
+import com.senla.mainmodule.entities.Order;
 import com.senla.ui.util.Printer;
 
 import java.util.Date;
 
-import static com.senla.ui.UiConstants.*;
+import static com.senla.ui.constant.UiConstants.*;
 
 public class MenuOrder extends Menu {
     

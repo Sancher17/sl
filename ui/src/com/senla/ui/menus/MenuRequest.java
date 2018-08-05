@@ -1,11 +1,9 @@
 package com.senla.ui.menus;
 
-
-import entities.Request;
-import facade.EBookShop;
+import com.senla.mainmodule.entities.Request;
 import com.senla.ui.util.Printer;
 
-import static com.senla.ui.UiConstants.*;
+import static com.senla.ui.constant.UiConstants.*;
 
 public class MenuRequest extends Menu {
 
@@ -23,7 +21,7 @@ public class MenuRequest extends Menu {
                 case MENU_MAIN: getEBookShop().getRequestService().deleteObserver(this);
                     runMenuController(MENU_MAIN);
                     break;
-                case ADD_REQUEST: addRequest(getEBookShop());
+                case ADD_REQUEST: addRequest();
                     break;
                 case PRINT_REQUESTS: printRequests();
                     break;
@@ -57,10 +55,10 @@ public class MenuRequest extends Menu {
         Printer.print("выберите следующую операцию: ");
     }
 
-    private void addRequest(EBookShop eBookShop) {
+    private void addRequest() {
         Printer.print("введите название искомой книги: ");
         String nameBook = scannerString();
-        eBookShop.addRequest(nameBook);
+        getEBookShop().addRequest(nameBook);
     }
 
     private void printNotCompletedRequests() {
