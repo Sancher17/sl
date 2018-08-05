@@ -1,16 +1,22 @@
 package services;
 
+import entities.Request;
+
+import java.util.List;
+
 public interface IServiceRequest {
 
     void addBookRequest(String nameRequireBook);
-
-    String getCompletedRequests();
-
-    String getNotCompletedRequests();
 
     void sortRequestsByQuantity();
 
     void sortRequestsByAlphabet();
 
-    String getRequests();
+    List<Request> getAll();
+
+    List<Request> getCompletedRequests();
+
+    List<Request> getNotCompletedRequests();
+
+    List<Request> getRequests();
 }

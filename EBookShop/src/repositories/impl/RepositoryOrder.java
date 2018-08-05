@@ -2,7 +2,7 @@ package repositories.impl;
 
 import entities.Order;
 import repositories.IRepositoryOrder;
-import util.ID;
+import repositories.util.ID;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,7 @@ public class RepositoryOrder implements IRepositoryOrder {
         }
         return instance;
     }
+
     private RepositoryOrder() {
     }
 
@@ -54,6 +55,7 @@ public class RepositoryOrder implements IRepositoryOrder {
         this.orders = orders;
     }
 
+    @Override
     public void setLastId(Long lastId) {
         this.lastId = lastId;
     }

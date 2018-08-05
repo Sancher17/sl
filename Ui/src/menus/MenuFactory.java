@@ -9,7 +9,6 @@ import static constant.UiConstants.*;
 public class MenuFactory {
 
     private static final Logger log = Logger.getLogger(MenuFactory.class);
-    private static Printer printer = new Printer();
 
     public static Menu getMenu(int number) {
         Menu menu;
@@ -30,7 +29,7 @@ public class MenuFactory {
             return menu;
 
         } catch (ClassNotFoundException e) {
-            printer.println("\nвыберите существующее меню");
+            Printer.println("\nвыберите существующее меню");
             log.info("Выбрано не существующее меню " + e);
         }
         return new MenuMain();

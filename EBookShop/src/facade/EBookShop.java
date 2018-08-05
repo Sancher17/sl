@@ -1,16 +1,18 @@
 package facade;
 
+import entities.Book;
+import entities.Order;
+import entities.Request;
 import services.IServiceBook;
 import services.IServiceOrder;
 import services.IServiceRequest;
 import services.impl.ServiceBook;
 import services.impl.ServiceOrder;
 import services.impl.ServiceRequest;
-import util.Printer;
 import util.fileWorker.FileWorker;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class EBookShop {
 
@@ -25,12 +27,11 @@ public class EBookShop {
         }
         return instance;
     }
-    private static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
     private EBookShop() {
-        orderService = ServiceOrder.getInstance();
-        requestService = ServiceRequest.getInstance();
-        fileWorker = new FileWorker();
+        this.orderService = ServiceOrder.getInstance();
+        this.requestService = ServiceRequest.getInstance();
+        this.fileWorker = new FileWorker();
     }
 
     //BOOK
@@ -52,16 +53,15 @@ public class EBookShop {
     public void sortBooksByAvailability() {
         bookService.sortByAvailability();
     }
-    public String getBooksPeriodMoreSixMonthByDate() {
+    public List<Book> getBooksPeriodMoreSixMonthByDate() {
         return bookService.getBooksPeriodMoreSixMonthByDate();
     }
-    public String getBooksPeriodMoreSixMonthByPrice() {
+    public List<Book> getBooksPeriodMoreSixMonthByPrice() {
         return bookService.getBooksPeriodMoreSixMonthByPrice();
     }
     public String getBookDescriptionById(Long id) {
         return bookService.getBookDescriptionById(id);
     }
-
 
     // ORDER
     public void addOrder(Long bookId) {
@@ -88,24 +88,22 @@ public class EBookShop {
     public void sortOrdersByState() {
         orderService.sortOrdersByState();
     }
-    public String getCompletedOrders() {
+    public List<Order> getCompletedOrders() {
         return orderService.getCompletedOrders();
     }
-    public String getCompletedOrdersSortedByDateOfPeriod(Date dateStart, Date dateEnd) {
+    public List<Order> getCompletedOrdersSortedByDateOfPeriod(Date dateStart, Date dateEnd) {
         return orderService.getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd);
     }
-    public String getCompletedOrdersSortedByPriceOfPeriod(Date dateStart, Date dateEnd) {
+    public List<Order> getCompletedOrdersSortedByPriceOfPeriod(Date dateStart, Date dateEnd) {
         return orderService.getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd);
     }
-    public String getOrdersFullAmountByPeriod(Date startDate, Date endDate) {
-        String amount = orderService.getOrdersFullAmountByPeriod(startDate, endDate);
-        return "За период времени c " + sdf.format(startDate) + " по " + sdf.format(endDate) + "\nСУММА заработанных средств по выполненым заказам составила: " + amount;
+    public Double getOrdersFullAmountByPeriod(Date startDate, Date endDate) {
+        return orderService.getOrdersFullAmountByPeriod(startDate, endDate);
     }
-    public String getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
-        String quantity = orderService.getQuantityCompletedOrdersByPeriod(startDate, endDate);
-        return  "За период времени c " + sdf.format(startDate) + " по " + sdf.format(endDate) + "\nКоличество выполненных заказов составило: " + quantity;
+    public Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
+        return orderService.getQuantityCompletedOrdersByPeriod(startDate, endDate);
     }
-    public String getOrderById(Long id) {
+    public Order getOrderById(Long id) {
        return orderService.getOrderById(id);
     }
 
@@ -113,17 +111,11 @@ public class EBookShop {
     public void addRequest(String nameRequireBook) {
         requestService.addBookRequest(nameRequireBook);
     }
-    public void printCompletedRequests() {
-        printRequestHead();
-        Printer.println(requestService.getCompletedRequests());
+    public List<Request> getCompletedRequests() {
+       return requestService.getCompletedRequests();
     }
-    public void printNotCompletedRequests() {
-        printRequestHead();
-        Printer.println(requestService.getNotCompletedRequests());
-    }
-    public void printRequests() {
-        printRequestHead();
-        Printer.println(requestService.getRequests());
+    public List<Request> getNotCompletedRequests() {
+        return requestService.getNotCompletedRequests();
     }
     public void sortRequestsByQuantity() {
         requestService.sortRequestsByQuantity();
@@ -131,9 +123,7 @@ public class EBookShop {
     public void sortRequestsByAlphabet() {
         requestService.sortRequestsByAlphabet();
     }
-    private void printRequestHead() {
-        Printer.println("id/Название книги/удовлетворен запрос/количество запросов");
-    }
+
 
     //read - write
     //book
@@ -149,7 +139,6 @@ public class EBookShop {
     }
     public void readOrderFromFile(String orderPathData) {
         fileWorker.readOrderFromFile(orderPathData);
-
     }
     //request
     public void writeRequestToFile() {
@@ -163,11 +152,9 @@ public class EBookShop {
     public ServiceBook getBookService() {
         return (ServiceBook) bookService;
     }
-
     public ServiceOrder getOrderService() {
         return (ServiceOrder) orderService;
     }
-
     public ServiceRequest getRequestService() {
         return (ServiceRequest) requestService;
     }

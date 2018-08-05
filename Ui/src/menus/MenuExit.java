@@ -4,25 +4,22 @@ import util.Printer;
 
 public class MenuExit extends Menu {
 
-
     MenuExit() {
         super("EXIT");
-        finalizationProgram();
-        Printer.println("Программа завершена !!!\nВсе данные сохранены в файлы ");
     }
-
 
     private void finalizationProgram(){
         getEBookShop().writeBookToFile();
         getEBookShop().writeOrderToFile();
         getEBookShop().writeRequestToFile();
-
-        // TODO: 03.08.2018 закрыть поток Scanner
+        getScanner().close();
     }
 
     @Override
     public void createMenu() {
-
+        finalizationProgram();
+        Printer.println("\nВсе данные сохранены в файлы ");
+        Printer.println("Программа завершена !!!");
     }
 
     @Override

@@ -1,15 +1,13 @@
 package menus;
 
-
 import entities.Order;
-import facade.EBookShop;
 import util.Printer;
 
-import java.util.*;
+import java.util.Date;
 
 import static constant.UiConstants.*;
 
-public class MenuOrder extends Menu implements Observer {
+public class MenuOrder extends Menu {
     
     public MenuOrder() {
         super("MenuOrder");
@@ -105,7 +103,9 @@ public class MenuOrder extends Menu implements Observer {
     private void printCompletedOrders() {
         Printer.println("Выполненые заказы:");
         printOrderHead();
-        Printer.println(getEBookShop().getCompletedOrders());
+        for (Order order: getEBookShop().getCompletedOrders()){
+            Printer.println(order.toString());
+        }
     }
     private void printCompletedOrdersSortedByDateOfPeriod(){
         Printer.println("Выполненые заказы за период / сортировка по дате");
@@ -122,7 +122,10 @@ public class MenuOrder extends Menu implements Observer {
             printCompletedOrdersSortedByDateOfPeriod();
             return;
         }
-        Printer.print(getEBookShop().getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd));
+
+        for (Order order: getEBookShop().getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd)){
+            Printer.println(order.toString());
+        }
     }
     private void printCompletedOrdersSortedByPriceOfPeriod(){
         Printer.println("Выполненые заказы за период / сортировка по цене");
@@ -139,7 +142,9 @@ public class MenuOrder extends Menu implements Observer {
             printCompletedOrdersSortedByPriceOfPeriod();
             return;
         }
-        Printer.print(getEBookShop().getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd));
+        for (Order order: getEBookShop().getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd)){
+            Printer.println(order.toString());
+        }
     }
     private void printOrdersFullAmountByPeriod(){
         Printer.println("Сумма заказов зв период");
@@ -156,7 +161,7 @@ public class MenuOrder extends Menu implements Observer {
             printOrdersFullAmountByPeriod();
             return;
         }
-        Printer.print(getEBookShop().getOrdersFullAmountByPeriod(dateStart, dateEnd));
+        Printer.print(getEBookShop().getOrdersFullAmountByPeriod(dateStart, dateEnd).toString());
     }
     private void printQuantityCompletedOrdersByPeriod(){
         Printer.println("Количество выполненых заказов за период");
@@ -173,22 +178,18 @@ public class MenuOrder extends Menu implements Observer {
             printQuantityCompletedOrdersByPeriod();
             return;
         }
-        Printer.print(getEBookShop().getQuantityCompletedOrdersByPeriod(dateStart, dateEnd));
+        Printer.print(getEBookShop().getQuantityCompletedOrdersByPeriod(dateStart, dateEnd).toString());
     }
     private void printOrderById(){
         Printer.println("Заказ по ID");
         Printer.print("введите позицию в списке заказов которую хотите посмотреть: ");
         Long id = scannerLong(getScanner());
-        Printer.print(getEBookShop().getOrderById(id));
+        Printer.print(getEBookShop().getOrderById(id).toString());
     }
     private void setOrderCompleteById( ){
         Printer.println("Отметить заказ как выполненный");
         Printer.print("введите ID заказа который хотите отметить как выполненный: ");
         Long id = scannerLong(getScanner());
         getEBookShop().setOrderCompleteById(id);
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
     }
 }

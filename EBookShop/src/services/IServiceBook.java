@@ -13,12 +13,6 @@ public interface IServiceBook {
 
     void deleteBookById(Long id);
 
-    List<Book> getAll();
-
-    IRepositoryBook getRepositoryBook();
-
-    Book getBookById(Long id);
-
     void sortByAlphabet();
 
     void sortByDatePublication();
@@ -27,9 +21,15 @@ public interface IServiceBook {
 
     void sortByAvailability();
 
-    String getBooksPeriodMoreSixMonthByDate();
+    List<Book> getAll();
 
-    String getBooksPeriodMoreSixMonthByPrice();
+    IRepositoryBook getRepositoryBook();
+
+    Book getBookById(Long id);
+
+    List<Book> getBooksPeriodMoreSixMonthByDate();
+
+    List<Book> getBooksPeriodMoreSixMonthByPrice();
 
     String getBookDescriptionById(Long id);
 }

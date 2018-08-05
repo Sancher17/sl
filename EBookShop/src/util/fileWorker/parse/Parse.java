@@ -1,6 +1,7 @@
 package util.fileWorker.parse;
 
 import com.danco.training.TextFileWorker;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -26,7 +27,19 @@ public abstract class Parse {
     abstract Object createObject(String str) throws ParseException;
 
     public void writeObjectToFile(Object[] array) {
-        write(array, filePath);
+        Path path = Paths.get(filePath);
+        try {
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("Запись в файл "+e);
+        }
+        fileWorker = new TextFileWorker(filePath);
+        String str = Arrays.toString(array);
+        str = str.substring(1, str.indexOf("]"));
+        String[] subStr = str.split(",");
+        fileWorker.writeToFile(subStr);
     }
 
     Date parseDate(String date) throws ParseException {
@@ -34,35 +47,19 @@ public abstract class Parse {
         return sdf.parse(date);
     }
 
-    double parseDouble(String aDouble) {
+    Double parseDouble(String aDouble) {
         return Double.parseDouble(aDouble);
     }
 
-    int parseInteger(String integer) {
+    Integer parseInteger(String integer) {
         return Integer.parseInt(integer);
     }
 
-    long parseLong(String longs) {
+    Long parseLong(String longs) {
         return Long.parseLong(longs);
     }
 
-    boolean parseBoolean(String aBoolean) {
+    Boolean parseBoolean(String aBoolean) {
         return Boolean.parseBoolean(aBoolean);
-    }
-
-    private void write(Object[] array, String file) {
-        Path filePath = Paths.get(file);
-        try {
-            Files.deleteIfExists(filePath);
-            Files.createFile(filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.error("Запись в файл "+e);
-        }
-        fileWorker = new TextFileWorker(file);
-        String str = Arrays.toString(array);
-        str = str.substring(1, str.indexOf("]"));
-        String[] subStr = str.split(",");
-        fileWorker.writeToFile(subStr);
     }
 }

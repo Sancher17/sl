@@ -4,10 +4,12 @@ import entities.Request;
 import repositories.IRepositoryRequest;
 import repositories.impl.RepositoryRequest;
 import services.IServiceRequest;
+import util.comparators.request.ComparatorRequestsByAlphabet;
+import util.comparators.request.ComparatorRequestsByQuantity;
 
 import java.util.*;
 
-public class ServiceRequest extends Observable implements IServiceRequest {
+public class ServiceRequest extends Service implements IServiceRequest {
 
     private IRepositoryRequest requests = RepositoryRequest.getInstance();
 
@@ -22,8 +24,6 @@ public class ServiceRequest extends Observable implements IServiceRequest {
 
     private ServiceRequest() {
     }
-
-    private List<Observer> subscribers = new ArrayList<>();
 
     @Override
     public void addBookRequest(String nameRequireBook) {
@@ -46,86 +46,48 @@ public class ServiceRequest extends Observable implements IServiceRequest {
     }
 
     @Override
-    public String getRequests() {
-        StringBuilder builder = new StringBuilder();
-        if (requests.getRequests().size() > 0) {
-            for (Request request : requests.getRequests()) {
-                builder.append(request).append("\n");
-            }
-            return String.valueOf(builder);
-        }
-        return "nothing to show";
+    public List<Request> getAll() {
+        return requests.getRequests();
     }
 
     @Override
-    public String getCompletedRequests() {
-        StringBuilder builder = new StringBuilder();
+    public List<Request> getRequests() {
+        List<Request> requestList = new ArrayList<>(requests.getRequests());
+        return requestList;
+    }
+
+    @Override
+    public  List<Request> getCompletedRequests() {
+        List<Request> requestList = new ArrayList<>();
         for (Request request : requests.getRequests()) {
             if (request.isRequireIsCompleted()) {
-                builder.append(request).append("\n");
+                requestList.add(request);
             }
         }
-        if (builder.length() < 1) {
-            return "nothing to show";
-        } else {
-            return String.valueOf(builder);
-        }
+        return requestList;
+
     }
 
     @Override
-    public String getNotCompletedRequests() {
-        StringBuilder builder = new StringBuilder();
+    public  List<Request> getNotCompletedRequests() {
+        List<Request> requestList = new ArrayList<>();
         for (Request request : requests.getRequests()) {
-            if (request != null) {
-                if (!request.isRequireIsCompleted()) {
-                    builder.append(request).append("\n");
-                }
+            if (!request.isRequireIsCompleted()) {
+                requestList.add(request);
             }
         }
-        if (builder.length() < 1) {
-            return "nothing to show";
-        } else {
-            return String.valueOf(builder);
-        }
+        return requestList;
     }
 
     @Override
     public void sortRequestsByQuantity() {
-        Comparator<Request> requestComp = Comparator.comparing(Request::getRequireQuantity);
-        Comparator<Request> requestComp_nullLast = Comparator.nullsLast(requestComp);
-        requests.getRequests().sort(requestComp_nullLast);
+        requests.getRequests().sort(new ComparatorRequestsByQuantity());
         notifyObservers("Запросы отсортированы по количеству запросов");
     }
 
     @Override
     public void sortRequestsByAlphabet() {
-        Comparator<Request> requestComp = Comparator.comparing(Request::getRequireNameBook);
-        Comparator<Request> requestComp_nullLast = Comparator.nullsLast(requestComp);
-        requests.getRequests().sort(requestComp_nullLast);
+        requests.getRequests().sort(new ComparatorRequestsByAlphabet());
         notifyObservers("Запросы отсортированы по алфавиту");
-    }
-
-
-//    public IRepositoryRequest getRequests() {
-//        return requests;
-//    }
-
-
-    @Override
-    public void addObserver(Observer o) {
-        subscribers.add(o);
-    }
-
-    @Override
-    public void deleteObserver(Observer o) {
-        subscribers.remove(o);
-    }
-
-
-    @Override
-    public void notifyObservers(Object arg) {
-        for (Observer observer : subscribers) {
-            System.out.println(arg);
-        }
     }
 }

@@ -8,6 +8,10 @@ import repositories.IRepositoryRequest;
 import repositories.impl.RepositoryBook;
 import repositories.impl.RepositoryRequest;
 import services.IServiceBook;
+import util.comparators.book.ComparatorBookByAlphabet;
+import util.comparators.book.ComparatorBookByAvailability;
+import util.comparators.book.ComparatorBookByDatePublication;
+import util.comparators.book.ComparatorBookByPrice;
 
 import java.util.*;
 
@@ -45,29 +49,25 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public void sortByAlphabet() {
-        Comparator<Book> booksComp = Comparator.comparing(Book::getNameBook);
-        books.getBooks().sort(booksComp);
+        books.getBooks().sort(new ComparatorBookByAlphabet());
         notifyObservers("Книги отсортированы по алфавиту");
     }
 
     @Override
     public void sortByDatePublication() {
-        Comparator<Book> booksComp = Comparator.comparing(Book::getDateOfPublication);
-        books.getBooks().sort(booksComp);
+        books.getBooks().sort(new ComparatorBookByDatePublication());
         notifyObservers("Книги отсортированы по дате публикации");
     }
 
     @Override
     public void sortByPrice() {
-        Comparator<Book> booksComp = Comparator.comparing(Book::getPrice);
-        books.getBooks().sort(booksComp);
+        books.getBooks().sort(new ComparatorBookByPrice());
         notifyObservers("Книги отсортированы по цене");
     }
 
     @Override
     public void sortByAvailability() {
-        Comparator<Book> booksComp = Comparator.comparing(Book::isAvailable);
-        books.getBooks().sort(booksComp);
+        books.getBooks().sort(new ComparatorBookByAvailability());
         notifyObservers("Книги отсортированы по доступности");
     }
 
@@ -87,45 +87,38 @@ public class ServiceBook extends Service implements IServiceBook {
     }
 
     @Override
-    public String getBooksPeriodMoreSixMonthByDate() {
+    public List<Book> getBooksPeriodMoreSixMonthByDate() {
         sortByDatePublication();
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, -6);
         Date periodSixMonth = cal.getTime();
-        StringBuilder builder = new StringBuilder();
+        List<Book> bookList = new ArrayList<>();
         for (Book book : books.getBooks()) {
             if (book != null) {
                 if (book.getDateAddedBookToStore().before(periodSixMonth)) {
-                    builder.append(book).append("\n");
+                    bookList.add(book);
                 }
             }
         }
-        if (builder.length() != 0) {
-            return String.valueOf(builder);
-        }
-        return "Нет книг по данным параметрам";
+        return bookList;
     }
 
     @Override
-    public String getBooksPeriodMoreSixMonthByPrice() {
+    public List<Book> getBooksPeriodMoreSixMonthByPrice() {
         sortByPrice();
-        StringBuilder builder = new StringBuilder();
         Date periodSixMonth;
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, -6);
         periodSixMonth = cal.getTime();
-
+        List<Book> bookList = new ArrayList<>();
         for (Book book : books.getBooks()) {
             if (book != null) {
                 if (book.getDateAddedBookToStore().before(periodSixMonth)) {
-                    builder.append(book).append("\n");
+                    bookList.add(book);
                 }
             }
         }
-        if (builder.length() != 0) {
-            return String.valueOf(builder);
-        }
-        return "Нет книг по данным параметрам";
+       return bookList;
     }
 
     @Override
@@ -135,12 +128,7 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public String getBookDescriptionById(Long id) {
-        try {
-            return books.getById(id).getDescription();
-        } catch (NullPointerException e) {
-            log.info("Нет книги с данным ID " + e);
-            return "Книги с таким ID нет !!!";
-        }
+        return books.getById(id).getDescription();
     }
 
    @Override

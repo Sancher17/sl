@@ -20,18 +20,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static constants.Constants.PATH_BOOK_DATA;
-import static constants.Constants.PATH_ORDER_DATA;
-import static constants.Constants.PATH_REQUEST_DATA;
-import static javafx.scene.input.KeyCode.T;
+import static constants.Constants.*;
 
 public class FileWorker {
 
     private static final Logger log = Logger.getLogger(FileWorker.class);
 
-    private ParseBook parseBook = new ParseBook(PATH_BOOK_DATA + "");
-    private ParseOrder parseOrder = new ParseOrder(PATH_ORDER_DATA + "");
-    private ParseRequest parseRequest = new ParseRequest(PATH_REQUEST_DATA + "");
+    private ParseBook parseBook = new ParseBook(PATH_BOOK_DATA);
+    private ParseOrder parseOrder = new ParseOrder(PATH_ORDER_DATA);
+    private ParseRequest parseRequest = new ParseRequest(PATH_REQUEST_DATA);
 
     private IRepositoryBook repositoryBook = RepositoryBook.getInstance();
     private IRepositoryOrder repositoryOrder = RepositoryOrder.getInstance();

@@ -16,19 +16,9 @@ public interface IServiceOrder {
 
     void deleteOrderById(Long id);
 
-    List<Order> getAll();
-
     void setCompleteOrderById(Long id);
 
     void setCompleteOrderById(Long id, Date dateOfCompleted);
-
-    IRepositoryOrder getRepositoryOrder();
-
-    String getCompletedOrders();
-
-    String getCompletedOrdersSortedByDateOfPeriod(Date startDate, Date endDate);
-
-    String getCompletedOrdersSortedByPriceOfPeriod(Date startDate, Date endDate);
 
     void sortCompletedOrdersByDate();
 
@@ -36,9 +26,19 @@ public interface IServiceOrder {
 
     void sortOrdersByState();
 
-    String getOrdersFullAmountByPeriod(Date startDate, Date endDate);
+    List<Order> getAll();
 
-    String getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate);
+    IRepositoryOrder getRepositoryOrder();
 
-    String getOrderById(Long id);
+    List<Order> getCompletedOrders();
+
+    List<Order> getCompletedOrdersSortedByDateOfPeriod(Date startDate, Date endDate);
+
+    List<Order> getCompletedOrdersSortedByPriceOfPeriod(Date startDate, Date endDate);
+
+    Double getOrdersFullAmountByPeriod(Date startDate, Date endDate);
+
+    Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate);
+
+    Order getOrderById(Long id);
 }

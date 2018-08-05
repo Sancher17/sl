@@ -1,17 +1,13 @@
 package menus;
 
 
+import entities.Request;
 import facade.EBookShop;
 import util.Printer;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import static constant.UiConstants.*;
 
-
-public class MenuRequest extends Menu implements Observer {
-
+public class MenuRequest extends Menu {
 
     public MenuRequest() {
         super("MenuOrder");
@@ -29,11 +25,11 @@ public class MenuRequest extends Menu implements Observer {
                     break;
                 case ADD_REQUEST: addRequest(getEBookShop());
                     break;
-                case PRINT_REQUESTS: getEBookShop().printRequests();
+                case PRINT_REQUESTS: printRequests();
                     break;
-                case PRINT_COMPLETED_REQUESTS: getEBookShop().printCompletedRequests();
+                case PRINT_COMPLETED_REQUESTS: printCompletedRequests();
                     break;
-                case PRINT_NOT_COMPLETED_REQUESTS: getEBookShop().printNotCompletedRequests();
+                case PRINT_NOT_COMPLETED_REQUESTS: printNotCompletedRequests();
                     break;
                 case SORT_REQUEST_BY_ALPHABET: getEBookShop().sortRequestsByAlphabet();
                     break;
@@ -45,12 +41,6 @@ public class MenuRequest extends Menu implements Observer {
             nextOperation();
         }
         runMenuController(EXIT);
-    }
-
-    private void addRequest(EBookShop eBookShop) {
-        Printer.print("введите название искомой книги: ");
-        String nameBook = scannerString();
-        eBookShop.addRequest(nameBook);
     }
 
     @Override
@@ -67,7 +57,37 @@ public class MenuRequest extends Menu implements Observer {
         Printer.print("выберите следующую операцию: ");
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    private void addRequest(EBookShop eBookShop) {
+        Printer.print("введите название искомой книги: ");
+        String nameBook = scannerString();
+        eBookShop.addRequest(nameBook);
+    }
+
+    private void printNotCompletedRequests() {
+        Printer.println("Не выполненые запросы:");
+        printRequestHead();
+        for (Request request: getEBookShop().getNotCompletedRequests()){
+         Printer.println(request.toString());
+        }
+    }
+
+    private void printCompletedRequests() {
+        Printer.println("Выполненые запросы:");
+        printRequestHead();
+        for (Request request: getEBookShop().getCompletedRequests()){
+            Printer.println(request.toString());
+        }
+    }
+
+    private void printRequests(){
+        Printer.println("Все запросы");
+        printRequestHead();
+        for (Request request: getEBookShop().getRequestService().getAll()){
+            Printer.println(request.toString());
+        }
+    }
+
+    private void printRequestHead(){
+        Printer.println("id/Название книги/удовлетворен запрос/количество запросов");
     }
 }

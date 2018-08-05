@@ -8,15 +8,17 @@ import repositories.IRepositoryOrder;
 import repositories.impl.RepositoryBook;
 import repositories.impl.RepositoryOrder;
 import services.IServiceOrder;
+import util.comparators.order.ComparatorCompletedOrdersByDate;
+import util.comparators.order.ComparatorOrdersByPrice;
+import util.comparators.order.ComparatorOrdersByState;
 
 import java.util.*;
 
-public class ServiceOrder extends Observable implements IServiceOrder {
+public class ServiceOrder extends Service implements IServiceOrder {
 
     private static final Logger log = Logger.getLogger(ServiceOrder.class);
     private IRepositoryOrder orders = RepositoryOrder.getInstance();
     private IRepositoryBook repositoryBook = RepositoryBook.getInstance();
-    private List<Observer> subscribers = new ArrayList<>();
     private static ServiceOrder instance = null;
 
     public static ServiceOrder getInstance() {
@@ -38,7 +40,7 @@ public class ServiceOrder extends Observable implements IServiceOrder {
             orders.getById(id).setCompletedOrder(true);
             orders.getById(id).setDateOfCompletedOrder(todayMinusHour);
             notifyObservers("Заказ отмечен выполненым \n" + orders.getById(id));
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             notifyObservers("Заказа с таким ID нет !!!");
             log.error("setCompleteOrderById " + e);
         }
@@ -60,8 +62,8 @@ public class ServiceOrder extends Observable implements IServiceOrder {
             Order newOrder = new Order(repositoryBook.getById(bookId));
             orders.add(newOrder);
             notifyObservers("Добавлен заказ: " + newOrder);
-        }catch (NullPointerException e){
-            notifyObservers("Книги с таким ID нет !!!" );
+        } catch (NullPointerException e) {
+            notifyObservers("Книги с таким ID нет !!!");
             log.error("addOrder " + e);
         }
     }
@@ -72,55 +74,51 @@ public class ServiceOrder extends Observable implements IServiceOrder {
             Order newOrder = new Order(startOrder, repositoryBook.getById(bookId));
             orders.add(newOrder);
             notifyObservers("Добавлен заказ: " + newOrder);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             notifyObservers("Книги с таким ID нет !!!");
             log.error("addOrder " + e);
         }
     }
 
     @Override
-    public String getCompletedOrders() {
-        StringBuilder builder = new StringBuilder();
+    public List<Order> getCompletedOrders() {
+        List<Order> ordersList = new ArrayList<>();
         for (Order order : orders.getOrders()) {
             if (order.isCompletedOrder()) {
-                builder.append(order).append("\n");
+                ordersList.add(order);
             }
         }
-        return String.valueOf(builder);
+        return ordersList;
     }
 
     @Override
-    public String getCompletedOrdersSortedByDateOfPeriod(Date startDate, Date endDate) {
+    public List<Order> getCompletedOrdersSortedByDateOfPeriod(Date startDate, Date endDate) {
         sortCompletedOrdersByDate();
-        StringBuilder builder = new StringBuilder();
+        List<Order> ordersList = new ArrayList<>();
         for (Order order : orders.getOrders()) {
             if (order.getDateOfCompletedOrder() != null) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
                     if (order.isCompletedOrder()) {
-                        builder.append(order).append("\n");
+                        ordersList.add(order);
                     }
                 }
             }
         }
-        if (builder.length() > 1){
-            return String.valueOf(builder);
-        } else return "нет заказов в заданный период";
+        return ordersList;
     }
 
     @Override
-    public String getCompletedOrdersSortedByPriceOfPeriod(Date startDate, Date endDate) {
+    public List<Order> getCompletedOrdersSortedByPriceOfPeriod(Date startDate, Date endDate) {
         sortOrdersByPrice();
-        StringBuilder builder = new StringBuilder();
+        List<Order> ordersList = new ArrayList<>();
         for (Order order : orders.getOrders()) {
             if (order.getDateOfCompletedOrder() != null) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
-                    builder.append(order).append("\n");
+                    ordersList.add(order);
                 }
             }
         }
-        if (builder.length() > 1){
-            return String.valueOf(builder);
-        } else return "нет заказов в заданный период";
+        return ordersList;
     }
 
     @Override
@@ -145,36 +143,24 @@ public class ServiceOrder extends Observable implements IServiceOrder {
 
     @Override
     public void sortCompletedOrdersByDate() {
-        Comparator<Order> ordersComp = (o1, o2) -> {
-            if (o1.getDateOfCompletedOrder() == null) {
-                return (o2.getDateOfCompletedOrder() == null) ? 0 : -1;
-            }
-            if (o2.getDateOfCompletedOrder() == null) {
-                return 1;
-            }
-            return o2.getDateOfCompletedOrder().compareTo(o1.getDateOfCompletedOrder());
-        };
-        orders.getOrders().sort(ordersComp);
+        orders.getOrders().sort(new ComparatorCompletedOrdersByDate());
         notifyObservers("Заказы отсортированы по дате исполнения");
-
     }
 
     @Override
     public void sortOrdersByPrice() {
-        Comparator<Order> ordersComp = Comparator.comparing(order -> order.getBook().getPrice());
-        orders.getOrders().sort(ordersComp);
+        orders.getOrders().sort(new ComparatorOrdersByPrice());
         notifyObservers("Заказы отсортированы по цене");
     }
 
     @Override
     public void sortOrdersByState() {
-        Comparator<Order> ordersComp = Comparator.comparing(Order::isCompletedOrder);
-        orders.getOrders().sort(ordersComp);
+        orders.getOrders().sort(new ComparatorOrdersByState());
         notifyObservers("Заказы отсортированы по состоянию выполнения");
     }
 
     @Override
-    public String getOrdersFullAmountByPeriod(Date startDate, Date endDate) {
+    public Double getOrdersFullAmountByPeriod(Date startDate, Date endDate) {
         double amount = 0;
         for (Order order : orders.getOrders()) {
             if (order.getDateOfCompletedOrder() != null) {
@@ -183,11 +169,11 @@ public class ServiceOrder extends Observable implements IServiceOrder {
                 }
             }
         }
-        return String.valueOf(amount);
+        return amount;
     }
 
     @Override
-    public String getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
+    public Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
         int quantity = 0;
         for (Order order : orders.getOrders()) {
             if (order.isCompletedOrder()) {
@@ -196,33 +182,11 @@ public class ServiceOrder extends Observable implements IServiceOrder {
                 }
             }
         }
-        return String.valueOf(quantity);
+        return quantity;
     }
 
     @Override
-    public String getOrderById(Long id) {
-        if (orders.getById(id) == null){
-            return "Нет ордера с таким ID";
-        }
-        return String.valueOf(orders.getById(id));
-    }
-
-
-
-    @Override
-    public void addObserver(Observer o) {
-        subscribers.add(o);
-    }
-
-    @Override
-    public void deleteObserver(Observer o) {
-        subscribers.remove(o);
-    }
-
-    @Override
-    public void notifyObservers(Object arg) {
-        for (Observer observer : subscribers) {
-            System.out.println(arg);
-        }
+    public Order getOrderById(Long id) {
+        return orders.getById(id);
     }
 }

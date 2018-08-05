@@ -10,7 +10,6 @@ public abstract class Service extends Observable {
     private List<Observer> subscribers = new ArrayList<>();
 
     @Override
-    //observer
     public void addObserver(Observer o) {
         subscribers.add(o);
     }

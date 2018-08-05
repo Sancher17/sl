@@ -1,24 +1,9 @@
 package constants;
 
 
-public enum Constants {
+public class Constants {
 
-    PATH_BOOK_DATA{
-        public String toString() {
-            return "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\bookData.txt";
-        }
-    },
-
-
-    PATH_ORDER_DATA{
-        public String toString() {
-            return  "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\orderData.txt";
-        }
-    },
-
-    PATH_REQUEST_DATA{
-        public String toString() {
-            return  "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\requestData.txt";
-        }
-    }
+    public static final String PATH_BOOK_DATA = "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\bookData.txt";
+    public static final String PATH_ORDER_DATA = "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\orderData.txt";
+    public static final String PATH_REQUEST_DATA = "G:\\Java\\Senla1\\aliaksandr-kavalenka\\EBookShop\\src\\requestData.txt";
 }

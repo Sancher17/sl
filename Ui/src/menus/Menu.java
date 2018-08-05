@@ -6,11 +6,9 @@ import util.Printer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Scanner;
+import java.util.*;
 
-public abstract class Menu {
+public abstract class Menu implements Observer {
 
     private static final Logger log = Logger.getLogger(Menu.class);
     private String title;
@@ -19,12 +17,11 @@ public abstract class Menu {
     private int OPERATION;
     private MenuController controller = new MenuController();
 
-
     public Menu(String title) {
         this.title = title;
     }
 
-    public abstract void createMenu() throws ParseException;
+    public abstract void createMenu();
 
     public abstract void printMenu();
 
@@ -137,5 +134,9 @@ public abstract class Menu {
     @Override
     public String toString() {
         return "" + title;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
     }
 }

@@ -1,15 +1,11 @@
 package menus;
 
 import entities.Book;
-import facade.EBookShop;
 import util.Printer;
-
-import java.text.ParseException;
-import java.util.*;
-
+import java.util.Date;
 import static constant.UiConstants.*;
 
-public class MenuBook extends Menu implements Observer {
+public class MenuBook extends Menu {
 
     public MenuBook() {
         super("MenuBook");
@@ -129,18 +125,18 @@ public class MenuBook extends Menu implements Observer {
     private void printBooksPeriodMoreSixMonthByDate() {
         Printer.println("Книги которые добавлены более 6 месяцев назад / сортировка по дате");
         printBookHead();
-        Printer.println(getEBookShop().getBooksPeriodMoreSixMonthByDate());
+        for (Book book: getEBookShop().getBooksPeriodMoreSixMonthByDate()){
+            Printer.println(book.toString());
+        }
     }
     private void printBooksPeriodMoreSixMonthByPrice() {
         Printer.println("Книги которые добавлены более 6 месяцев назад / сортировка по цене");
         printBookHead();
-        Printer.println(getEBookShop().getBooksPeriodMoreSixMonthByPrice());
+        for (Book book: getEBookShop().getBooksPeriodMoreSixMonthByPrice()){
+            Printer.println(book.toString());
+        }
     }
     private void printBookHead() {
         Printer.println("id/Название/дата публикации/цена/наличие/дата добавления в магазин/описание");
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
     }
 }
