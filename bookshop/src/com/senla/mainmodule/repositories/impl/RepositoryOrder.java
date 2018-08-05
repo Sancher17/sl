@@ -10,7 +10,7 @@ import java.util.List;
 
 public class RepositoryOrder implements IRepositoryOrder {
 
-    private Long lastId = 0L;
+    private static Long lastId = 0L;
     private List<Order> orders = new ArrayList<>();
     private static RepositoryOrder instance = null;
 

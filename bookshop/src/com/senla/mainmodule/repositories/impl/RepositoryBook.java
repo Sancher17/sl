@@ -9,7 +9,7 @@ import java.util.List;
 
 public class RepositoryBook implements IRepositoryBook {
 
-    private Long lastId = 0L;
+    private static Long lastId = 0L;
     private List<Book> books = new ArrayList<>();
     private static RepositoryBook instance = null;
 

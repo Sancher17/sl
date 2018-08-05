@@ -10,7 +10,7 @@ import java.util.List;
 
 public class RepositoryRequest implements IRepositoryRequest {
 
-    private Long lastId = 0L;
+    private static Long lastId = 0L;
     private List<Request> requests = new ArrayList<>();
     private static RepositoryRequest instance = null;
 
