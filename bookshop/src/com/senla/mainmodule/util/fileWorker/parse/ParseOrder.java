@@ -6,7 +6,6 @@ import com.senla.mainmodule.entities.Order;
 import com.senla.mainmodule.repositories.IRepositoryBook;
 import com.senla.mainmodule.repositories.impl.RepositoryBook;
 
-import java.text.ParseException;
 
 public class ParseOrder extends Parse {
 
@@ -19,7 +18,7 @@ public class ParseOrder extends Parse {
     }
 
     @Override
-    public Order createObject(String str) throws ParseException {
+    public Order createObject(String str)  {
         String[] temp = str.split("/");
         String checkNull = " null";
         if (!temp[0].equals(checkNull)) {

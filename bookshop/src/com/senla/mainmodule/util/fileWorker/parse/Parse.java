@@ -45,9 +45,15 @@ public abstract class Parse {
         fileWorker.writeToFile(subStr);
     }
 
-    Date parseDate(String date) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy");
-        return sdf.parse(date);
+    Date parseDate(String date) {
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy");
+            return sdf.parse(date);
+        }catch (ParseException e) {
+            e.printStackTrace();
+            log.error("Не корректный парсинг даты " + e);
+        }
+        return null;
     }
 
     Double parseDouble(String aDouble) {

@@ -13,7 +13,7 @@ public class ParseBook extends Parse {
     }
 
     @Override
-    public Book createObject(String str) throws ParseException {
+    public Book createObject(String str) {
         String[] temp = str.split("/");
         String checkNull = " null";
         if (!temp[0].equals(checkNull)){

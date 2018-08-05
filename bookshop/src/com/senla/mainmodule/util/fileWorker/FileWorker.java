@@ -22,7 +22,6 @@ import java.util.*;
 
 import static com.senla.mainmodule.constants.Constants.*;
 
-
 public class FileWorker {
 
     private static final Logger log = Logger.getLogger(FileWorker.class);
@@ -52,12 +51,7 @@ public class FileWorker {
         tempData = fileWorker.readFromFile();
         Book[] tempBook = new Book[tempData.length];
         for (int i = 0; i < tempData.length; i++) {
-            try {
-                tempBook[i] = parseBook.createObject(tempData[i]);
-            } catch (ParseException e) {
-                Printer.println("Ошибка при чтении данных файла");
-                log.error("readBookFromFile " + e);
-            }
+            tempBook[i] = parseBook.createObject(tempData[i]);
         }
         repositoryBook.getBooks().clear();
         List<Book> tempList = new ArrayList<>( Arrays.asList(tempBook));
@@ -86,12 +80,7 @@ public class FileWorker {
         tempData = fileWorker.readFromFile();
         Order[] tempOrder = new Order[tempData.length];
         for (int i = 0; i < tempData.length; i++) {
-            try {
-                tempOrder[i] = parseOrder.createObject(tempData[i]);
-            } catch (ParseException e) {
-                log.error("readBookFromFile " + e);
-                Printer.println("Ошибка при чтении данных файла");
-            }
+            tempOrder[i] = parseOrder.createObject(tempData[i]);
         }
         repositoryOrder.getOrders().clear();
         List<Order> tempList = new ArrayList<>( Arrays.asList(tempOrder));
