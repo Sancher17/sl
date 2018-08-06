@@ -1,5 +1,7 @@
 /idea
-.out
+out
+idea
+.idea
 *.iml
 log*.txt
 .gitignore
