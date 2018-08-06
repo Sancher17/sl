@@ -2,7 +2,10 @@ package com.senla.ui.menus;
 
 import com.senla.mainmodule.entities.Book;
 import com.senla.ui.util.Printer;
+
 import java.util.Date;
+import java.util.List;
+
 import static com.senla.ui.constant.UiConstants.*;
 
 public class MenuBook extends Menu {
@@ -13,7 +16,7 @@ public class MenuBook extends Menu {
     }
 
     @Override
-    public void createMenu()  {
+    public void createMenu() {
         printMenu();
         setOperation(scannerInteger(getScanner()));
         while (getOperation() != EXIT) {
@@ -51,8 +54,10 @@ public class MenuBook extends Menu {
                     break;
                 case PRINT_BOOK_DESCRIPTION:
                     printBookDescriptionById();
-                break;
-                default: printMenu();
+                    break;
+                default:
+                    Printer.print("\nнет такого мено, выбирите заново !!!\n");
+                    createMenu();
                     break;
             }
             nextOperation();
@@ -86,14 +91,14 @@ public class MenuBook extends Menu {
         Printer.print("введите дату публикации в формате (01.01.2018): ");
         String datePublic = scannerString();
         Date datePublication = scannerDate(datePublic);
-        if (datePublication == null){
+        if (datePublication == null) {
             addBook();
             return;
         }
 
         Printer.print("введите цену в формате (55.05 или 55): ");
         double price = scannerDouble(getScanner());
-        if (price == -1.0){
+        if (price == -1.0) {
             addBook();
             return;
         }
@@ -103,39 +108,64 @@ public class MenuBook extends Menu {
 
         getEBookShop().addBook(nameBook, datePublication, TODAY, price, description, true);
     }
+
     private void deleteBook() {
         Printer.println("Удалить книгу");
         Printer.print("введите Id книги которую хотите удалить: ");
         Long id = scannerLong(getScanner());
         getEBookShop().deleteBookById(id);
     }
-    private void printBookDescriptionById(){
+
+    private void printBookDescriptionById() {
         Printer.println("Описание книги по Id");
         Printer.print("введите Id книги описание которой хотите посмотреть: ");
         Long id = scannerLong(getScanner());
-        Printer.println(getEBookShop().getBookDescriptionById(id));
+        if (id == -1L){
+            printBookDescriptionById();
+        }
+        if (getEBookShop().getBookDescriptionById(id) != null){
+            Printer.println(getEBookShop().getBookDescriptionById(id));
+        }else {
+            Printer.println("нет книги с таким ID");
+        }
     }
-    private void printBooks(){
+
+    private void printBooks() {
         Printer.println("Все книги");
         printBookHead();
-        for (Book book: getEBookShop().getBookService().getAll()){
-            Printer.println(book.toString());
+        for (Book book : getEBookShop().getBookService().getAll()) {
+            if (book != null){
+                Printer.println(book.toString());
+            }
         }
     }
+
     private void printBooksPeriodMoreSixMonthByDate() {
         Printer.println("Книги которые добавлены более 6 месяцев назад / сортировка по дате");
-        printBookHead();
-        for (Book book: getEBookShop().getBooksPeriodMoreSixMonthByDate()){
-            Printer.println(book.toString());
+        List<Book> tempList = getEBookShop().getBooksPeriodMoreSixMonthByDate();
+        if (tempList.size() != 0){
+            printBookHead();
+            for (Book book : getEBookShop().getBooksPeriodMoreSixMonthByDate()) {
+                Printer.println(book.toString());
+            }
+        }else {
+            Printer.println("нет книг по заданным критериям");
         }
     }
+
     private void printBooksPeriodMoreSixMonthByPrice() {
         Printer.println("Книги которые добавлены более 6 месяцев назад / сортировка по цене");
-        printBookHead();
-        for (Book book: getEBookShop().getBooksPeriodMoreSixMonthByPrice()){
-            Printer.println(book.toString());
+        List<Book> tempList = getEBookShop().getBooksPeriodMoreSixMonthByPrice();
+        if (tempList.size() != 0){
+            printBookHead();
+            for (Book book : tempList) {
+                Printer.println(book.toString());
+            }
+        }else {
+            Printer.println("нет книг по заданным критериям");
         }
     }
+
     private void printBookHead() {
         Printer.println("id/Название/дата публикации/цена/наличие/дата добавления в магазин/описание");
     }

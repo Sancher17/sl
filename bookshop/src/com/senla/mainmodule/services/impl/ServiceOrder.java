@@ -56,10 +56,10 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public void deleteOrderById(Long id) {
-        try {
+        if (orders.getById(id) != null) {
             notifyObservers("Удален заказ: " + orders.getById(id));
             orders.deleteById(id);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        }else {
             notifyObservers("Заказа с таким индексом нет !!!");
         }
     }
@@ -155,6 +155,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
         for (Order order : orders.getOrders()) {
             if (order.getDateOfCompletedOrder() != null) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
+                    amount = amount + order.getBook().getPrice();
                     amount = amount + order.getBook().getPrice();
                 }
             }

@@ -7,10 +7,7 @@ import com.senla.mainmodule.repositories.IRepositoryRequest;
 import com.senla.mainmodule.repositories.impl.RepositoryBook;
 import com.senla.mainmodule.repositories.impl.RepositoryRequest;
 import com.senla.mainmodule.services.IServiceBook;
-import com.senla.mainmodule.util.comparators.book.ComparatorBookByAlphabet;
-import com.senla.mainmodule.util.comparators.book.ComparatorBookByAvailability;
-import com.senla.mainmodule.util.comparators.book.ComparatorBookByDatePublication;
-import com.senla.mainmodule.util.comparators.book.ComparatorBookByPrice;
+import com.senla.mainmodule.util.comparators.book.*;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -49,10 +46,10 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public void deleteBookById(Long id) {
-        try {
+        if (books.getById(id) != null) {
             notifyObservers("Удалена книга: " + books.getById(id));
             books.deleteById(id);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        }else {
             notifyObservers("Книги с таким индексом нет !!!");
         }
     }
@@ -93,7 +90,7 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByDate() {
-        sortByDatePublication();
+        sortByDateAddedToShop();
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, -6);
         Date periodSixMonth = cal.getTime();
@@ -127,11 +124,19 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public String getBookDescriptionById(Long id) {
-        return books.getById(id).getDescription();
+    if (books.getById(id) != null){
+            return books.getById(id).getDescription();
+        }
+        return null;
     }
 
     @Override
     public IRepositoryBook getRepositoryBook() {
         return books;
+    }
+
+    private void sortByDateAddedToShop() {
+        books.getBooks().sort(new ComparatorBookByDateAddedToShop());
+        notifyObservers("Книги отсортированы по дате добавления в магазин");
     }
 }

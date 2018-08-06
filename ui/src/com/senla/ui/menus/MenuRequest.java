@@ -33,7 +33,9 @@ public class MenuRequest extends Menu {
                     break;
                 case SORT_REQUEST_BY_QUANTITY: getEBookShop().sortRequestsByQuantity();
                     break;
-                default: printMenu();
+                default:
+                    Printer.print("\nнет такого мено, выбирите заново !!!\n");
+                    createMenu();
                     break;
             }
             nextOperation();

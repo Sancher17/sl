@@ -49,7 +49,9 @@ public class MenuOrder extends Menu {
                     break;
                 case SET_ORDER_COMPLETE_BY_ID: setOrderCompleteById();
                     break;
-                default: printMenu();
+                default:
+                    Printer.print("\nнет такого мено, выбирите заново !!!\n");
+                    createMenu();
                     break;
             }
             nextOperation();
