@@ -29,7 +29,6 @@ public class ServiceRequest extends Service implements IServiceRequest {
     public void addBookRequest(String nameRequireBook) {
         Request newRequest = new Request(nameRequireBook);
         notifyObservers("Добавлен запрос на книгу: " + newRequest.getRequireNameBook());
-
         boolean exist = false;
         for (Request request : requests.getRequests()) {
             if (request != null) {
@@ -62,11 +61,6 @@ public class ServiceRequest extends Service implements IServiceRequest {
         return requests.getRequests();
     }
 
-    @Override
-    public List<Request> getRequests() {
-        List<Request> requestList = new ArrayList<>(requests.getRequests());
-        return requestList;
-    }
 
     @Override
     public List<Request> getCompletedRequests() {
@@ -77,7 +71,6 @@ public class ServiceRequest extends Service implements IServiceRequest {
             }
         }
         return requestList;
-
     }
 
     @Override

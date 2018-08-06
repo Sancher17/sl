@@ -14,8 +14,6 @@ public interface IServiceRequest {
 
     List<Request> getAll();
 
-    List<Request> getRequests();
-
     List<Request> getCompletedRequests();
 
     List<Request> getNotCompletedRequests();

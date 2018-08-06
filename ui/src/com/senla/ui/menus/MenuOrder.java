@@ -50,7 +50,7 @@ public class MenuOrder extends Menu {
                 case SET_ORDER_COMPLETE_BY_ID: setOrderCompleteById();
                     break;
                 default:
-                    Printer.print("\nнет такого мено, выбирите заново !!!\n");
+                    Printer.print("\nнет такой операции, выбирите заново !!!\n");
                     createMenu();
                     break;
             }

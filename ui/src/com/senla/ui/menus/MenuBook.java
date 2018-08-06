@@ -56,7 +56,7 @@ public class MenuBook extends Menu {
                     printBookDescriptionById();
                     break;
                 default:
-                    Printer.print("\nнет такого мено, выбирите заново !!!\n");
+                    Printer.print("\nнет такой операции, выбирите заново !!!\n");
                     createMenu();
                     break;
             }

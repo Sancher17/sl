@@ -11,6 +11,7 @@ import com.senla.mainmodule.util.comparators.order.ComparatorCompletedOrdersByDa
 import com.senla.mainmodule.util.comparators.order.ComparatorOrdersByPrice;
 import com.senla.mainmodule.util.comparators.order.ComparatorOrdersByState;
 import org.apache.log4j.Logger;
+
 import java.util.*;
 
 public class ServiceOrder extends Service implements IServiceOrder {
@@ -37,8 +38,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
             orders.add(newOrder);
             notifyObservers("Добавлен заказ: " + newOrder);
         } catch (NullPointerException e) {
-            notifyObservers("Книги с таким Id нет !!!");
-            log.error("addOrder " + e);
+            notifyObservers("Книги с таким ID нет !!!");
+            log.error("Добавление в книги с отстсвующим ID  " + e);
         }
     }
 
@@ -49,8 +50,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
             orders.add(newOrder);
             notifyObservers("Добавлен заказ: " + newOrder);
         } catch (NullPointerException e) {
-            notifyObservers("Книги с таким Id нет !!!");
-            log.error("addOrder " + e);
+            notifyObservers("Книги с таким ID нет !!!");
+            log.error("Добавление в книги с отстсвующим ID  " + e);
         }
     }
 
@@ -59,23 +60,22 @@ public class ServiceOrder extends Service implements IServiceOrder {
         if (orders.getById(id) != null) {
             notifyObservers("Удален заказ: " + orders.getById(id));
             orders.deleteById(id);
-        }else {
+        } else {
             notifyObservers("Заказа с таким индексом нет !!!");
         }
     }
 
     @Override
     public void setCompleteOrderById(Long id) {
-        try {
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.HOUR, -1);
-            Date todayMinusHour = cal.getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR, -1);
+        Date todayMinusHour = cal.getTime();
+        if (orders.getById(id) != null) {
             orders.getById(id).setCompletedOrder(true);
             orders.getById(id).setDateOfCompletedOrder(todayMinusHour);
             notifyObservers("Заказ отмечен выполненым \n" + orders.getById(id));
-        } catch (NullPointerException e) {
+        } else {
             notifyObservers("Заказа с таким Id нет !!!");
-            log.error("setCompleteOrderById " + e);
         }
     }
 
