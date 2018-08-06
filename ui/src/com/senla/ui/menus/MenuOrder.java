@@ -80,13 +80,13 @@ public class MenuOrder extends Menu {
 
     private void addOrder() {
         Printer.println("Добавить новый заказ");
-        Printer.print("введите ID книги для добавления в заказ: ");
+        Printer.print("введите Id книги для добавления в заказ: ");
         Long idBook = scannerLong(getScanner());
         getEBookShop().addOrder(TODAY, idBook);
     }
     private void deleteOrder() {
         Printer.println("Удалить заказ");
-        Printer.print("введите ID заказа который хотите удалить: ");
+        Printer.print("введите Id заказа который хотите удалить: ");
         Long id = scannerLong(getScanner());
         getEBookShop().deleteOrderById(id);
     }
@@ -181,14 +181,14 @@ public class MenuOrder extends Menu {
         Printer.print(getEBookShop().getQuantityCompletedOrdersByPeriod(dateStart, dateEnd).toString());
     }
     private void printOrderById(){
-        Printer.println("Заказ по ID");
+        Printer.println("Заказ по Id");
         Printer.print("введите позицию в списке заказов которую хотите посмотреть: ");
         Long id = scannerLong(getScanner());
         Printer.print(getEBookShop().getOrderById(id).toString());
     }
     private void setOrderCompleteById( ){
         Printer.println("Отметить заказ как выполненный");
-        Printer.print("введите ID заказа который хотите отметить как выполненный: ");
+        Printer.print("введите Id заказа который хотите отметить как выполненный: ");
         Long id = scannerLong(getScanner());
         getEBookShop().setOrderCompleteById(id);
     }

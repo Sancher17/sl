@@ -172,7 +172,7 @@ public class TestProgram {
 //        eBookShop.addOrder(2L); // ....а можно не указывать, тогда дата будет взята TODAY
 //        eBookShop.addOrder(3L);
 //        eBookShop.addOrder(4L);
-//        eBookShop.addOrder(2L);// TODO: 03.08.2018 если нет книги с таким ID летит эксепшен
+//        eBookShop.addOrder(2L);// TODO: 03.08.2018 если нет книги с таким Id летит эксепшен
 //        System.out.println("\nprintOrders");
 //        eBookShop.printOrders();
 //

@@ -37,7 +37,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
             orders.add(newOrder);
             notifyObservers("Добавлен заказ: " + newOrder);
         } catch (NullPointerException e) {
-            notifyObservers("Книги с таким ID нет !!!");
+            notifyObservers("Книги с таким Id нет !!!");
             log.error("addOrder " + e);
         }
     }
@@ -49,7 +49,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
             orders.add(newOrder);
             notifyObservers("Добавлен заказ: " + newOrder);
         } catch (NullPointerException e) {
-            notifyObservers("Книги с таким ID нет !!!");
+            notifyObservers("Книги с таким Id нет !!!");
             log.error("addOrder " + e);
         }
     }
@@ -74,7 +74,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
             orders.getById(id).setDateOfCompletedOrder(todayMinusHour);
             notifyObservers("Заказ отмечен выполненым \n" + orders.getById(id));
         } catch (NullPointerException e) {
-            notifyObservers("Заказа с таким ID нет !!!");
+            notifyObservers("Заказа с таким Id нет !!!");
             log.error("setCompleteOrderById " + e);
         }
     }

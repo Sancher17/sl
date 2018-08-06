@@ -105,13 +105,13 @@ public class MenuBook extends Menu {
     }
     private void deleteBook() {
         Printer.println("Удалить книгу");
-        Printer.print("введите ID книги которую хотите удалить: ");
+        Printer.print("введите Id книги которую хотите удалить: ");
         Long id = scannerLong(getScanner());
         getEBookShop().deleteBookById(id);
     }
     private void printBookDescriptionById(){
-        Printer.println("Описание книги по ID");
-        Printer.print("введите ID книги описание которой хотите посмотреть: ");
+        Printer.println("Описание книги по Id");
+        Printer.print("введите Id книги описание которой хотите посмотреть: ");
         Long id = scannerLong(getScanner());
         Printer.println(getEBookShop().getBookDescriptionById(id));
     }

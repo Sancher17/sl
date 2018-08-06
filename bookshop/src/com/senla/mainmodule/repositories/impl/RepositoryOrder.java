@@ -3,7 +3,7 @@ package com.senla.mainmodule.repositories.impl;
 
 import com.senla.mainmodule.entities.Order;
 import com.senla.mainmodule.repositories.IRepositoryOrder;
-import com.senla.mainmodule.repositories.util.ID;
+import com.senla.mainmodule.repositories.util.Id;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class RepositoryOrder implements IRepositoryOrder {
 
     @Override
     public void add(Order order) {
-        lastId = ID.nextId(lastId);
+        lastId = Id.nextId(lastId);
         order.setId(lastId);
         orders.add(order);
     }

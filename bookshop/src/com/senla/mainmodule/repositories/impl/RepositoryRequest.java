@@ -3,7 +3,7 @@ package com.senla.mainmodule.repositories.impl;
 
 import com.senla.mainmodule.entities.Request;
 import com.senla.mainmodule.repositories.IRepositoryRequest;
-import com.senla.mainmodule.repositories.util.ID;
+import com.senla.mainmodule.repositories.util.Id;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class RepositoryRequest implements IRepositoryRequest {
 
     @Override
     public void add(Request request) {
-        lastId = ID.nextId(lastId);
+        lastId = Id.nextId(lastId);
         request.setId(lastId);
         requests.add(request);
     }
