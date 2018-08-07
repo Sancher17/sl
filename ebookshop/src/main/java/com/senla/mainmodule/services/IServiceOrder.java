@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface IServiceOrder extends IService {
 
+    void addOrder(Order order);
+
     void addOrder(Long bookId);
 
     void addOrder(Date startOrder, Long bookId);
@@ -39,4 +41,6 @@ public interface IServiceOrder extends IService {
     Order getOrderById(Long id);
 
     IRepositoryOrder getRepositoryOrder();
+
+    Order cloneOrder(Long id);
 }

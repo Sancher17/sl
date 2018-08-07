@@ -39,6 +39,7 @@ public class UiConstants {
     public static final int SORT_ORDERS_BY_STATE = 11;
     public static final int SORT_ORDERS_BY_PRICE = 12;
     public static final int SET_ORDER_COMPLETE_BY_ID = 13;
+    public static final int COPY_ORDER = 14;
 
     //request
     public static final int ADD_REQUEST = 1;

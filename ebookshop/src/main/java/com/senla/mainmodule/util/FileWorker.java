@@ -9,7 +9,7 @@ import java.util.List;
 
 public class FileWorker {
 
-    private static final Logger log = Logger.getLogger(ServiceBook.class);
+    private static final Logger log = Logger.getLogger(FileWorker.class);
 
     public void writeToFile(IService service, String path) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path))) {

@@ -10,6 +10,7 @@ import com.senla.mainmodule.services.impl.ServiceBook;
 import com.senla.mainmodule.services.impl.ServiceOrder;
 import com.senla.mainmodule.services.impl.ServiceRequest;
 import com.senla.mainmodule.util.FileWorker;
+import com.senla.propertiesmodule.PropertyHolder;
 
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,7 @@ public class EBookShop {
     private IServiceOrder orderService;
     private IServiceRequest requestService;
     private FileWorker fileWorker;
+
     private static EBookShop instance = null;
     public static EBookShop getInstance() {
         if (instance == null) {
@@ -37,6 +39,12 @@ public class EBookShop {
         this.orderService = ServiceOrder.getInstance();
         this.requestService = ServiceRequest.getInstance();
         this.fileWorker = new FileWorker();
+    }
+
+    public void checkProperties(){
+        PropertyHolder propertyHolder = new PropertyHolder();
+        propertyHolder.allowMArkRequest();
+        propertyHolder.bookIsOld();
     }
 
     //BOOK
@@ -75,6 +83,9 @@ public class EBookShop {
     public void addOrder(Date startOrder, Long bookId) {
         orderService.addOrder(startOrder, bookId);
     }
+    public void addOrder(Order order){
+        orderService.addOrder(order);
+    }
     public void deleteOrderById(Long id) {
         orderService.deleteOrderById(id);
     }
@@ -110,6 +121,9 @@ public class EBookShop {
     }
     public Order getOrderById(Long id) {
        return orderService.getOrderById(id);
+    }
+    public Order cloneOrder(Long id) {
+        return orderService.cloneOrder(id);
     }
 
     //REQUEST
@@ -164,4 +178,6 @@ public class EBookShop {
     public ServiceRequest getRequestService() {
         return (ServiceRequest) requestService;
     }
+
+
 }

@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-public class Order implements Serializable {
+public class Order implements Serializable, Cloneable {
 
     private Date dateOfStartedOrder;
     private Date dateOfCompletedOrder;
@@ -24,6 +24,8 @@ public class Order implements Serializable {
         this.isCompletedOrder = false;
         this.dateOfStartedOrder = new Date();
     }
+
+    public Order(){}
 
     //getters setters
     public Date getDateOfStartedOrder() {
@@ -95,5 +97,12 @@ public class Order implements Serializable {
                 isCompletedOrder + "/" +
                 book.getPrice() + "/" +
                 convertDate(dateOfCompletedOrder);
+    }
+
+    @Override
+    public Order clone() throws CloneNotSupportedException {
+        Order order = (Order) super.clone();
+        order.book = book.clone();
+        return order;
     }
 }

@@ -14,6 +14,7 @@ public class MenuMain extends Menu {
     @Override
     public void createMenu() {
         printMenu();
+        checkProperties();
         nextOperation();
         runMenuController(getOperation());
     }
@@ -25,5 +26,9 @@ public class MenuMain extends Menu {
         Printer.println(MENU_ORDER + " - Меню заказы");
         Printer.println(MENU_REQUEST + " - Меню запросы");
         Printer.println(EXIT + " - завершение работы");
+    }
+
+    private void checkProperties(){
+        getEBookShop().checkProperties();
     }
 }

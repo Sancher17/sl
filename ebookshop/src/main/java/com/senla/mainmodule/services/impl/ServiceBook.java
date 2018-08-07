@@ -158,12 +158,24 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public List getRepo() {
-        return getRepositoryBook().getBooks();
+        return books.getBooks();
     }
 
     @Override
     public void setRepo(List list) {
-        getRepositoryBook().setBooks(list);
+        books.setBooks(list);
+        setLastId();
+    }
+
+    @Override
+    public void setLastId() {
+        Long id = 0L;
+        for (Book book: books.getBooks()){
+            if (book.getId() > id){
+                id = book.getId();
+            }
+        }
+        books.setLastId(id);
     }
 
     private void sortByDateAddedToShop() {

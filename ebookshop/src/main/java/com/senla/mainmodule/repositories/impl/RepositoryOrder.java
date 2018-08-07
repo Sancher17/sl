@@ -56,6 +56,12 @@ public class RepositoryOrder implements IRepositoryOrder {
         this.orders = orders;
     }
 
+
+    @Override
+    public Long getLastId() {
+        return lastId;
+    }
+
     @Override
     public void setLastId(Long lastId) {
         this.lastId = lastId;

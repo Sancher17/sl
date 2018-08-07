@@ -7,4 +7,6 @@ public interface IService<T> {
     List<T> getRepo();
 
     void setRepo(List list);
+
+    void setLastId();
 }

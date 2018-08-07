@@ -34,6 +34,12 @@ public class ServiceOrder extends Service implements IServiceOrder {
     private ServiceOrder() {
     }
 
+
+    @Override
+    public void addOrder(Order order) {
+        orders.add(order);
+    }
+
     @Override
     public void addOrder(Long bookId) {
         try {
@@ -190,12 +196,44 @@ public class ServiceOrder extends Service implements IServiceOrder {
     }
 
     @Override
+    public Order cloneOrder(Long id) {
+        Order order = orders.getById(id);
+        Order tempOrder = null;
+        try {
+            if (order == null) {
+                notifyObservers("Нет ордера с таким Id");
+                return null;
+            }
+            tempOrder = order.clone();
+            tempOrder.setBook(order.getBook());
+            Long currentId = orders.getLastId();
+            tempOrder.setId(currentId + 1L);
+        } catch (CloneNotSupportedException ex) {
+            log.error("Клонирование не поддерживается данной сущьностью");
+            notifyObservers("Копирование не возможно");
+        }
+        return tempOrder;
+    }
+
+    @Override
     public List getRepo() {
-        return getRepositoryOrder().getOrders();
+        return orders.getOrders();
     }
 
     @Override
     public void setRepo(List list) {
-        getRepositoryOrder().setOrders(list);
+        orders.setOrders(list);
+        setLastId();
+    }
+
+    @Override
+    public void setLastId() {
+        Long id = 0L;
+        for (Order order : orders.getOrders()) {
+            if (order.getId() > id) {
+                id = order.getId();
+            }
+        }
+        orders.setLastId(id);
     }
 }

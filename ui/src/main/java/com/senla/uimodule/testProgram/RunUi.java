@@ -9,9 +9,9 @@ import java.text.ParseException;
 
 import static com.senla.uimodule.constant.UiConstants.*;
 
-public class Program {
+public class RunUi {
 
-    private static final Logger log = Logger.getLogger(Program.class);
+    private static final Logger log = Logger.getLogger(RunUi.class);
 
     private static ILoadData data;
     private static MenuController controller;
@@ -28,7 +28,6 @@ public class Program {
         } catch (ParseException e) {
             log.error("Проблемы при загрузке файлов" + e);
         }
-
         controller = new MenuController();
         controller.run(MENU_MAIN);
     }

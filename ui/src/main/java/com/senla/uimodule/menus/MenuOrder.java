@@ -49,6 +49,8 @@ public class MenuOrder extends Menu {
                     break;
                 case SET_ORDER_COMPLETE_BY_ID: setOrderCompleteById();
                     break;
+                case COPY_ORDER: copyOrder();
+                    break;
                 default:
                     Printer.print("\nнет такой операции, выбирите заново !!!\n");
                     createMenu();
@@ -76,6 +78,7 @@ public class MenuOrder extends Menu {
         Printer.println(SORT_ORDERS_BY_STATE + " - сортировать заказы по текущему состоянию");
         Printer.println(SORT_ORDERS_BY_PRICE + " - сортировать заказы по цене");
         Printer.println(SET_ORDER_COMPLETE_BY_ID + " - отметить заказы выполненым");
+        Printer.println(COPY_ORDER + " - копировать заказ");
         Printer.println(EXIT + " - завершение работы");
         Printer.print("выберите следующую операцию: ");
     }
@@ -194,4 +197,33 @@ public class MenuOrder extends Menu {
         Long id = scannerLong(getScanner());
         getEBookShop().setOrderCompleteById(id);
     }
+
+    private void copyOrder() {
+        Printer.println("Копирование заказа введите Id заказа который хотите копировать: ");
+        Long id = scannerLong(getScanner());
+        Order cloneOrder = getEBookShop().cloneOrder(id);
+        if (cloneOrder == null) {
+            Printer.println("Выбирите существующий Id");
+            copyOrder();
+        }else {
+            Printer.println("Скопированный заказ добавлен в список заказов");
+            Printer.println(cloneOrder.toString());
+            getEBookShop().addOrder(cloneOrder);
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

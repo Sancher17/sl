@@ -14,6 +14,8 @@ public interface IRepositoryOrder {
 
     List<Order> getOrders();
 
+    Long getLastId();
+
     void setOrders(List<Order> orders);
 
     void setLastId(Long lastId);

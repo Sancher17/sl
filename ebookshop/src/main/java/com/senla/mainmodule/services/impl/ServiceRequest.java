@@ -92,11 +92,23 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public List getRepo() {
-        return getRepositoryRequests().getRequests();
+        return requests.getRequests();
     }
 
     @Override
     public void setRepo(List list) {
-        getRepositoryRequests().setRequests(list);
+        requests.setRequests(list);
+        setLastId();
+    }
+
+    @Override
+    public void setLastId() {
+        Long id = 0L;
+        for (Request request : requests.getRequests()) {
+            if (request.getId() > id) {
+                id = request.getId();
+            }
+        }
+        requests.setLastId(id);
     }
 }

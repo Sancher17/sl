@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-public class Book implements Serializable{
+public class Book implements Serializable, Cloneable{
 
     private String nameBook;
     private Date dateOfPublication;
@@ -122,5 +122,10 @@ public class Book implements Serializable{
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    protected Book clone() throws CloneNotSupportedException {
+        return (Book) super.clone();
     }
 }

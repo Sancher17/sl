@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-public class TestProgram {
+public class RunMainModule {
 
     private static final Date DATE_TODAY = new Date();
     private static final Date DATE_TWO_MONTH_AGO = Date.from(ZonedDateTime.now().minusMonths(2).toInstant());
