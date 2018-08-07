@@ -84,4 +84,19 @@ public class ServiceRequest extends Service implements IServiceRequest {
         }
         return requestList;
     }
+
+
+    public IRepositoryRequest getRepositoryRequests() {
+        return requests;
+    }
+
+    @Override
+    public List getRepo() {
+        return getRepositoryRequests().getRequests();
+    }
+
+    @Override
+    public void setRepo(List list) {
+        getRepositoryRequests().setRequests(list);
+    }
 }

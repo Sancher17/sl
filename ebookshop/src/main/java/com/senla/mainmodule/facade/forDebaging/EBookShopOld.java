@@ -2,6 +2,7 @@ package com.senla.mainmodule.facade.forDebaging;
 
 import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.entities.Order;
+import com.senla.mainmodule.entities.Request;
 import com.senla.mainmodule.services.IServiceBook;
 import com.senla.mainmodule.services.IServiceOrder;
 import com.senla.mainmodule.services.IServiceRequest;
@@ -9,10 +10,14 @@ import com.senla.mainmodule.services.impl.ServiceBook;
 import com.senla.mainmodule.services.impl.ServiceOrder;
 import com.senla.mainmodule.services.impl.ServiceRequest;
 import com.senla.mainmodule.util.Printer;
-import com.senla.mainmodule.util.fileWorker.FileWorker;
+import com.senla.mainmodule.util.FileWorker;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.senla.mainmodule.constants.Constants.PATH_BOOK_DATA;
+import static com.senla.mainmodule.constants.Constants.PATH_ORDER_DATA;
+import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_DATA;
 
 public class EBookShopOld {
 
@@ -21,6 +26,7 @@ public class EBookShopOld {
     private IServiceRequest requestService;
     private FileWorker fileWorker;
     private static EBookShopOld instance = null;
+
     public static EBookShopOld getInstance() {
         if (instance == null) {
             instance = new EBookShopOld();
@@ -151,7 +157,9 @@ public class EBookShopOld {
     }
     public void printRequests() {
         printRequestHead();
-//        Printer.println(requestService.getRequests());
+        for (Request request: requestService.getAll()){
+            System.out.println(request);
+        }
     }
     public void sortRequestsByQuantity() {
         requestService.sortRequestsByQuantity();
@@ -164,28 +172,30 @@ public class EBookShopOld {
     }
 
     //read - write
-    //book
-    public void writeBookToFile() {
-        fileWorker.writeBookToFile();
+    public void writeBookToFileS(){
+        fileWorker.writeToFile(bookService, PATH_BOOK_DATA);
     }
-    public void readBookFromFile(String bookPathData) {
-        fileWorker.readBookFromFile(bookPathData);
+
+    public void readBookToFileS(){
+        fileWorker.readFromFile(bookService, PATH_BOOK_DATA);
     }
+
     //order
     public void writeOrderToFile() {
-        fileWorker.writeOrderToFile();
+        fileWorker.writeToFile(orderService, PATH_ORDER_DATA);
     }
-    public void readOrderFromFile(String orderPathData) {
-        fileWorker.readOrderFromFile(orderPathData);
 
+    public void readOrderFromFile() {
+        fileWorker.readFromFile(orderService, PATH_ORDER_DATA);
     }
     //request
     public void writeRequestToFile() {
-        fileWorker.writeRequestToFile();
+        fileWorker.writeToFile(requestService, PATH_REQUEST_DATA);
     }
-    public void readRequestFromFile(String requestPathData) {
-        fileWorker.readRequestFromFile(requestPathData);
+    public void readRequestFromFile() {
+        fileWorker.readFromFile(requestService, PATH_REQUEST_DATA);
     }
+
 
    // getters - setters
     public ServiceBook getBookService() {

@@ -18,12 +18,13 @@ public class MenuExit extends Menu {
     @Override
     public void createMenu() {
         finalizationProgram();
-        Printer.println("\nВсе данные сохранены в файлы ");
-        Printer.println("Программа завершена !!!");
+        printMenu();
+        System.exit(0);
     }
 
     @Override
     public void printMenu() {
-
+        Printer.println("\nВсе данные сохранены в файлы ");
+        Printer.println("Программа завершена !!!");
     }
 }

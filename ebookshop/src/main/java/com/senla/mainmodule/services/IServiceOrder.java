@@ -6,7 +6,7 @@ import com.senla.mainmodule.repositories.IRepositoryOrder;
 import java.util.Date;
 import java.util.List;
 
-public interface IServiceOrder {
+public interface IServiceOrder extends IService {
 
     void addOrder(Long bookId);
 
@@ -39,5 +39,4 @@ public interface IServiceOrder {
     Order getOrderById(Long id);
 
     IRepositoryOrder getRepositoryOrder();
-
 }

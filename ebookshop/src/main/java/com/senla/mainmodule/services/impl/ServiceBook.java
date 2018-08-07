@@ -15,6 +15,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.senla.mainmodule.constants.Constants.*;
+
 public class ServiceBook extends Service implements IServiceBook {
 
     private static final Logger log = Logger.getLogger(ServiceBook.class);
@@ -35,14 +37,16 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public void addBook(String name, Date datePublication, Date dateAddedBookToStore, Double price, String description, Boolean isAvailable) {
-        Book newBook = new Book(name, datePublication, dateAddedBookToStore, price, description, isAvailable);
+        Boolean isOld = false;
+        Book newBook = new Book(name, datePublication, dateAddedBookToStore, price, description, isAvailable, isOld);
         books.add(newBook);
         notifyObservers("Добавлена книга: " + newBook);
 
-        //проверка по запросам, если Name книги совпадает то в запрос помечается как выполненный (requireIsCompleted = true)
-        for (Request request : repositoryRequest.getRequests()) {
-            if (newBook.getNameBook().equals(request.getRequireNameBook())) {
-                request.setRequireIsCompleted(true);
+        if (ALLOW_MARK_REQUESTS){
+            for (Request request : repositoryRequest.getRequests()) {
+                if (newBook.getNameBook().equals(request.getRequireNameBook())) {
+                    request.setRequireIsCompleted(true);
+                }
             }
         }
     }
@@ -86,10 +90,10 @@ public class ServiceBook extends Service implements IServiceBook {
         return books.getBooks();
     }
 
-    @Override
-    public Book getBookById(Long id) {
-        return books.getById(id);
-    }
+//    @Override
+//    public Book getBookById(Long id) {
+//        return books.getById(id);
+//    }
 
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByDate() {
@@ -136,6 +140,30 @@ public class ServiceBook extends Service implements IServiceBook {
     @Override
     public IRepositoryBook getRepositoryBook() {
         return books;
+    }
+
+    @Override
+    public void markBookOld(){
+        if (BOOK_IS_OLD != null){
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.MONTH, -BOOK_IS_OLD);
+            Date markOld = cal.getTime();
+            for(Book book: books.getBooks()){
+                if (book.getDateAddedBookToStore().before(markOld)){
+                    book.setOld(true);
+                }
+            }
+        }
+    }
+
+    @Override
+    public List getRepo() {
+        return getRepositoryBook().getBooks();
+    }
+
+    @Override
+    public void setRepo(List list) {
+        getRepositoryBook().setBooks(list);
     }
 
     private void sortByDateAddedToShop() {

@@ -1,10 +1,11 @@
 package com.senla.mainmodule.entities;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-public class Book  {
+public class Book implements Serializable{
 
     private String nameBook;
     private Date dateOfPublication;
@@ -13,16 +14,18 @@ public class Book  {
     private Boolean isAvailable;
     private String description;
     private Long id;
+    private Boolean isOld;
 
     public Book(){}
 
-    public Book(String nameBook, Date dateOfPublication, Date dateAddedBookToStore, Double price, String description, Boolean isAvailable) {
+    public Book(String nameBook, Date dateOfPublication, Date dateAddedBookToStore, Double price, String description, Boolean isAvailable, Boolean isOld) {
         this.nameBook = nameBook;
         this.dateOfPublication = dateOfPublication;
         this.price = price;
         this.isAvailable = isAvailable;
         this.dateAddedBookToStore = dateAddedBookToStore;
         this.description = description;
+        this.isOld = isOld;
     }
 
     //getters setters
@@ -82,6 +85,14 @@ public class Book  {
         this.id = id;
     }
 
+    public Boolean getOld() {
+        return isOld;
+    }
+
+    public void setOld(Boolean old) {
+        isOld = old;
+    }
+
     private String convertDate(Date date) {
         return new SimpleDateFormat("dd.MM.Y").format(date.getTime());
     }
@@ -96,7 +107,8 @@ public class Book  {
                 price + "/" +
                 isAvailable + "/" +
                 convertDate(dateAddedBookToStore) +"/"+
-                description;
+                description+"/"+
+                isOld;
     }
 
     @Override

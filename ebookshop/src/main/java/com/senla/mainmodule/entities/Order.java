@@ -1,10 +1,11 @@
 package com.senla.mainmodule.entities;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-public class Order {
+public class Order implements Serializable {
 
     private Date dateOfStartedOrder;
     private Date dateOfCompletedOrder;

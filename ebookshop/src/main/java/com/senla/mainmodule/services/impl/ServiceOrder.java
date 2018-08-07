@@ -188,4 +188,14 @@ public class ServiceOrder extends Service implements IServiceOrder {
     public IRepositoryOrder getRepositoryOrder() {
         return orders;
     }
+
+    @Override
+    public List getRepo() {
+        return getRepositoryOrder().getOrders();
+    }
+
+    @Override
+    public void setRepo(List list) {
+        getRepositoryOrder().setOrders(list);
+    }
 }

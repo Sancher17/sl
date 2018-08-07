@@ -9,14 +9,18 @@ import com.senla.mainmodule.services.IServiceRequest;
 import com.senla.mainmodule.services.impl.ServiceBook;
 import com.senla.mainmodule.services.impl.ServiceOrder;
 import com.senla.mainmodule.services.impl.ServiceRequest;
-import com.senla.mainmodule.util.fileWorker.FileWorker;
+import com.senla.mainmodule.util.FileWorker;
 
 import java.util.Date;
 import java.util.List;
 
+import static com.senla.mainmodule.constants.Constants.PATH_BOOK_DATA;
+import static com.senla.mainmodule.constants.Constants.PATH_ORDER_DATA;
+import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_DATA;
+
 public class EBookShop {
 
-    private IServiceBook bookService = ServiceBook.getInstance();
+    private IServiceBook bookService;
     private IServiceOrder orderService;
     private IServiceRequest requestService;
     private FileWorker fileWorker;
@@ -29,6 +33,7 @@ public class EBookShop {
     }
 
     private EBookShop() {
+        this.bookService = ServiceBook.getInstance();
         this.orderService = ServiceOrder.getInstance();
         this.requestService = ServiceRequest.getInstance();
         this.fileWorker = new FileWorker();
@@ -127,25 +132,26 @@ public class EBookShop {
 
     //read - write
     //book
-    public void writeBookToFile() {
-        fileWorker.writeBookToFile();
+    public void writeBookToFile(){
+        fileWorker.writeToFile(bookService, PATH_BOOK_DATA);
     }
-    public void readBookFromFile(String bookPathData) {
-        fileWorker.readBookFromFile(bookPathData);
+    public void readBookFromFile(){
+        fileWorker.readFromFile(bookService, PATH_BOOK_DATA);
     }
+
     //order
     public void writeOrderToFile() {
-        fileWorker.writeOrderToFile();
+        fileWorker.writeToFile(orderService, PATH_ORDER_DATA);
     }
-    public void readOrderFromFile(String orderPathData) {
-        fileWorker.readOrderFromFile(orderPathData);
+    public void readOrderFromFile() {
+        fileWorker.readFromFile(orderService, PATH_ORDER_DATA);
     }
     //request
     public void writeRequestToFile() {
-        fileWorker.writeRequestToFile();
+        fileWorker.writeToFile(requestService, PATH_REQUEST_DATA);
     }
-    public void readRequestFromFile(String requestPathData) {
-        fileWorker.readRequestFromFile(requestPathData);
+    public void readRequestFromFile() {
+        fileWorker.readFromFile(requestService, PATH_REQUEST_DATA);
     }
 
    // getters - setters

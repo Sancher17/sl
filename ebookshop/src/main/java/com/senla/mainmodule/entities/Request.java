@@ -1,6 +1,8 @@
 package com.senla.mainmodule.entities;
 
-public class Request {
+import java.io.Serializable;
+
+public class Request implements Serializable {
 
     private String requireNameBook;
     private Boolean requireIsCompleted;

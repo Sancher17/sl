@@ -167,6 +167,6 @@ public class MenuBook extends Menu {
     }
 
     private void printBookHead() {
-        Printer.println("id/Название/дата публикации/цена/наличие/дата добавления в магазин/описание");
+        Printer.println("id/Название/дата публикации/цена/наличие/дата добавления в магазин/описание/залежавсееся");
     }
 }

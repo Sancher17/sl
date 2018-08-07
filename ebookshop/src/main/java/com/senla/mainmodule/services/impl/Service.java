@@ -25,4 +25,5 @@ public abstract class Service extends Observable {
             System.out.println(arg);
         }
     }
+
 }

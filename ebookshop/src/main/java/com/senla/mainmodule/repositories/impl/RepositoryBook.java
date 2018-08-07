@@ -69,4 +69,5 @@ public class RepositoryBook implements IRepositoryBook {
     public void setLastId(Long lastId) {
         this.lastId = lastId;
     }
+
 }

@@ -1,34 +1,38 @@
 package com.senla.propertiesmodule;
 
-import com.senla.mainmodule.constants.Constants;
+import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import static com.senla.mainmodule.constants.Constants.*;
+import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FILE_PROPERTIES;
 
 public class Prop {
 
-    public static void main(String[] args) {
+    private static final Logger log = Logger.getLogger(Prop.class);
 
-        FileInputStream fis;
-        Properties property = new Properties();
-        Constants constants = new Constants();
+    private FileInputStream fis;
+    private Properties property = new Properties();
 
-
+    private void loadProperties() {
         try {
-            fis = new FileInputStream("properties\\src\\main\\res\\config.properties");
+            fis = new FileInputStream(PATH_FILE_PROPERTIES);
             property.load(fis);
-
-//            Integer in = 1;
-            Integer in = constants.MARK_BOOK_OLD;
-            System.out.println(in);
-            constants.MARK_BOOK_OLD = Integer.valueOf(property.getProperty("MARK_BOOK_OLD"));
-            System.out.println(constants.MARK_BOOK_OLD);
-
-
         } catch (IOException e) {
             System.err.println("ОШИБКА: Файл свойств отсуствует!");
+            log.error("Файл свойств отсуствует!" + e);
         }
+    }
+
+    public void bookIsOld() {
+        loadProperties();
+        BOOK_IS_OLD = Integer.valueOf(property.getProperty("BOOK_IS_OLD"));
+    }
+
+    public void allowMArkRequest() {
+        loadProperties();
+        ALLOW_MARK_REQUESTS = Boolean.valueOf(property.getProperty("ALLOW_MARK_REQUESTS"));
     }
 }

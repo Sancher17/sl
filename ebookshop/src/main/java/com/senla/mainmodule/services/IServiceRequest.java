@@ -4,7 +4,7 @@ import com.senla.mainmodule.entities.Request;
 
 import java.util.List;
 
-public interface IServiceRequest {
+public interface IServiceRequest extends IService {
 
     void addBookRequest(String nameRequireBook);
 
