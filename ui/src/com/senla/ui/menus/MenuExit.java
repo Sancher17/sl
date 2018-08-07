@@ -20,6 +20,7 @@ public class MenuExit extends Menu {
         finalizationProgram();
         Printer.println("\nВсе данные сохранены в файлы ");
         Printer.println("Программа завершена !!!");
+        System.exit(0);
     }
 
     @Override
