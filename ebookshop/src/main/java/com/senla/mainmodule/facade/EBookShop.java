@@ -9,7 +9,7 @@ import com.senla.mainmodule.services.IServiceRequest;
 import com.senla.mainmodule.services.impl.ServiceBook;
 import com.senla.mainmodule.services.impl.ServiceOrder;
 import com.senla.mainmodule.services.impl.ServiceRequest;
-import com.senla.mainmodule.util.FileWorker;
+import com.senla.mainmodule.util.fileworker.FileWorker;
 import com.senla.propertiesmodule.PropertyHolder;
 
 import java.util.Date;
@@ -43,6 +43,7 @@ public class EBookShop {
 
     public void checkProperties(){
         PropertyHolder propertyHolder = new PropertyHolder();
+        propertyHolder.pathsForFiles();
         propertyHolder.allowMArkRequest();
         propertyHolder.bookIsOld();
     }
@@ -152,6 +153,8 @@ public class EBookShop {
     public void readBookFromFile(){
         fileWorker.readFromFile(bookService, PATH_BOOK_DATA);
     }
+    public void exportBookToCsv(){ fileWorker.exportBookCsv();}
+    public void importBookFromCsv(){ fileWorker.importBookCsv(); }
 
     //order
     public void writeOrderToFile() {
@@ -160,6 +163,9 @@ public class EBookShop {
     public void readOrderFromFile() {
         fileWorker.readFromFile(orderService, PATH_ORDER_DATA);
     }
+    public void exportOrderToCsv(){ fileWorker.exportOrderCsv();}
+    public void importOrderFromCsv(){ fileWorker.importOrderCsv(); }
+
     //request
     public void writeRequestToFile() {
         fileWorker.writeToFile(requestService, PATH_REQUEST_DATA);
@@ -167,6 +173,8 @@ public class EBookShop {
     public void readRequestFromFile() {
         fileWorker.readFromFile(requestService, PATH_REQUEST_DATA);
     }
+    public void exportRequestToCsv(){ fileWorker.exportRequestCsv();}
+    public void importRequestFromCsv(){ fileWorker.importRequestCsv(); }
 
    // getters - setters
     public ServiceBook getBookService() {

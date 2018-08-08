@@ -51,6 +51,10 @@ public class MenuOrder extends Menu {
                     break;
                 case COPY_ORDER: copyOrder();
                     break;
+                case EXPORT_ORDER: exportOrder();
+                    break;
+                case IMPORT_ORDER: importOrder();
+                    break;
                 default:
                     Printer.print("\nнет такой операции, выбирите заново !!!\n");
                     createMenu();
@@ -79,6 +83,8 @@ public class MenuOrder extends Menu {
         Printer.println(SORT_ORDERS_BY_PRICE + " - сортировать заказы по цене");
         Printer.println(SET_ORDER_COMPLETE_BY_ID + " - отметить заказы выполненым");
         Printer.println(COPY_ORDER + " - копировать заказ");
+        Printer.println(EXPORT_ORDER + " - экспорт заказов");
+        Printer.println(IMPORT_ORDER + " - импорт заказов");
         Printer.println(EXIT + " - завершение работы");
         Printer.print("выберите следующую операцию: ");
     }
@@ -210,6 +216,16 @@ public class MenuOrder extends Menu {
             Printer.println(cloneOrder.toString());
             getEBookShop().addOrder(cloneOrder);
         }
+    }
+
+    private void exportOrder() {
+        Printer.println("Экспортировать все записи заказов");
+        getEBookShop().exportOrderToCsv();
+    }
+
+    private void importOrder() {
+        Printer.println("Импортировать записи заказов");
+        getEBookShop().importOrderFromCsv();
     }
 }
 

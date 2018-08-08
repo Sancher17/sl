@@ -10,7 +10,7 @@ import com.senla.mainmodule.services.impl.ServiceBook;
 import com.senla.mainmodule.services.impl.ServiceOrder;
 import com.senla.mainmodule.services.impl.ServiceRequest;
 import com.senla.mainmodule.util.Printer;
-import com.senla.mainmodule.util.FileWorker;
+import com.senla.mainmodule.util.fileworker.FileWorker;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

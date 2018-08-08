@@ -91,7 +91,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
     }
 
     @Override
-    public List getRepo() {
+    public List<Request> getRepo() {
         return requests.getRequests();
     }
 

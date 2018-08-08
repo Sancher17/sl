@@ -24,6 +24,8 @@ public class UiConstants {
     public static final int PRINT_BOOKS_PERIOD_MORE_SIX_MONTH_SORTED_BY_DATE = 8;
     public static final int PRINT_BOOKS_PERIOD_MORE_SIX_MONTH_SORTED_BY_PRICE = 9;
     public static final int PRINT_BOOK_DESCRIPTION = 10;
+    public static final int EXPORT_BOOK = 11;
+    public static final int IMPORT_BOOK = 12;
 
     //order
     public static final int ADD_ORDER = 1;
@@ -40,6 +42,8 @@ public class UiConstants {
     public static final int SORT_ORDERS_BY_PRICE = 12;
     public static final int SET_ORDER_COMPLETE_BY_ID = 13;
     public static final int COPY_ORDER = 14;
+    public static final int EXPORT_ORDER = 15;
+    public static final int IMPORT_ORDER = 16;
 
     //request
     public static final int ADD_REQUEST = 1;
@@ -48,6 +52,8 @@ public class UiConstants {
     public static final int PRINT_NOT_COMPLETED_REQUESTS = 4;
     public static final int SORT_REQUEST_BY_ALPHABET = 5;
     public static final int SORT_REQUEST_BY_QUANTITY = 6;
+    public static final int EXPORT_REQUEST = 7;
+    public static final int IMPORT_REQUEST = 8;
 
     //files_paths
     public static final String PATH_BOOK_DATA = "G:\\Java\\Senla3\\aliaksandr-kavalenka\\ebookshop\\src\\main\\java\\com\\senla\\mainmodule\\bookData.txt";

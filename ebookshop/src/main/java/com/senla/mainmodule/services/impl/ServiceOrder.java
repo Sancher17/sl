@@ -216,7 +216,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
     }
 
     @Override
-    public List getRepo() {
+    public List<Order> getRepo() {
         return orders.getOrders();
     }
 

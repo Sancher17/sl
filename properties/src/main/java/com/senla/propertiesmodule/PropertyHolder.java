@@ -13,7 +13,6 @@ import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FILE
 public class PropertyHolder {
 
     private static final Logger log = Logger.getLogger(PropertyHolder.class);
-
     private Properties property = new Properties();
 
     private void loadProperties() {
@@ -35,5 +34,12 @@ public class PropertyHolder {
     public void allowMArkRequest() {
         loadProperties();
         ALLOW_MARK_REQUESTS = Boolean.valueOf(property.getProperty("ALLOW_MARK_REQUESTS"));
+    }
+
+    public void pathsForFiles(){
+        loadProperties();
+        PATH_BOOK_DATA = property.getProperty("PATH_BOOK_FILE");
+        PATH_ORDER_DATA = property.getProperty("PATH_ORDER_FILE");
+        PATH_REQUEST_DATA = property.getProperty("PATH_REQUEST_FILE");
     }
 }

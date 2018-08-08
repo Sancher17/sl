@@ -157,7 +157,7 @@ public class ServiceBook extends Service implements IServiceBook {
     }
 
     @Override
-    public List getRepo() {
+    public List<Book> getRepo() {
         return books.getBooks();
     }
 

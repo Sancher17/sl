@@ -33,6 +33,10 @@ public class MenuRequest extends Menu {
                     break;
                 case SORT_REQUEST_BY_QUANTITY: getEBookShop().sortRequestsByQuantity();
                     break;
+                case EXPORT_REQUEST: exportRequest();
+                    break;
+                case IMPORT_REQUEST: importRequest();
+                    break;
                 default:
                     Printer.print("\nнет такой операции, выбирите заново !!!\n");
                     createMenu();
@@ -53,6 +57,8 @@ public class MenuRequest extends Menu {
         Printer.println(PRINT_NOT_COMPLETED_REQUESTS + " - вывести на экран все не выполненые запросы");
         Printer.println(SORT_REQUEST_BY_ALPHABET + " - сортировать запросы по алфавиту");
         Printer.println(SORT_REQUEST_BY_QUANTITY + " - сортировать запросы по количеству");
+        Printer.println(EXPORT_REQUEST + " - экспорт запросов");
+        Printer.println(IMPORT_REQUEST + " - импорт запросов");
         Printer.println(EXIT + " - завершение работы");
         Printer.print("выберите следующую операцию: ");
     }
@@ -89,5 +95,15 @@ public class MenuRequest extends Menu {
 
     private void printRequestHead(){
         Printer.println("id/Название книги/удовлетворен запрос/количество запросов");
+    }
+
+    private void exportRequest() {
+        Printer.println("Экспортировать все записи заказов");
+        getEBookShop().exportRequestToCsv();
+    }
+
+    private void importRequest() {
+        Printer.println("Импортировать записи заказов");
+        getEBookShop().importRequestFromCsv();
     }
 }
