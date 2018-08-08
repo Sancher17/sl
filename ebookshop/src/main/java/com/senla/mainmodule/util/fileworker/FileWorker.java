@@ -1,30 +1,27 @@
 package com.senla.mainmodule.util.fileworker;
 
 import com.senla.mainmodule.services.IService;
-import com.senla.mainmodule.util.fileworker.csvworker.exports.ExportBookToCsv;
-import com.senla.mainmodule.util.fileworker.csvworker.exports.ExportOrderToCsv;
-import com.senla.mainmodule.util.fileworker.csvworker.exports.ExportRequestToCsv;
-import com.senla.mainmodule.util.fileworker.csvworker.exports.IExportCsv;
-import com.senla.mainmodule.util.fileworker.csvworker.imports.ImportBookFromCsv;
-import com.senla.mainmodule.util.fileworker.csvworker.imports.ImportCsv;
-import com.senla.mainmodule.util.fileworker.csvworker.imports.ImportOrderFromCsv;
-import com.senla.mainmodule.util.fileworker.csvworker.imports.ImportRequestFromCsv;
+import com.senla.mainmodule.util.fileworker.csvworker.exports.*;
+import com.senla.mainmodule.util.fileworker.csvworker.imports.*;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import static com.senla.mainmodule.constants.Constants.*;
 
 public class FileWorker {
 
-    private IExportCsv exportBookToCsv = new ExportBookToCsv();
+    private Export exportBookToCsv = new ExportBookToCsv();
     private IExportCsv exportOrderToCsv = new ExportOrderToCsv();
     private IExportCsv exportRequestToCsv = new ExportRequestToCsv();
 
-    private ImportCsv importBookFromCsv = new ImportBookFromCsv();
-    private ImportCsv importOrderFromCsv = new ImportOrderFromCsv();
-    private ImportCsv importRequestFromCsv = new ImportRequestFromCsv();
+    private IImportCsv importBookFromCsv = new ImportBookFromCsv();
+    private IImportCsv importOrderFromCsv = new ImportOrderFromCsv();
+    private IImportCsv importRequestFromCsv = new ImportRequestFromCsv();
 
 
     private static final Logger log = Logger.getLogger(FileWorker.class);

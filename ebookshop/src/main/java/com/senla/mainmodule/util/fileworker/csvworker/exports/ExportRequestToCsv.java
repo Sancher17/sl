@@ -4,14 +4,11 @@ import com.senla.mainmodule.entities.Request;
 import com.senla.mainmodule.services.IService;
 import com.senla.mainmodule.services.impl.ServiceRequest;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.List;
 
-public class ExportRequestToCsv implements IExportCsv {
+public class ExportRequestToCsv extends Export {
 
-    public void exportToFile(String path) {
+    public String prepareData(){
         List<Request> requests = readFromRepository();
         StringBuilder sb = new StringBuilder();
         for (Request request : requests) {
@@ -21,11 +18,7 @@ public class ExportRequestToCsv implements IExportCsv {
             sb.append(request.getRequireQuantity()).append(";");
             sb.append("\n");
         }
-        try (PrintWriter pw = new PrintWriter(new File(path))) {
-            pw.write(sb.toString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        return sb.toString();
     }
 
     private List<Request> readFromRepository(){

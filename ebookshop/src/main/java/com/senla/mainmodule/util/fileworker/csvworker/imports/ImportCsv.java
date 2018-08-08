@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class ImportCsv {
+public abstract class ImportCsv implements IImportCsv {
 
     private List<String> tempDataString = new ArrayList<>();
 
