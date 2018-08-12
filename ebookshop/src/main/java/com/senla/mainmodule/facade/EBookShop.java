@@ -1,5 +1,8 @@
 package com.senla.mainmodule.facade;
 
+import com.senla.dataworker.startModule.DataWorker;
+import com.senla.dataworker.startModule.IDataWorker;
+import com.senla.dataworker.writefile.WriteToCsv;
 import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.entities.Order;
 import com.senla.mainmodule.entities.Request;
@@ -15,9 +18,7 @@ import com.senla.propertiesmodule.PropertyHolder;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.PATH_BOOK_DATA;
-import static com.senla.mainmodule.constants.Constants.PATH_ORDER_DATA;
-import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_DATA;
+import static com.senla.mainmodule.constants.Constants.*;
 
 public class EBookShop {
 
@@ -25,6 +26,7 @@ public class EBookShop {
     private IServiceOrder orderService;
     private IServiceRequest requestService;
     private FileWorker fileWorker;
+    private IDataWorker csvWorker;
 
     private static EBookShop instance = null;
     public static EBookShop getInstance() {
@@ -39,6 +41,7 @@ public class EBookShop {
         this.orderService = ServiceOrder.getInstance();
         this.requestService = ServiceRequest.getInstance();
         this.fileWorker = new FileWorker();
+        this.csvWorker = new DataWorker();
     }
 
     public void checkProperties(){
@@ -148,33 +151,40 @@ public class EBookShop {
     //read - write
     //book
     public void writeBookToFile(){
-        fileWorker.writeToFile(bookService, PATH_BOOK_DATA);
+        fileWorker.writeToFile(bookService, PATH_BOOK_DATA_TEST);
     }
     public void readBookFromFile(){
-        fileWorker.readFromFile(bookService, PATH_BOOK_DATA);
+        fileWorker.readFromFile(bookService, PATH_BOOK_DATA_TEST);
     }
     public void exportBookToCsv(){ fileWorker.exportBookCsv();}
     public void importBookFromCsv(){ fileWorker.importBookCsv(); }
 
     //order
     public void writeOrderToFile() {
-        fileWorker.writeToFile(orderService, PATH_ORDER_DATA);
+        fileWorker.writeToFile(orderService, PATH_ORDER_DATA_TEST);
     }
     public void readOrderFromFile() {
-        fileWorker.readFromFile(orderService, PATH_ORDER_DATA);
+        fileWorker.readFromFile(orderService, PATH_ORDER_DATA_TEST);
     }
     public void exportOrderToCsv(){ fileWorker.exportOrderCsv();}
     public void importOrderFromCsv(){ fileWorker.importOrderCsv(); }
 
     //request
     public void writeRequestToFile() {
-        fileWorker.writeToFile(requestService, PATH_REQUEST_DATA);
+        fileWorker.writeToFile(requestService, PATH_REQUEST_DATA_TEST);
     }
     public void readRequestFromFile() {
-        fileWorker.readFromFile(requestService, PATH_REQUEST_DATA);
+        fileWorker.readFromFile(requestService, PATH_REQUEST_DATA_TEST);
     }
     public void exportRequestToCsv(){ fileWorker.exportRequestCsv();}
     public void importRequestFromCsv(){ fileWorker.importRequestCsv(); }
+
+    //work with CSV
+    public void writeToCsv(List list){
+//        csvWorker.writeToCsv(list);
+
+    }
+
 
    // getters - setters
     public ServiceBook getBookService() {

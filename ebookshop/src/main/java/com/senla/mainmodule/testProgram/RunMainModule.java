@@ -149,19 +149,59 @@ public class RunMainModule {
 
         System.out.println("\nREAD - WRITE block ++++++++++++++++++++++++++++++++++++++++++");
 
-        System.out.println("\nЧтение - запись BOOK");
-        eBookShop.writeBookToFileS();
-        eBookShop.readBookToFileS();
-        eBookShop.printBooks();
+//        System.out.println("\nЧтение - запись BOOK");
+//        eBookShop.writeBookToFileS();
+//        eBookShop.readBookToFileS();
+//        eBookShop.printBooks();
+//
+//        System.out.println("\nЧтение - запись ORDER");
+//        eBookShop.writeOrderToFile();
+//        eBookShop.readOrderFromFile();
+//        eBookShop.printOrders();
+//
+//        System.out.println("\nЧтение - запись REQUEST");
+//        eBookShop.writeRequestToFile();
+//        eBookShop.readRequestFromFile();
+//        eBookShop.printRequests();
+//
 
-        System.out.println("\nЧтение - запись ORDER");
-        eBookShop.writeOrderToFile();
-        eBookShop.readOrderFromFile();
-        eBookShop.printOrders();
+        System.out.println("\nAnnotations block ++++++++++++++++++++++++++++++++++++++++++");
+        //book
+        eBookShop.writeBookToCsv();
+        eBookShop.writeOrderToCsv();
+        eBookShop.writeRequestToCsv();
 
-        System.out.println("\nЧтение - запись REQUEST");
-        eBookShop.writeRequestToFile();
-        eBookShop.readRequestFromFile();
-        eBookShop.printRequests();
+
+
+
+
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

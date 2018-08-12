@@ -1,19 +1,33 @@
 package com.senla.mainmodule.entities;
 
+
+import com.senla.dataworker.annotations.CsvEntity;
+import com.senla.dataworker.annotations.CsvProperty;
+import com.senla.dataworker.annotations.PropertyType;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+@CsvEntity(fileName = "ebookshop\\src\\main\\java\\com\\senla\\mainmodule\\book.csv", valueSeparator =";")
 public class Book implements Serializable, Cloneable{
 
-    private String nameBook;
-    private Date dateOfPublication;
-    private Date dateAddedBookToStore;
-    private Double price;
-    private Boolean isAvailable;
-    private String description;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Long id;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private String nameBook;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private Date dateOfPublication;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private Double price;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private Date dateAddedBookToStore;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private Boolean isAvailable;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private String description;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Boolean isOld;
 
     public Book(){}

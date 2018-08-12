@@ -23,12 +23,12 @@ public class FileWorker {
     private IImportCsv importOrderFromCsv = new ImportOrderFromCsv();
     private IImportCsv importRequestFromCsv = new ImportRequestFromCsv();
 
-
     private static final Logger log = Logger.getLogger(FileWorker.class);
 
 
     /** File */
     public void writeToFile(IService service, String path) {
+        String pat = path;
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path))) {
             oos.writeObject(service.getRepo());
         } catch (IOException e) {

@@ -90,10 +90,6 @@ public class ServiceBook extends Service implements IServiceBook {
         return books.getBooks();
     }
 
-//    @Override
-//    public Book getBookById(Long id) {
-//        return books.getById(id);
-//    }
 
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByDate() {
