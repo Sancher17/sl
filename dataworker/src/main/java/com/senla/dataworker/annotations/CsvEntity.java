@@ -14,4 +14,6 @@ public @interface CsvEntity {
 
     String valueSeparator();
 
+    String entityId();
+
 }

@@ -6,7 +6,5 @@ public interface IDataWorker <T> {
 
     void writeToCsv(List<T> list);
 
-    void readFromCsc();
-
-    void writeBookToCsv(List<T> list);
+    void readFromScv(String path);
 }

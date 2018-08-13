@@ -1,17 +1,27 @@
 package com.senla.mainmodule.entities;
 
+import com.senla.dataworker.annotations.CsvEntity;
+import com.senla.dataworker.annotations.CsvProperty;
+import com.senla.dataworker.annotations.PropertyType;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+@CsvEntity(fileName = "orders.csv", valueSeparator =";", entityId = "id")
 public class Order implements Serializable, Cloneable {
 
-    private Date dateOfStartedOrder;
-    private Date dateOfCompletedOrder;
-    private Boolean isCompletedOrder;
-    private Book book;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Long id;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private Date dateOfStartedOrder;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private Date dateOfCompletedOrder;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private Boolean isCompletedOrder;
+    @CsvProperty(propertyType = PropertyType.CompositeProperty)
+    private Book book;
 
     public Order(Date dateOfStartedOrder, Book book) {
         this.dateOfStartedOrder = dateOfStartedOrder;

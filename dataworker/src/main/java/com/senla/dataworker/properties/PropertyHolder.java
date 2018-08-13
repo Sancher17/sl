@@ -16,9 +16,8 @@ public class PropertyHolder {
 
     public void pathsForFiles(){
         loadProperties();
-        PATH_BOOK_CSV = property.getProperty("PATH_BOOK_FILE");
-        PATH_ORDER_CSV = property.getProperty("PATH_ORDER_FILE");
-        PATH_REQUEST_CSV = property.getProperty("PATH_REQUEST_FILE");
+        PATH_FOR_CSV = property.getProperty("PATH_FOR_FILES");
+
     }
 
     private void loadProperties() {

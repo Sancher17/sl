@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-@CsvEntity(fileName = "ebookshop\\src\\main\\java\\com\\senla\\mainmodule\\book.csv", valueSeparator =";")
+@CsvEntity(fileName = "books.csv", valueSeparator =";", entityId = "id")
 public class Book implements Serializable, Cloneable{
 
     @CsvProperty(propertyType = PropertyType.SimpleProperty)

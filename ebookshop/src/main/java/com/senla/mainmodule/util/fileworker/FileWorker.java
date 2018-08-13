@@ -16,8 +16,8 @@ import static com.senla.mainmodule.constants.Constants.*;
 public class FileWorker {
 
     private Export exportBookToCsv = new ExportBookToCsv();
-    private IExportCsv exportOrderToCsv = new ExportOrderToCsv();
-    private IExportCsv exportRequestToCsv = new ExportRequestToCsv();
+    private Export exportOrderToCsv = new ExportOrderToCsv();
+    private Export exportRequestToCsv = new ExportRequestToCsv();
 
     private IImportCsv importBookFromCsv = new ImportBookFromCsv();
     private IImportCsv importOrderFromCsv = new ImportOrderFromCsv();

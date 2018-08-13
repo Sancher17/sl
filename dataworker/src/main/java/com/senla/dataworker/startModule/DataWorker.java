@@ -1,19 +1,15 @@
 package com.senla.dataworker.startModule;
 
 import com.senla.dataworker.properties.PropertyHolder;
-import com.senla.dataworker.writefile.IWriteToCsv;
-import com.senla.dataworker.writefile.WriteBookToCsv;
-import com.senla.dataworker.writefile.WriteToCsv;
+import com.senla.dataworker.writefile.*;
 
 import java.util.List;
 
+import static com.senla.dataworker.constants.ConstantsDataWorker.*;
+
 public class DataWorker implements IDataWorker {
 
-    private IWriteToCsv writeToCsv = new WriteBookToCsv();
-
-//    PATH_BOOK_FILE
-//    PATH_ORDER_FILE
-//    PATH_REQUEST_FILE
+    private IWriteToCsv writeToCsv = new WriteToCsv();
 
     public DataWorker() {
         initModule();
@@ -24,14 +20,13 @@ public class DataWorker implements IDataWorker {
         properties.pathsForFiles();
     }
 
-
     @Override
-    public void readFromCsc() {
-
+    public void writeToCsv(List list) {
+        writeToCsv.write(list);
     }
 
     @Override
-    public void writeBookToCsv(List list) {
-        writeToCsv.writeToCsv(list, );
+    public void readFromScv(String path) {
+        // TODO: 13.08.2018
     }
 }

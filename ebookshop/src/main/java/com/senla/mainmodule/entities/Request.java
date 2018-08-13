@@ -1,13 +1,23 @@
 package com.senla.mainmodule.entities;
 
+import com.senla.dataworker.annotations.CsvEntity;
+import com.senla.dataworker.annotations.CsvProperty;
+import com.senla.dataworker.annotations.PropertyType;
+
 import java.io.Serializable;
 
+@CsvEntity(fileName = "requests.csv", valueSeparator =";", entityId = "id")
 public class Request implements Serializable {
 
-    private String requireNameBook;
-    private Boolean requireIsCompleted;
-    private Integer requireQuantity;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Long id;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private String requireNameBook;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private Boolean requireIsCompleted;
+    @CsvProperty(propertyType = PropertyType.SimpleProperty)
+    private Integer requireQuantity;
+
 
     public Request() {
     }
