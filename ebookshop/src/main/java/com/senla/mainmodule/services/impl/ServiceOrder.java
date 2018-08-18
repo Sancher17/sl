@@ -1,7 +1,9 @@
 package com.senla.mainmodule.services.impl;
 
 
+import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.entities.Order;
+import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryBook;
 import com.senla.mainmodule.repositories.IRepositoryOrder;
 import com.senla.mainmodule.repositories.impl.RepositoryBook;
@@ -43,7 +45,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
     @Override
     public void addOrder(Long bookId) {
         try {
-            Order newOrder = new Order(repositoryBook.getById(bookId));
+            Order newOrder = new Order((Book) repositoryBook.getById(bookId));
             orders.add(newOrder);
             notifyObservers("Добавлен заказ: " + newOrder);
         } catch (NullPointerException e) {
@@ -55,7 +57,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
     @Override
     public void addOrder(Date startOrder, Long bookId) {
         try {
-            Order newOrder = new Order(startOrder, repositoryBook.getById(bookId));
+            Order newOrder = new Order(startOrder, (Book) repositoryBook.getById(bookId));
             orders.add(newOrder);
             notifyObservers("Добавлен заказ: " + newOrder);
         } catch (NullPointerException e) {
@@ -80,8 +82,9 @@ public class ServiceOrder extends Service implements IServiceOrder {
         cal.add(Calendar.HOUR, -1);
         Date todayMinusHour = cal.getTime();
         if (orders.getById(id) != null) {
-            orders.getById(id).setCompletedOrder(true);
-            orders.getById(id).setDateOfCompletedOrder(todayMinusHour);
+            Order order = (Order) orders.getById(id);
+            order.setCompletedOrder(true);
+            order.setDateOfCompletedOrder(todayMinusHour);
             notifyObservers("Заказ отмечен выполненым \n" + orders.getById(id));
         } else {
             notifyObservers("Заказа с таким Id нет !!!");
@@ -90,37 +93,39 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public void setCompleteOrderById(Long id, Date dateOfCompleted) {
-        orders.getById(id).setCompletedOrder(true);
-        orders.getById(id).setDateOfCompletedOrder(dateOfCompleted);
+        Order order = (Order) orders.getById(id);
+        order.setCompletedOrder(true);
+        order.setDateOfCompletedOrder(dateOfCompleted);
     }
 
     @Override
     public void sortCompletedOrdersByDate() {
-        orders.getOrders().sort(new ComparatorCompletedOrdersByDate());
+        orders.getAll().sort(new ComparatorCompletedOrdersByDate());
         notifyObservers("Заказы отсортированы по дате исполнения");
     }
 
     @Override
     public void sortOrdersByPrice() {
-        orders.getOrders().sort(new ComparatorOrdersByPrice());
+        orders.getAll().sort(new ComparatorOrdersByPrice());
         notifyObservers("Заказы отсортированы по цене");
     }
 
     @Override
     public void sortOrdersByState() {
-        orders.getOrders().sort(new ComparatorOrdersByState());
+        orders.getAll().sort(new ComparatorOrdersByState());
         notifyObservers("Заказы отсортированы по состоянию выполнения");
     }
 
     @Override
     public List<Order> getAll() {
-        return orders.getOrders();
+        return orders.getAll();
     }
 
     @Override
     public List<Order> getCompletedOrders() {
         List<Order> ordersList = new ArrayList<>();
-        for (Order order : orders.getOrders()) {
+        for (Object obj : orders.getAll()) {
+            Order order = (Order) obj;
             if (order.getCompletedOrder()) {
                 ordersList.add(order);
             }
@@ -132,7 +137,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
     public List<Order> getCompletedOrdersSortedByDateOfPeriod(Date startDate, Date endDate) {
         sortCompletedOrdersByDate();
         List<Order> ordersList = new ArrayList<>();
-        for (Order order : orders.getOrders()) {
+        for (Object obj : orders.getAll()) {
+            Order order = (Order) obj;
             if (order.getDateOfCompletedOrder() != null) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
                     if (order.getCompletedOrder()) {
@@ -148,7 +154,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
     public List<Order> getCompletedOrdersSortedByPriceOfPeriod(Date startDate, Date endDate) {
         sortOrdersByPrice();
         List<Order> ordersList = new ArrayList<>();
-        for (Order order : orders.getOrders()) {
+        for (Object obj : orders.getAll()) {
+            Order order = (Order) obj;
             if (order.getDateOfCompletedOrder() != null) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
                     ordersList.add(order);
@@ -161,7 +168,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
     @Override
     public Double getOrdersFullAmountByPeriod(Date startDate, Date endDate) {
         double amount = 0;
-        for (Order order : orders.getOrders()) {
+        for (Object obj : orders.getAll()) {
+            Order order = (Order) obj;
             if (order.getDateOfCompletedOrder() != null) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
                     amount = amount + order.getBook().getPrice();
@@ -175,7 +183,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
     @Override
     public Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
         int quantity = 0;
-        for (Order order : orders.getOrders()) {
+        for (Object obj : orders.getAll()) {
+            Order order = (Order) obj;
             if (order.getCompletedOrder()) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
                     quantity++;
@@ -187,7 +196,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public Order getOrderById(Long id) {
-        return orders.getById(id);
+        Order order = (Order) orders.getById(id);
+        return order;
     }
 
     @Override
@@ -197,7 +207,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public Order cloneOrder(Long id) {
-        Order order = orders.getById(id);
+        Order order = (Order) orders.getById(id);
         Order tempOrder = null;
         try {
             if (order == null) {
@@ -217,19 +227,20 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public List<Order> getRepo() {
-        return orders.getOrders();
+        return orders.getAll();
     }
 
     @Override
     public void setRepo(List list) {
-        orders.setOrders(list);
+        orders.setAll(list);
         setLastId();
     }
 
     @Override
     public void setLastId() {
         Long id = 0L;
-        for (Order order : orders.getOrders()) {
+        for (Object obj : orders.getAll()) {
+            Order order = (Order) obj;
             if (order.getId() > id) {
                 id = order.getId();
             }

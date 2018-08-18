@@ -2,8 +2,8 @@ package com.senla.mainmodule.services.impl;
 
 import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.entities.Request;
+import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryBook;
-import com.senla.mainmodule.repositories.IRepositoryRequest;
 import com.senla.mainmodule.repositories.impl.RepositoryBook;
 import com.senla.mainmodule.repositories.impl.RepositoryRequest;
 import com.senla.mainmodule.services.IServiceBook;
@@ -21,7 +21,7 @@ public class ServiceBook extends Service implements IServiceBook {
 
     private static final Logger log = Logger.getLogger(ServiceBook.class);
     private IRepositoryBook books = RepositoryBook.getInstance();
-    private IRepositoryRequest repositoryRequest = RepositoryRequest.getInstance();
+    private IRepository repositoryRequest = RepositoryRequest.getInstance();
 
     private static ServiceBook instance = null;
 
@@ -43,7 +43,8 @@ public class ServiceBook extends Service implements IServiceBook {
         notifyObservers("Добавлена книга: " + newBook);
 
         if (ALLOW_MARK_REQUESTS){
-            for (Request request : repositoryRequest.getRequests()) {
+            for (Object obj : repositoryRequest.getAll()) {
+                Request request = (Request) obj;
                 if (newBook.getNameBook().equals(request.getRequireNameBook())) {
                     request.setRequireIsCompleted(true);
                 }
@@ -63,33 +64,38 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public void sortByAlphabet() {
-        books.getBooks().sort(new ComparatorBookByAlphabet());
+        books.getAll().sort(new ComparatorBookByAlphabet());
+        books.getAll().sort(new ComparatorBookByAlphabet());
         notifyObservers("Книги отсортированы по алфавиту");
     }
 
     @Override
     public void sortByDatePublication() {
-        books.getBooks().sort(new ComparatorBookByDatePublication());
+        books.getAll().sort(new ComparatorBookByDatePublication());
         notifyObservers("Книги отсортированы по дате публикации");
     }
 
     @Override
     public void sortByPrice() {
-        books.getBooks().sort(new ComparatorBookByPrice());
+        books.getAll().sort(new ComparatorBookByPrice());
         notifyObservers("Книги отсортированы по цене");
     }
 
     @Override
     public void sortByAvailability() {
-        books.getBooks().sort(new ComparatorBookByAvailability());
+        books.getAll().sort(new ComparatorBookByAvailability());
         notifyObservers("Книги отсортированы по доступности");
     }
 
     @Override
     public List<Book> getAll() {
-        return books.getBooks();
+        return books.getAll();
     }
 
+    @Override
+    public Book getByName(String name) {
+        return books.getByName(name);
+    }
 
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByDate() {
@@ -98,7 +104,8 @@ public class ServiceBook extends Service implements IServiceBook {
         cal.add(Calendar.MONTH, -6);
         Date periodSixMonth = cal.getTime();
         List<Book> bookList = new ArrayList<>();
-        for (Book book : books.getBooks()) {
+        for (Object obj : books.getAll()) {
+            Book book = (Book) obj;
             if (book != null) {
                 if (book.getDateAddedBookToStore().before(periodSixMonth)) {
                     bookList.add(book);
@@ -115,7 +122,8 @@ public class ServiceBook extends Service implements IServiceBook {
         cal.add(Calendar.MONTH, -6);
         Date periodSixMonth = cal.getTime();
         List<Book> bookList = new ArrayList<>();
-        for (Book book : books.getBooks()) {
+        for (Object obj : books.getAll()) {
+            Book book = (Book) obj;
             if (book != null) {
                 if (book.getDateAddedBookToStore().before(periodSixMonth)) {
                     bookList.add(book);
@@ -128,7 +136,8 @@ public class ServiceBook extends Service implements IServiceBook {
     @Override
     public String getBookDescriptionById(Long id) {
     if (books.getById(id) != null){
-            return books.getById(id).getDescription();
+        Book book = (Book) books.getById(id);
+            return book.getDescription();
         }
         return null;
     }
@@ -144,7 +153,8 @@ public class ServiceBook extends Service implements IServiceBook {
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.MONTH, -BOOK_IS_OLD);
             Date markOld = cal.getTime();
-            for(Book book: books.getBooks()){
+            for (Object obj : books.getAll()) {
+                Book book = (Book) obj;
                 if (book.getDateAddedBookToStore().before(markOld)){
                     book.setOld(true);
                 }
@@ -154,19 +164,20 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public List<Book> getRepo() {
-        return books.getBooks();
+        return books.getAll();
     }
 
     @Override
     public void setRepo(List list) {
-        books.setBooks(list);
+        books.setAll(list);
         setLastId();
     }
 
     @Override
     public void setLastId() {
         Long id = 0L;
-        for (Book book: books.getBooks()){
+        for (Object obj : books.getAll()) {
+            Book book = (Book) obj;
             if (book.getId() > id){
                 id = book.getId();
             }
@@ -175,7 +186,7 @@ public class ServiceBook extends Service implements IServiceBook {
     }
 
     private void sortByDateAddedToShop() {
-        books.getBooks().sort(new ComparatorBookByDateAddedToShop());
+        books.getAll().sort(new ComparatorBookByDateAddedToShop());
         notifyObservers("Книги отсортированы по дате добавления в магазин");
     }
 }

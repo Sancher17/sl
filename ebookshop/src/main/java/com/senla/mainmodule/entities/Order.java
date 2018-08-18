@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-@CsvEntity(fileName = "orders.csv", valueSeparator =";", entityId = "id")
+@CsvEntity(fileName = "orders.csv", valueSeparator =";")
 public class Order implements Serializable, Cloneable {
 
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
@@ -20,7 +20,7 @@ public class Order implements Serializable, Cloneable {
     private Date dateOfCompletedOrder;
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Boolean isCompletedOrder;
-    @CsvProperty(propertyType = PropertyType.CompositeProperty)
+    @CsvProperty(propertyType = PropertyType.CompositeProperty, keyField = "id")
     private Book book;
 
     public Order(Date dateOfStartedOrder, Book book) {

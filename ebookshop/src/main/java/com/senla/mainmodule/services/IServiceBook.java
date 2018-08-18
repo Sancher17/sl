@@ -1,6 +1,7 @@
 package com.senla.mainmodule.services;
 
 import com.senla.mainmodule.entities.Book;
+import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryBook;
 
 import java.util.Date;
@@ -22,13 +23,15 @@ public interface IServiceBook extends IService {
 
     List<Book> getAll();
 
+    Book getByName(String name);
+
     List<Book> getBooksPeriodMoreSixMonthByDate();
 
     List<Book> getBooksPeriodMoreSixMonthByPrice();
 
     String getBookDescriptionById(Long id);
 
-    IRepositoryBook getRepositoryBook();
+    IRepository getRepositoryBook();
 
     void markBookOld();
 }

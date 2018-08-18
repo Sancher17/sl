@@ -1,17 +1,23 @@
 package com.senla.dataworker.startModule;
 
 import com.senla.dataworker.properties.PropertyHolder;
+import com.senla.dataworker.readfile.IReadFromCsv;
+import com.senla.dataworker.readfile.ReadFromCsv;
 import com.senla.dataworker.writefile.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.senla.dataworker.constants.ConstantsDataWorker.*;
 
 public class DataWorker implements IDataWorker {
 
-    private IWriteToCsv writeToCsv = new WriteToCsv();
+
+    private IWriteToCsv writeToCsv;
+//    private IReadFromCsv readFromCsv = new ReadFromCsv();
 
     public DataWorker() {
+        this.writeToCsv = new WriteToCsv();
         initModule();
     }
 
@@ -27,6 +33,6 @@ public class DataWorker implements IDataWorker {
 
     @Override
     public void readFromScv(String path) {
-        // TODO: 13.08.2018
+//        readFromCsv.read();
     }
 }

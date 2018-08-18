@@ -37,7 +37,7 @@ public class ImportOrderFromCsv extends ImportCsv {
 
             for (int i = 0; i < 1; i++) {
                 IServiceBook serviceBook = ServiceBook.getInstance();
-                Book book = serviceBook.getRepositoryBook().getBookByName(nameBook);
+                Book book = serviceBook.getByName(nameBook);
                 Order order = new Order(book);
                 order.setId(parseLong(id));
                 order.setDateOfStartedOrder(parseDate(dateOfStartedOrder));

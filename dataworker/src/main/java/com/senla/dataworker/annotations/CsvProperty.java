@@ -12,4 +12,10 @@ public @interface CsvProperty {
 
     PropertyType propertyType();
 
+    String keyField() default "";
+
+    int columnNumer() default 0;
+
+    boolean escape() default true;
+
 }

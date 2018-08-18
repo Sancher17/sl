@@ -1,6 +1,7 @@
 package com.senla.mainmodule.repositories.impl;
 
 import com.senla.mainmodule.entities.Book;
+import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryBook;
 import com.senla.mainmodule.repositories.util.Id;
 
@@ -23,9 +24,17 @@ public class RepositoryBook implements IRepositoryBook {
     private RepositoryBook() {
     }
 
+//    @Override
+//    public void add(Book book) {
+//        lastId = Id.nextId(lastId);
+//        book.setId(lastId);
+//        books.add(book);
+//    }
+
     @Override
-    public void add(Book book) {
+    public void add(Object obj) {
         lastId = Id.nextId(lastId);
+        Book book = (Book) obj;
         book.setId(lastId);
         books.add(book);
     }
@@ -45,8 +54,18 @@ public class RepositoryBook implements IRepositoryBook {
         return null;
     }
 
+//    @Override
+//    public Book getBookByName(String name) {
+//        for (Book book : books) {
+//            if (name.equals(book.getNameBook())) {
+//                return book;
+//            }
+//        }
+//        return null;
+//    }
+
     @Override
-    public Book getBookByName(String name) {
+    public Book getByName(String name) {
         for (Book book : books) {
             if (name.equals(book.getNameBook())) {
                 return book;
@@ -56,12 +75,12 @@ public class RepositoryBook implements IRepositoryBook {
     }
 
     @Override
-    public List<Book> getBooks() {
-        return books;
+    public List<Book> getAll() {
+        return  books;
     }
 
     @Override
-    public void setBooks(List<Book> books) {
+    public void setAll(List books) {
         this.books = books;
     }
 

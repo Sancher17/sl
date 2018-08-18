@@ -6,7 +6,7 @@ import com.senla.dataworker.annotations.PropertyType;
 
 import java.io.Serializable;
 
-@CsvEntity(fileName = "requests.csv", valueSeparator =";", entityId = "id")
+@CsvEntity(fileName = "requests.csv", valueSeparator =";")
 public class Request implements Serializable {
 
     @CsvProperty(propertyType = PropertyType.SimpleProperty)

@@ -22,8 +22,7 @@ public abstract class Service extends Observable {
     @Override
     public void notifyObservers(Object arg) {
         for (Observer observer : subscribers) {
-            System.out.println(arg);
+            observer.update(this, arg);
         }
     }
-
 }

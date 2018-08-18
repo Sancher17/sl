@@ -1,6 +1,7 @@
 package com.senla.mainmodule.services;
 
 import com.senla.mainmodule.entities.Order;
+import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryOrder;
 
 import java.util.Date;

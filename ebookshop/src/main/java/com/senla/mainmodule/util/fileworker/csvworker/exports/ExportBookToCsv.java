@@ -1,6 +1,9 @@
 package com.senla.mainmodule.util.fileworker.csvworker.exports;
 
 import com.senla.mainmodule.entities.Book;
+import com.senla.mainmodule.repositories.IRepository;
+import com.senla.mainmodule.repositories.IRepositoryBook;
+import com.senla.mainmodule.repositories.impl.RepositoryBook;
 import com.senla.mainmodule.services.IService;
 import com.senla.mainmodule.services.impl.ServiceBook;
 
@@ -29,8 +32,13 @@ public class ExportBookToCsv extends Export {
     }
 
     private List<Book> readFromRepository() {
+        //доступ через сервис
         IService service = ServiceBook.getInstance();
         return service.getRepo();
+
+        //доступ через репозиторий
+//        IRepository repo = RepositoryBook.getInstance();
+//        return repo.getAll();
     }
 }
 

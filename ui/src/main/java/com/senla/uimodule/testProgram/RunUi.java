@@ -1,13 +1,8 @@
 package com.senla.uimodule.testProgram;
 
-import com.senla.uimodule.data.ILoadData;
-import com.senla.uimodule.data.LoadDataFromFile;
 import com.senla.uimodule.menus.MenuController;
-import org.apache.log4j.Logger;
 
-import java.text.ParseException;
-
-import static com.senla.uimodule.constant.UiConstants.*;
+import static com.senla.uimodule.constant.UiConstants.MENU_MAIN;
 
 public class RunUi {
 

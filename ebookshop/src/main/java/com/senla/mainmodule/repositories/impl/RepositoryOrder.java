@@ -2,6 +2,7 @@ package com.senla.mainmodule.repositories.impl;
 
 
 import com.senla.mainmodule.entities.Order;
+import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryOrder;
 import com.senla.mainmodule.repositories.util.Id;
 
@@ -25,8 +26,9 @@ public class RepositoryOrder implements IRepositoryOrder {
     }
 
     @Override
-    public void add(Order order) {
+    public void add(Object obj) {
         lastId = Id.nextId(lastId);
+        Order order = (Order) obj;
         order.setId(lastId);
         orders.add(order);
     }
@@ -35,6 +37,7 @@ public class RepositoryOrder implements IRepositoryOrder {
     public void deleteById(Long id) {
         orders.removeIf(order -> order.getId().equals(id));
     }
+
 
     @Override
     public Order getById(Long id) {
@@ -47,23 +50,24 @@ public class RepositoryOrder implements IRepositoryOrder {
     }
 
     @Override
-    public List<Order> getOrders() {
+    public List<Order> getAll() {
         return orders;
     }
 
     @Override
-    public void setOrders(List<Order> orders) {
+    public void setAll(List orders) {
         this.orders = orders;
+    }
+
+
+    @Override
+    public void setLastId(Long lastId) {
+        this.lastId = lastId;
     }
 
 
     @Override
     public Long getLastId() {
         return lastId;
-    }
-
-    @Override
-    public void setLastId(Long lastId) {
-        this.lastId = lastId;
     }
 }

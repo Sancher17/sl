@@ -1,7 +1,7 @@
 package com.senla.mainmodule.services.impl;
 
 import com.senla.mainmodule.entities.Request;
-import com.senla.mainmodule.repositories.IRepositoryRequest;
+import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.impl.RepositoryRequest;
 import com.senla.mainmodule.services.IServiceRequest;
 import com.senla.mainmodule.util.comparators.request.ComparatorRequestsByAlphabet;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ServiceRequest extends Service implements IServiceRequest {
 
-    private IRepositoryRequest requests = RepositoryRequest.getInstance();
+    private IRepository requests = RepositoryRequest.getInstance();
 
     private static ServiceRequest instance = null;
 
@@ -31,7 +31,8 @@ public class ServiceRequest extends Service implements IServiceRequest {
         Request newRequest = new Request(nameRequireBook);
         notifyObservers("Добавлен запрос на книгу: " + newRequest.getRequireNameBook());
         boolean exist = false;
-        for (Request request : requests.getRequests()) {
+        for (Object obj : requests.getAll()) {
+            Request request = (Request) obj;
             if (request != null) {
                 if (request.getRequireNameBook().equals(nameRequireBook)) {
                     exist = true;
@@ -47,26 +48,27 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public void sortRequestsByQuantity() {
-        requests.getRequests().sort(new ComparatorRequestsByQuantity());
+        requests.getAll().sort(new ComparatorRequestsByQuantity());
         notifyObservers("Запросы отсортированы по количеству запросов");
     }
 
     @Override
     public void sortRequestsByAlphabet() {
-        requests.getRequests().sort(new ComparatorRequestsByAlphabet());
+        requests.getAll().sort(new ComparatorRequestsByAlphabet());
         notifyObservers("Запросы отсортированы по алфавиту");
     }
 
     @Override
     public List<Request> getAll() {
-        return requests.getRequests();
+        return requests.getAll();
     }
 
 
     @Override
     public List<Request> getCompletedRequests() {
         List<Request> requestList = new ArrayList<>();
-        for (Request request : requests.getRequests()) {
+        for (Object obj : requests.getAll()) {
+            Request request = (Request) obj;
             if (request.getRequireIsCompleted()) {
                 requestList.add(request);
             }
@@ -77,7 +79,8 @@ public class ServiceRequest extends Service implements IServiceRequest {
     @Override
     public List<Request> getNotCompletedRequests() {
         List<Request> requestList = new ArrayList<>();
-        for (Request request : requests.getRequests()) {
+        for (Object obj : requests.getAll()) {
+            Request request = (Request) obj;
             if (!request.getRequireIsCompleted()) {
                 requestList.add(request);
             }
@@ -86,25 +89,26 @@ public class ServiceRequest extends Service implements IServiceRequest {
     }
 
 
-    public IRepositoryRequest getRepositoryRequests() {
+    public IRepository getRepositoryRequests() {
         return requests;
     }
 
     @Override
     public List<Request> getRepo() {
-        return requests.getRequests();
+        return requests.getAll();
     }
 
     @Override
     public void setRepo(List list) {
-        requests.setRequests(list);
+        requests.setAll(list);
         setLastId();
     }
 
     @Override
     public void setLastId() {
         Long id = 0L;
-        for (Request request : requests.getRequests()) {
+        for (Object obj : requests.getAll()) {
+            Request request = (Request) obj;
             if (request.getId() > id) {
                 id = request.getId();
             }

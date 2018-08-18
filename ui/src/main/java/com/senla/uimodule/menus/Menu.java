@@ -141,5 +141,6 @@ public abstract class Menu implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        Printer.println(arg);
     }
 }
