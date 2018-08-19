@@ -1,0 +1,6 @@
+id;dateOfStartedOrder;dateOfCompletedOrder;isCompletedOrder;book;
+1;19.06.2018;null;false;3;
+2;19.06.2018;null;false;2;
+3;19.08.2018;null;false;2;
+4;19.08.2018;null;false;3;
+5;19.08.2018;null;false;4;

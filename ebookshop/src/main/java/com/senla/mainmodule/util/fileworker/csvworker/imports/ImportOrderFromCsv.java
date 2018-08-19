@@ -1,9 +1,11 @@
 package com.senla.mainmodule.util.fileworker.csvworker.imports;
 
+import com.senla.mainmodule.di.DependencyBuilder;
 import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.entities.Order;
 import com.senla.mainmodule.services.IService;
 import com.senla.mainmodule.services.IServiceBook;
+import com.senla.mainmodule.services.IServiceOrder;
 import com.senla.mainmodule.services.impl.ServiceBook;
 import com.senla.mainmodule.services.impl.ServiceOrder;
 import com.senla.mainmodule.util.fileworker.csvworker.merger.Merger;
@@ -12,14 +14,20 @@ import com.senla.mainmodule.util.fileworker.csvworker.merger.MergerOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.*;
 import static com.senla.mainmodule.util.fileworker.csvworker.parser.Parse.*;
 
 public class ImportOrderFromCsv extends ImportCsv {
 
+    private IService service;
+    private IServiceBook serviceBook;
     private static List<Order> tempOrder = new ArrayList<>();
 
-    public void runImport(String path) {
+    public ImportOrderFromCsv(IService service, IServiceBook serviceBook) {
+        this.service = service;
+        this.serviceBook = serviceBook;
+    }
+
+    public void importFromFile(String path) {
         read(path);
         createObjectList();
         writeToRepository(tempOrder);
@@ -36,7 +44,6 @@ public class ImportOrderFromCsv extends ImportCsv {
             String dateOfCompletedOrder = temp[5];
 
             for (int i = 0; i < 1; i++) {
-                IServiceBook serviceBook = ServiceBook.getInstance();
                 Book book = serviceBook.getByName(nameBook);
                 Order order = new Order(book);
                 order.setId(parseLong(id));
@@ -54,7 +61,6 @@ public class ImportOrderFromCsv extends ImportCsv {
     }
 
     private void writeToRepository(List<Order> list) {
-        IService service = ServiceOrder.getInstance();
         Merger mergerOrder = new MergerOrder(service);
         service.setRepo(mergerOrder.merge(list));
     }

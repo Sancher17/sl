@@ -24,6 +24,8 @@ public class RepositoryBook implements IRepositoryBook {
     private RepositoryBook() {
     }
 
+
+
 //    @Override
 //    public void add(Book book) {
 //        lastId = Id.nextId(lastId);

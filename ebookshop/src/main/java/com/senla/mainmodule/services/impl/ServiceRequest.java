@@ -14,16 +14,17 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     private IRepository requests = RepositoryRequest.getInstance();
 
-    private static ServiceRequest instance = null;
+//    private static ServiceRequest instance = null;
+//
+//    public static ServiceRequest getInstance() {
+//        if (instance == null) {
+//            instance = new ServiceRequest();
+//        }
+//        return instance;
+//    }
 
-    public static ServiceRequest getInstance() {
-        if (instance == null) {
-            instance = new ServiceRequest();
-        }
-        return instance;
-    }
-
-    private ServiceRequest() {
+    public ServiceRequest(IRepository requests) {
+        this.requests = requests;
     }
 
     @Override

@@ -21,7 +21,6 @@ public class WriteToCsv<T> implements IWriteToCsv {
 
     @Override
     public void write(List list) {
-
         String data = null;
         try {
             data = readFromList(list);

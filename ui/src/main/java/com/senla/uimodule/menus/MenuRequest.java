@@ -99,11 +99,11 @@ public class MenuRequest extends Menu {
 
     private void exportRequest() {
         Printer.println("Экспортировать все записи заказов");
-        getEBookShop().exportRequestToCsv();
+        getEBookShop().exportToCsv(getEBookShop().getRequestService(), getEBookShop().getRequestService().getAll());
     }
 
     private void importRequest() {
         Printer.println("Импортировать записи заказов");
-        getEBookShop().importRequestFromCsv();
+        getEBookShop().importFromCsv(getEBookShop().getRequestService(), getEBookShop().getRequestService().getAll());
     }
 }

@@ -4,8 +4,6 @@ import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.entities.Request;
 import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryBook;
-import com.senla.mainmodule.repositories.impl.RepositoryBook;
-import com.senla.mainmodule.repositories.impl.RepositoryRequest;
 import com.senla.mainmodule.services.IServiceBook;
 import com.senla.mainmodule.util.comparators.book.*;
 import org.apache.log4j.Logger;
@@ -20,19 +18,12 @@ import static com.senla.mainmodule.constants.Constants.*;
 public class ServiceBook extends Service implements IServiceBook {
 
     private static final Logger log = Logger.getLogger(ServiceBook.class);
-    private IRepositoryBook books = RepositoryBook.getInstance();
-    private IRepository repositoryRequest = RepositoryRequest.getInstance();
+    private IRepositoryBook books;
+    private IRepository repositoryRequest;
 
-    private static ServiceBook instance = null;
-
-    public static ServiceBook getInstance() {
-        if (instance == null) {
-            instance = new ServiceBook();
-        }
-        return instance;
-    }
-
-    private ServiceBook() {
+    public ServiceBook(IRepositoryBook books, IRepository repositoryRequest) {
+        this.books = books;
+        this.repositoryRequest = repositoryRequest;
     }
 
     @Override

@@ -1,7 +1,8 @@
 package com.senla.uimodule.menus;
 
-import com.senla.uimodule.data.ILoadData;
-import com.senla.uimodule.data.LoadDataFromFile;
+import com.senla.mainmodule.di.DependencyBuilder;
+import com.senla.uimodule.data.LoadData;
+import com.senla.uimodule.data.LoadDataImpl;
 import com.senla.uimodule.util.Printer;
 import org.apache.log4j.Logger;
 
@@ -13,9 +14,11 @@ public class MenuMain extends Menu {
 
     private static final Logger log = Logger.getLogger(MenuMain.class);
 
+    private LoadData data;
 
     public MenuMain() {
         super("Главное меню");
+        data = DependencyBuilder.getBean(LoadData.class);
     }
 
     @Override
@@ -23,7 +26,6 @@ public class MenuMain extends Menu {
         printMenu();
         getEBookShop().checkProperties();
 
-        ILoadData data = new LoadDataFromFile();
         try {
             data.load();
         } catch (ParseException e) {

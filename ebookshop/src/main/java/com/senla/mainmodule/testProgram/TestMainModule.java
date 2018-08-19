@@ -2,6 +2,7 @@ package com.senla.mainmodule.testProgram;
 
 import com.senla.dataworker.startModule.DataWorker;
 import com.senla.dataworker.startModule.IDataWorker;
+import com.senla.mainmodule.di.DependencyBuilder;
 import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.entities.Order;
 import com.senla.mainmodule.entities.Request;
@@ -11,7 +12,10 @@ import com.senla.mainmodule.services.IServiceRequest;
 import com.senla.mainmodule.services.impl.ServiceBook;
 import com.senla.mainmodule.services.impl.ServiceOrder;
 import com.senla.mainmodule.services.impl.ServiceRequest;
+import com.senla.mainmodule.util.fileworker.FileWorker;
+import com.senla.mainmodule.util.fileworker.IFileWorker;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
@@ -21,15 +25,22 @@ import java.util.List;
 public class TestMainModule {
     private static final Date DATE_TODAY = new Date();
     private static final Date DATE_TWO_MONTH_AGO = Date.from(ZonedDateTime.now().minusMonths(2).toInstant());
-    static IServiceBook serviceBook = ServiceBook.getInstance();
-    static IServiceOrder serviceOrder = ServiceOrder.getInstance();
-    static IServiceRequest serviceRequest = ServiceRequest.getInstance();
-    static IDataWorker iDataWorker = new DataWorker();
 
+    private static IDataWorker iDataWorker;
+    private static IServiceBook serviceBook;
+    private static IServiceOrder serviceOrder;
+    private static IServiceRequest serviceRequest;
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+
+        /** work with Di*/
+        serviceBook = DependencyBuilder.build(ServiceBook.class);
+        serviceOrder = DependencyBuilder.build(ServiceOrder.class);
+        serviceRequest = DependencyBuilder.build(ServiceRequest.class);
+        iDataWorker = DependencyBuilder.build(DataWorker.class);
+        /***/
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
-
         /** Book */
         serviceBook.addBook("Java", sdf.parse("09-02-2016"), DATE_TODAY, 150.0, "Книга о Java", true);
         serviceBook.addBook("MySql", sdf.parse("15-03-2017"), DATE_TODAY, 135.0, "Книга о MySql",true);
@@ -75,17 +86,16 @@ public class TestMainModule {
 //        System.out.println("\nprintOrderById - 2 ");
 //        eBookShop.printOrderById(2L);
 
-
         /** Request */
 
         System.out.println("\nRequest");
-        printRequests();
+//        printRequests();
 
-        System.out.println("\naddRequest");
+//        System.out.println("\naddRequest");
         serviceRequest.addBookRequest("JavaScript");
 
-        System.out.println("\nprintCompletedRequests");
-        printRequests(serviceRequest.getCompletedRequests());
+//        System.out.println("\nprintCompletedRequests");
+//        printRequests(serviceRequest.getCompletedRequests());
 
 //        System.out.println("\nprintNotCompletedRequests");
 //        eBookShop.printNotCompletedRequests();
@@ -93,10 +103,10 @@ public class TestMainModule {
 //        eBookShop.sortRequestsByQuantity();
 //        System.out.println("\nsortRequestsByAlphabet");
 //        eBookShop.sortRequestsByAlphabet();
-
         serviceRequest.addBookRequest("Oracle");
         serviceRequest.addBookRequest("Kotlin");
         serviceRequest.addBookRequest("Kotlin");
+        printRequests();
 
 
         System.out.println("\nREAD - WRITE block ++++++++++++++++++++++++++++++++++++++++++");
@@ -123,24 +133,52 @@ public class TestMainModule {
         iDataWorker.writeToCsv(serviceOrder.getAll());
         iDataWorker.writeToCsv(serviceRequest.getAll());
 
+        System.out.println("\nWorking with FileWorker CSV \\ File block ++++++++++++++++++++++++++++++++++++++++++");
+        IFileWorker fw = new FileWorker();
+
+        fw.writeToFile(serviceBook,serviceBook.getAll());
+        fw.writeToFile(serviceOrder,serviceOrder.getAll());
+        fw.writeToFile(serviceRequest,serviceRequest.getAll());
+
+
+        fw.exportToCsv(serviceBook, serviceBook.getAll());
+        fw.exportToCsv(serviceOrder, serviceOrder.getAll());
+        fw.exportToCsv(serviceRequest, serviceRequest.getAll());
+
+        fw.importFromCsv(serviceBook, serviceBook.getAll());
+        fw.importFromCsv(serviceOrder, serviceBook, serviceOrder.getAll());
+        fw.importFromCsv(serviceRequest, serviceRequest.getAll());
+
+        printBooks();
+        printRequests();
+        printOrders();
+
     }
+
+
+
+
+
 
     private static void printBooks(){
         for (Book book : serviceBook.getAll()) {
             System.out.println(book);
         }
+        System.out.println();
     }
 
     private static void printOrders(){
         for (Order order: serviceOrder.getAll()) {
             System.out.println(order);
         }
+        System.out.println();
     }
 
    private static void printRequests(){
         for (Request request : serviceRequest.getAll()) {
             System.out.println(request);
         }
+       System.out.println();
     }
 
     private static void printRequests(List<Request> list){

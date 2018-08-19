@@ -180,12 +180,12 @@ public class MenuBook extends Menu {
 
     private void exportBook() {
         Printer.println("Экспортировать все записи книг");
-        getEBookShop().exportBookToCsv();
+        getEBookShop().exportToCsv(getEBookShop().getBookService(), getEBookShop().getBookService().getAll());
     }
 
     private void importBook() {
         Printer.println("Импортировать записи книг");
-        getEBookShop().importBookFromCsv();
+        getEBookShop().importFromCsv(getEBookShop().getBookService(), getEBookShop().getBookService().getAll());
     }
 }
 

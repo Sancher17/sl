@@ -2,7 +2,6 @@ package com.senla.mainmodule.util.fileworker.csvworker.exports;
 
 import com.senla.mainmodule.entities.Order;
 import com.senla.mainmodule.services.IService;
-import com.senla.mainmodule.services.impl.ServiceOrder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -10,8 +9,14 @@ import java.util.List;
 
 public class ExportOrderToCsv extends Export {
 
+    private IService service;
+
+    public ExportOrderToCsv(IService service) {
+        this.service = service;
+    }
+
     public String prepareData(){
-        List<Order> tempOrder = readFromRepository();
+        List<Order> tempOrder = service.getRepo();
         DateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         StringBuilder sb = new StringBuilder();
         for (Order order : tempOrder) {
@@ -28,11 +33,6 @@ public class ExportOrderToCsv extends Export {
             sb.append("\n");
         }
         return sb.toString();
-    }
-
-    private List<Order> readFromRepository(){
-        IService service = ServiceOrder.getInstance();
-        return service.getRepo();
     }
 }
 

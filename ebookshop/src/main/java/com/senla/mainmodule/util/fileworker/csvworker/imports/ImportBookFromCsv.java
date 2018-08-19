@@ -1,8 +1,7 @@
 package com.senla.mainmodule.util.fileworker.csvworker.imports;
 
 import com.senla.mainmodule.entities.Book;
-import com.senla.mainmodule.services.IServiceBook;
-import com.senla.mainmodule.services.impl.ServiceBook;
+import com.senla.mainmodule.services.IService;
 import com.senla.mainmodule.util.fileworker.csvworker.merger.Merger;
 import com.senla.mainmodule.util.fileworker.csvworker.merger.MergerBook;
 import com.senla.mainmodule.util.fileworker.csvworker.parser.Parse;
@@ -10,14 +9,18 @@ import com.senla.mainmodule.util.fileworker.csvworker.parser.Parse;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.PATH_BOOK_CSV;
-
 public class ImportBookFromCsv extends ImportCsv {
+
+    private IService service;
 
     private List<Book> tempBook = new ArrayList<>();
 
+    public ImportBookFromCsv(IService service) {
+        this.service = service;
+    }
+
     @Override
-    public void runImport(String path){
+    public void importFromFile(String path){
         read(path);
         createObjectList();
         writeToRepository(tempBook);
@@ -52,8 +55,7 @@ public class ImportBookFromCsv extends ImportCsv {
     }
 
     private void writeToRepository(List<Book> list) {
-        IServiceBook serviceBook = ServiceBook.getInstance();
-        Merger mergerBook = new MergerBook(serviceBook);
-        serviceBook.setRepo(mergerBook.merge(list));
+        Merger mergerBook = new MergerBook(service);
+        service.setRepo(mergerBook.merge(list));
     }
 }

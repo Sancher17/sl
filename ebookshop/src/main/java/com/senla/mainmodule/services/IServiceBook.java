@@ -3,6 +3,7 @@ package com.senla.mainmodule.services;
 import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryBook;
+import com.senla.mainmodule.services.impl.ServiceBook;
 
 import java.util.Date;
 import java.util.List;

@@ -5,19 +5,17 @@ import com.senla.dataworker.readfile.IReadFromCsv;
 import com.senla.dataworker.readfile.ReadFromCsv;
 import com.senla.dataworker.writefile.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import static com.senla.dataworker.constants.ConstantsDataWorker.*;
 
 public class DataWorker implements IDataWorker {
 
-
     private IWriteToCsv writeToCsv;
-//    private IReadFromCsv readFromCsv = new ReadFromCsv();
+    private IReadFromCsv readFromCsv;
 
     public DataWorker() {
         this.writeToCsv = new WriteToCsv();
+        this.readFromCsv = new ReadFromCsv();
         initModule();
     }
 
@@ -32,7 +30,7 @@ public class DataWorker implements IDataWorker {
     }
 
     @Override
-    public void readFromScv(String path) {
-//        readFromCsv.read();
+    public List readFromScv(String path) {
+        return  new ArrayList<Object>(readFromCsv.runImport());
     }
 }

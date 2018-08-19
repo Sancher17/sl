@@ -1,38 +1,49 @@
 package com.senla.mainmodule.util.fileworker;
 
+import com.senla.mainmodule.entities.Book;
+import com.senla.mainmodule.entities.Order;
+import com.senla.mainmodule.entities.Request;
 import com.senla.mainmodule.services.IService;
-import com.senla.mainmodule.util.fileworker.csvworker.exports.*;
-import com.senla.mainmodule.util.fileworker.csvworker.imports.*;
+import com.senla.mainmodule.services.IServiceBook;
+import com.senla.mainmodule.util.fileworker.csvworker.exports.Export;
+import com.senla.mainmodule.util.fileworker.csvworker.exports.ExportBookToCsv;
+import com.senla.mainmodule.util.fileworker.csvworker.exports.ExportOrderToCsv;
+import com.senla.mainmodule.util.fileworker.csvworker.exports.ExportRequestToCsv;
+import com.senla.mainmodule.util.fileworker.csvworker.imports.IImportCsv;
+import com.senla.mainmodule.util.fileworker.csvworker.imports.ImportBookFromCsv;
+import com.senla.mainmodule.util.fileworker.csvworker.imports.ImportOrderFromCsv;
+import com.senla.mainmodule.util.fileworker.csvworker.imports.ImportRequestFromCsv;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import static com.senla.mainmodule.constants.Constants.*;
 
-public class FileWorker {
-
-    private Export exportBookToCsv = new ExportBookToCsv();
-    private Export exportOrderToCsv = new ExportOrderToCsv();
-    private Export exportRequestToCsv = new ExportRequestToCsv();
-
-    private IImportCsv importBookFromCsv = new ImportBookFromCsv();
-    private IImportCsv importOrderFromCsv = new ImportOrderFromCsv();
-    private IImportCsv importRequestFromCsv = new ImportRequestFromCsv();
+public class FileWorker implements IFileWorker {
 
     private static final Logger log = Logger.getLogger(FileWorker.class);
 
+    private Export exportList;
+    private IImportCsv importList;
 
-    /** File */
-    public void writeToFile(IService service, String path) {
-        String pat = path;
+    //File
+    public void writeToFile(IService service, List list) {
+        String path = "";
+        Object obj = list.get(0);
+        Class<?> clazz = obj.getClass();
+        String nameClass = clazz.getSimpleName();
+        if (nameClass.equals(Book.class.getSimpleName())) {
+            path = PATH_BOOK_DATA_TEST;
+        } else if (nameClass.equals(Order.class.getSimpleName())) {
+            path = PATH_ORDER_DATA_TEST;
+        } else if (nameClass.equals(Request.class.getSimpleName())) {
+            path = PATH_REQUEST_DATA_TEST;
+        }
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path))) {
-            oos.writeObject(service.getRepo());
+            oos.writeObject(list);
         } catch (IOException e) {
-           log.error("Ошибка записи файла " + e);
+            log.error("Ошибка записи файла " + e);
         }
     }
 
@@ -45,29 +56,45 @@ public class FileWorker {
         }
     }
 
-
-    /** CSV */
-    public void exportBookCsv(){
-        exportBookToCsv.exportToFile(PATH_BOOK_CSV);
+    //CSV
+    public void exportToCsv(IService service, List list) {
+        Object obj = list.get(0);
+        Class<?> clazz = obj.getClass();
+        String nameClass = clazz.getSimpleName();
+        String path = setInstances(service, nameClass);
+        exportList.exportToFile(path);
     }
 
-    public void importBookCsv(){
-        importBookFromCsv.runImport(PATH_BOOK_CSV);
+    public void importFromCsv(IService service, List list) {
+        Object obj = list.get(0);
+        Class<?> clazz = obj.getClass();
+        String nameClass = clazz.getSimpleName();
+        String path = setInstances(service, nameClass);
+        importList.importFromFile(path);
     }
 
-    public void exportOrderCsv(){
-        exportOrderToCsv.exportToFile(PATH_ORDER_CSV);
+    public void importFromCsv(IService service, IServiceBook serviceBook, List list) {
+        Object obj = list.get(0);
+        Class<?> clazz = obj.getClass();
+        String nameClass = clazz.getSimpleName();
+        String path = setInstances(service, nameClass);
+        importList = new ImportOrderFromCsv(service, serviceBook);
+        importList.importFromFile(path);
     }
 
-    public void importOrderCsv(){
-        importOrderFromCsv.runImport(PATH_ORDER_CSV);
-    }
-
-    public void exportRequestCsv(){
-        exportRequestToCsv.exportToFile(PATH_REQUEST_CSV);
-    }
-
-    public void importRequestCsv(){
-        importRequestFromCsv.runImport(PATH_REQUEST_CSV);
+    private String setInstances(IService service, String nameClass) {
+        if (nameClass.equals(Book.class.getSimpleName())) {
+            importList = new ImportBookFromCsv(service);
+            exportList = new ExportBookToCsv(service);
+            return PATH_BOOK_CSV;
+        } else if (nameClass.equals(Order.class.getSimpleName())) {
+            exportList = new ExportOrderToCsv(service);
+            return PATH_ORDER_CSV;
+        } else if (nameClass.equals(Request.class.getSimpleName())) {
+            importList = new ImportRequestFromCsv(service);
+            exportList = new ExportRequestToCsv(service);
+            return PATH_REQUEST_CSV;
+        }
+        return "";
     }
 }

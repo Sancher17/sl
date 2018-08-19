@@ -1,11 +1,8 @@
 package com.senla.mainmodule.util.fileworker.csvworker.exports;
 
 import com.senla.mainmodule.entities.Book;
-import com.senla.mainmodule.repositories.IRepository;
-import com.senla.mainmodule.repositories.IRepositoryBook;
-import com.senla.mainmodule.repositories.impl.RepositoryBook;
 import com.senla.mainmodule.services.IService;
-import com.senla.mainmodule.services.impl.ServiceBook;
+import com.senla.mainmodule.services.IServiceBook;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,8 +10,14 @@ import java.util.List;
 
 public class ExportBookToCsv extends Export {
 
+    private IService service;
+
+    public ExportBookToCsv(IService service) {
+        this.service = service;
+    }
+
     public String prepareData() {
-        List<Book> tempBook = readFromRepository();
+        List<Book> tempBook = service.getRepo();
         DateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         StringBuilder sb = new StringBuilder();
         for (Book book : tempBook) {
@@ -29,16 +32,6 @@ public class ExportBookToCsv extends Export {
             sb.append("\n");
         }
         return sb.toString();
-    }
-
-    private List<Book> readFromRepository() {
-        //доступ через сервис
-        IService service = ServiceBook.getInstance();
-        return service.getRepo();
-
-        //доступ через репозиторий
-//        IRepository repo = RepositoryBook.getInstance();
-//        return repo.getAll();
     }
 }
 

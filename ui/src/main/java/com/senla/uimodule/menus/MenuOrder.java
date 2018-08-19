@@ -220,12 +220,12 @@ public class MenuOrder extends Menu {
 
     private void exportOrder() {
         Printer.println("Экспортировать все записи заказов");
-        getEBookShop().exportOrderToCsv();
+        getEBookShop().exportToCsv(getEBookShop().getOrderService(), getEBookShop().getOrderService().getAll());
     }
 
     private void importOrder() {
         Printer.println("Импортировать записи заказов");
-        getEBookShop().importOrderFromCsv();
+        getEBookShop().importFromCsv(getEBookShop().getOrderService(), getEBookShop().getBookService(), getEBookShop().getOrderService().getAll());
     }
 }
 

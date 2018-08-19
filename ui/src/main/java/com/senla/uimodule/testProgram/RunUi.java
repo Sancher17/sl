@@ -1,6 +1,6 @@
 package com.senla.uimodule.testProgram;
 
-import com.senla.uimodule.menus.MenuController;
+import com.senla.uimodule.menus.MenuControllerImpl;
 
 import static com.senla.uimodule.constant.UiConstants.MENU_MAIN;
 
@@ -12,7 +12,7 @@ public class RunUi {
 //        PATH_ORDER_DATA = args[1];
 //        PATH_REQUEST_DATA = args[2];
 
-        MenuController controller = new MenuController();
+        MenuControllerImpl controller = new MenuControllerImpl();
         controller.run(MENU_MAIN);
 
 

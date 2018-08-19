@@ -22,18 +22,21 @@ import java.util.List;
 public class ServiceOrder extends Service implements IServiceOrder {
 
     private static final Logger log = Logger.getLogger(ServiceOrder.class);
-    private IRepositoryOrder orders = RepositoryOrder.getInstance();
-    private IRepositoryBook repositoryBook = RepositoryBook.getInstance();
-    private static ServiceOrder instance = null;
 
-    public static ServiceOrder getInstance() {
-        if (instance == null) {
-            instance = new ServiceOrder();
-        }
-        return instance;
-    }
+    private IRepositoryOrder orders;
+    private IRepositoryBook repositoryBook;
+//    private static ServiceOrder instance = null;
+//    public static ServiceOrder getInstance() {
+//        if (instance == null) {
+//            instance = new ServiceOrder();
+//        }
+//        return instance;
+//    }
 
-    private ServiceOrder() {
+    public ServiceOrder(IRepositoryOrder orders, IRepositoryBook repositoryBook) {
+        this.orders = orders;
+        this.repositoryBook = repositoryBook;
+
     }
 
 
