@@ -28,12 +28,14 @@ public class PropertyHolder {
 
     public void bookIsOld() {
         loadProperties();
-        BOOK_IS_OLD = Integer.valueOf(property.getProperty("BOOK_IS_OLD"));
+//        BOOK_IS_OLD = Integer.valueOf(property.getProperty("BOOK_IS_OLD"));
+        BOOK_IS_OLD = 5;
     }
 
     public void allowMArkRequest() {
         loadProperties();
-        ALLOW_MARK_REQUESTS = Boolean.valueOf(property.getProperty("ALLOW_MARK_REQUESTS"));
+//        ALLOW_MARK_REQUESTS = Boolean.valueOf(property.getProperty("ALLOW_MARK_REQUESTS"));
+        ALLOW_MARK_REQUESTS = true;
     }
 
     public void pathsForFiles(){

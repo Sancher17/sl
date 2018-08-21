@@ -1,4 +1,4 @@
-package com.senla.uimodule.testProgram;
+package com.senla.uimodule.start;
 
 import com.senla.uimodule.menus.MenuControllerImpl;
 
@@ -14,7 +14,5 @@ public class RunUi {
 
         MenuControllerImpl controller = new MenuControllerImpl();
         controller.run(MENU_MAIN);
-
-
     }
 }

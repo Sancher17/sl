@@ -1,7 +1,7 @@
 package com.senla.mainmodule.facade;
 
+import com.senla.dataworker.startModule.DataWorkerImpl;
 import com.senla.dataworker.startModule.DataWorker;
-import com.senla.dataworker.startModule.IDataWorker;
 import com.senla.mainmodule.di.DependencyBuilder;
 import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.entities.Order;
@@ -28,14 +28,14 @@ public class EBookShop {
     private IServiceOrder orderService;
     private IServiceRequest requestService;
     private IFileWorker fileWorker;
-    private IDataWorker csvWorker;
+    private DataWorker csvWorker;
 
     public EBookShop() {
         this.bookService = DependencyBuilder.build(ServiceBook.class);
         this.orderService = DependencyBuilder.build(ServiceOrder.class);
         this.requestService = DependencyBuilder.build(ServiceRequest.class);
         this.fileWorker = DependencyBuilder.build(FileWorker.class);
-        this.csvWorker = DependencyBuilder.build(DataWorker.class);
+        this.csvWorker = DependencyBuilder.build(DataWorkerImpl.class);
     }
 
     public void checkProperties() {

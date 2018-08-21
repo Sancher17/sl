@@ -10,11 +10,10 @@ public class Constants {
     public static final String PATH_ORDER_CSV = "ebookshop\\src\\order.csv";
     public static final String PATH_REQUEST_CSV = "ebookshop\\src\\request.csv";
 
-
     public static String PATH_BOOK_DATA = null;
     public static String PATH_ORDER_DATA = null;
     public static String PATH_REQUEST_DATA = null;
 
-    public static Integer BOOK_IS_OLD = null;
-    public static Boolean ALLOW_MARK_REQUESTS = false;
+    public static Integer BOOK_IS_OLD = 0;
+    public static Boolean ALLOW_MARK_REQUESTS = true;
 }

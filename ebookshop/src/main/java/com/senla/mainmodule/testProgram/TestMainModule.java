@@ -1,7 +1,7 @@
 package com.senla.mainmodule.testProgram;
 
 import com.senla.dataworker.startModule.DataWorker;
-import com.senla.dataworker.startModule.IDataWorker;
+import com.senla.dataworker.startModule.DataWorkerImpl;
 import com.senla.mainmodule.di.DependencyBuilder;
 import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.entities.Order;
@@ -26,7 +26,7 @@ public class TestMainModule {
     private static final Date DATE_TODAY = new Date();
     private static final Date DATE_TWO_MONTH_AGO = Date.from(ZonedDateTime.now().minusMonths(2).toInstant());
 
-    private static IDataWorker iDataWorker;
+    private static DataWorker dataWorker;
     private static IServiceBook serviceBook;
     private static IServiceOrder serviceOrder;
     private static IServiceRequest serviceRequest;
@@ -37,7 +37,7 @@ public class TestMainModule {
         serviceBook = DependencyBuilder.build(ServiceBook.class);
         serviceOrder = DependencyBuilder.build(ServiceOrder.class);
         serviceRequest = DependencyBuilder.build(ServiceRequest.class);
-        iDataWorker = DependencyBuilder.build(DataWorker.class);
+        dataWorker = DependencyBuilder.build(DataWorkerImpl.class);
         /***/
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
@@ -129,9 +129,9 @@ public class TestMainModule {
 
         System.out.println("\nAnnotations block ++++++++++++++++++++++++++++++++++++++++++");
         //book
-        iDataWorker.writeToCsv(serviceBook.getAll());
-        iDataWorker.writeToCsv(serviceOrder.getAll());
-        iDataWorker.writeToCsv(serviceRequest.getAll());
+        dataWorker.writeToCsv(serviceBook.getAll());
+        dataWorker.writeToCsv(serviceOrder.getAll());
+        dataWorker.writeToCsv(serviceRequest.getAll());
 
         System.out.println("\nWorking with FileWorker CSV \\ File block ++++++++++++++++++++++++++++++++++++++++++");
         IFileWorker fw = new FileWorker();

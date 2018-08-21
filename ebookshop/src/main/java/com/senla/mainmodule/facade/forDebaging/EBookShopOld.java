@@ -1,8 +1,8 @@
 //package com.senla.mainmodule.facade.forDebaging;
 //
+//import com.senla.dataworker.startModule.DataWorkerImpl;
 //import com.senla.dataworker.startModule.DataWorker;
-//import com.senla.dataworker.startModule.IDataWorker;
-//import com.senla.dataworker.writefile.WriteToCsv;
+//import com.senla.dataworker.writefile.WriteToCsvImpl;
 //import com.senla.mainmodule.entities.Book;
 //import com.senla.mainmodule.entities.Order;
 //import com.senla.mainmodule.entities.Request;
@@ -27,7 +27,7 @@
 //    private IServiceOrder orderService;
 //    private IServiceRequest requestService;
 //    private FileWorker fileWorker;
-//    private IDataWorker csvWorker;
+//    private DataWorker csvWorker;
 //
 //    private static EBookShopOld instance = null;
 //
@@ -43,7 +43,7 @@
 //        orderService = ServiceOrder.getInstance();
 //        requestService = ServiceRequest.getInstance();
 //        fileWorker = new FileWorker();
-//        this.csvWorker = new DataWorker();
+//        this.csvWorker = new DataWorkerImpl();
 //    }
 //
 //    //BOOK
