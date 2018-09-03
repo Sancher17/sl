@@ -1,6 +1,6 @@
 package com.senla.mainmodule.services;
 
-import com.senla.mainmodule.entities.Request;
+import entities.Request;
 
 import java.util.List;
 

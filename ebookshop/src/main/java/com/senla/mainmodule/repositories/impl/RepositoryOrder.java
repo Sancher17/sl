@@ -1,10 +1,9 @@
 package com.senla.mainmodule.repositories.impl;
 
 
-import com.senla.mainmodule.entities.Order;
-import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryOrder;
 import com.senla.mainmodule.repositories.util.Id;
+import entities.Order;
 
 import java.util.ArrayList;
 import java.util.List;

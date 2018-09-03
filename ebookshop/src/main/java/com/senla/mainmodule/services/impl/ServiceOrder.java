@@ -1,17 +1,14 @@
 package com.senla.mainmodule.services.impl;
 
 
-import com.senla.mainmodule.entities.Book;
-import com.senla.mainmodule.entities.Order;
-import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryBook;
 import com.senla.mainmodule.repositories.IRepositoryOrder;
-import com.senla.mainmodule.repositories.impl.RepositoryBook;
-import com.senla.mainmodule.repositories.impl.RepositoryOrder;
 import com.senla.mainmodule.services.IServiceOrder;
 import com.senla.mainmodule.util.comparators.order.ComparatorCompletedOrdersByDate;
 import com.senla.mainmodule.util.comparators.order.ComparatorOrdersByPrice;
 import com.senla.mainmodule.util.comparators.order.ComparatorOrdersByState;
+import entities.Book;
+import entities.Order;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -203,10 +200,10 @@ public class ServiceOrder extends Service implements IServiceOrder {
         return order;
     }
 
-    @Override
-    public IRepositoryOrder getRepositoryOrder() {
-        return orders;
-    }
+//    @Override
+//    public IRepositoryOrder getRepositoryOrder() {
+//        return orders;
+//    }
 
     @Override
     public Order cloneOrder(Long id) {

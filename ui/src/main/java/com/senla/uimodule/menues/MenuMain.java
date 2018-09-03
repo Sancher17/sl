@@ -1,8 +1,7 @@
-package com.senla.uimodule.menus;
+package com.senla.uimodule.menues;
 
 import com.senla.mainmodule.di.DependencyBuilder;
 import com.senla.uimodule.data.LoadData;
-import com.senla.uimodule.data.LoadDataImpl;
 import com.senla.uimodule.util.Printer;
 import org.apache.log4j.Logger;
 

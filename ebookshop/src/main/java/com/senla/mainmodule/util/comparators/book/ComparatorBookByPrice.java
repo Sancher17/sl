@@ -1,6 +1,7 @@
 package com.senla.mainmodule.util.comparators.book;
 
-import com.senla.mainmodule.entities.Book;
+
+import entities.Book;
 
 import java.util.Comparator;
 

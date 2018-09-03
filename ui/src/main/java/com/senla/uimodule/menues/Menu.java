@@ -1,4 +1,4 @@
-package com.senla.uimodule.menus;
+package com.senla.uimodule.menues;
 
 import com.senla.mainmodule.facade.EBookShop;
 import com.senla.uimodule.di.DependencyBuilder;

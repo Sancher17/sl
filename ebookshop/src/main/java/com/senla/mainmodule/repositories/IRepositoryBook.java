@@ -1,6 +1,6 @@
 package com.senla.mainmodule.repositories;
 
-import com.senla.mainmodule.entities.Book;
+import entities.Book;
 
 
 public interface IRepositoryBook  extends IRepository {

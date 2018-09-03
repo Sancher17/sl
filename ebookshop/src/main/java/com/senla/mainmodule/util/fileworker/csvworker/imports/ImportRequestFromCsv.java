@@ -1,19 +1,14 @@
 package com.senla.mainmodule.util.fileworker.csvworker.imports;
 
-import com.senla.mainmodule.di.DependencyBuilder;
-import com.senla.mainmodule.entities.Request;
 import com.senla.mainmodule.services.IService;
-import com.senla.mainmodule.services.IServiceRequest;
-import com.senla.mainmodule.services.impl.ServiceRequest;
 import com.senla.mainmodule.util.fileworker.csvworker.merger.Merger;
 import com.senla.mainmodule.util.fileworker.csvworker.merger.MergerRequest;
+import entities.Request;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.senla.mainmodule.util.fileworker.csvworker.parser.Parse.parseBoolean;
-import static com.senla.mainmodule.util.fileworker.csvworker.parser.Parse.parseInteger;
-import static com.senla.mainmodule.util.fileworker.csvworker.parser.Parse.parseLong;
+import static com.senla.mainmodule.util.fileworker.csvworker.parser.Parse.*;
 
 public class ImportRequestFromCsv extends ImportCsv {
 

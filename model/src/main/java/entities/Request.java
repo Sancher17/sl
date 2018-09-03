@@ -1,4 +1,4 @@
-package com.senla.mainmodule.entities;
+package entities;
 
 import com.senla.dataworker.annotations.CsvEntity;
 import com.senla.dataworker.annotations.CsvProperty;

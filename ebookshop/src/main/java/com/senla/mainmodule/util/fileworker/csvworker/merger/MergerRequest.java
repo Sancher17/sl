@@ -1,12 +1,7 @@
 package com.senla.mainmodule.util.fileworker.csvworker.merger;
 
-import com.senla.mainmodule.entities.Order;
-import com.senla.mainmodule.entities.Request;
 import com.senla.mainmodule.services.IService;
-import com.senla.mainmodule.services.IServiceOrder;
-import com.senla.mainmodule.services.IServiceRequest;
-import com.senla.mainmodule.services.impl.ServiceOrder;
-import com.senla.mainmodule.services.impl.ServiceRequest;
+import entities.Request;
 
 import java.util.List;
 

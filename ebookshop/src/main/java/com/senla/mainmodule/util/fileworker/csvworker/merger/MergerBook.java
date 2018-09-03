@@ -1,7 +1,7 @@
 package com.senla.mainmodule.util.fileworker.csvworker.merger;
 
-import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.services.IService;
+import entities.Book;
 
 import java.util.List;
 

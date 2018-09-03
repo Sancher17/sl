@@ -1,15 +1,11 @@
 package com.senla.mainmodule.util.fileworker.csvworker.imports;
 
-import com.senla.mainmodule.di.DependencyBuilder;
-import com.senla.mainmodule.entities.Book;
-import com.senla.mainmodule.entities.Order;
 import com.senla.mainmodule.services.IService;
 import com.senla.mainmodule.services.IServiceBook;
-import com.senla.mainmodule.services.IServiceOrder;
-import com.senla.mainmodule.services.impl.ServiceBook;
-import com.senla.mainmodule.services.impl.ServiceOrder;
 import com.senla.mainmodule.util.fileworker.csvworker.merger.Merger;
 import com.senla.mainmodule.util.fileworker.csvworker.merger.MergerOrder;
+import entities.Book;
+import entities.Order;
 
 import java.util.ArrayList;
 import java.util.List;

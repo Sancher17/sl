@@ -1,8 +1,7 @@
 package com.senla.mainmodule.services;
 
-import com.senla.mainmodule.entities.Order;
-import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryOrder;
+import entities.Order;
 
 import java.util.Date;
 import java.util.List;
@@ -41,7 +40,7 @@ public interface IServiceOrder extends IService {
 
     Order getOrderById(Long id);
 
-    IRepositoryOrder getRepositoryOrder();
+//    IRepositoryOrder getRepositoryOrder();
 
     Order cloneOrder(Long id);
 }

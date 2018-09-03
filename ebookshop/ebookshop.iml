@@ -12,5 +12,6 @@
     <orderEntry type="library" name="textFileWorker" level="project" />
     <orderEntry type="module" module-name="properties" />
     <orderEntry type="module" module-name="dataworker" />
+    <orderEntry type="module" module-name="model" />
   </component>
 </module>

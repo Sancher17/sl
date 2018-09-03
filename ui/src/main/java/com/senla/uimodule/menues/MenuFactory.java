@@ -1,4 +1,4 @@
-package com.senla.uimodule.menus;
+package com.senla.uimodule.menues;
 
 import com.senla.uimodule.util.Printer;
 import org.apache.log4j.Logger;

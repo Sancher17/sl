@@ -1,4 +1,4 @@
-package com.senla.mainmodule.entities;
+package entities;
 
 
 import com.senla.dataworker.annotations.CsvEntity;
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @CsvEntity(fileName = "books.csv", valueSeparator =";", entityId = "id")
-public class Book implements Serializable, Cloneable{
+public class Book implements Serializable, Cloneable {
 
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Long id;
@@ -142,4 +142,5 @@ public class Book implements Serializable, Cloneable{
     protected Book clone() throws CloneNotSupportedException {
         return (Book) super.clone();
     }
+
 }

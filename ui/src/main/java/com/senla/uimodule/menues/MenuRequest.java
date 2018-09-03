@@ -1,7 +1,7 @@
-package com.senla.uimodule.menus;
+package com.senla.uimodule.menues;
 
-import com.senla.mainmodule.entities.Request;
 import com.senla.uimodule.util.Printer;
+import entities.Request;
 
 import static com.senla.uimodule.constant.UiConstants.*;
 

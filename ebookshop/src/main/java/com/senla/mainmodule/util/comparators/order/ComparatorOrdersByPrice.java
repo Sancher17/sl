@@ -1,7 +1,7 @@
 package com.senla.mainmodule.util.comparators.order;
 
 
-import com.senla.mainmodule.entities.Order;
+import entities.Order;
 
 import java.util.Comparator;
 

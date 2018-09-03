@@ -1,7 +1,7 @@
-package com.senla.uimodule.menus;
+package com.senla.uimodule.menues;
 
-import com.senla.mainmodule.entities.Book;
 import com.senla.uimodule.util.Printer;
+import entities.Book;
 
 import java.util.Date;
 import java.util.List;

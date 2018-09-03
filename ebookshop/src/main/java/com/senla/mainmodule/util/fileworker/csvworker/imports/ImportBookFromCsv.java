@@ -1,10 +1,10 @@
 package com.senla.mainmodule.util.fileworker.csvworker.imports;
 
-import com.senla.mainmodule.entities.Book;
 import com.senla.mainmodule.services.IService;
 import com.senla.mainmodule.util.fileworker.csvworker.merger.Merger;
 import com.senla.mainmodule.util.fileworker.csvworker.merger.MergerBook;
 import com.senla.mainmodule.util.fileworker.csvworker.parser.Parse;
+import entities.Book;
 
 import java.util.ArrayList;
 import java.util.List;

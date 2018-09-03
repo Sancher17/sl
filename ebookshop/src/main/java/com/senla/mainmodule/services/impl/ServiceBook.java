@@ -1,11 +1,11 @@
 package com.senla.mainmodule.services.impl;
 
-import com.senla.mainmodule.entities.Book;
-import com.senla.mainmodule.entities.Request;
 import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryBook;
 import com.senla.mainmodule.services.IServiceBook;
 import com.senla.mainmodule.util.comparators.book.*;
+import entities.Book;
+import entities.Request;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -13,7 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.*;
+import static com.senla.mainmodule.constants.Constants.ALLOW_MARK_REQUESTS;
+import static com.senla.mainmodule.constants.Constants.BOOK_IS_OLD;
 
 public class ServiceBook extends Service implements IServiceBook {
 
@@ -133,10 +134,10 @@ public class ServiceBook extends Service implements IServiceBook {
         return null;
     }
 
-    @Override
-    public IRepositoryBook getRepositoryBook() {
-        return books;
-    }
+//    @Override
+//    public IRepositoryBook getRepositoryBook() {
+//        return books;
+//    }
 
     @Override
     public void markBookOld(){

@@ -1,11 +1,11 @@
 package com.senla.mainmodule.services.impl;
 
-import com.senla.mainmodule.entities.Request;
 import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.impl.RepositoryRequest;
 import com.senla.mainmodule.services.IServiceRequest;
 import com.senla.mainmodule.util.comparators.request.ComparatorRequestsByAlphabet;
 import com.senla.mainmodule.util.comparators.request.ComparatorRequestsByQuantity;
+import entities.Request;
 
 import java.util.ArrayList;
 import java.util.List;
