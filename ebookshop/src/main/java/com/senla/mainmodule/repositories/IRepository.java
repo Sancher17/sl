@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface IRepository<T> {
 
-    void add(T entity);
+    void add(T obj);
 
     void deleteById(Long id);
 
@@ -13,7 +13,7 @@ public interface IRepository<T> {
 
     List <T> getAll();
 
-    void setAll(List<T> entity);
+
 
     void setLastId(Long lastId);
 }

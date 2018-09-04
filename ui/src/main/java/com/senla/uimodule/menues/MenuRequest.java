@@ -9,7 +9,7 @@ public class MenuRequest extends Menu {
 
     public MenuRequest() {
         super("MenuOrder");
-        getEBookShop().getRequestService().addObserver(this);
+//        getEBookShop().getRequestService().addObserver(this);
     }
 
     @Override
@@ -18,7 +18,8 @@ public class MenuRequest extends Menu {
         setOperation(scannerInteger(getScanner()));
         while (getOperation() != EXIT) {
             switch (getOperation()) {
-                case MENU_MAIN: getEBookShop().getRequestService().deleteObserver(this);
+                case MENU_MAIN:
+//                    getEBookShop().getRequestService().deleteObserver(this);
                     runMenuController(MENU_MAIN);
                     break;
                 case ADD_REQUEST: addRequest();
@@ -88,7 +89,7 @@ public class MenuRequest extends Menu {
     private void printRequests(){
         Printer.println("Все запросы");
         printRequestHead();
-        for (Request request: getEBookShop().getRequestService().getAll()){
+        for (Request request: getEBookShop().getRequests()){
             Printer.println(request.toString());
         }
     }
@@ -99,11 +100,11 @@ public class MenuRequest extends Menu {
 
     private void exportRequest() {
         Printer.println("Экспортировать все записи заказов");
-        getEBookShop().exportToCsv(getEBookShop().getRequestService(), getEBookShop().getRequestService().getAll());
+        getEBookShop().exportRequestToCsv();
     }
 
     private void importRequest() {
         Printer.println("Импортировать записи заказов");
-        getEBookShop().importFromCsv(getEBookShop().getRequestService(), getEBookShop().getRequestService().getAll());
+        getEBookShop().importRequestFromCsv();
     }
 }

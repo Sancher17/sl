@@ -1,6 +1,5 @@
 package com.senla.mainmodule.repositories.impl;
 
-
 import com.senla.mainmodule.repositories.IRepositoryOrder;
 import com.senla.mainmodule.repositories.util.Id;
 import entities.Order;
@@ -13,7 +12,6 @@ public class RepositoryOrder implements IRepositoryOrder {
     private static Long lastId = 0L;
     private List<Order> orders = new ArrayList<>();
     private static RepositoryOrder instance = null;
-
     public static RepositoryOrder getInstance() {
         if (instance == null) {
             instance = new RepositoryOrder();
@@ -25,9 +23,8 @@ public class RepositoryOrder implements IRepositoryOrder {
     }
 
     @Override
-    public void add(Object obj) {
+    public void add(Order order) {
         lastId = Id.nextId(lastId);
-        Order order = (Order) obj;
         order.setId(lastId);
         orders.add(order);
     }
@@ -36,7 +33,6 @@ public class RepositoryOrder implements IRepositoryOrder {
     public void deleteById(Long id) {
         orders.removeIf(order -> order.getId().equals(id));
     }
-
 
     @Override
     public Order getById(Long id) {
@@ -58,12 +54,10 @@ public class RepositoryOrder implements IRepositoryOrder {
         this.orders = orders;
     }
 
-
     @Override
     public void setLastId(Long lastId) {
         this.lastId = lastId;
     }
-
 
     @Override
     public Long getLastId() {

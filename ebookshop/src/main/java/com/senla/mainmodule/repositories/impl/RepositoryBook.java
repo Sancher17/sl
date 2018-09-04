@@ -12,7 +12,6 @@ public class RepositoryBook implements IRepositoryBook {
     private static Long lastId = 0L;
     private List<Book> books = new ArrayList<>();
     private static RepositoryBook instance = null;
-
     public static RepositoryBook getInstance() {
         if (instance == null) {
             instance = new RepositoryBook();
@@ -23,11 +22,9 @@ public class RepositoryBook implements IRepositoryBook {
     private RepositoryBook() {
     }
 
-
     @Override
-    public void add(Object obj) {
+    public void add(Book book) {
         lastId = Id.nextId(lastId);
-        Book book = (Book) obj;
         book.setId(lastId);
         books.add(book);
     }
@@ -64,7 +61,7 @@ public class RepositoryBook implements IRepositoryBook {
     }
 
     @Override
-    public void setAll(List books) {
+    public void setAll(List<Book> books) {
         this.books = books;
     }
 

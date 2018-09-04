@@ -11,7 +11,7 @@
     <orderEntry type="library" name="log4j:apache-log4j-extras:1.2.17" level="project" />
     <orderEntry type="library" name="textFileWorker" level="project" />
     <orderEntry type="module" module-name="properties" />
-    <orderEntry type="module" module-name="dataworker" />
     <orderEntry type="module" module-name="model" />
+    <orderEntry type="module" module-name="fileworker" />
   </component>
 </module>

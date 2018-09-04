@@ -1,19 +1,17 @@
 package com.senla.mainmodule.repositories.impl;
 
-
-import com.senla.mainmodule.repositories.IRepository;
+import com.senla.mainmodule.repositories.IRepositoryRequest;
 import com.senla.mainmodule.repositories.util.Id;
 import entities.Request;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepositoryRequest implements IRepository {
+public class RepositoryRequest implements IRepositoryRequest {
 
     private static Long lastId = 0L;
     private List<Request> requests = new ArrayList<>();
     private static RepositoryRequest instance = null;
-
     public static RepositoryRequest getInstance() {
         if (instance == null) {
             instance = new RepositoryRequest();
@@ -25,9 +23,8 @@ public class RepositoryRequest implements IRepository {
     }
 
     @Override
-    public void add(Object obj) {
+    public void add(Request request) {
         lastId = Id.nextId(lastId);
-        Request request = (Request) obj;
         request.setId(lastId);
         requests.add(request);
     }
@@ -38,7 +35,7 @@ public class RepositoryRequest implements IRepository {
     }
 
     @Override
-    public Object getById(Long id) {
+    public Request getById(Long id) {
         for(Request request: requests){
             if(request.getId().equals(id)){
                 return request;
@@ -53,7 +50,7 @@ public class RepositoryRequest implements IRepository {
     }
 
     @Override
-    public void setAll(List requests) {
+    public void setAll(List<Request> requests) {
         this.requests = requests;
     }
 

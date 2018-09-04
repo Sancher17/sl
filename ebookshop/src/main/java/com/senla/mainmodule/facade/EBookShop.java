@@ -1,17 +1,14 @@
 package com.senla.mainmodule.facade;
 
-import com.senla.dataworker.startModule.DataWorkerImpl;
-import com.senla.dataworker.startModule.DataWorker;
 import com.senla.mainmodule.di.DependencyBuilder;
-import com.senla.mainmodule.services.IService;
 import com.senla.mainmodule.services.IServiceBook;
 import com.senla.mainmodule.services.IServiceOrder;
 import com.senla.mainmodule.services.IServiceRequest;
 import com.senla.mainmodule.services.impl.ServiceBook;
 import com.senla.mainmodule.services.impl.ServiceOrder;
 import com.senla.mainmodule.services.impl.ServiceRequest;
-import com.senla.mainmodule.util.fileworker.FileWorker;
-import com.senla.mainmodule.util.fileworker.IFileWorker;
+import com.senla.mainmodule.util.dataworker.IDataWorker;
+import com.senla.mainmodule.util.dataworker.DataWorker;
 import com.senla.propertiesmodule.PropertyHolder;
 import entities.Book;
 import entities.Order;
@@ -27,20 +24,16 @@ public class EBookShop {
     private IServiceBook bookService;
     private IServiceOrder orderService;
     private IServiceRequest requestService;
-    private IFileWorker fileWorker;
-    private DataWorker csvWorker;
 
     public EBookShop() {
-        this.bookService = DependencyBuilder.build(ServiceBook.class);
-        this.orderService = DependencyBuilder.build(ServiceOrder.class);
-        this.requestService = DependencyBuilder.build(ServiceRequest.class);
-        this.fileWorker = DependencyBuilder.build(FileWorker.class);
-        this.csvWorker = DependencyBuilder.build(DataWorkerImpl.class);
+        this.bookService = DependencyBuilder.build(IServiceBook.class);
+        this.orderService = DependencyBuilder.build(IServiceOrder.class);
+        this.requestService = DependencyBuilder.build(IServiceRequest.class);
     }
 
     public void checkProperties() {
         PropertyHolder propertyHolder = new PropertyHolder();
-        propertyHolder.pathsForFiles();
+        propertyHolder.pathsForDataFiles();
         propertyHolder.allowMArkRequest();
         propertyHolder.bookIsOld();
     }
@@ -68,6 +61,10 @@ public class EBookShop {
 
     public void sortBooksByAvailability() {
         bookService.sortByAvailability();
+    }
+
+    public List<Book> getBooks(){
+        return bookService.getAll();
     }
 
     public List<Book> getBooksPeriodMoreSixMonthByDate() {
@@ -119,6 +116,10 @@ public class EBookShop {
         orderService.sortOrdersByState();
     }
 
+    public List<Order> getOrders(){
+        return orderService.getAll();
+    }
+
     public List<Order> getCompletedOrders() {
         return orderService.getCompletedOrders();
     }
@@ -152,6 +153,10 @@ public class EBookShop {
         requestService.addBookRequest(nameRequireBook);
     }
 
+    public List<Request> getRequests(){
+        return requestService.getAll();
+    }
+
     public List<Request> getCompletedRequests() {
         return requestService.getCompletedRequests();
     }
@@ -168,59 +173,76 @@ public class EBookShop {
         requestService.sortRequestsByAlphabet();
     }
 
-
-    //read - write
-    //book
-    public void writeToFile(IService service, List list) {
-        fileWorker.writeToFile(service, list);
+    //Save Data - read / write
+    public void writeBookToFile() {
+        bookService.writeDataToFile();
     }
 
     public void readBookFromFile() {
-        fileWorker.readFromFile(bookService, PATH_BOOK_DATA_TEST);
+        bookService.readDataFromFile(PATH_BOOK_DATA_TEST);
+    }
+
+    public void writeOrderToFile(){
+        orderService.writeDataToFile();
     }
 
     public void readOrderFromFile() {
-        fileWorker.readFromFile(orderService, PATH_ORDER_DATA_TEST);
+        orderService.readDataFromFile(PATH_ORDER_DATA_TEST);
+    }
+
+    public void writeRequestToFile() {
+        requestService.writeDataToFile();
     }
 
     public void readRequestFromFile() {
-        fileWorker.readFromFile(requestService, PATH_REQUEST_DATA_TEST);
+        requestService.readDataFromFile(PATH_REQUEST_DATA_TEST);
+    }
+
+    // CSV - import / export
+    public void exportBooksToCsv() {
+        bookService.exportToCsv();
+    }
+
+    public void importBooksFromCsv() {
+        bookService.importFromCsv();
+    }
+
+    public void exportOrderToCsv() {
+        orderService.exportToCsv();
+    }
+
+    public void importOrderFromCsv() {
+        orderService.importFromCsv();
+    }
+
+    public void exportRequestToCsv() {
+        requestService.exportToCsv();
+    }
+
+    public void importRequestFromCsv() {
+        requestService.importFromCsv();
     }
 
 
-    //work with CSV
-    public void writeToCsv(List list) {
-        csvWorker.writeToCsv(list);
-    }
-
-    public void exportToCsv(IService service, List list) {
-        fileWorker.exportToCsv(service,list);
-    }
-
-    public void importFromCsv(IService service, List list) {
-        fileWorker.importFromCsv(service, list);
-    }
-
-    public void importFromCsv(IService service, IServiceBook serviceBook, List list){
-        fileWorker.importFromCsv(service, serviceBook, list);
-    }
 
 
-    // getters - setters
-//    public ServiceBook getBookService() {
-//        return (ServiceBook) bookService;
+
+
+//    // getters - setters //для обсервера используется
+//    public IServiceBook getBookService() {
+//        return bookService;
 //    }
 
+    // TODO: 04.09.2018  пока не придумал что с этим сделать
+//    public void addObserver(){
+//        bookService.addObserver(MenuBook.clas);
+//    }
 
-    public IServiceBook getBookService() {
-        return bookService;
-    }
-
-    public IServiceOrder getOrderService() {
-        return  orderService;
-    }
-
-    public IServiceRequest getRequestService() {
-        return requestService;
-    }
+//    public IServiceOrder getOrderService() {
+//        return  orderService;
+//    }
+//
+//    public IServiceRequest getRequestService() {
+//        return requestService;
+//    }
 }

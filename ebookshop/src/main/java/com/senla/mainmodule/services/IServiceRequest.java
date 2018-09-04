@@ -4,7 +4,7 @@ import entities.Request;
 
 import java.util.List;
 
-public interface IServiceRequest extends IService {
+public interface IServiceRequest extends IService <Request>{
 
     void addBookRequest(String nameRequireBook);
 

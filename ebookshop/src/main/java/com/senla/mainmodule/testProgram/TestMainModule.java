@@ -1,7 +1,7 @@
 package com.senla.mainmodule.testProgram;
 
-import com.senla.dataworker.startModule.DataWorker;
-import com.senla.dataworker.startModule.DataWorkerImpl;
+import com.senla.fileworker.startModule.FileWorker;
+import com.senla.fileworker.startModule.FileWorkerImpl;
 import com.senla.mainmodule.di.DependencyBuilder;
 import com.senla.mainmodule.services.IServiceBook;
 import com.senla.mainmodule.services.IServiceOrder;
@@ -9,8 +9,8 @@ import com.senla.mainmodule.services.IServiceRequest;
 import com.senla.mainmodule.services.impl.ServiceBook;
 import com.senla.mainmodule.services.impl.ServiceOrder;
 import com.senla.mainmodule.services.impl.ServiceRequest;
-import com.senla.mainmodule.util.fileworker.FileWorker;
-import com.senla.mainmodule.util.fileworker.IFileWorker;
+import com.senla.mainmodule.util.dataworker.DataWorker;
+import com.senla.mainmodule.util.dataworker.IDataWorker;
 import entities.Book;
 import entities.Order;
 import entities.Request;
@@ -26,7 +26,7 @@ public class TestMainModule {
     private static final Date DATE_TODAY = new Date();
     private static final Date DATE_TWO_MONTH_AGO = Date.from(ZonedDateTime.now().minusMonths(2).toInstant());
 
-    private static DataWorker dataWorker;
+    private static FileWorker fileWorker;
     private static IServiceBook serviceBook;
     private static IServiceOrder serviceOrder;
     private static IServiceRequest serviceRequest;
@@ -37,7 +37,7 @@ public class TestMainModule {
         serviceBook = DependencyBuilder.build(ServiceBook.class);
         serviceOrder = DependencyBuilder.build(ServiceOrder.class);
         serviceRequest = DependencyBuilder.build(ServiceRequest.class);
-        dataWorker = DependencyBuilder.build(DataWorkerImpl.class);
+        fileWorker = DependencyBuilder.build(FileWorkerImpl.class);
         /***/
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
@@ -129,25 +129,17 @@ public class TestMainModule {
 
         System.out.println("\nAnnotations block ++++++++++++++++++++++++++++++++++++++++++");
         //book
-        dataWorker.writeToCsv(serviceBook.getAll());
-        dataWorker.writeToCsv(serviceOrder.getAll());
-        dataWorker.writeToCsv(serviceRequest.getAll());
+        fileWorker.exportToCsv(serviceBook.getAll());
+        fileWorker.exportToCsv(serviceOrder.getAll());
+        fileWorker.exportToCsv(serviceRequest.getAll());
 
-        System.out.println("\nWorking with FileWorker CSV \\ File block ++++++++++++++++++++++++++++++++++++++++++");
-        IFileWorker fw = new FileWorker();
+        System.out.println("\nWorking with DataWorker CSV \\ File block ++++++++++++++++++++++++++++++++++++++++++");
+        IDataWorker fw = new DataWorker();
 
-        fw.writeToFile(serviceBook,serviceBook.getAll());
-        fw.writeToFile(serviceOrder,serviceOrder.getAll());
-        fw.writeToFile(serviceRequest,serviceRequest.getAll());
+        fw.writeDataToFile(serviceBook,serviceBook.getAll());
+        fw.writeDataToFile(serviceOrder,serviceOrder.getAll());
+        fw.writeDataToFile(serviceRequest,serviceRequest.getAll());
 
-
-        fw.exportToCsv(serviceBook, serviceBook.getAll());
-        fw.exportToCsv(serviceOrder, serviceOrder.getAll());
-        fw.exportToCsv(serviceRequest, serviceRequest.getAll());
-
-        fw.importFromCsv(serviceBook, serviceBook.getAll());
-        fw.importFromCsv(serviceOrder, serviceBook, serviceOrder.getAll());
-        fw.importFromCsv(serviceRequest, serviceRequest.getAll());
 
         printBooks();
         printRequests();

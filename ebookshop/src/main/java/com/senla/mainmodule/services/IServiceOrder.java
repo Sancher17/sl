@@ -6,7 +6,7 @@ import entities.Order;
 import java.util.Date;
 import java.util.List;
 
-public interface IServiceOrder extends IService {
+public interface IServiceOrder extends IService<Order> {
 
     void addOrder(Order order);
 
@@ -39,8 +39,6 @@ public interface IServiceOrder extends IService {
     Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate);
 
     Order getOrderById(Long id);
-
-//    IRepositoryOrder getRepositoryOrder();
 
     Order cloneOrder(Long id);
 }

@@ -12,7 +12,8 @@ public class MenuBook extends Menu {
 
     public MenuBook() {
         super("MenuBook");
-        getEBookShop().getBookService().addObserver(this);
+//        getEBookShop().getBookService().addObserver(this);
+
     }
 
     @Override
@@ -22,7 +23,7 @@ public class MenuBook extends Menu {
         while (getOperation() != EXIT) {
             switch (getOperation()) {
                 case MENU_MAIN:
-                    getEBookShop().getBookService().deleteObserver(this);
+//                    getEBookShop().getBookService().deleteObserver(this);
                     runMenuController(MENU_MAIN);
                     break;
                 case ADD_BOOK:
@@ -141,7 +142,7 @@ public class MenuBook extends Menu {
     private void printBooks() {
         Printer.println("Все книги");
         printBookHead();
-        for (Book book : getEBookShop().getBookService().getAll()) {
+        for (Book book : getEBookShop().getBooks()) {
             if (book != null) {
                 Printer.println(book.toString());
             }
@@ -180,12 +181,13 @@ public class MenuBook extends Menu {
 
     private void exportBook() {
         Printer.println("Экспортировать все записи книг");
-        getEBookShop().exportToCsv(getEBookShop().getBookService(), getEBookShop().getBookService().getAll());
+        getEBookShop().exportBooksToCsv();
+
     }
 
     private void importBook() {
         Printer.println("Импортировать записи книг");
-        getEBookShop().importFromCsv(getEBookShop().getBookService(), getEBookShop().getBookService().getAll());
+        getEBookShop().importBooksFromCsv();
     }
 }
 

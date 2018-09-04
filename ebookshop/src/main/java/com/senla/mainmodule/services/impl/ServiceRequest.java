@@ -1,30 +1,31 @@
 package com.senla.mainmodule.services.impl;
 
-import com.senla.mainmodule.repositories.IRepository;
-import com.senla.mainmodule.repositories.impl.RepositoryRequest;
+import com.senla.fileworker.imports.ImportRequestFromCsv;
+import com.senla.mainmodule.repositories.IRepositoryRequest;
 import com.senla.mainmodule.services.IServiceRequest;
 import com.senla.mainmodule.util.comparators.request.ComparatorRequestsByAlphabet;
 import com.senla.mainmodule.util.comparators.request.ComparatorRequestsByQuantity;
+import com.senla.mainmodule.util.dataworker.DataWorker;
+import com.senla.mainmodule.util.dataworker.IDataWorker;
+import com.senla.fileworker.imports.mergeimport.Merger;
+import com.senla.fileworker.imports.mergeimport.MergerRequest;
 import entities.Request;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_CSV;
+
 public class ServiceRequest extends Service implements IServiceRequest {
 
-    private IRepository requests = RepositoryRequest.getInstance();
+    private static final Logger log = Logger.getLogger(ServiceRequest.class);
+    private IRepositoryRequest repositoryRequest;
+    private IDataWorker fileWorker = new DataWorker();
 
-//    private static ServiceRequest instance = null;
-//
-//    public static ServiceRequest getInstance() {
-//        if (instance == null) {
-//            instance = new ServiceRequest();
-//        }
-//        return instance;
-//    }
 
-    public ServiceRequest(IRepository requests) {
-        this.requests = requests;
+    public ServiceRequest(IRepositoryRequest repositoryRequest) {
+        this.repositoryRequest = repositoryRequest;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
         Request newRequest = new Request(nameRequireBook);
         notifyObservers("Добавлен запрос на книгу: " + newRequest.getRequireNameBook());
         boolean exist = false;
-        for (Object obj : requests.getAll()) {
+        for (Object obj : repositoryRequest.getAll()) {
             Request request = (Request) obj;
             if (request != null) {
                 if (request.getRequireNameBook().equals(nameRequireBook)) {
@@ -43,32 +44,32 @@ public class ServiceRequest extends Service implements IServiceRequest {
         }
         if (!exist) {
             newRequest.setRequireQuantity(1);
-            requests.add(newRequest);
+            repositoryRequest.add(newRequest);
         }
     }
 
     @Override
     public void sortRequestsByQuantity() {
-        requests.getAll().sort(new ComparatorRequestsByQuantity());
+        repositoryRequest.getAll().sort(new ComparatorRequestsByQuantity());
         notifyObservers("Запросы отсортированы по количеству запросов");
     }
 
     @Override
     public void sortRequestsByAlphabet() {
-        requests.getAll().sort(new ComparatorRequestsByAlphabet());
+        repositoryRequest.getAll().sort(new ComparatorRequestsByAlphabet());
         notifyObservers("Запросы отсортированы по алфавиту");
     }
 
     @Override
     public List<Request> getAll() {
-        return requests.getAll();
+        return repositoryRequest.getAll();
     }
 
 
     @Override
     public List<Request> getCompletedRequests() {
         List<Request> requestList = new ArrayList<>();
-        for (Object obj : requests.getAll()) {
+        for (Object obj : repositoryRequest.getAll()) {
             Request request = (Request) obj;
             if (request.getRequireIsCompleted()) {
                 requestList.add(request);
@@ -80,7 +81,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
     @Override
     public List<Request> getNotCompletedRequests() {
         List<Request> requestList = new ArrayList<>();
-        for (Object obj : requests.getAll()) {
+        for (Object obj : repositoryRequest.getAll()) {
             Request request = (Request) obj;
             if (!request.getRequireIsCompleted()) {
                 requestList.add(request);
@@ -89,31 +90,39 @@ public class ServiceRequest extends Service implements IServiceRequest {
         return requestList;
     }
 
-
-    public IRepository getRepositoryRequests() {
-        return requests;
-    }
-
-    @Override
-    public List<Request> getRepo() {
-        return requests.getAll();
-    }
-
-    @Override
-    public void setRepo(List list) {
-        requests.setAll(list);
-        setLastId();
-    }
-
     @Override
     public void setLastId() {
         Long id = 0L;
-        for (Object obj : requests.getAll()) {
+        for (Object obj : repositoryRequest.getAll()) {
             Request request = (Request) obj;
             if (request.getId() > id) {
                 id = request.getId();
             }
         }
-        requests.setLastId(id);
+        repositoryRequest.setLastId(id);
+    }
+
+
+    @Override
+    public void exportToCsv() {
+        super.writeToCsv(repositoryRequest.getAll());
+    }
+
+    public void importFromCsv(){
+        ImportRequestFromCsv importList = new ImportRequestFromCsv();
+        List<Request> temp = importList.importListFromFile(PATH_REQUEST_CSV);
+        Merger<Request> merger = new MergerRequest(repositoryRequest.getAll());
+        repositoryRequest.setAll(merger.merge(temp));
+    }
+
+    @Override
+    public void readDataFromFile(String path) {
+        repositoryRequest.getAll().clear();
+        repositoryRequest.setAll(fileWorker.readDataFromFile(path));
+    }
+
+    @Override
+    public void writeDataToFile() {
+        fileWorker.writeDataToFile(this, repositoryRequest.getAll());
     }
 }

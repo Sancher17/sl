@@ -8,6 +8,15 @@ public class ComparatorBookByAlphabet implements Comparator<Book> {
 
     @Override
     public int compare(Book o1, Book o2) {
-        return o1.getNameBook().compareTo(o2.getNameBook());
+
+        if (o1 == o2) {
+            return 0;
+        } else if (o1 == null) {
+            return -1;
+        } else if (o2 == null) {
+            return 1;
+        } else {
+            return o1.getNameBook().compareTo(o2.getNameBook());
+        }
     }
 }

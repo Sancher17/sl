@@ -11,7 +11,7 @@ public class MenuOrder extends Menu {
     
     public MenuOrder() {
         super("MenuOrder");
-        getEBookShop().getOrderService().addObserver(this);
+//        getEBookShop().getOrderService().addObserver(this);
     }
 
     @Override
@@ -20,7 +20,8 @@ public class MenuOrder extends Menu {
         setOperation(scannerInteger(getScanner()));
         while (getOperation() != EXIT) {
             switch (getOperation()){
-                case MENU_MAIN: getEBookShop().getOrderService().deleteObserver(this);
+                case MENU_MAIN:
+//                    getEBookShop().getOrderService().deleteObserver(this);
                     runMenuController(MENU_MAIN);
                     break;
                 case ADD_ORDER: addOrder();
@@ -104,7 +105,7 @@ public class MenuOrder extends Menu {
     private void printOrders(){
         Printer.println("Все заказы");
         printOrderHead();
-        for (Order order: getEBookShop().getOrderService().getAll()){
+        for (Order order: getEBookShop().getOrders()){
             Printer.println(order.toString());
         }
     }
@@ -220,12 +221,13 @@ public class MenuOrder extends Menu {
 
     private void exportOrder() {
         Printer.println("Экспортировать все записи заказов");
-        getEBookShop().exportToCsv(getEBookShop().getOrderService(), getEBookShop().getOrderService().getAll());
+        getEBookShop().exportOrderToCsv();
     }
 
     private void importOrder() {
         Printer.println("Импортировать записи заказов");
-        getEBookShop().importFromCsv(getEBookShop().getOrderService(), getEBookShop().getBookService(), getEBookShop().getOrderService().getAll());
+        getEBookShop().importOrderFromCsv();
+
     }
 }
 

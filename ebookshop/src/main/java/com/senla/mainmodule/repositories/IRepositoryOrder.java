@@ -1,6 +1,12 @@
 package com.senla.mainmodule.repositories;
 
-public interface IRepositoryOrder extends IRepository{
+import entities.Order;
+
+import java.util.List;
+
+public interface IRepositoryOrder extends IRepository<Order>{
+
+    void setAll(List<Order> entity);
 
     Long getLastId();
 

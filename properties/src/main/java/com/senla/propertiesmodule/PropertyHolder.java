@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import static com.senla.mainmodule.constants.Constants.*;
-import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FILE_PROPERTIES;
+import static com.senla.propertiesmodule.constants.ConstantsProperties.*;
 
 public class PropertyHolder {
 
@@ -28,20 +28,23 @@ public class PropertyHolder {
 
     public void bookIsOld() {
         loadProperties();
-//        BOOK_IS_OLD = Integer.valueOf(property.getProperty("BOOK_IS_OLD"));
-        BOOK_IS_OLD = 5;
+        BOOK_IS_OLD = Integer.valueOf(property.getProperty("BOOK_IS_OLD"));
     }
 
     public void allowMArkRequest() {
         loadProperties();
-//        ALLOW_MARK_REQUESTS = Boolean.valueOf(property.getProperty("ALLOW_MARK_REQUESTS"));
-        ALLOW_MARK_REQUESTS = true;
+        ALLOW_MARK_REQUESTS = Boolean.valueOf(property.getProperty("ALLOW_MARK_REQUESTS"));
     }
 
-    public void pathsForFiles(){
+    public void pathsForDataFiles(){
         loadProperties();
-        PATH_BOOK_DATA = property.getProperty("PATH_BOOK_FILE");
-        PATH_ORDER_DATA = property.getProperty("PATH_ORDER_FILE");
-        PATH_REQUEST_DATA = property.getProperty("PATH_REQUEST_FILE");
+        PATH_BOOK_DATA = property.getProperty("PATH_BOOK_DATA_FILE");
+        PATH_ORDER_DATA = property.getProperty("PATH_ORDER_DATA_FILE");
+        PATH_REQUEST_DATA = property.getProperty("PATH_REQUEST_DATA_FILE");
+    }
+
+    public void pathsForCsvFiles(){
+        loadProperties();
+        PATH_FOR_CSV = property.getProperty("PATH_FOR_CSV_FILES");
     }
 }

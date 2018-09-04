@@ -1,8 +1,8 @@
 package entities;
 
-import com.senla.dataworker.annotations.CsvEntity;
-import com.senla.dataworker.annotations.CsvProperty;
-import com.senla.dataworker.annotations.PropertyType;
+import com.senla.fileworker.annotations.CsvEntity;
+import com.senla.fileworker.annotations.CsvProperty;
+import com.senla.fileworker.annotations.PropertyType;
 
 import java.io.Serializable;
 

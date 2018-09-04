@@ -54,9 +54,4 @@ public class UiConstants {
     public static final int SORT_REQUEST_BY_QUANTITY = 6;
     public static final int EXPORT_REQUEST = 7;
     public static final int IMPORT_REQUEST = 8;
-
-    //files_paths
-    public static final String PATH_BOOK_DATA = "G:\\Java\\Senla3\\aliaksandr-kavalenka\\ebookshop\\src\\main\\java\\com\\senla\\mainmodule\\bookData.txt";
-    public static final String PATH_ORDER_DATA = "G:\\Java\\Senla3\\aliaksandr-kavalenka\\ebookshop\\src\\main\\java\\com\\senla\\mainmodule\\orderData.txt";
-    public static final String PATH_REQUEST_DATA = "G:\\Java\\Senla3\\aliaksandr-kavalenka\\ebookshop\\src\\main\\java\\com\\senla\\mainmodule\\requestData.txt";
 }

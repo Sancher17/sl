@@ -3,6 +3,7 @@ package com.senla.mainmodule.di;
 import com.senla.mainmodule.repositories.IRepository;
 import com.senla.mainmodule.repositories.IRepositoryBook;
 import com.senla.mainmodule.repositories.IRepositoryOrder;
+import com.senla.mainmodule.repositories.IRepositoryRequest;
 import com.senla.mainmodule.repositories.impl.RepositoryBook;
 import com.senla.mainmodule.repositories.impl.RepositoryOrder;
 import com.senla.mainmodule.repositories.impl.RepositoryRequest;
@@ -56,7 +57,7 @@ public final class DependencyBuilder {
             return RepositoryBook.getInstance();
         } else if (simpleName.equals(IRepositoryOrder.class.getSimpleName())) {
             return RepositoryOrder.getInstance();
-        } else if (simpleName.equals(IRepository.class.getSimpleName())) {
+        } else if (simpleName.equals(IRepositoryRequest.class.getSimpleName())) {
             return RepositoryRequest.getInstance();
         }
         return null;
