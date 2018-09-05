@@ -1,7 +1,7 @@
 package com.senla.repositories.impl;
 
-import com.senla.mainmodule.repositories.IRepositoryRequest;
-import com.senla.mainmodule.repositories.util.Id;
+import com.senla.repositories.IRepositoryRequest;
+import com.senla.repositories.util.Id;
 import entities.Request;
 
 import java.util.ArrayList;

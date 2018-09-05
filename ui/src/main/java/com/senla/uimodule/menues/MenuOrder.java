@@ -4,6 +4,7 @@ import com.senla.uimodule.util.Printer;
 import entities.Order;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.senla.uimodule.constant.UiConstants.*;
 
@@ -28,7 +29,7 @@ public class MenuOrder extends Menu {
                     break;
                 case DELETE_ORDER: deleteOrder();
                     break;
-                case PRINT_ORDERS: printOrders();
+                case PRINT_ORDERS: printOrders(getEBookShop().getOrders());
                     break;
                 case PRINT_ORDERS_COMPLETED: printCompletedOrders();
                     break;
@@ -42,11 +43,14 @@ public class MenuOrder extends Menu {
                     break;
                 case PRINT_ORDER_BY_ID: printOrderById();
                     break;
-                case SORT_COMPLETED_ORDERS_BY_DATE: getEBookShop().sortCompletedOrdersByDate();
+                case SORT_COMPLETED_ORDERS_BY_DATE:
+                    printOrders(getEBookShop().sortCompletedOrdersByDate());
                     break;
-                case SORT_ORDERS_BY_STATE: getEBookShop().sortOrdersByState();
+                case SORT_ORDERS_BY_STATE:
+                    printOrders(getEBookShop().sortOrdersByState());
                     break;
-                case SORT_ORDERS_BY_PRICE: getEBookShop().sortOrdersByPrice();
+                case SORT_ORDERS_BY_PRICE:
+                    printOrders(getEBookShop().sortOrdersByPrice());
                     break;
                 case SET_ORDER_COMPLETE_BY_ID: setOrderCompleteById();
                     break;
@@ -102,10 +106,10 @@ public class MenuOrder extends Menu {
         Long id = scannerLong(getScanner());
         getEBookShop().deleteOrderById(id);
     }
-    private void printOrders(){
+    private void printOrders(List<Order> list){
         Printer.println("Все заказы");
         printOrderHead();
-        for (Order order: getEBookShop().getOrders()){
+        for (Order order: list){
             Printer.println(order.toString());
         }
     }
@@ -206,9 +210,9 @@ public class MenuOrder extends Menu {
     }
 
     private void copyOrder() {
-        Printer.println("Копирование заказа введите Id заказа который хотите копировать: ");
+        Printer.println("Копирование заказа, введите Id заказа который хотите копировать: ");
         Long id = scannerLong(getScanner());
-        Order cloneOrder = getEBookShop().cloneOrder(id);
+        Order cloneOrder = getEBookShop().copyOrder(id);
         if (cloneOrder == null) {
             Printer.println("Выбирите существующий Id");
             copyOrder();

@@ -37,7 +37,6 @@ public class Order implements Serializable, Cloneable {
 
     public Order(){}
 
-    //getters setters
     public Date getDateOfStartedOrder() {
         return dateOfStartedOrder;
     }

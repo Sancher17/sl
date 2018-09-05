@@ -1,6 +1,9 @@
 package com.senla.uimodule.menues;
 
-public interface MenuController {
+public class MenuController implements IMenuController {
 
-    void run(int menu);
+    public void run(int menu) {
+        Menu currentMenu = MenuFactory.getMenu(menu);
+        currentMenu.createMenu();
+    }
 }

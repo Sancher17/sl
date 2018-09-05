@@ -1,7 +1,7 @@
 package com.senla.repositories.impl;
 
-import com.senla.mainmodule.repositories.IRepositoryOrder;
-import com.senla.mainmodule.repositories.util.Id;
+import com.senla.repositories.IRepositoryOrder;
+import com.senla.repositories.util.Id;
 import entities.Order;
 
 import java.util.ArrayList;
@@ -25,7 +25,11 @@ public class RepositoryOrder implements IRepositoryOrder {
     @Override
     public void add(Order order) {
         lastId = Id.nextId(lastId);
-        order.setId(lastId);
+        if (order.getId() == null){
+            order.setId(lastId);
+        }else if (order.getId() < lastId){
+            order.setId(lastId);
+        }
         orders.add(order);
     }
 
@@ -60,7 +64,13 @@ public class RepositoryOrder implements IRepositoryOrder {
     }
 
     @Override
-    public Long getLastId() {
-        return lastId;
+    public Long findMaxId(){
+        Long maxId = 0L;
+        for (Order order:  orders) {
+            if (order.getId() > maxId) {
+                maxId = order.getId();
+            }
+        }
+        return maxId;
     }
 }

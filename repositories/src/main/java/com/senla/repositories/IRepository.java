@@ -1,6 +1,5 @@
 package com.senla.repositories;
 
-
 import java.util.List;
 
 public interface IRepository<T> {
@@ -12,8 +11,6 @@ public interface IRepository<T> {
     T getById(Long id);
 
     List <T> getAll();
-
-
 
     void setLastId(Long lastId);
 }

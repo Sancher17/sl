@@ -1,10 +1,24 @@
 package com.senla.fileworker.startModule;
 
+import com.senla.di.DependencyInjection;
+import com.senla.fileworker.exports.IExportToCsv;
+import com.senla.propertiesmodule.IPropertyHolder;
+
 import java.util.List;
 
-public interface FileWorker<T> {
+public class FileWorker implements IFileWorker {
 
-    void exportToCsv(List<T> list);
+    private IExportToCsv IExportToCsv;
+    private IPropertyHolder properties;
 
-    List importFromScv(String path);
+    public FileWorker() {
+        this.IExportToCsv = DependencyInjection.getBean(IExportToCsv.class);
+        this.properties = DependencyInjection.getBean(IPropertyHolder.class);
+        properties.pathsForCsvFiles();
+    }
+
+    @Override
+    public void exportToCsv(List list) {
+        IExportToCsv.write(list);
+    }
 }

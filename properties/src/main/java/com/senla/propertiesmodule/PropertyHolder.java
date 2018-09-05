@@ -8,9 +8,10 @@ import java.io.IOException;
 import java.util.Properties;
 
 import static com.senla.mainmodule.constants.Constants.*;
-import static com.senla.propertiesmodule.constants.ConstantsProperties.*;
+import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FILE_PROPERTIES;
+import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FOR_CSV;
 
-public class PropertyHolder {
+public class PropertyHolder implements IPropertyHolder {
 
     private static final Logger log = Logger.getLogger(PropertyHolder.class);
     private Properties property = new Properties();
@@ -26,16 +27,19 @@ public class PropertyHolder {
         }
     }
 
+    @Override
     public void bookIsOld() {
         loadProperties();
         BOOK_IS_OLD = Integer.valueOf(property.getProperty("BOOK_IS_OLD"));
     }
 
+    @Override
     public void allowMArkRequest() {
         loadProperties();
         ALLOW_MARK_REQUESTS = Boolean.valueOf(property.getProperty("ALLOW_MARK_REQUESTS"));
     }
 
+    @Override
     public void pathsForDataFiles(){
         loadProperties();
         PATH_BOOK_DATA = property.getProperty("PATH_BOOK_DATA_FILE");
@@ -43,6 +47,7 @@ public class PropertyHolder {
         PATH_REQUEST_DATA = property.getProperty("PATH_REQUEST_DATA_FILE");
     }
 
+    @Override
     public void pathsForCsvFiles(){
         loadProperties();
         PATH_FOR_CSV = property.getProperty("PATH_FOR_CSV_FILES");

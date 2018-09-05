@@ -1,7 +1,7 @@
 package com.senla.uimodule.menues;
 
-import com.senla.mainmodule.facade.EBookShop;
-import com.senla.uimodule.di.DependencyBuilder;
+import com.senla.di.DependencyInjection;
+import com.senla.mainmodule.facade.IEBookShop;
 import com.senla.uimodule.util.Printer;
 import org.apache.log4j.Logger;
 
@@ -16,15 +16,15 @@ public abstract class Menu implements Observer {
 
     private static final Logger log = Logger.getLogger(Menu.class);
     private String title;
-    private EBookShop eBookShop;
+    private IEBookShop eBookShop;
     private Scanner scanner = new Scanner(System.in);
     private int operation;
-    private MenuController controller;
+    private IMenuController controller;
 
     public Menu(String title) {
         this.title = title;
-        eBookShop = DependencyBuilder.build(EBookShop.class);
-        controller = DependencyBuilder.getBean(MenuController.class);
+        eBookShop = DependencyInjection.getBean(IEBookShop.class);
+        controller = DependencyInjection.getBean(IMenuController.class);
     }
 
     public abstract void createMenu();
@@ -121,7 +121,7 @@ public abstract class Menu implements Observer {
     }
 
     //getters - setters
-    public EBookShop getEBookShop() {
+    public IEBookShop getEBookShop() {
         return eBookShop;
     }
 

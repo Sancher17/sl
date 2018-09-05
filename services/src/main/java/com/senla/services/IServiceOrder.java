@@ -19,11 +19,11 @@ public interface IServiceOrder extends IService<Order> {
 
     void setCompleteOrderById(Long id, Date dateOfCompleted);
 
-    void sortCompletedOrdersByDate();
+    List<Order> sortCompletedOrdersByDate();
 
-    void sortOrdersByPrice();
+    List<Order> sortOrdersByPrice();
 
-    void sortOrdersByState();
+    List<Order> sortOrdersByState();
 
     List<Order> getAll();
 
@@ -33,11 +33,11 @@ public interface IServiceOrder extends IService<Order> {
 
     List<Order> getCompletedOrdersSortedByPriceOfPeriod(Date startDate, Date endDate);
 
-    Double getOrdersFullAmountByPeriod(Date startDate, Date endDate);
+    Double getFullAmountOfOrdersByPeriod(Date startDate, Date endDate);
 
     Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate);
 
     Order getOrderById(Long id);
 
-    Order cloneOrder(Long id);
+    Order copyOrder(Long id);
 }

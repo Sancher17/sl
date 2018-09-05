@@ -3,6 +3,8 @@ package com.senla.uimodule.menues;
 import com.senla.uimodule.util.Printer;
 import entities.Request;
 
+import java.util.List;
+
 import static com.senla.uimodule.constant.UiConstants.*;
 
 public class MenuRequest extends Menu {
@@ -24,15 +26,17 @@ public class MenuRequest extends Menu {
                     break;
                 case ADD_REQUEST: addRequest();
                     break;
-                case PRINT_REQUESTS: printRequests();
+                case PRINT_REQUESTS: printRequests(getEBookShop().getRequests());
                     break;
                 case PRINT_COMPLETED_REQUESTS: printCompletedRequests();
                     break;
                 case PRINT_NOT_COMPLETED_REQUESTS: printNotCompletedRequests();
                     break;
-                case SORT_REQUEST_BY_ALPHABET: getEBookShop().sortRequestsByAlphabet();
+                case SORT_REQUEST_BY_ALPHABET:
+                    printRequests(getEBookShop().sortRequestsByAlphabet());
                     break;
-                case SORT_REQUEST_BY_QUANTITY: getEBookShop().sortRequestsByQuantity();
+                case SORT_REQUEST_BY_QUANTITY:
+                    printRequests(getEBookShop().sortRequestsByQuantity());
                     break;
                 case EXPORT_REQUEST: exportRequest();
                     break;
@@ -86,10 +90,10 @@ public class MenuRequest extends Menu {
         }
     }
 
-    private void printRequests(){
+    private void printRequests(List<Request> list){
         Printer.println("Все запросы");
         printRequestHead();
-        for (Request request: getEBookShop().getRequests()){
+        for (Request request: list){
             Printer.println(request.toString());
         }
     }

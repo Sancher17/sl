@@ -33,19 +33,19 @@ public class MenuBook extends Menu {
                     deleteBook();
                     break;
                 case PRINT_BOOKS:
-                    printBooks();
+                    printBooks(getEBookShop().getBooks());
                     break;
                 case SORT_BOOKS_BY_ALPHABET:
-                    getEBookShop().sortBooksByAlphabet();
+                    printBooks(getEBookShop().sortBooksByAlphabet());
                     break;
                 case SORT_BOOKS_BY_PUBLICATION_DATE:
-                    getEBookShop().sortBooksByDatePublication();
+                    printBooks(getEBookShop().sortBooksByDatePublication());
                     break;
                 case SORT_BOOKS_BY_PRICE:
-                    getEBookShop().sortBooksByPrice();
+                    printBooks(getEBookShop().sortBooksByPrice());
                     break;
                 case SORT_BOOKS_BY_AVAILABILITY:
-                    getEBookShop().sortBooksByAvailability();
+                    printBooks(getEBookShop().sortBooksByAvailability());
                     break;
                 case PRINT_BOOKS_PERIOD_MORE_SIX_MONTH_SORTED_BY_DATE:
                     printBooksPeriodMoreSixMonthByDate();
@@ -115,7 +115,8 @@ public class MenuBook extends Menu {
         Printer.print("введите описание книги: ");
         String description = scannerString();
 
-        getEBookShop().addBook(nameBook, datePublication, TODAY, price, description, true);
+        Book book = new Book(nameBook, datePublication, TODAY, price, description, true, false);
+        getEBookShop().addBook(book);
     }
 
     private void deleteBook() {
@@ -139,10 +140,10 @@ public class MenuBook extends Menu {
         }
     }
 
-    private void printBooks() {
+    private void printBooks(List<Book> list) {
         Printer.println("Все книги");
         printBookHead();
-        for (Book book : getEBookShop().getBooks()) {
+        for (Book book : list) {
             if (book != null) {
                 Printer.println(book.toString());
             }

@@ -12,5 +12,8 @@
     <orderEntry type="library" name="textFileWorker" level="project" />
     <orderEntry type="module" module-name="ebookshop" />
     <orderEntry type="module" module-name="model" />
+    <orderEntry type="module" module-name="facade" />
+    <orderEntry type="module" module-name="repositories" />
+    <orderEntry type="module" module-name="di" />
   </component>
 </module>

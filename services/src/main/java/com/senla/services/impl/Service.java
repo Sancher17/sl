@@ -1,7 +1,7 @@
 package com.senla.services.impl;
 
-import com.senla.fileworker.startModule.FileWorker;
-import com.senla.fileworker.startModule.FileWorkerImpl;
+import com.senla.di.DependencyInjection;
+import com.senla.fileworker.startModule.IFileWorker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.Observer;
 public abstract class Service extends Observable {
 
     private List<Observer> subscribers = new ArrayList<>();
-    private FileWorker fileWorker = new FileWorkerImpl();
+    private IFileWorker IFileWorker = DependencyInjection.getBean(IFileWorker.class);
 
     @Override
     public void addObserver(Observer o) {
@@ -31,11 +31,6 @@ public abstract class Service extends Observable {
     }
 
     void writeToCsv(List list){
-        fileWorker.exportToCsv(list);
+        IFileWorker.exportToCsv(list);
     }
-
-    public void importFromCsv(String path){
-        fileWorker.importFromScv(path);
-    }
-
 }

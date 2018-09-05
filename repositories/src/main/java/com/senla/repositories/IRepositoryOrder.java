@@ -8,6 +8,5 @@ public interface IRepositoryOrder extends IRepository<Order>{
 
     void setAll(List<Order> entity);
 
-    Long getLastId();
-
+    Long findMaxId();
 }

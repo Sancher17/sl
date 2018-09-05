@@ -1,7 +1,7 @@
 package com.senla.uimodule.menues;
 
-import com.senla.mainmodule.di.DependencyBuilder;
-import com.senla.uimodule.data.LoadData;
+import com.senla.di.DependencyInjection;
+import com.senla.uimodule.data.ILoadData;
 import com.senla.uimodule.util.Printer;
 import org.apache.log4j.Logger;
 
@@ -13,11 +13,11 @@ public class MenuMain extends Menu {
 
     private static final Logger log = Logger.getLogger(MenuMain.class);
 
-    private LoadData data;
+    private ILoadData data;
 
     public MenuMain() {
         super("Главное меню");
-        data = DependencyBuilder.getBean(LoadData.class);
+        data = DependencyInjection.getBean(ILoadData.class);
     }
 
     @Override

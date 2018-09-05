@@ -1,17 +1,16 @@
 package com.senla.services.impl;
 
-
-import com.senla.fileworker.imports.ImportOrderFromCsv;
+import com.senla.di.DependencyInjection;
+import com.senla.fileworker.imports.IImportOrderFromCsv;
 import com.senla.fileworker.imports.mergeimport.Merger;
 import com.senla.fileworker.imports.mergeimport.MergerOrder;
-import com.senla.mainmodule.repositories.IRepositoryBook;
-import com.senla.mainmodule.repositories.IRepositoryOrder;
-import com.senla.mainmodule.services.IServiceOrder;
-import com.senla.mainmodule.util.comparators.order.ComparatorCompletedOrdersByDate;
-import com.senla.mainmodule.util.comparators.order.ComparatorOrdersByPrice;
-import com.senla.mainmodule.util.comparators.order.ComparatorOrdersByState;
-import com.senla.mainmodule.util.dataworker.DataWorker;
-import com.senla.mainmodule.util.dataworker.IDataWorker;
+import com.senla.repositories.IRepositoryBook;
+import com.senla.repositories.IRepositoryOrder;
+import com.senla.services.IServiceOrder;
+import com.senla.util.comparators.order.ComparatorCompletedOrdersByDate;
+import com.senla.util.comparators.order.ComparatorOrdersByPrice;
+import com.senla.util.comparators.order.ComparatorOrdersByState;
+import com.senla.util.dataworker.IDataWorker;
 import entities.Order;
 import org.apache.log4j.Logger;
 
@@ -20,7 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.PATH_ORDER_CSV;
+import static com.senla.mainmodule.constants.Constants.*;
 
 public class ServiceOrder extends Service implements IServiceOrder {
 
@@ -28,12 +27,13 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     private IRepositoryOrder repositoryOrder;
     private IRepositoryBook repositoryBook;
-    private IDataWorker fileWorker = new DataWorker();
-
+    private IDataWorker dataWorker;
+    private IImportOrderFromCsv importList;
 
     public ServiceOrder(IRepositoryOrder repositoryOrder, IRepositoryBook repositoryBook) {
         this.repositoryOrder = repositoryOrder;
         this.repositoryBook = repositoryBook;
+        this.dataWorker = DependencyInjection.getBean(IDataWorker.class);
     }
 
     @Override
@@ -98,21 +98,27 @@ public class ServiceOrder extends Service implements IServiceOrder {
     }
 
     @Override
-    public void sortCompletedOrdersByDate() {
-        repositoryOrder.getAll().sort(new ComparatorCompletedOrdersByDate());
+    public List<Order> sortCompletedOrdersByDate() {
         notifyObservers("Заказы отсортированы по дате исполнения");
+        List<Order> sortedList = repositoryOrder.getAll();
+        sortedList.sort(new ComparatorCompletedOrdersByDate());
+        return sortedList;
     }
 
     @Override
-    public void sortOrdersByPrice() {
-        repositoryOrder.getAll().sort(new ComparatorOrdersByPrice());
+    public List<Order> sortOrdersByPrice() {
         notifyObservers("Заказы отсортированы по цене");
+        List<Order> sortedList = repositoryOrder.getAll();
+        sortedList.sort(new ComparatorOrdersByPrice());
+        return sortedList;
     }
 
     @Override
-    public void sortOrdersByState() {
-        repositoryOrder.getAll().sort(new ComparatorOrdersByState());
+    public List<Order> sortOrdersByState() {
         notifyObservers("Заказы отсортированы по состоянию выполнения");
+        List<Order> sortedList = repositoryOrder.getAll();
+        sortedList.sort(new ComparatorOrdersByState());
+        return sortedList;
     }
 
     @Override
@@ -133,41 +139,40 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public List<Order> getCompletedOrdersSortedByDateOfPeriod(Date startDate, Date endDate) {
-        sortCompletedOrdersByDate();
-        List<Order> ordersList = new ArrayList<>();
-        for (Order order : repositoryOrder.getAll()) {
+        List<Order> newList = new ArrayList<>();
+        List<Order> existList = sortCompletedOrdersByDate();
+        for (Order order : existList) {
             if (order.getDateOfCompletedOrder() != null) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
                     if (order.getCompletedOrder()) {
-                        ordersList.add(order);
+                        newList.add(order);
                     }
                 }
             }
         }
-        return ordersList;
+        return newList;
     }
 
     @Override
     public List<Order> getCompletedOrdersSortedByPriceOfPeriod(Date startDate, Date endDate) {
-        sortOrdersByPrice();
-        List<Order> ordersList = new ArrayList<>();
-        for (Order order : repositoryOrder.getAll()) {
+        List<Order> newList = new ArrayList<>();
+        List<Order> existList =  sortOrdersByPrice();
+        for (Order order : existList) {
             if (order.getDateOfCompletedOrder() != null) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
-                    ordersList.add(order);
+                    newList.add(order);
                 }
             }
         }
-        return ordersList;
+        return newList;
     }
 
     @Override
-    public Double getOrdersFullAmountByPeriod(Date startDate, Date endDate) {
+    public Double getFullAmountOfOrdersByPeriod(Date startDate, Date endDate) {
         double amount = 0;
         for (Order order : repositoryOrder.getAll()) {
             if (order.getDateOfCompletedOrder() != null) {
                 if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
-                    amount = amount + order.getBook().getPrice();
                     amount = amount + order.getBook().getPrice();
                 }
             }
@@ -193,9 +198,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         return repositoryOrder.getById(id);
     }
 
-
     @Override
-    public Order cloneOrder(Long id) {
+    public Order copyOrder(Long id) {
         Order order = repositoryOrder.getById(id);
         Order tempOrder = null;
         try {
@@ -205,34 +209,23 @@ public class ServiceOrder extends Service implements IServiceOrder {
             }
             tempOrder = order.clone();
             tempOrder.setBook(order.getBook());
-            Long currentId = repositoryOrder.getLastId();
+            Long currentId = repositoryOrder.findMaxId();
             tempOrder.setId(currentId + 1L);
         } catch (CloneNotSupportedException ex) {
-            log.error("Клонирование не поддерживается данной сущьностью");
+            log.error("Копирование не поддерживается данной сущьностью");
             notifyObservers("Копирование не возможно");
         }
         return tempOrder;
     }
 
-
     @Override
-    public void setLastId() {
-        Long id = 0L;
-        for (Order order : repositoryOrder.getAll()) {
-            if (order.getId() > id) {
-                id = order.getId();
-            }
-        }
-        repositoryOrder.setLastId(id);
-    }
-
-        @Override
     public void exportToCsv() {
         super.writeToCsv(repositoryOrder.getAll());
     }
 
+    @Override
     public void importFromCsv(){
-        ImportOrderFromCsv importList = new ImportOrderFromCsv(repositoryBook);
+        importList = DependencyInjection.getBean(IImportOrderFromCsv.class);
         List<Order> temp = importList.importListFromFile(PATH_ORDER_CSV);
         Merger<Order> merger = new MergerOrder(repositoryOrder.getAll());
         repositoryOrder.setAll(merger.merge(temp));
@@ -241,12 +234,12 @@ public class ServiceOrder extends Service implements IServiceOrder {
     @Override
     public void readDataFromFile(String path) {
         repositoryOrder.getAll().clear();
-        repositoryOrder.setAll(fileWorker.readDataFromFile(path));
+        repositoryOrder.setAll(dataWorker.readDataFromFile(path));
     }
 
     @Override
     public void writeDataToFile() {
-        fileWorker.writeDataToFile(this, repositoryOrder.getAll());
+        dataWorker.writeDataToFile(this, repositoryOrder.getAll());
     }
 
 }

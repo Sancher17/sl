@@ -26,7 +26,6 @@ public abstract class Merger<T> {
 
     abstract void handleExistList();
 
-
     public List<T> getImportList() {
         return importList;
     }

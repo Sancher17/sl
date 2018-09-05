@@ -1,8 +1,7 @@
 package com.senla.uimodule.start;
 
-import com.senla.uimodule.di.DependencyBuilder;
-import com.senla.uimodule.menues.MenuController;
-import com.senla.uimodule.menues.MenuControllerImpl;
+import com.senla.di.DependencyInjection;
+import com.senla.uimodule.menues.IMenuController;
 
 import static com.senla.uimodule.constant.UiConstants.MENU_MAIN;
 
@@ -14,7 +13,7 @@ public class RunUi {
 //        PATH_ORDER_DATA = args[1];
 //        PATH_REQUEST_DATA = args[2];
 
-        MenuController controller = DependencyBuilder.getBean(MenuController.class);
+        IMenuController controller = DependencyInjection.getBean(IMenuController.class);
         controller.run(MENU_MAIN);
     }
 }

@@ -7,21 +7,20 @@ import java.util.List;
 
 public interface IServiceBook extends IService <Book> {
 
-    void addBook(String name, Date datePublication, Date dateAddedBookToStore, Double price, String description, Boolean isAvailable);
+//    void addBook(String name, Date datePublication, Date dateAddedBookToStore, Double price, String description, Boolean isAvailable);
+    void addBook(Book book);
 
     void deleteBookById(Long id);
 
-    void sortByAlphabet();
+    List<Book> sortByAlphabet();
 
-    void sortByDatePublication();
+    List<Book> sortByDatePublication();
 
-    void sortByPrice();
+    List<Book> sortByPrice();
 
-    void sortByAvailability();
+    List<Book> sortByAvailability();
 
     List<Book> getAll();
-
-    Book getByName(String name);
 
     List<Book> getBooksPeriodMoreSixMonthByDate();
 

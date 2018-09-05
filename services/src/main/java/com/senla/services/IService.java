@@ -4,8 +4,6 @@ import java.util.Observer;
 
 public interface IService<T> {
 
-    void setLastId();
-
     void addObserver(Observer o);
 
     void deleteObserver(Observer o);
