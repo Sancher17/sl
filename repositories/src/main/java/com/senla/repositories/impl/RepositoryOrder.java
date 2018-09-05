@@ -24,6 +24,7 @@ public class RepositoryOrder implements IRepositoryOrder {
 
     @Override
     public void add(Order order) {
+        lastId = findMaxId();
         lastId = Id.nextId(lastId);
         if (order.getId() == null){
             order.setId(lastId);
@@ -56,11 +57,6 @@ public class RepositoryOrder implements IRepositoryOrder {
     @Override
     public void setAll(List orders) {
         this.orders = orders;
-    }
-
-    @Override
-    public void setLastId(Long lastId) {
-        this.lastId = lastId;
     }
 
     @Override

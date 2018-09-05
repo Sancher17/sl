@@ -24,9 +24,20 @@ public class RepositoryRequest implements IRepositoryRequest {
 
     @Override
     public void add(Request request) {
+        lastId = findMaxId();
         lastId = Id.nextId(lastId);
         request.setId(lastId);
         requests.add(request);
+    }
+
+    private Long findMaxId() {
+        Long maxId = 0L;
+        for (Request request :  requests) {
+            if (request.getId() > maxId) {
+                maxId = request.getId();
+            }
+        }
+        return maxId;
     }
 
     @Override
@@ -53,10 +64,4 @@ public class RepositoryRequest implements IRepositoryRequest {
     public void setAll(List<Request> requests) {
         this.requests = requests;
     }
-
-    @Override
-    public void setLastId(Long lastId) {
-        this.lastId = lastId;
-    }
-
 }

@@ -10,6 +10,8 @@ public class Constants {
     public static final String PATH_ORDER_CSV = "fileworker/src/orders.csv";
     public static final String PATH_REQUEST_CSV = "fileworker/src/requests.csv";
 
+    public static final String PATH_EXPORT_TO_CSV = "G:\\";
+
     public static String PATH_BOOK_DATA = null;
     public static String PATH_ORDER_DATA = null;
     public static String PATH_REQUEST_DATA = null;

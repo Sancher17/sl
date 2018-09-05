@@ -31,21 +31,20 @@ public class ServiceRequest extends Service implements IServiceRequest {
     }
 
     @Override
-    public void addBookRequest(String nameRequireBook) {
-        Request newRequest = new Request(nameRequireBook);
-        notifyObservers("Добавлен запрос на книгу: " + newRequest.getRequireNameBook());
+    public void addBookRequest(Request request) {
+        notifyObservers("Добавлен запрос на книгу: " + request.getRequireNameBook());
         boolean exist = false;
-        for (Request request : repositoryRequest.getAll()) {
-            if (request != null) {
-                if (request.getRequireNameBook().equals(nameRequireBook)) {
+        for (Request aRequest : repositoryRequest.getAll()) {
+            if (aRequest != null) {
+                if (aRequest.getRequireNameBook().equals(request.getRequireNameBook())) {
                     exist = true;
-                    request.setRequireQuantity(request.getRequireQuantity() + 1);
+                    aRequest.setRequireQuantity(aRequest.getRequireQuantity() + 1);
                 }
             }
         }
         if (!exist) {
-            newRequest.setRequireQuantity(1);
-            repositoryRequest.add(newRequest);
+            request.setRequireQuantity(1);
+            repositoryRequest.add(request);
         }
     }
 

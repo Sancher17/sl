@@ -17,7 +17,7 @@ public class PropertyHolder implements IPropertyHolder {
     private Properties property = new Properties();
 
     private void loadProperties() {
-        try (FileInputStream fis = new FileInputStream(PATH_FILE_PROPERTIES)){
+        try (FileInputStream fis = new FileInputStream(PATH_FILE_PROPERTIES)) {
             property.load(fis);
         } catch (FileNotFoundException e) {
             System.err.println("ОШИБКА: Файл свойств отсуствует!");
@@ -40,7 +40,7 @@ public class PropertyHolder implements IPropertyHolder {
     }
 
     @Override
-    public void pathsForDataFiles(){
+    public void pathsForDataFiles() {
         loadProperties();
         PATH_BOOK_DATA = property.getProperty("PATH_BOOK_DATA_FILE");
         PATH_ORDER_DATA = property.getProperty("PATH_ORDER_DATA_FILE");
@@ -48,7 +48,7 @@ public class PropertyHolder implements IPropertyHolder {
     }
 
     @Override
-    public void pathsForCsvFiles(){
+    public void pathsForCsvFiles() {
         loadProperties();
         PATH_FOR_CSV = property.getProperty("PATH_FOR_CSV_FILES");
     }

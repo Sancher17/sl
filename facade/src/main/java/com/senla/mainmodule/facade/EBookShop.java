@@ -71,14 +71,15 @@ public class EBookShop implements IEBookShop {
         return bookService.getBooksPeriodMoreSixMonthByPrice();
     }
 
+    public Book getBookById(Long id) {
+        return bookService.getBookById(id);
+    }
+
     public String getBookDescriptionById(Long id) {
         return bookService.getBookDescriptionById(id);
     }
 
     // ORDER
-    public void addOrder(Date startOrder, Long bookId) {
-        orderService.addOrder(startOrder, bookId);
-    }
 
     public void addOrder(Order order) {
         orderService.addOrder(order);
@@ -137,8 +138,8 @@ public class EBookShop implements IEBookShop {
     }
 
     //REQUEST
-    public void addRequest(String nameRequireBook) {
-        requestService.addBookRequest(nameRequireBook);
+    public void addRequest(Request request) {
+        requestService.addBookRequest(request);
     }
 
     public List<Request> getRequests(){
@@ -210,25 +211,4 @@ public class EBookShop implements IEBookShop {
     public void importRequestFromCsv() {
         requestService.importFromCsv();
     }
-
-
-
-
-//    // getters - setters //для обсервера используется
-//    public IServiceBook getBookService() {
-//        return bookService;
-//    }
-
-    // TODO: 04.09.2018  пока не придумал что с этим сделать
-//    public void addObserver(){
-//        bookService.addObserver(MenuBook.clas);
-//    }
-
-//    public IServiceOrder getOrderService() {
-//        return  orderService;
-//    }
-//
-//    public IServiceRequest getRequestService() {
-//        return requestService;
-//    }
 }

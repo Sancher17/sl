@@ -29,4 +29,6 @@ public interface IServiceBook extends IService <Book> {
     String getBookDescriptionById(Long id);
 
     void markBookOld();
+
+    Book getBookById(Long id);
 }

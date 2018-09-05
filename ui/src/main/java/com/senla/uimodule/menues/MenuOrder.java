@@ -1,6 +1,7 @@
 package com.senla.uimodule.menues;
 
 import com.senla.uimodule.util.Printer;
+import entities.Book;
 import entities.Order;
 
 import java.util.Date;
@@ -98,7 +99,10 @@ public class MenuOrder extends Menu {
         Printer.println("Добавить новый заказ");
         Printer.print("введите Id книги для добавления в заказ: ");
         Long idBook = scannerLong(getScanner());
-        getEBookShop().addOrder(TODAY, idBook);
+
+        Book book = getEBookShop().getBookById(idBook);
+        Order order = new Order(book);
+        getEBookShop().addOrder(order);
     }
     private void deleteOrder() {
         Printer.println("Удалить заказ");

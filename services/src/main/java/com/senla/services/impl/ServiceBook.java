@@ -131,6 +131,11 @@ public class ServiceBook extends Service implements IServiceBook {
     }
 
     @Override
+    public Book getBookById(Long id) {
+        return repositoryBook.getById(id);
+    }
+
+    @Override
     public String getBookDescriptionById(Long id) {
         if (repositoryBook.getById(id) != null) {
             Book book = repositoryBook.getById(id);
@@ -150,7 +155,6 @@ public class ServiceBook extends Service implements IServiceBook {
             }
         }
     }
-
 
     @Override
     public void exportToCsv() {

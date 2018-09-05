@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.senla.fileworker.annotations.PropertyType.CompositeProperty;
+import static com.senla.mainmodule.constants.Constants.PATH_EXPORT_TO_CSV;
 import static com.senla.propertiesmodule.constants.ConstantsProperties.FILE_NAME;
 import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FOR_CSV;
 
@@ -29,7 +30,7 @@ public class ExportToCsv<T> implements IExportToCsv {
         }
 
         try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(
-                new FileOutputStream(PATH_FOR_CSV + FILE_NAME), Charset.forName("Windows-1251")))){
+                new FileOutputStream(PATH_EXPORT_TO_CSV + FILE_NAME), Charset.forName("Windows-1251")))){
             pw.write(data);
         } catch (FileNotFoundException e) {
             log.error("Файл для записи не нейден " + e);

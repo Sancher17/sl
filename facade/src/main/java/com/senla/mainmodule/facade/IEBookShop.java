@@ -20,9 +20,9 @@ public interface IEBookShop {
     List<Book> getBooks();
     List<Book> getBooksPeriodMoreSixMonthByDate();
     List<Book> getBooksPeriodMoreSixMonthByPrice();
+    Book getBookById(Long id);
     String getBookDescriptionById(Long id);
 
-    void addOrder(Date startOrder, Long bookId);
     void addOrder(Order order);
     void deleteOrderById(Long id);
     void setOrderCompleteById(Long orderId);
@@ -38,7 +38,7 @@ public interface IEBookShop {
     Order getOrderById(Long id);
     Order copyOrder(Long id);
 
-    void addRequest(String nameRequireBook);
+    void addRequest(Request request);
     List<Request> getRequests();
     List<Request> getCompletedRequests();
     List<Request> getNotCompletedRequests();

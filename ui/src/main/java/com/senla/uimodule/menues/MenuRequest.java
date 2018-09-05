@@ -71,7 +71,9 @@ public class MenuRequest extends Menu {
     private void addRequest() {
         Printer.print("введите название искомой книги: ");
         String nameBook = scannerString();
-        getEBookShop().addRequest(nameBook);
+
+        Request request = new Request(nameBook);
+        getEBookShop().addRequest(request);
     }
 
     private void printNotCompletedRequests() {

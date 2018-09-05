@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IServiceRequest extends IService <Request>{
 
-    void addBookRequest(String nameRequireBook);
+    void addBookRequest(Request request);
 
     List<Request> sortRequestsByQuantity();
 

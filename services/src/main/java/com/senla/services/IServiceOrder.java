@@ -9,10 +9,6 @@ public interface IServiceOrder extends IService<Order> {
 
     void addOrder(Order order);
 
-    void addOrder(Long bookId);
-
-    void addOrder(Date startOrder, Long bookId);
-
     void deleteOrderById(Long id);
 
     void setCompleteOrderById(Long id);

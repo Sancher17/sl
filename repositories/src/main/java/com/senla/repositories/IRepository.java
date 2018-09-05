@@ -12,5 +12,4 @@ public interface IRepository<T> {
 
     List <T> getAll();
 
-    void setLastId(Long lastId);
 }

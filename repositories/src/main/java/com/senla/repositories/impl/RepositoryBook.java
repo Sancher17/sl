@@ -24,9 +24,20 @@ public class RepositoryBook implements IRepositoryBook {
 
     @Override
     public void add(Book book) {
+        lastId = findMaxId();
         lastId = Id.nextId(lastId);
         book.setId(lastId);
         books.add(book);
+    }
+
+    private Long findMaxId() {
+        Long maxId = 0L;
+        for (Book book :  books) {
+            if (book.getId() > maxId) {
+                maxId = book.getId();
+            }
+        }
+        return maxId;
     }
 
     @Override
@@ -63,11 +74,6 @@ public class RepositoryBook implements IRepositoryBook {
     @Override
     public void setAll(List<Book> books) {
         this.books = books;
-    }
-
-    @Override
-    public void setLastId(Long lastId) {
-        this.lastId = lastId;
     }
 
 }

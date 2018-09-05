@@ -41,29 +41,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
         repositoryOrder.add(order);
     }
 
-    @Override
-    public void addOrder(Long bookId) {
-        try {
-            Order newOrder = new Order(repositoryBook.getById(bookId));
-            repositoryOrder.add(newOrder);
-            notifyObservers("Добавлен заказ: " + newOrder);
-        } catch (NullPointerException e) {
-            notifyObservers("Книги с таким ID нет !!!");
-            log.error("Добавление в книги с отстсвующим ID  " + e);
-        }
-    }
 
-    @Override
-    public void addOrder(Date startOrder, Long bookId) {
-        try {
-            Order newOrder = new Order(startOrder, repositoryBook.getById(bookId));
-            repositoryOrder.add(newOrder);
-            notifyObservers("Добавлен заказ: " + newOrder);
-        } catch (NullPointerException e) {
-            notifyObservers("Книги с таким ID нет !!!");
-            log.error("Добавление в книги с отстсвующим ID  " + e);
-        }
-    }
 
     @Override
     public void deleteOrderById(Long id) {

@@ -110,8 +110,7 @@ public abstract class Menu implements Observer {
             try {
                 return sdf.parse(date);
             } catch (ParseException e) {
-                e.printStackTrace();
-                log.error("scannerDate "+ e);
+                log.error("Ошибка парсинга даты " + e);
             }
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
             Printer.println("не корректные даные");

@@ -183,7 +183,6 @@ public class MenuBook extends Menu {
     private void exportBook() {
         Printer.println("Экспортировать все записи книг");
         getEBookShop().exportBooksToCsv();
-
     }
 
     private void importBook() {
