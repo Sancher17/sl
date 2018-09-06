@@ -9,7 +9,7 @@ import static com.senla.uimodule.constant.UiConstants.*;
 
 public class MenuRequest extends Menu {
 
-    public MenuRequest() {
+    MenuRequest() {
         super("MenuOrder");
 //        getEBookShop().getRequestService().addObserver(this);
     }

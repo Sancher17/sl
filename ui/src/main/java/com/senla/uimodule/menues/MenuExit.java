@@ -9,9 +9,9 @@ public class MenuExit extends Menu {
     }
 
     private void finalizationProgram(){
-        getEBookShop().writeBookToFile();
-        getEBookShop().writeOrderToFile();
-        getEBookShop().writeRequestToFile();
+        getEBookShop().writeBookDataToFile();
+        getEBookShop().writeOrderDataToFile();
+        getEBookShop().writeRequestDataToFile();
         getScanner().close();
     }
 

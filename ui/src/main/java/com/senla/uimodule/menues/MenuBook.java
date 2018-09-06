@@ -10,7 +10,7 @@ import static com.senla.uimodule.constant.UiConstants.*;
 
 public class MenuBook extends Menu {
 
-    public MenuBook() {
+    MenuBook() {
         super("MenuBook");
 //        getEBookShop().getBookService().addObserver(this);
 

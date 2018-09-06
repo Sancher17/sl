@@ -45,11 +45,11 @@ public interface IEBookShop {
     List<Request>  sortRequestsByQuantity();
     List<Request>  sortRequestsByAlphabet();
 
-    void writeBookToFile();
+    void writeBookDataToFile();
     void readBookFromFile();
-    void writeOrderToFile();
+    void writeOrderDataToFile();
     void readOrderFromFile();
-    void writeRequestToFile();
+    void writeRequestDataToFile();
     void readRequestFromFile();
 
     void exportBooksToCsv() ;

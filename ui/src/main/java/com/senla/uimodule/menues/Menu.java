@@ -119,7 +119,6 @@ public abstract class Menu implements Observer {
         return null;
     }
 
-    //getters - setters
     public IEBookShop getEBookShop() {
         return eBookShop;
     }

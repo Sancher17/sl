@@ -41,8 +41,6 @@ public class ServiceOrder extends Service implements IServiceOrder {
         repositoryOrder.add(order);
     }
 
-
-
     @Override
     public void deleteOrderById(Long id) {
         if (repositoryOrder.getById(id) != null) {

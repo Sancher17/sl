@@ -163,7 +163,7 @@ public class EBookShop implements IEBookShop {
     }
 
     //Save Data - read / write
-    public void writeBookToFile() {
+    public void writeBookDataToFile() {
         bookService.writeDataToFile();
     }
 
@@ -171,7 +171,7 @@ public class EBookShop implements IEBookShop {
         bookService.readDataFromFile(PATH_BOOK_DATA_TEST);
     }
 
-    public void writeOrderToFile(){
+    public void writeOrderDataToFile(){
         orderService.writeDataToFile();
     }
 
@@ -179,7 +179,7 @@ public class EBookShop implements IEBookShop {
         orderService.readDataFromFile(PATH_ORDER_DATA_TEST);
     }
 
-    public void writeRequestToFile() {
+    public void writeRequestDataToFile() {
         requestService.writeDataToFile();
     }
 
