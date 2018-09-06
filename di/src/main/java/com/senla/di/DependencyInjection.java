@@ -61,7 +61,7 @@ public class DependencyInjection {
 
     public static <T> T getBean(Class<T> anInterface) {
         try {
-            Class clazz = Class.forName(map.get(anInterface));
+            Class<?> clazz = Class.forName(map.get(anInterface));
             Constructor<?> constructor = clazz.getConstructors()[0];
             if (constructor.getParameterCount() > 0){
                 Object[] dependencies = resolve(constructor);

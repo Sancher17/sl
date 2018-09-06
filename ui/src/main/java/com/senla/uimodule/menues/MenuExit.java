@@ -1,6 +1,6 @@
 package com.senla.uimodule.menues;
 
-import com.senla.uimodule.util.Printer;
+import com.senla.util.Printer;
 
 import static com.senla.mainmodule.constants.Constants.*;
 

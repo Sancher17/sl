@@ -2,7 +2,7 @@ package com.senla.uimodule.menues;
 
 import com.senla.di.DependencyInjection;
 import com.senla.mainmodule.facade.IEBookShop;
-import com.senla.uimodule.util.Printer;
+import com.senla.util.Printer;
 import org.apache.log4j.Logger;
 
 import java.text.ParseException;
@@ -21,7 +21,7 @@ public abstract class Menu implements Observer {
     private int operation;
     private IMenuController controller;
 
-    public Menu(String title) {
+    Menu(String title) {
         this.title = title;
         eBookShop = DependencyInjection.getBean(IEBookShop.class);
         controller = DependencyInjection.getBean(IMenuController.class);
@@ -31,11 +31,11 @@ public abstract class Menu implements Observer {
 
     public abstract void printMenu();
 
-    public void runMenuController(int menu) {
+    void runMenuController(int menu) {
         controller.run(menu);
     }
 
-    public void nextOperation() {
+    void nextOperation() {
         Printer.print("\nвыберите следующую операцию: ");
         try {
             setOperation(Integer.parseInt(getScanner().next()));
@@ -46,12 +46,12 @@ public abstract class Menu implements Observer {
         }
     }
 
-    public String scannerString() {
+    String scannerString() {
         Scanner scn = new Scanner(System.in);
         return scn.nextLine();
     }
 
-    public Double scannerDouble(Scanner in) {
+    Double scannerDouble(Scanner in) {
         double number = -1.0;
         try {
             number = Double.parseDouble(in.next());
@@ -63,7 +63,7 @@ public abstract class Menu implements Observer {
         return number;
     }
 
-    public Integer scannerInteger(Scanner in) {
+    Integer scannerInteger(Scanner in) {
         int number = -1;
         try {
             number = Integer.parseInt(in.next());
@@ -75,7 +75,7 @@ public abstract class Menu implements Observer {
         return number;
     }
 
-    public Long scannerLong(Scanner in) {
+    Long scannerLong(Scanner in) {
         Long number = -1L;
         try {
             number = Long.parseLong(in.next());
@@ -87,7 +87,7 @@ public abstract class Menu implements Observer {
         return number;
     }
 
-    public Date scannerDate(String date) {
+    Date scannerDate(String date) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy");
         try {
@@ -119,19 +119,19 @@ public abstract class Menu implements Observer {
         return null;
     }
 
-    public IEBookShop getEBookShop() {
+    IEBookShop getEBookShop() {
         return eBookShop;
     }
 
-    public Scanner getScanner() {
+    Scanner getScanner() {
         return scanner;
     }
 
-    public int getOperation() {
+    int getOperation() {
         return operation;
     }
 
-    public void setOperation(int operation) {
+    void setOperation(int operation) {
         this.operation = operation;
     }
 

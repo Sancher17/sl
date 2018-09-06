@@ -1,6 +1,6 @@
 package com.senla.uimodule.menues;
 
-import com.senla.uimodule.util.Printer;
+import com.senla.util.Printer;
 import org.apache.log4j.Logger;
 
 import static com.senla.uimodule.constant.UiConstants.*;
