@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import java.text.ParseException;
 
+import static com.senla.mainmodule.constants.Constants.*;
 import static com.senla.uimodule.constant.UiConstants.MENU_MAIN;
 
 public class RunUi {
@@ -17,6 +18,10 @@ public class RunUi {
     public static void main(String[] args) {
         try {
             data.load();
+            System.out.println("Загружены данные с файлов:");
+            System.out.println(PATH_BOOK_DATA_TEST);
+            System.out.println(PATH_ORDER_DATA_TEST);
+            System.out.println(PATH_REQUEST_DATA_TEST);
         } catch (ParseException e) {
             log.error("Проблемы при загрузке файлов" + e);
         }
