@@ -11,7 +11,7 @@ import static com.senla.uimodule.constant.UiConstants.*;
 
 public class MenuOrder extends Menu {
     
-    public MenuOrder() {
+    MenuOrder() {
         super("MenuOrder");
 //        getEBookShop().getOrderService().addObserver(this);
     }

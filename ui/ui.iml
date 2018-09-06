@@ -15,5 +15,6 @@
     <orderEntry type="module" module-name="repositories" />
     <orderEntry type="module" module-name="di" />
     <orderEntry type="module" module-name="util" />
+    <orderEntry type="module" module-name="properties" />
   </component>
 </module>

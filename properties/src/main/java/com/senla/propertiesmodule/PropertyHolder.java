@@ -14,9 +14,13 @@ import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FOR_
 public class PropertyHolder implements IPropertyHolder {
 
     private static final Logger log = Logger.getLogger(PropertyHolder.class);
-    private Properties property = new Properties();
+    private static Properties property = new Properties();
 
-    private void loadProperties() {
+    static {
+        loadProperties();
+    }
+
+    public static void loadProperties() {
         try (FileInputStream fis = new FileInputStream(PATH_FILE_PROPERTIES)) {
             property.load(fis);
         } catch (FileNotFoundException e) {
@@ -28,20 +32,22 @@ public class PropertyHolder implements IPropertyHolder {
     }
 
     @Override
+    public String loadBean(Class<?> clazz) {
+        return property.getProperty(String.valueOf(clazz.getSimpleName()));
+    }
+
+    @Override
     public void bookIsOld() {
-        loadProperties();
         BOOK_IS_OLD = Integer.valueOf(property.getProperty("BOOK_IS_OLD"));
     }
 
     @Override
     public void allowMArkRequest() {
-        loadProperties();
         ALLOW_MARK_REQUESTS = Boolean.valueOf(property.getProperty("ALLOW_MARK_REQUESTS"));
     }
 
     @Override
     public void pathsForDataFiles() {
-        loadProperties();
         PATH_BOOK_DATA = property.getProperty("PATH_BOOK_DATA_FILE");
         PATH_ORDER_DATA = property.getProperty("PATH_ORDER_DATA_FILE");
         PATH_REQUEST_DATA = property.getProperty("PATH_REQUEST_DATA_FILE");
@@ -49,7 +55,6 @@ public class PropertyHolder implements IPropertyHolder {
 
     @Override
     public void pathsForCsvFiles() {
-        loadProperties();
         PATH_FOR_CSV = property.getProperty("PATH_FOR_CSV_FILES");
     }
 }
