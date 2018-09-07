@@ -28,6 +28,8 @@ public class DependencyInjection {
             log.error("Не найден класс " + e);
             System.out.println("Не найден класс " + e);
             return null;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return getSingelton(anInterface);
         }
     }
 
@@ -43,15 +45,19 @@ public class DependencyInjection {
             Object obj = newInstance(constructor);
             return (T) obj;
         } catch (ArrayIndexOutOfBoundsException e) {
-            try {
-                Class<?> clazz = Class.forName(property.loadBean(aClass));
-                return (T) clazz.getMethod("getInstance").invoke(null);
-            } catch (IllegalAccessException | InvocationTargetException | ClassNotFoundException | NoSuchMethodException e1) {
-                log.error("Проблемы с разрешением зависимостей " + e);
-            }
-
+            return getSingelton(aClass);
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
             log.error("Проблемы с разрешением зависимостей " + e);
+        }
+        return null;
+    }
+
+    private static <T> T getSingelton(Class<T> aClass) {
+        try {
+            Class<?> clazz = Class.forName(property.loadBean(aClass));
+            return (T) clazz.getMethod("getInstance").invoke(null);
+        } catch (IllegalAccessException | InvocationTargetException | ClassNotFoundException | NoSuchMethodException e) {
+            log.error("Проблемы с разрешением зависимостей сингелтона " + e);
         }
         return null;
     }

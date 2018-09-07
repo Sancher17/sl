@@ -1,4 +1,6 @@
 import com.senla.di.DependencyInjection;
+import com.senla.fileworker.imports.IImportFromCsv;
+import com.senla.fileworker.imports.impl.ImportFromCsv;
 import com.senla.fileworker.startModule.IFileWorker;
 import com.senla.services.IServiceBook;
 import com.senla.services.IServiceOrder;
@@ -7,12 +9,15 @@ import entities.Book;
 import entities.Order;
 import entities.Request;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.senla.mainmodule.constants.Constants.PATH_ORDER_CSV;
 
 public class TestMainModule {
     private static final Date DATE_TODAY = new Date();
@@ -134,10 +139,22 @@ public class TestMainModule {
 //        fw.writeDataToFile(serviceRequest, serviceRequest.getAll());
 
 
+        System.out.println("books");
         printBooks();
+        System.out.println("requests");
         printRequests();
+        System.out.println("orders");
         printOrders();
 
+
+        System.out.println("************NEW*******************");
+
+        IImportFromCsv importNew = new ImportFromCsv();
+        List list = importNew.importListFromFile(PATH_ORDER_CSV, Order.class);
+
+        for (Object o : list) {
+            System.out.println(o);
+        }
     }
 
 
@@ -167,6 +184,8 @@ public class TestMainModule {
             System.out.println(request);
         }
     }
+
+
 }
 
 

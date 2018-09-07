@@ -32,6 +32,17 @@ public class Book implements Serializable, Cloneable {
 
     public Book(){}
 
+    public Book(Long id, String nameBook, Date dateOfPublication, Date dateAddedBookToStore, Double price, String description, Boolean isAvailable, Boolean isOld) {
+        this.id = id;
+        this.nameBook = nameBook;
+        this.dateOfPublication = dateOfPublication;
+        this.price = price;
+        this.isAvailable = isAvailable;
+        this.dateAddedBookToStore = dateAddedBookToStore;
+        this.description = description;
+        this.isOld = isOld;
+    }
+
     public Book(String nameBook, Date dateOfPublication, Date dateAddedBookToStore, Double price, String description, Boolean isAvailable, Boolean isOld) {
         this.nameBook = nameBook;
         this.dateOfPublication = dateOfPublication;

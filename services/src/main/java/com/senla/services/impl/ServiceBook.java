@@ -1,7 +1,7 @@
 package com.senla.services.impl;
 
 import com.senla.di.DependencyInjection;
-import com.senla.fileworker.imports.IImportBookFromCsv;
+import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.fileworker.imports.mergeimport.Merger;
 import com.senla.fileworker.imports.mergeimport.MergerBook;
 import com.senla.repositories.IRepositoryBook;
@@ -25,7 +25,8 @@ public class ServiceBook extends Service implements IServiceBook {
     private IRepositoryBook repositoryBook;
     private IRepositoryRequest repositoryRequest;
     private IDataWorker dataWorker;
-    private IImportBookFromCsv importList;
+//    private IImportBookFromCsv importList;
+    private IImportFromCsv importList;
 
     public ServiceBook(IRepositoryBook repositoryBook, IRepositoryRequest repositoryRequest) {
         this.repositoryBook = repositoryBook;
@@ -163,8 +164,8 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public void importFromCsv() {
-        importList = DependencyInjection.getBean(IImportBookFromCsv.class);
-        List<Book> temp = importList.importListFromFile(PATH_BOOK_CSV);
+        importList = DependencyInjection.getBean(IImportFromCsv.class);
+        List<Book> temp = importList.importListFromFile(PATH_BOOK_CSV, Book.class);
         Merger<Book> merger = new MergerBook(repositoryBook.getAll());
         repositoryBook.setAll(merger.merge(temp));
     }

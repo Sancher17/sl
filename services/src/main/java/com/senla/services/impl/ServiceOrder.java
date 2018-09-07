@@ -1,7 +1,7 @@
 package com.senla.services.impl;
 
 import com.senla.di.DependencyInjection;
-import com.senla.fileworker.imports.IImportOrderFromCsv;
+import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.fileworker.imports.mergeimport.Merger;
 import com.senla.fileworker.imports.mergeimport.MergerOrder;
 import com.senla.repositories.IRepositoryBook;
@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.*;
+import static com.senla.mainmodule.constants.Constants.PATH_ORDER_CSV;
 
 public class ServiceOrder extends Service implements IServiceOrder {
 
@@ -28,7 +28,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
     private IRepositoryOrder repositoryOrder;
     private IRepositoryBook repositoryBook;
     private IDataWorker dataWorker;
-    private IImportOrderFromCsv importList;
+    private IImportFromCsv importList;
 
     public ServiceOrder(IRepositoryOrder repositoryOrder, IRepositoryBook repositoryBook) {
         this.repositoryOrder = repositoryOrder;
@@ -201,8 +201,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public void importFromCsv(){
-        importList = DependencyInjection.getBean(IImportOrderFromCsv.class);
-        List<Order> temp = importList.importListFromFile(PATH_ORDER_CSV);
+        importList = DependencyInjection.getBean(IImportFromCsv.class);
+        List<Order> temp = importList.importListFromFile(PATH_ORDER_CSV, Order.class);
         Merger<Order> merger = new MergerOrder(repositoryOrder.getAll());
         repositoryOrder.setAll(merger.merge(temp));
     }

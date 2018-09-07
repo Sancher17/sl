@@ -1,7 +1,7 @@
 package com.senla.services.impl;
 
 import com.senla.di.DependencyInjection;
-import com.senla.fileworker.imports.IImportRequestFromCsv;
+import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.fileworker.imports.mergeimport.Merger;
 import com.senla.fileworker.imports.mergeimport.MergerRequest;
 import com.senla.repositories.IRepositoryRequest;
@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.*;
+import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_CSV;
 
 
 public class ServiceRequest extends Service implements IServiceRequest {
@@ -23,7 +23,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
     private static final Logger log = Logger.getLogger(ServiceRequest.class);
     private IRepositoryRequest repositoryRequest;
     private IDataWorker dataWorker;
-    private IImportRequestFromCsv importList;
+    private IImportFromCsv importList;
 
     public ServiceRequest(IRepositoryRequest repositoryRequest) {
         this.repositoryRequest = repositoryRequest;
@@ -98,8 +98,8 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public void importFromCsv(){
-        importList = DependencyInjection.getBean(IImportRequestFromCsv.class);
-        List<Request> temp = importList.importListFromFile(PATH_REQUEST_CSV);
+        importList = DependencyInjection.getBean(IImportFromCsv.class);
+        List<Request> temp = importList.importListFromFile(PATH_REQUEST_CSV, Request.class);
         Merger<Request> merger = new MergerRequest(repositoryRequest.getAll());
         repositoryRequest.setAll(merger.merge(temp));
     }
