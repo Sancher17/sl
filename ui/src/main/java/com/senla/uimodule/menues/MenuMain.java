@@ -13,7 +13,6 @@ public class MenuMain extends Menu {
     @Override
     public void createMenu() {
         printMenu();
-        getEBookShop().checkProperties();
         nextOperation();
         runMenuController(getOperation());
     }

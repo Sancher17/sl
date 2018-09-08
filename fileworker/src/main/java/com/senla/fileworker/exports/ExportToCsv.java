@@ -4,17 +4,21 @@ import com.senla.fileworker.annotations.CsvEntity;
 import com.senla.fileworker.annotations.CsvProperty;
 import org.apache.log4j.Logger;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static com.senla.fileworker.annotations.PropertyType.CompositeProperty;
-import static com.senla.mainmodule.constants.Constants.PATH_EXPORT_TO_CSV;
+import static com.senla.mainmodule.constants.Constants.*;
 import static com.senla.propertiesmodule.constants.ConstantsProperties.FILE_NAME;
-import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FOR_CSV;
 
 public class ExportToCsv<T> implements IExportToCsv {
 
@@ -30,7 +34,7 @@ public class ExportToCsv<T> implements IExportToCsv {
         }
 
         try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(
-                new FileOutputStream(PATH_EXPORT_TO_CSV + FILE_NAME), Charset.forName("Windows-1251")))){
+                new FileOutputStream(PATH_FOR_CSV + FILE_NAME), Charset.forName("Windows-1251")))) {
             pw.write(data);
         } catch (FileNotFoundException e) {
             log.error("Файл для записи не нейден " + e);

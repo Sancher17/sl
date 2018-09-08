@@ -2,8 +2,6 @@ package com.senla.services.impl;
 
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.imports.IImportFromCsv;
-import com.senla.fileworker.imports.mergeimport.Merger;
-import com.senla.fileworker.imports.mergeimport.MergerBook;
 import com.senla.repositories.IRepositoryBook;
 import com.senla.repositories.IRepositoryRequest;
 import com.senla.services.IServiceBook;
@@ -25,7 +23,6 @@ public class ServiceBook extends Service implements IServiceBook {
     private IRepositoryBook repositoryBook;
     private IRepositoryRequest repositoryRequest;
     private IDataWorker dataWorker;
-//    private IImportBookFromCsv importList;
     private IImportFromCsv importList;
 
     public ServiceBook(IRepositoryBook repositoryBook, IRepositoryRequest repositoryRequest) {
@@ -165,9 +162,8 @@ public class ServiceBook extends Service implements IServiceBook {
     @Override
     public void importFromCsv() {
         importList = DependencyInjection.getBean(IImportFromCsv.class);
-        List<Book> temp = importList.importListFromFile(PATH_BOOK_CSV, Book.class);
-        Merger<Book> merger = new MergerBook(repositoryBook.getAll());
-        repositoryBook.setAll(merger.merge(temp));
+        List<Book> importListFromFile = importList.importListFromFile(PATH_BOOK_CSV, Book.class);
+        merge(importListFromFile, repositoryBook);
     }
 
     @Override
@@ -178,6 +174,28 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public void writeDataToFile() {
-        dataWorker.writeDataToFile(this, repositoryBook.getAll());
+        dataWorker.writeDataToFile(repositoryBook.getAll());
     }
+
+//    private void merge(List<Book> importlist) {
+//        List<Book> existList = new ArrayList<>();
+//        List<Book> notExistList = new ArrayList<>();
+//        boolean exist;
+//        for (Book bookImport : importlist) {
+//            exist = false;
+//            for (Book bookExist : repositoryBook.getAll()) {
+//                if (bookImport.getId().equals(bookExist.getId())) {
+//                    existList.add(bookImport);
+//                    exist = true;
+//                }
+//            }
+//            if (!exist){
+//                notExistList.add(bookImport);
+//            }
+//        }
+//        for (Book book : existList) {
+//            repositoryBook.update(book.getId(), book);
+//        }
+//        repositoryBook.addAll(notExistList);
+//    }
 }

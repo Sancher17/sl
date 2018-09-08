@@ -2,9 +2,13 @@ import com.senla.di.DependencyInjection;
 import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.fileworker.imports.impl.ImportFromCsv;
 import com.senla.fileworker.startModule.IFileWorker;
+import com.senla.propertiesmodule.IPropertyHolder;
+import com.senla.propertiesmodule.PropertyHolder;
+import com.senla.repositories.impl.RepositoryRequest;
 import com.senla.services.IServiceBook;
 import com.senla.services.IServiceOrder;
 import com.senla.services.IServiceRequest;
+import com.senla.util.dataworker.DataWorker;
 import entities.Book;
 import entities.Order;
 import entities.Request;
@@ -17,7 +21,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.senla.mainmodule.constants.Constants.PATH_BOOK_CSV;
 import static com.senla.mainmodule.constants.Constants.PATH_ORDER_CSV;
+import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_DATA;
 
 public class TestMainModule {
     private static final Date DATE_TODAY = new Date();
@@ -27,8 +33,11 @@ public class TestMainModule {
     private static IServiceBook serviceBook;
     private static IServiceOrder serviceOrder;
     private static IServiceRequest serviceRequest;
+    private static IPropertyHolder propertyHolder = new PropertyHolder();
 
     public static void main(String[] args) throws ParseException {
+
+        propertyHolder.pathsForDataFiles();
 
         /** work with Di*/
         serviceBook = DependencyInjection.getBean(IServiceBook.class);
@@ -151,10 +160,29 @@ public class TestMainModule {
 
         IImportFromCsv importNew = new ImportFromCsv();
         List list = importNew.importListFromFile(PATH_ORDER_CSV, Order.class);
+//        List list = importNew.importListFromFile(PATH_BOOK_CSV, Book.class);
 
         for (Object o : list) {
             System.out.println(o);
         }
+
+        //работа с сериализацией Request
+        System.out.println("\n***************Request*****************");
+        DataWorker dataWorker = new DataWorker();
+        List<Request> requestList = dataWorker.readDataFromFile(PATH_REQUEST_DATA);
+        System.out.println(PATH_REQUEST_DATA);
+//        requestList.remove(5);
+//        requestList.remove(4);
+//        requestList.remove(3);
+        for (Request request : requestList) {
+            System.out.println(request);
+        }
+        dataWorker.writeDataToFile(requestList);
+
+        //тестим import и merge
+        System.out.println("\n***************ImportFromCSv*****************");
+        serviceBook.importFromCsv();
+        printBooks();
     }
 
 

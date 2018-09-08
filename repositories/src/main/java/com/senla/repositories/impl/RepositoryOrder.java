@@ -2,6 +2,7 @@ package com.senla.repositories.impl;
 
 import com.senla.repositories.IRepositoryOrder;
 import com.senla.repositories.util.Id;
+import entities.Book;
 import entities.Order;
 
 import java.util.ArrayList;
@@ -50,8 +51,27 @@ public class RepositoryOrder implements IRepositoryOrder {
     }
 
     @Override
+    public void update(Order entity) {
+        int index;
+        Long id = entity.getId();
+        for (Order newBook : orders) {
+            if (newBook.getId().equals(id)) {
+                index = orders.indexOf(newBook);
+                orders.set(index, newBook);
+            }
+        }
+
+    }
+
+
+    @Override
     public List<Order> getAll() {
         return orders;
+    }
+
+    @Override
+    public void addAll(List<Order> notExistList) {
+        orders.addAll(notExistList);
     }
 
     @Override

@@ -20,9 +20,9 @@ public class MenuExit extends Menu {
     @Override
     public void printMenu() {
         Printer.println("\nВсе данные сохранены в файлы: ");
-        Printer.println(PATH_BOOK_DATA_TEST);
-        Printer.println(PATH_ORDER_DATA_TEST);
-        Printer.println(PATH_REQUEST_DATA_TEST);
+        Printer.println(PATH_BOOK_DATA);
+        Printer.println(PATH_ORDER_DATA);
+        Printer.println(PATH_REQUEST_DATA);
         Printer.println("\nПрограмма завершена !!!");
     }
 

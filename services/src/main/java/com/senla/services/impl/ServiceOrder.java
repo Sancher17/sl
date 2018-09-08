@@ -2,8 +2,6 @@ package com.senla.services.impl;
 
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.imports.IImportFromCsv;
-import com.senla.fileworker.imports.mergeimport.Merger;
-import com.senla.fileworker.imports.mergeimport.MergerOrder;
 import com.senla.repositories.IRepositoryBook;
 import com.senla.repositories.IRepositoryOrder;
 import com.senla.services.IServiceOrder;
@@ -202,10 +200,11 @@ public class ServiceOrder extends Service implements IServiceOrder {
     @Override
     public void importFromCsv(){
         importList = DependencyInjection.getBean(IImportFromCsv.class);
-        List<Order> temp = importList.importListFromFile(PATH_ORDER_CSV, Order.class);
-        Merger<Order> merger = new MergerOrder(repositoryOrder.getAll());
-        repositoryOrder.setAll(merger.merge(temp));
+        List<Order> importListFromFile = importList.importListFromFile(PATH_ORDER_CSV, Order.class);
+        merge(importListFromFile, repositoryOrder);
     }
+
+
 
     @Override
     public void readDataFromFile(String path) {
@@ -215,7 +214,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public void writeDataToFile() {
-        dataWorker.writeDataToFile(this, repositoryOrder.getAll());
+        dataWorker.writeDataToFile(repositoryOrder.getAll());
     }
 
 }

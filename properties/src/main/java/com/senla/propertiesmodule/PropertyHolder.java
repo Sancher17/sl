@@ -9,7 +9,6 @@ import java.util.Properties;
 
 import static com.senla.mainmodule.constants.Constants.*;
 import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FILE_PROPERTIES;
-import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FOR_CSV;
 
 public class PropertyHolder implements IPropertyHolder {
 
@@ -55,6 +54,6 @@ public class PropertyHolder implements IPropertyHolder {
 
     @Override
     public void pathsForCsvFiles() {
-        PATH_FOR_CSV = property.getProperty("PATH_FOR_CSV_FILES");
+        PATH_FOR_CSV = property.getProperty("PATH_EXPORT_TO_CSV");
     }
 }

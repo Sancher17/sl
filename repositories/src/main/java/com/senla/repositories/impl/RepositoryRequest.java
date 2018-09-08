@@ -2,6 +2,7 @@ package com.senla.repositories.impl;
 
 import com.senla.repositories.IRepositoryRequest;
 import com.senla.repositories.util.Id;
+import entities.Book;
 import entities.Request;
 
 import java.util.ArrayList;
@@ -56,8 +57,25 @@ public class RepositoryRequest implements IRepositoryRequest {
     }
 
     @Override
+    public void update(Request entity) {
+        int index;
+        Long id = entity.getId();
+        for (Request newBook : requests) {
+            if (newBook.getId().equals(id)) {
+                index = requests.indexOf(newBook);
+                requests.set(index, newBook);
+            }
+        }
+    }
+
+    @Override
     public List<Request> getAll() {
         return requests;
+    }
+
+    @Override
+    public void addAll(List<Request> notExistList) {
+        requests.addAll(notExistList);
     }
 
     @Override

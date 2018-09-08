@@ -1,6 +1,5 @@
 package com.senla.util.dataworker;
 
-import com.senla.services.IService;
 import entities.Book;
 import entities.Order;
 import entities.Request;
@@ -16,18 +15,18 @@ public class DataWorker implements IDataWorker {
 
     private static final Logger log = Logger.getLogger(DataWorker.class);
 
-    public void writeDataToFile(IService service, List list) {
+    public void writeDataToFile(List list) {
         String path = "";
         try {
             Object obj = list.get(0);
             Class<?> clazz = obj.getClass();
             String nameClass = clazz.getSimpleName();
             if (nameClass.equals(Book.class.getSimpleName())) {
-                path = PATH_BOOK_DATA_TEST;
+                path = PATH_BOOK_DATA;
             } else if (nameClass.equals(Order.class.getSimpleName())) {
-                path = PATH_ORDER_DATA_TEST;
+                path = PATH_ORDER_DATA;
             } else if (nameClass.equals(Request.class.getSimpleName())) {
-                path = PATH_REQUEST_DATA_TEST;
+                path = PATH_REQUEST_DATA;
             }
             try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path))) {
                 oos.writeObject(list);

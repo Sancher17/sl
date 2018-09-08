@@ -24,9 +24,9 @@ public class RunUi {
             data = DependencyInjection.getBean(ILoadData.class);
             Objects.requireNonNull(data).load();
             System.out.println("Загружены данные с файлов:");
-            System.out.println(PATH_BOOK_DATA_TEST);
-            System.out.println(PATH_ORDER_DATA_TEST);
-            System.out.println(PATH_REQUEST_DATA_TEST);
+            System.out.println(PATH_BOOK_DATA);
+            System.out.println(PATH_ORDER_DATA);
+            System.out.println(PATH_REQUEST_DATA);
         } catch (ParseException e) {
             log.error("Проблемы при загрузке файлов" + e);
         }

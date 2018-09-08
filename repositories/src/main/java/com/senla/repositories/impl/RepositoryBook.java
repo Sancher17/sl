@@ -5,6 +5,7 @@ import com.senla.repositories.util.Id;
 import entities.Book;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class RepositoryBook implements IRepositoryBook {
@@ -55,6 +56,21 @@ public class RepositoryBook implements IRepositoryBook {
         return null;
     }
 
+    public void update(Book entity){
+        int index;
+        Long id = entity.getId();
+        for (Book newBook : books) {
+            if (newBook.getId().equals(id)) {
+                index = books.indexOf(newBook);
+                books.set(index, newBook);
+            }
+        }
+    }
+
+    @Override
+    public void addAll(List<Book> notExistList) {
+        books.addAll(notExistList);
+    }
 
     @Override
     public Book getByName(String name) {

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IDataWorker<T> {
 
-    void writeDataToFile(IService service, List list);
+    void writeDataToFile(List list);
 
     List<T> readDataFromFile(String path);
 }

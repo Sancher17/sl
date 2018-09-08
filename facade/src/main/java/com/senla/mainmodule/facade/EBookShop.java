@@ -25,6 +25,7 @@ public class EBookShop implements IEBookShop {
         this.bookService = DependencyInjection.getBean(IServiceBook.class);
         this.orderService = DependencyInjection.getBean(IServiceOrder.class);
         this.requestService = DependencyInjection.getBean(IServiceRequest.class);
+        checkProperties();
     }
 
     public void checkProperties() {
@@ -168,7 +169,7 @@ public class EBookShop implements IEBookShop {
     }
 
     public void readBookFromFile() {
-        bookService.readDataFromFile(PATH_BOOK_DATA_TEST);
+        bookService.readDataFromFile(PATH_BOOK_DATA);
     }
 
     public void writeOrderDataToFile(){
@@ -176,7 +177,7 @@ public class EBookShop implements IEBookShop {
     }
 
     public void readOrderFromFile() {
-        orderService.readDataFromFile(PATH_ORDER_DATA_TEST);
+        orderService.readDataFromFile(PATH_ORDER_DATA);
     }
 
     public void writeRequestDataToFile() {
@@ -184,7 +185,7 @@ public class EBookShop implements IEBookShop {
     }
 
     public void readRequestFromFile() {
-        requestService.readDataFromFile(PATH_REQUEST_DATA_TEST);
+        requestService.readDataFromFile(PATH_REQUEST_DATA);
     }
 
     // CSV - import / export

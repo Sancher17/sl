@@ -10,6 +10,9 @@ public interface IRepository<T> {
 
     T getById(Long id);
 
+    void update(T entity);
+
     List <T> getAll();
 
+    void addAll(List<T> notExistList);
 }

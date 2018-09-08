@@ -2,8 +2,6 @@ package com.senla.services.impl;
 
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.imports.IImportFromCsv;
-import com.senla.fileworker.imports.mergeimport.Merger;
-import com.senla.fileworker.imports.mergeimport.MergerRequest;
 import com.senla.repositories.IRepositoryRequest;
 import com.senla.services.IServiceRequest;
 import com.senla.util.comparators.request.ComparatorRequestsByAlphabet;
@@ -23,7 +21,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
     private static final Logger log = Logger.getLogger(ServiceRequest.class);
     private IRepositoryRequest repositoryRequest;
     private IDataWorker dataWorker;
-    private IImportFromCsv importList;
+    private IImportFromCsv importFromCsv;
 
     public ServiceRequest(IRepositoryRequest repositoryRequest) {
         this.repositoryRequest = repositoryRequest;
@@ -72,7 +70,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
     @Override
     public List<Request> getCompletedRequests() {
         List<Request> requestList = new ArrayList<>();
-        for (Request request  : repositoryRequest.getAll()) {
+        for (Request request : repositoryRequest.getAll()) {
             if (request.getRequireIsCompleted()) {
                 requestList.add(request);
             }
@@ -97,11 +95,10 @@ public class ServiceRequest extends Service implements IServiceRequest {
     }
 
     @Override
-    public void importFromCsv(){
-        importList = DependencyInjection.getBean(IImportFromCsv.class);
-        List<Request> temp = importList.importListFromFile(PATH_REQUEST_CSV, Request.class);
-        Merger<Request> merger = new MergerRequest(repositoryRequest.getAll());
-        repositoryRequest.setAll(merger.merge(temp));
+    public void importFromCsv() {
+        importFromCsv = DependencyInjection.getBean(IImportFromCsv.class);
+        List<Request> importListFromFile = importFromCsv.importListFromFile(PATH_REQUEST_CSV, Request.class);
+        merge(importListFromFile, repositoryRequest);
     }
 
     @Override
@@ -112,6 +109,6 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public void writeDataToFile() {
-        dataWorker.writeDataToFile(this, repositoryRequest.getAll());
+        dataWorker.writeDataToFile(repositoryRequest.getAll());
     }
 }

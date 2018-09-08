@@ -3,7 +3,6 @@ package com.senla.fileworker.imports.impl;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.annotations.CsvEntity;
 import com.senla.fileworker.annotations.CsvProperty;
-import com.senla.fileworker.exports.ExportToCsv;
 import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.fileworker.imports.parser.ParseDate;
 import com.senla.repositories.IRepository;
@@ -16,58 +15,59 @@ import entities.Request;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static com.senla.fileworker.annotations.PropertyType.CompositeProperty;
-import static com.senla.fileworker.annotations.PropertyType.SimpleProperty;
 
 public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
 
     private static final Logger log = Logger.getLogger(ImportFromCsv.class.getSimpleName());
 
-    public List importListFromFile(String path, Class object) {
-        List objectList = new ArrayList<>();
-        List<String> list = read(path);
-        list.remove(0);
-        for (String str : list) {
-            String[] temp = str.split(";");
-            Class<?> aClass = null;
-            try {
-                aClass = Class.forName(object.getName());
-            } catch (ClassNotFoundException e) {
-               log.error("Не найден класс сущности импорта " + e);
-            }
-            if (aClass.isAnnotationPresent(CsvEntity.class)) {
-                Field[] fields = object.getDeclaredFields();
-                int count = 0;
-                Object obj = null;
-                try {
-                    obj = aClass.newInstance();
+    public List<Object> importListFromFile(String path, Class clazz) {
+        List<Object> createdObjectList = new ArrayList<>();
+        List<String> rowList = read(path);
+        rowList.remove(0);//remove head of the list
+        for (String s : rowList) {
+            Object obj = getObject(s, clazz);
+            createdObjectList.add(obj);
+        }
+        return createdObjectList;
+    }
 
-                    for (Field field : fields) {
-                        field.setAccessible(true);
-                        if (field.isAnnotationPresent(CsvProperty.class)) {
-                            CsvProperty attribute = field.getAnnotation(CsvProperty.class);
-                            if (attribute.propertyType().equals(SimpleProperty)) {
-                                setField(temp, count, obj, field);
-                                count++;
-                            } else if (attribute.propertyType().equals(CompositeProperty)) {
-                                getRepository(temp[count], obj, field);
-                                count++;
-                            }
+    private <T> T getObject(String line, Class clazz) {
+        T obj = null;
+        Class<?> aClass = null;
+        String[] splitLine = line.split(";");
+        try {
+            aClass = Class.forName(clazz.getName());
+        } catch (ClassNotFoundException e) {
+            log.error("Не найден класс сущности импорта " + e);
+        }
+        if (aClass.isAnnotationPresent(CsvEntity.class)) {
+            Field[] fields = clazz.getDeclaredFields();
+            int count = 0;
+            try {
+                obj = (T) aClass.newInstance();
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    if (field.isAnnotationPresent(CsvProperty.class)) {
+                        CsvProperty attribute = field.getAnnotation(CsvProperty.class);
+                        if (attribute.propertyType().equals(CompositeProperty)) {
+                            getRepository(splitLine[count], obj, field);
+                            count++;
                         }
+                        setField(splitLine, count, obj, field);
+                        count++;
                     }
-                } catch (InstantiationException | IllegalAccessException e) {
-                    log.error("Невозможно создать экземпляр класса / нет доступа к полям " + e);
                 }
-                objectList.add(obj);
+            } catch (InstantiationException | IllegalAccessException e) {
+                log.error("Невозможно создать экземпляр класса / нет доступа к полям " + e);
             }
         }
-        return objectList;
+        return obj;
     }
 
     private void getRepository(String s, Object obj, Field field) throws IllegalAccessException {
