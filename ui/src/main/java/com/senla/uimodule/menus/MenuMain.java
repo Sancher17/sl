@@ -1,8 +1,8 @@
-package com.senla.uimodule.menues;
+package com.senla.uimodule.menus;
 
 import com.senla.util.Printer;
 
-import static com.senla.uimodule.constant.UiConstants.*;
+import static com.senla.uimodule.constants.UiConstants.*;
 
 public class MenuMain extends Menu {
 

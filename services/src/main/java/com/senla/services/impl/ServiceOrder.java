@@ -204,8 +204,6 @@ public class ServiceOrder extends Service implements IServiceOrder {
         merge(importListFromFile, repositoryOrder);
     }
 
-
-
     @Override
     public void readDataFromFile(String path) {
         repositoryOrder.getAll().clear();
@@ -216,5 +214,4 @@ public class ServiceOrder extends Service implements IServiceOrder {
     public void writeDataToFile() {
         dataWorker.writeDataToFile(repositoryOrder.getAll());
     }
-
 }

@@ -14,6 +14,9 @@ public class DependencyInjection {
     private static final Logger log = Logger.getLogger(DependencyInjection.class);
     private static IPropertyHolder property = new PropertyHolder();
 
+    private DependencyInjection() {
+    }
+
     public static <T> T getBean(Class<T> anInterface) {
         try {
             Class<?> clazz = Class.forName(property.loadBean(anInterface));
@@ -34,7 +37,6 @@ public class DependencyInjection {
     }
 
     private static <T> T build(Class<T> aClass) {
-
         try {
             Constructor<?> constructor = aClass.getConstructors()[0];
             if (constructor.getParameterTypes().length > 0) {

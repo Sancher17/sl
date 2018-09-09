@@ -5,26 +5,32 @@ import com.senla.propertiesmodule.IPropertyHolder;
 import com.senla.services.IServiceBook;
 import com.senla.services.IServiceOrder;
 import com.senla.services.IServiceRequest;
+import com.senla.util.Printer;
 import entities.Book;
 import entities.Order;
 import entities.Request;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.senla.mainmodule.constants.Constants.*;
 
-public class EBookShop implements IEBookShop {
+public class BookShop extends Observable implements IBookShop, Observer {
 
     private IServiceBook bookService;
     private IServiceOrder orderService;
     private IServiceRequest requestService;
     private IPropertyHolder propertyHolder;
+    private List<Observer> subscribers = new ArrayList<>();
 
-    public EBookShop() {
+    public BookShop() {
         this.bookService = DependencyInjection.getBean(IServiceBook.class);
         this.orderService = DependencyInjection.getBean(IServiceOrder.class);
         this.requestService = DependencyInjection.getBean(IServiceRequest.class);
+
+        bookService.addObserver(this);
+        orderService.addObserver(this);
+        requestService.addObserver(this);
+
         checkProperties();
     }
 
@@ -211,5 +217,27 @@ public class EBookShop implements IEBookShop {
 
     public void importRequestFromCsv() {
         requestService.importFromCsv();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        notifyObservers(arg);
+    }
+
+    @Override
+    public void addObserver(Observer o) {
+        subscribers.add(o);
+    }
+
+    @Override
+    public void deleteObserver(Observer o) {
+        subscribers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers(Object arg) {
+        for (Observer observer : subscribers) {
+            observer.update(this, arg);
+        }
     }
 }

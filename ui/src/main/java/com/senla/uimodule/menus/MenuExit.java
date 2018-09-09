@@ -1,4 +1,4 @@
-package com.senla.uimodule.menues;
+package com.senla.uimodule.menus;
 
 import com.senla.util.Printer;
 
@@ -27,9 +27,9 @@ public class MenuExit extends Menu {
     }
 
     private void finalizationProgram(){
-        getEBookShop().writeBookDataToFile();
-        getEBookShop().writeOrderDataToFile();
-        getEBookShop().writeRequestDataToFile();
+        getBookShop().writeBookDataToFile();
+        getBookShop().writeOrderDataToFile();
+        getBookShop().writeRequestDataToFile();
         getScanner().close();
     }
 }

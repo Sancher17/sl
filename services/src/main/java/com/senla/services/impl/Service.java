@@ -35,25 +35,25 @@ public abstract class Service<T> extends Observable {
         IFileWorker.exportToCsv(list);
     }
 
-    public void merge(List<T> importlist, IRepository<T> repository) {
-        List<T> existList = new ArrayList<>();
-        List<T> notExistList = new ArrayList<>();
+    void merge(List<T> importlist, IRepository<T> repository) {
+        List<T> listExistingEntry = new ArrayList<>();
+        List<T> listNotExistingEntry = new ArrayList<>();
         boolean exist;
-        for (T entityImpotr : importlist) {
+        for (T element : importlist) {
             exist = false;
             for (T bookExist : repository.getAll()) {
-                if (entityImpotr.equals(bookExist)) {
-                    existList.add(entityImpotr);
+                if (element.equals(bookExist)) {
+                    listExistingEntry.add(element);
                     exist = true;
                 }
             }
             if (!exist){
-                notExistList.add(entityImpotr);
+                listNotExistingEntry.add(element);
             }
         }
-        for (T book : existList) {
-            repository.update(book);
+        for (T element : listExistingEntry) {
+            repository.update(element);
         }
-        repository.addAll(notExistList);
+        repository.addAll(listNotExistingEntry);
     }
 }

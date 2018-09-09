@@ -1,4 +1,4 @@
-package com.senla.uimodule.constant;
+package com.senla.uimodule.constants;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ public class UiConstants {
 
     public static final Date TODAY = new Date();
 
-    //menues
+    //menus
     public static final int MENU_MAIN = 0;
     public static final int MENU_BOOK = 1;
     public static final int MENU_ORDER = 2;

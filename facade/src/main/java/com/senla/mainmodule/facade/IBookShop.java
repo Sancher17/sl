@@ -7,8 +7,9 @@ import entities.Request;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Observer;
 
-public interface IEBookShop {
+public interface IBookShop {
 
     void checkProperties();
     void addBook(Book book);
@@ -58,4 +59,8 @@ public interface IEBookShop {
     void importOrderFromCsv();
     void exportRequestToCsv();
     void importRequestFromCsv();
+
+    void addObserver(Observer o);
+    void deleteObserver(Observer o);
+
 }

@@ -13,13 +13,14 @@ import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FILE
 public class PropertyHolder implements IPropertyHolder {
 
     private static final Logger log = Logger.getLogger(PropertyHolder.class);
-    private static Properties property = new Properties();
+    private  Properties property = new Properties();
 
-    static {
+
+    public PropertyHolder() {
         loadProperties();
     }
 
-    public static void loadProperties() {
+    private void loadProperties() {
         try (FileInputStream fis = new FileInputStream(PATH_FILE_PROPERTIES)) {
             property.load(fis);
         } catch (FileNotFoundException e) {

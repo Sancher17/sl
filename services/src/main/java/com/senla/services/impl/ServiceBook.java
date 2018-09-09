@@ -33,7 +33,7 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public void addBook(Book book) {
-        notifyObservers("Добавлена книга: " + book);
+        notifyObservers("Добавлена книга: " + book.getNameBook());
         repositoryBook.add(book);
         if (ALLOW_MARK_REQUESTS) {
             for (Request request : repositoryRequest.getAll()) {
@@ -176,26 +176,4 @@ public class ServiceBook extends Service implements IServiceBook {
     public void writeDataToFile() {
         dataWorker.writeDataToFile(repositoryBook.getAll());
     }
-
-//    private void merge(List<Book> importlist) {
-//        List<Book> existList = new ArrayList<>();
-//        List<Book> notExistList = new ArrayList<>();
-//        boolean exist;
-//        for (Book bookImport : importlist) {
-//            exist = false;
-//            for (Book bookExist : repositoryBook.getAll()) {
-//                if (bookImport.getId().equals(bookExist.getId())) {
-//                    existList.add(bookImport);
-//                    exist = true;
-//                }
-//            }
-//            if (!exist){
-//                notExistList.add(bookImport);
-//            }
-//        }
-//        for (Book book : existList) {
-//            repositoryBook.update(book.getId(), book);
-//        }
-//        repositoryBook.addAll(notExistList);
-//    }
 }

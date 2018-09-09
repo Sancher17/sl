@@ -1,4 +1,4 @@
-package com.senla.uimodule.menues;
+package com.senla.uimodule.menus;
 
 import com.senla.util.Printer;
 import entities.Book;
@@ -6,14 +6,12 @@ import entities.Book;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.uimodule.constant.UiConstants.*;
+import static com.senla.uimodule.constants.UiConstants.*;
 
 public class MenuBook extends Menu {
 
     MenuBook() {
         super("MenuBook");
-//        getEBookShop().getBookService().addObserver(this);
-
     }
 
     @Override
@@ -23,7 +21,7 @@ public class MenuBook extends Menu {
         while (getOperation() != EXIT) {
             switch (getOperation()) {
                 case MENU_MAIN:
-//                    getEBookShop().getBookService().deleteObserver(this);
+                    getBookShop().deleteObserver(this);
                     runMenuController(MENU_MAIN);
                     break;
                 case ADD_BOOK:
@@ -33,19 +31,19 @@ public class MenuBook extends Menu {
                     deleteBook();
                     break;
                 case PRINT_BOOKS:
-                    printBooks(getEBookShop().getBooks());
+                    printBooks(getBookShop().getBooks());
                     break;
                 case SORT_BOOKS_BY_ALPHABET:
-                    printBooks(getEBookShop().sortBooksByAlphabet());
+                    printBooks(getBookShop().sortBooksByAlphabet());
                     break;
                 case SORT_BOOKS_BY_PUBLICATION_DATE:
-                    printBooks(getEBookShop().sortBooksByDatePublication());
+                    printBooks(getBookShop().sortBooksByDatePublication());
                     break;
                 case SORT_BOOKS_BY_PRICE:
-                    printBooks(getEBookShop().sortBooksByPrice());
+                    printBooks(getBookShop().sortBooksByPrice());
                     break;
                 case SORT_BOOKS_BY_AVAILABILITY:
-                    printBooks(getEBookShop().sortBooksByAvailability());
+                    printBooks(getBookShop().sortBooksByAvailability());
                     break;
                 case PRINT_BOOKS_PERIOD_MORE_SIX_MONTH_SORTED_BY_DATE:
                     printBooksPeriodMoreSixMonthByDate();
@@ -116,14 +114,14 @@ public class MenuBook extends Menu {
         String description = scannerString();
 
         Book book = new Book(nameBook, datePublication, TODAY, price, description, true, false);
-        getEBookShop().addBook(book);
+        getBookShop().addBook(book);
     }
 
     private void deleteBook() {
         Printer.println("Удалить книгу");
         Printer.print("введите Id книги которую хотите удалить: ");
         Long id = scannerLong(getScanner());
-        getEBookShop().deleteBookById(id);
+        getBookShop().deleteBookById(id);
     }
 
     private void printBookDescriptionById() {
@@ -133,15 +131,14 @@ public class MenuBook extends Menu {
         if (id == -1L) {
             printBookDescriptionById();
         }
-        if (getEBookShop().getBookDescriptionById(id) != null) {
-            Printer.println(getEBookShop().getBookDescriptionById(id));
+        if (getBookShop().getBookDescriptionById(id) != null) {
+            Printer.println(getBookShop().getBookDescriptionById(id));
         } else {
             Printer.println("нет книги с таким ID");
         }
     }
 
     private void printBooks(List<Book> list) {
-        Printer.println("Все книги");
         printBookHead();
         for (Book book : list) {
             if (book != null) {
@@ -152,10 +149,10 @@ public class MenuBook extends Menu {
 
     private void printBooksPeriodMoreSixMonthByDate() {
         Printer.println("Книги которые добавлены более 6 месяцев назад / сортировка по дате");
-        List<Book> tempList = getEBookShop().getBooksPeriodMoreSixMonthByDate();
+        List<Book> tempList = getBookShop().getBooksPeriodMoreSixMonthByDate();
         if (tempList.size() != 0) {
             printBookHead();
-            for (Book book : getEBookShop().getBooksPeriodMoreSixMonthByDate()) {
+            for (Book book : getBookShop().getBooksPeriodMoreSixMonthByDate()) {
                 Printer.println(book.toString());
             }
         } else {
@@ -165,7 +162,7 @@ public class MenuBook extends Menu {
 
     private void printBooksPeriodMoreSixMonthByPrice() {
         Printer.println("Книги которые добавлены более 6 месяцев назад / сортировка по цене");
-        List<Book> tempList = getEBookShop().getBooksPeriodMoreSixMonthByPrice();
+        List<Book> tempList = getBookShop().getBooksPeriodMoreSixMonthByPrice();
         if (tempList.size() != 0) {
             printBookHead();
             for (Book book : tempList) {
@@ -182,12 +179,12 @@ public class MenuBook extends Menu {
 
     private void exportBook() {
         Printer.println("Экспортировать все записи книг");
-        getEBookShop().exportBooksToCsv();
+        getBookShop().exportBooksToCsv();
     }
 
     private void importBook() {
         Printer.println("Импортировать записи книг");
-        getEBookShop().importBooksFromCsv();
+        getBookShop().importBooksFromCsv();
     }
 }
 

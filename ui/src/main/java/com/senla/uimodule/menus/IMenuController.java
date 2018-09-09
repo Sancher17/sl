@@ -1,4 +1,4 @@
-package com.senla.uimodule.menues;
+package com.senla.uimodule.menus;
 
 public interface IMenuController {
 

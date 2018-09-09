@@ -1,4 +1,4 @@
-package com.senla.uimodule.menues;
+package com.senla.uimodule.menus;
 
 import com.senla.util.Printer;
 import entities.Book;
@@ -7,13 +7,12 @@ import entities.Order;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.uimodule.constant.UiConstants.*;
+import static com.senla.uimodule.constants.UiConstants.*;
 
 public class MenuOrder extends Menu {
     
     MenuOrder() {
         super("MenuOrder");
-//        getEBookShop().getOrderService().addObserver(this);
     }
 
     @Override
@@ -23,14 +22,14 @@ public class MenuOrder extends Menu {
         while (getOperation() != EXIT) {
             switch (getOperation()){
                 case MENU_MAIN:
-//                    getEBookShop().getOrderService().deleteObserver(this);
+                    getBookShop().deleteObserver(this);
                     runMenuController(MENU_MAIN);
                     break;
                 case ADD_ORDER: addOrder();
                     break;
                 case DELETE_ORDER: deleteOrder();
                     break;
-                case PRINT_ORDERS: printOrders(getEBookShop().getOrders());
+                case PRINT_ORDERS: printOrders(getBookShop().getOrders());
                     break;
                 case PRINT_ORDERS_COMPLETED: printCompletedOrders();
                     break;
@@ -45,13 +44,13 @@ public class MenuOrder extends Menu {
                 case PRINT_ORDER_BY_ID: printOrderById();
                     break;
                 case SORT_COMPLETED_ORDERS_BY_DATE:
-                    printOrders(getEBookShop().sortCompletedOrdersByDate());
+                    printOrders(getBookShop().sortCompletedOrdersByDate());
                     break;
                 case SORT_ORDERS_BY_STATE:
-                    printOrders(getEBookShop().sortOrdersByState());
+                    printOrders(getBookShop().sortOrdersByState());
                     break;
                 case SORT_ORDERS_BY_PRICE:
-                    printOrders(getEBookShop().sortOrdersByPrice());
+                    printOrders(getBookShop().sortOrdersByPrice());
                     break;
                 case SET_ORDER_COMPLETE_BY_ID: setOrderCompleteById();
                     break;
@@ -100,18 +99,17 @@ public class MenuOrder extends Menu {
         Printer.print("введите Id книги для добавления в заказ: ");
         Long idBook = scannerLong(getScanner());
 
-        Book book = getEBookShop().getBookById(idBook);
+        Book book = getBookShop().getBookById(idBook);
         Order order = new Order(book);
-        getEBookShop().addOrder(order);
+        getBookShop().addOrder(order);
     }
     private void deleteOrder() {
         Printer.println("Удалить заказ");
         Printer.print("введите Id заказа который хотите удалить: ");
         Long id = scannerLong(getScanner());
-        getEBookShop().deleteOrderById(id);
+        getBookShop().deleteOrderById(id);
     }
     private void printOrders(List<Order> list){
-        Printer.println("Все заказы");
         printOrderHead();
         for (Order order: list){
             Printer.println(order.toString());
@@ -123,7 +121,7 @@ public class MenuOrder extends Menu {
     private void printCompletedOrders() {
         Printer.println("Выполненые заказы:");
         printOrderHead();
-        for (Order order: getEBookShop().getCompletedOrders()){
+        for (Order order: getBookShop().getCompletedOrders()){
             Printer.println(order.toString());
         }
     }
@@ -143,7 +141,7 @@ public class MenuOrder extends Menu {
             return;
         }
 
-        for (Order order: getEBookShop().getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd)){
+        for (Order order: getBookShop().getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd)){
             Printer.println(order.toString());
         }
     }
@@ -162,7 +160,7 @@ public class MenuOrder extends Menu {
             printCompletedOrdersSortedByPriceOfPeriod();
             return;
         }
-        for (Order order: getEBookShop().getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd)){
+        for (Order order: getBookShop().getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd)){
             Printer.println(order.toString());
         }
     }
@@ -181,7 +179,7 @@ public class MenuOrder extends Menu {
             printOrdersFullAmountByPeriod();
             return;
         }
-        Printer.print(getEBookShop().getOrdersFullAmountByPeriod(dateStart, dateEnd).toString());
+        Printer.print(getBookShop().getOrdersFullAmountByPeriod(dateStart, dateEnd).toString());
     }
     private void printQuantityCompletedOrdersByPeriod(){
         Printer.println("Количество выполненых заказов за период");
@@ -198,43 +196,40 @@ public class MenuOrder extends Menu {
             printQuantityCompletedOrdersByPeriod();
             return;
         }
-        Printer.print(getEBookShop().getQuantityCompletedOrdersByPeriod(dateStart, dateEnd).toString());
+        Printer.print(getBookShop().getQuantityCompletedOrdersByPeriod(dateStart, dateEnd).toString());
     }
     private void printOrderById(){
         Printer.println("Заказ по Id");
         Printer.print("введите позицию в списке заказов которую хотите посмотреть: ");
         Long id = scannerLong(getScanner());
-        Printer.print(getEBookShop().getOrderById(id).toString());
+        Printer.print(getBookShop().getOrderById(id).toString());
     }
     private void setOrderCompleteById( ){
         Printer.println("Отметить заказ как выполненный");
         Printer.print("введите Id заказа который хотите отметить как выполненный: ");
         Long id = scannerLong(getScanner());
-        getEBookShop().setOrderCompleteById(id);
+        getBookShop().setOrderCompleteById(id);
     }
-
     private void copyOrder() {
         Printer.println("Копирование заказа, введите Id заказа который хотите копировать: ");
         Long id = scannerLong(getScanner());
-        Order cloneOrder = getEBookShop().copyOrder(id);
+        Order cloneOrder = getBookShop().copyOrder(id);
         if (cloneOrder == null) {
             Printer.println("Выбирите существующий Id");
             copyOrder();
         }else {
             Printer.println("Скопированный заказ добавлен в список заказов");
             Printer.println(cloneOrder.toString());
-            getEBookShop().addOrder(cloneOrder);
+            getBookShop().addOrder(cloneOrder);
         }
     }
-
     private void exportOrder() {
         Printer.println("Экспортировать все записи заказов");
-        getEBookShop().exportOrderToCsv();
+        getBookShop().exportOrderToCsv();
     }
-
     private void importOrder() {
         Printer.println("Импортировать записи заказов");
-        getEBookShop().importOrderFromCsv();
+        getBookShop().importOrderFromCsv();
 
     }
 }

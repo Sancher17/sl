@@ -1,7 +1,7 @@
-package com.senla.uimodule.menues;
+package com.senla.uimodule.menus;
 
 import com.senla.di.DependencyInjection;
-import com.senla.mainmodule.facade.IEBookShop;
+import com.senla.mainmodule.facade.IBookShop;
 import com.senla.util.Printer;
 import org.apache.log4j.Logger;
 
@@ -16,15 +16,16 @@ public abstract class Menu implements Observer {
 
     private static final Logger log = Logger.getLogger(Menu.class);
     private String title;
-    private IEBookShop eBookShop;
+    private IBookShop bookShop;
     private Scanner scanner = new Scanner(System.in);
     private int operation;
     private IMenuController controller;
 
     Menu(String title) {
         this.title = title;
-        eBookShop = DependencyInjection.getBean(IEBookShop.class);
+        bookShop = DependencyInjection.getBean(IBookShop.class);
         controller = DependencyInjection.getBean(IMenuController.class);
+        getBookShop().addObserver(this);
     }
 
     public abstract void createMenu();
@@ -47,8 +48,7 @@ public abstract class Menu implements Observer {
     }
 
     String scannerString() {
-        Scanner scn = new Scanner(System.in);
-        return scn.nextLine();
+        return new Scanner(System.in).nextLine();
     }
 
     Double scannerDouble(Scanner in) {
@@ -66,8 +66,7 @@ public abstract class Menu implements Observer {
     Integer scannerInteger(Scanner in) {
         int number = -1;
         try {
-            number = Integer.parseInt(in.next());
-            return number;
+           return Integer.parseInt(in.next());
         } catch (NumberFormatException e) {
             Printer.println("не корректные даные");
             log.info("Не корректные введены данные " + e);
@@ -78,8 +77,7 @@ public abstract class Menu implements Observer {
     Long scannerLong(Scanner in) {
         Long number = -1L;
         try {
-            number = Long.parseLong(in.next());
-            return number;
+            return Long.parseLong(in.next());
         } catch (NumberFormatException e) {
             Printer.println("не корректные даные");
             log.info("Не корректные введены данные " + e);
@@ -119,8 +117,8 @@ public abstract class Menu implements Observer {
         return null;
     }
 
-    IEBookShop getEBookShop() {
-        return eBookShop;
+    IBookShop getBookShop() {
+        return bookShop;
     }
 
     Scanner getScanner() {

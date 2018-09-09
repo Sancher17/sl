@@ -1,17 +1,16 @@
-package com.senla.uimodule.menues;
+package com.senla.uimodule.menus;
 
 import com.senla.util.Printer;
 import entities.Request;
 
 import java.util.List;
 
-import static com.senla.uimodule.constant.UiConstants.*;
+import static com.senla.uimodule.constants.UiConstants.*;
 
 public class MenuRequest extends Menu {
 
     MenuRequest() {
         super("MenuOrder");
-//        getEBookShop().getRequestService().addObserver(this);
     }
 
     @Override
@@ -21,22 +20,22 @@ public class MenuRequest extends Menu {
         while (getOperation() != EXIT) {
             switch (getOperation()) {
                 case MENU_MAIN:
-//                    getEBookShop().getRequestService().deleteObserver(this);
+                    getBookShop().deleteObserver(this);
                     runMenuController(MENU_MAIN);
                     break;
                 case ADD_REQUEST: addRequest();
                     break;
-                case PRINT_REQUESTS: printRequests(getEBookShop().getRequests());
+                case PRINT_REQUESTS: printRequests(getBookShop().getRequests());
                     break;
                 case PRINT_COMPLETED_REQUESTS: printCompletedRequests();
                     break;
                 case PRINT_NOT_COMPLETED_REQUESTS: printNotCompletedRequests();
                     break;
                 case SORT_REQUEST_BY_ALPHABET:
-                    printRequests(getEBookShop().sortRequestsByAlphabet());
+                    printRequests(getBookShop().sortRequestsByAlphabet());
                     break;
                 case SORT_REQUEST_BY_QUANTITY:
-                    printRequests(getEBookShop().sortRequestsByQuantity());
+                    printRequests(getBookShop().sortRequestsByQuantity());
                     break;
                 case EXPORT_REQUEST: exportRequest();
                     break;
@@ -73,44 +72,37 @@ public class MenuRequest extends Menu {
         String nameBook = scannerString();
 
         Request request = new Request(nameBook);
-        getEBookShop().addRequest(request);
+        getBookShop().addRequest(request);
     }
-
     private void printNotCompletedRequests() {
         Printer.println("Не выполненые запросы:");
         printRequestHead();
-        for (Request request: getEBookShop().getNotCompletedRequests()){
+        for (Request request: getBookShop().getNotCompletedRequests()){
          Printer.println(request.toString());
         }
     }
-
     private void printCompletedRequests() {
         Printer.println("Выполненые запросы:");
         printRequestHead();
-        for (Request request: getEBookShop().getCompletedRequests()){
+        for (Request request: getBookShop().getCompletedRequests()){
             Printer.println(request.toString());
         }
     }
-
     private void printRequests(List<Request> list){
-        Printer.println("Все запросы");
         printRequestHead();
         for (Request request: list){
             Printer.println(request.toString());
         }
     }
-
     private void printRequestHead(){
         Printer.println("id/Название книги/удовлетворен запрос/количество запросов");
     }
-
     private void exportRequest() {
         Printer.println("Экспортировать все записи заказов");
-        getEBookShop().exportRequestToCsv();
+        getBookShop().exportRequestToCsv();
     }
-
     private void importRequest() {
         Printer.println("Импортировать записи заказов");
-        getEBookShop().importRequestFromCsv();
+        getBookShop().importRequestFromCsv();
     }
 }
