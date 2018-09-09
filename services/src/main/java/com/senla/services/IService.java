@@ -6,8 +6,6 @@ public interface IService<T> {
 
     void addObserver(Observer o);
 
-    void deleteObserver(Observer o);
-
     void exportToCsv();
 
     void importFromCsv();
