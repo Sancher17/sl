@@ -18,6 +18,7 @@ public class FileWorker implements IFileWorker {
         this.importFromCsv = DependencyInjection.getBean(IImportFromCsv.class);
         this.properties = DependencyInjection.getBean(IPropertyHolder.class);
         properties.pathsForCsvFiles();
+
     }
 
     @Override
