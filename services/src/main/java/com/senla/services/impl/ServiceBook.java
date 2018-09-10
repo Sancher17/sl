@@ -2,6 +2,7 @@ package com.senla.services.impl;
 
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.imports.IImportFromCsv;
+import com.senla.fileworker.startModule.IFileWorker;
 import com.senla.repositories.IRepositoryBook;
 import com.senla.repositories.IRepositoryRequest;
 import com.senla.services.IServiceBook;
@@ -23,12 +24,13 @@ public class ServiceBook extends Service implements IServiceBook {
     private IRepositoryBook repositoryBook;
     private IRepositoryRequest repositoryRequest;
     private IDataWorker dataWorker;
-    private IImportFromCsv importList;
+    private IFileWorker fileWorker;
 
     public ServiceBook(IRepositoryBook repositoryBook, IRepositoryRequest repositoryRequest) {
         this.repositoryBook = repositoryBook;
         this.repositoryRequest = repositoryRequest;
         this.dataWorker = DependencyInjection.getBean(IDataWorker.class);
+        this.fileWorker = DependencyInjection.getBean(IFileWorker.class);
     }
 
     @Override
@@ -161,8 +163,7 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public void importFromCsv() {
-        importList = DependencyInjection.getBean(IImportFromCsv.class);
-        List<Book> importListFromFile = importList.importListFromFile(PATH_BOOK_CSV, Book.class);
+        List<Book> importListFromFile = fileWorker.importListFromFile(PATH_BOOK_CSV, Book.class);
         merge(importListFromFile, repositoryBook);
     }
 

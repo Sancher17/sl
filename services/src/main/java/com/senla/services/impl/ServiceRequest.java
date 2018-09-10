@@ -2,6 +2,7 @@ package com.senla.services.impl;
 
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.imports.IImportFromCsv;
+import com.senla.fileworker.startModule.IFileWorker;
 import com.senla.repositories.IRepositoryRequest;
 import com.senla.services.IServiceRequest;
 import com.senla.util.comparators.request.ComparatorRequestsByAlphabet;
@@ -21,11 +22,12 @@ public class ServiceRequest extends Service implements IServiceRequest {
     private static final Logger log = Logger.getLogger(ServiceRequest.class);
     private IRepositoryRequest repositoryRequest;
     private IDataWorker dataWorker;
-    private IImportFromCsv importFromCsv;
+    private com.senla.fileworker.startModule.IFileWorker fileWorker;
 
     public ServiceRequest(IRepositoryRequest repositoryRequest) {
         this.repositoryRequest = repositoryRequest;
         this.dataWorker = DependencyInjection.getBean(IDataWorker.class);
+        this.fileWorker = DependencyInjection.getBean(IFileWorker.class);
     }
 
     @Override
@@ -96,8 +98,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public void importFromCsv() {
-        importFromCsv = DependencyInjection.getBean(IImportFromCsv.class);
-        List<Request> importListFromFile = importFromCsv.importListFromFile(PATH_REQUEST_CSV, Request.class);
+        List<Request> importListFromFile = fileWorker.importListFromFile(PATH_REQUEST_CSV, Request.class);
         merge(importListFromFile, repositoryRequest);
     }
 
