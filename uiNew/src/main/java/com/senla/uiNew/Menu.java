@@ -16,11 +16,11 @@ public class Menu {
         this.name = name;
     }
 
-    public void action(String name, Runnable action) {
+    void action(String name, Runnable action) {
         actionsMap.put(name, action);
     }
 
-    public String generateText() {
+    String generateText() {
         StringBuilder sb = new StringBuilder();
         sb.append(name).append(":\n");
 
@@ -32,7 +32,7 @@ public class Menu {
         return sb.toString();
     }
 
-    public void executeAction(int actionNumber) {
+    void executeAction(int actionNumber) {
         if (actionNumber >= 0 & actionNumber <= actionsMap.size()) {
             List<Runnable> actions = new ArrayList<>(actionsMap.values());
             actions.get(actionNumber).run();
@@ -41,4 +41,6 @@ public class Menu {
             Printer.println("Выбирите другое существующее меню");
         }
     }
+
+
 }

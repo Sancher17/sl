@@ -131,14 +131,12 @@ public class MenuOrder extends Menu {
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null){
             printCompletedOrdersSortedByDateOfPeriod();
-            return;
         }
 
         Printer.print("введите конечную дату в формате (01.01.2018): ");
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null){
             printCompletedOrdersSortedByDateOfPeriod();
-            return;
         }
 
         for (Order order: getBookShop().getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd)){
@@ -151,14 +149,12 @@ public class MenuOrder extends Menu {
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null){
             printCompletedOrdersSortedByPriceOfPeriod();
-            return;
         }
 
         Printer.print("введите конечную дату в формате (01.01.2018): ");
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null){
             printCompletedOrdersSortedByPriceOfPeriod();
-            return;
         }
         for (Order order: getBookShop().getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd)){
             Printer.println(order.toString());
@@ -170,14 +166,12 @@ public class MenuOrder extends Menu {
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null){
             printOrdersFullAmountByPeriod();
-            return;
         }
 
         Printer.print("введите конечную дату в формате (01.01.2018): ");
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null){
             printOrdersFullAmountByPeriod();
-            return;
         }
         Printer.print(getBookShop().getOrdersFullAmountByPeriod(dateStart, dateEnd).toString());
     }
@@ -187,14 +181,12 @@ public class MenuOrder extends Menu {
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null){
             printQuantityCompletedOrdersByPeriod();
-            return;
         }
 
         Printer.print("введите конечную дату в формате (01.01.2018): ");
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null){
             printQuantityCompletedOrdersByPeriod();
-            return;
         }
         Printer.print(getBookShop().getQuantityCompletedOrdersByPeriod(dateStart, dateEnd).toString());
     }

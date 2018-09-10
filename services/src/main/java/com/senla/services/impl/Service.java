@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import static com.senla.mainmodule.constants.Constants.*;
+
 public abstract class Service<T> extends Observable {
 
     private List<Observer> subscribers = new ArrayList<>();
@@ -33,6 +35,7 @@ public abstract class Service<T> extends Observable {
 
     void writeToCsv(List list){
         IFileWorker.exportToCsv(list);
+        notifyObservers("Файл сохранен в папку: " + PATH_FOR_CSV + FILE_NAME);
     }
 
     void merge(List<T> importlist, IRepository<T> repository) {

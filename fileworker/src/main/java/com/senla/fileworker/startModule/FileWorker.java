@@ -6,6 +6,7 @@ import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.propertiesmodule.IPropertyHolder;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FileWorker implements IFileWorker {
 
@@ -17,8 +18,7 @@ public class FileWorker implements IFileWorker {
         this.exportToCsv = DependencyInjection.getBean(IExportToCsv.class);
         this.importFromCsv = DependencyInjection.getBean(IImportFromCsv.class);
         this.properties = DependencyInjection.getBean(IPropertyHolder.class);
-        properties.pathsForCsvFiles();
-
+        Objects.requireNonNull(properties, "IPropertyHolder = null").pathsForCsvFiles();
     }
 
     @Override

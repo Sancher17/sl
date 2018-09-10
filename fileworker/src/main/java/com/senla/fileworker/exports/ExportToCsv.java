@@ -18,7 +18,6 @@ import java.util.List;
 
 import static com.senla.fileworker.annotations.PropertyType.CompositeProperty;
 import static com.senla.mainmodule.constants.Constants.*;
-import static com.senla.propertiesmodule.constants.ConstantsProperties.FILE_NAME;
 
 public class ExportToCsv<T> implements IExportToCsv {
 

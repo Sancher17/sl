@@ -6,6 +6,7 @@ public class Constants {
     public static final String PATH_ORDER_CSV = "data/src/csv/orders.csv";
     public static final String PATH_REQUEST_CSV = "data/src/csv/requests.csv";
 
+    public static String FILE_NAME = null;
 
     public static String PATH_FOR_CSV = null;
 

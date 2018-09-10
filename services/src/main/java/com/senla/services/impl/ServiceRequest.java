@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.senla.mainmodule.constants.Constants.PATH_FOR_CSV;
 import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_CSV;
 
 

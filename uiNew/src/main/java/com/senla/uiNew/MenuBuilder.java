@@ -8,15 +8,12 @@ import entities.Order;
 import entities.Request;
 import org.apache.log4j.Logger;
 
-
 import java.util.*;
 
-import static com.senla.mainmodule.constants.Constants.PATH_BOOK_DATA;
-import static com.senla.mainmodule.constants.Constants.PATH_ORDER_DATA;
-import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_DATA;
+import static com.senla.mainmodule.constants.Constants.*;
 import static com.senla.util.ScannerHelper.*;
 
-class MenuBuilder {
+class MenuBuilder implements Observer {
 
     private static final Logger log = Logger.getLogger(MenuBuilder.class.getSimpleName());
     private Menu menu;
@@ -30,6 +27,8 @@ class MenuBuilder {
     }
 
     private void init(){
+        bookShop.addObserver(this);
+
         Menu main = new Menu("Главное меню");
         Menu book = new Menu("Меню Book");
         Menu order = new Menu("Меню Order");
@@ -93,10 +92,14 @@ class MenuBuilder {
     }
 
     private void exit() {
+        bookShop.deleteObserver(this);
+
         bookShop.writeBookDataToFile();
         bookShop.writeOrderDataToFile();
         bookShop.writeRequestDataToFile();
+
         scanner.close();
+
         Printer.println("\nВсе данные сохранены в файлы: ");
         Printer.println(PATH_BOOK_DATA);
         Printer.println(PATH_ORDER_DATA);
@@ -131,14 +134,13 @@ class MenuBuilder {
         Date datePublication = scannerDate(datePublic);
         if (datePublication == null) {
             addBook();
-            return;
         }
 
         Printer.print("введите цену в формате (55.05 или 55): ");
+
         double price = scannerDouble(scanner);
         if (price == -1.0) {
             addBook();
-            return;
         }
 
         Printer.print("введите описание книги: ");
@@ -248,14 +250,12 @@ class MenuBuilder {
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null) {
             printCompletedOrdersSortedByDateOfPeriod();
-            return;
         }
 
         Printer.print("введите конечную дату в формате (01.01.2018): ");
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null) {
             printCompletedOrdersSortedByDateOfPeriod();
-            return;
         }
 
         for (Order order : bookShop.getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd)) {
@@ -268,14 +268,12 @@ class MenuBuilder {
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null) {
             printCompletedOrdersSortedByPriceOfPeriod();
-            return;
         }
 
         Printer.print("введите конечную дату в формате (01.01.2018): ");
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null) {
             printCompletedOrdersSortedByPriceOfPeriod();
-            return;
         }
         for (Order order : bookShop.getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd)) {
             Printer.println(order.toString());
@@ -287,14 +285,12 @@ class MenuBuilder {
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null) {
             printOrdersFullAmountByPeriod();
-            return;
         }
 
         Printer.print("введите конечную дату в формате (01.01.2018): ");
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null) {
             printOrdersFullAmountByPeriod();
-            return;
         }
         Printer.print(bookShop.getOrdersFullAmountByPeriod(dateStart, dateEnd).toString());
     }
@@ -304,14 +300,12 @@ class MenuBuilder {
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null) {
             printQuantityCompletedOrdersByPeriod();
-            return;
         }
 
         Printer.print("введите конечную дату в формате (01.01.2018): ");
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null) {
             printQuantityCompletedOrdersByPeriod();
-            return;
         }
         Printer.print(bookShop.getQuantityCompletedOrdersByPeriod(dateStart, dateEnd).toString());
     }
@@ -388,5 +382,10 @@ class MenuBuilder {
     private void importRequest() {
         Printer.println("Импортировать записи заказов");
         bookShop.importRequestFromCsv();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Printer.println(arg);
     }
 }

@@ -25,7 +25,7 @@ public abstract class Menu implements Observer {
         this.title = title;
         bookShop = DependencyInjection.getBean(IBookShop.class);
         controller = DependencyInjection.getBean(IMenuController.class);
-        getBookShop().addObserver(this);
+        bookShop.addObserver(this);
     }
 
     public abstract void createMenu();

@@ -100,14 +100,12 @@ public class MenuBook extends Menu {
         Date datePublication = scannerDate(datePublic);
         if (datePublication == null) {
             addBook();
-            return;
         }
 
         Printer.print("введите цену в формате (55.05 или 55): ");
         double price = scannerDouble(getScanner());
         if (price == -1.0) {
             addBook();
-            return;
         }
 
         Printer.print("введите описание книги: ");
