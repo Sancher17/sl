@@ -1,7 +1,6 @@
 package com.senla.services.impl;
 
 import com.senla.di.DependencyInjection;
-import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.fileworker.startModule.IFileWorker;
 import com.senla.repositories.IRepositoryBook;
 import com.senla.repositories.IRepositoryRequest;
@@ -164,6 +163,7 @@ public class ServiceBook extends Service implements IServiceBook {
     @Override
     public void importFromCsv() {
         List<Book> importListFromFile = fileWorker.importListFromFile(PATH_BOOK_CSV, Book.class);
+        notifyObservers(PATH_BOOK_CSV);
         merge(importListFromFile, repositoryBook);
     }
 

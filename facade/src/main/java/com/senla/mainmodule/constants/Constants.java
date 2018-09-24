@@ -2,7 +2,7 @@ package com.senla.mainmodule.constants;
 
 public class Constants {
 
-    public static final String PATH_BOOK_CSV = "data/src/testCsv/books.csv";
+    public static final String PATH_BOOK_CSV = "data/src/csv/books.csv";
     public static final String PATH_ORDER_CSV = "data/src/csv/orders.csv";
     public static final String PATH_REQUEST_CSV = "data/src/csv/requests.csv";
 

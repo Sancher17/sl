@@ -1,21 +1,24 @@
 package com.senla.uiNew;
 
+import static com.senla.mainmodule.constants.Constants.PATH_BOOK_DATA;
+import static com.senla.mainmodule.constants.Constants.PATH_ORDER_DATA;
+import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_DATA;
+
+import java.text.ParseException;
+import java.util.Objects;
+
+import org.apache.log4j.Logger;
+
 import com.senla.di.DependencyInjection;
 import com.senla.propertiesmodule.IPropertyHolder;
 import com.senla.propertiesmodule.PropertyHolder;
 import com.senla.uimodule.data.ILoadData;
 import com.senla.uimodule.start.RunUi;
 import com.senla.util.Printer;
-import org.apache.log4j.Logger;
-
-import java.text.ParseException;
-import java.util.Objects;
-
-import static com.senla.mainmodule.constants.Constants.*;
 
 public class RunUiNew {
 
-    private static final Logger log = Logger.getLogger(RunUi.class);
+    private static final Logger log = Logger.getLogger(RunUi.class.getSimpleName());
 
     public static void main(String[] args) {
 

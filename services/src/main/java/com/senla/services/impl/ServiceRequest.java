@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.senla.mainmodule.constants.Constants.PATH_FOR_CSV;
+import static com.senla.mainmodule.constants.Constants.PATH_ORDER_CSV;
 import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_CSV;
 
 
@@ -100,6 +101,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
     @Override
     public void importFromCsv() {
         List<Request> importListFromFile = fileWorker.importListFromFile(PATH_REQUEST_CSV, Request.class);
+        notifyObservers(PATH_REQUEST_CSV);
         merge(importListFromFile, repositoryRequest);
     }
 

@@ -18,7 +18,7 @@ class MenuBuilder implements Observer {
     private static final Logger log = Logger.getLogger(MenuBuilder.class.getSimpleName());
     private Menu menu;
     private static Date TODAY = new Date();
-    private Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
     private IBookShop bookShop = DependencyInjection.getBean(IBookShop.class);
 
 
@@ -111,7 +111,7 @@ class MenuBuilder implements Observer {
     private void activateMenu(Menu menu) {
         this.menu = menu;
         Printer.println(menu.generateText());
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         while (true) {
             try {
                 int actionNumber = scanner.nextInt();
@@ -208,7 +208,7 @@ class MenuBuilder implements Observer {
         bookShop.exportBooksToCsv();
     }
     private void importBook() {
-        Printer.println("Импортировать записи книг");
+        Printer.print("Импортированы записи книг из файла: ");
         bookShop.importBooksFromCsv();
     }
 
@@ -339,7 +339,7 @@ class MenuBuilder implements Observer {
         bookShop.exportOrderToCsv();
     }
     private void importOrder() {
-        Printer.println("Импортировать записи заказов");
+        Printer.print("Импортированы записи заказов из файла: ");
         bookShop.importOrderFromCsv();
 
     }
@@ -376,11 +376,11 @@ class MenuBuilder implements Observer {
         Printer.println("id/Название книги/удовлетворен запрос/количество запросов");
     }
     private void exportRequest() {
-        Printer.println("Экспортировать все записи заказов");
+        Printer.println("Экспортировать все записи запросов");
         bookShop.exportRequestToCsv();
     }
     private void importRequest() {
-        Printer.println("Импортировать записи заказов");
+        Printer.print("Импортированы записи запросов из файла: ");
         bookShop.importRequestFromCsv();
     }
 
