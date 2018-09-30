@@ -49,24 +49,11 @@ SELECT speed, AVG(price) FROM pcs GROUP BY speed HAVING AVG(price);
 SELECT hd FROM pcs GROUP BY hd HAVING COUNT(*)>1;
 # Задание: 16
 # Найдите пары моделей PC, имеющих одинаковые скорость и RAM. В результате каждая пара указывается только один раз, т.е. (i,j), но не (j,i), Порядок вывода: модель с большим номером, модель с меньшим номером, скорость и RAM
-# SELECT p1.model, p2.model, p1.speed, p1.ram
-#           FROM pcs p1, pcs p2
-#           WHERE p1.speed = p2.speed
-#           AND p1.ram = p2.ram
-#           AND p1.model > p2.model
-#
-# SELECT * FROM pcs p1, pcs p2
-#          WHERE ()
-#
-# SELECT MAX(price) AS max_price FROM printers) AS mp WHERE price = mp.max_price;
-#
-#
-# SELECT * FROM pcs JOIN (
-#                     SELECT p1.model, p1.speed FROM pcs p1, pcs p2
-#                     WHERE p1.speed = p2.speed) AS a
-
-
-
+SELECT p1.model, p2.model, p1.speed, p1.ram
+          FROM pcs p1, pcs p2
+          WHERE p1.speed = p2.speed
+          AND p1.ram = p2.ram
+          AND p1.model > p2.model;
 # Задание: 17
 # Найдите модели ПК-блокнотов, скорость которых меньше скорости любого из ПК.
 # Вывести: type, model, speed
