@@ -109,12 +109,3 @@ SELECT maker FROM products
                    WHERE (SELECT MIN(ram) FROM pcs
                           WHERE (SELECT MAX(speed) FROM pcs))
                      AND maker IN ( SELECT maker FROM products WHERE type='printer'));
-
-
-
-
-
-
-
-
-
