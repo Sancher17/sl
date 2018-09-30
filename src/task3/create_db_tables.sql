@@ -1,6 +1,6 @@
-create database if not exists bookshop4;
+create database if not exists bookshop;
 
-use bookshop4;
+use bookshop;
 
 create table if not exists books
 (
