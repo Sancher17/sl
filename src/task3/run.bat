@@ -1,7 +1,8 @@
+@echo off
+sqlcmd -E -S localhost -i D:\Java\Senla10_1\src\task3\create_db_tables.sql
 
 @echo off
-
-c:\mysql\bin\mysql < CREATE DATABASE hlstats;
-c:\mysql\bin\mysql < CREATE USER 'username_here'@'localhost' IDENTIFIED BY 'password_here';
-c:\mysql\bin\mysql < GRANT ALL ON hlstats.* TO 'username_here'@'localhost';
-c:\mysql\bin\mysql < install.sql
+set root=C:\Documents and Settings\Administrator
+cd %root%
+mysql -u root  -e "CREATE DATABASE IF NOT EXISTS bookshop4";
+mysql -u root  bookshop4 < create_db_tables.sql

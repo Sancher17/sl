@@ -36,5 +36,3 @@ create table if not exists request
   requireIsCompleted bit         null,
   requireQuantity    int         null
 );
-
-
