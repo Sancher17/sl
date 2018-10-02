@@ -1,4 +1,4 @@
-create database if not exists bookshop;
+create database if not exists bookshop COLLATE = utf8_general_ci;;
 
 use bookshop;
 
