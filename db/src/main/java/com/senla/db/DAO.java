@@ -1,13 +1,19 @@
 package com.senla.db;
 
-public interface DAO <E,K > {
+import java.util.List;
 
-    void create(E entity);
+public interface DAO <T> {
 
-    E read(K key);
+    void add(T obj);
 
-    void update(E entity);
+    void deleteById(Long id);
 
-    void delete(E entity);
+    T getById(Long id);
+
+    void update(T t);
+
+    List<T> getAll();
+
+    void addAll(List<T> notExistList);
 
 }
