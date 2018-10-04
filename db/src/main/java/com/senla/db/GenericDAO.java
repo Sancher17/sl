@@ -2,7 +2,7 @@ package com.senla.db;
 
 import java.util.List;
 
-public interface DAO <T> {
+public interface GenericDAO<T> {
 
     void add(T obj);
 

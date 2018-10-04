@@ -94,10 +94,6 @@ class MenuBuilder implements Observer {
     private void exit() {
         bookShop.deleteObserver(this);
 
-        bookShop.writeBookDataToFile();
-        bookShop.writeOrderDataToFile();
-        bookShop.writeRequestDataToFile();
-
         scanner.close();
 
         Printer.println("\nВсе данные сохранены в файлы: ");
@@ -324,15 +320,16 @@ class MenuBuilder implements Observer {
     private void copyOrder() {
         Printer.println("Копирование заказа, введите Id заказа который хотите копировать: ");
         Long id = scannerLong(scanner);
-        Order cloneOrder = bookShop.copyOrder(id);
-        if (cloneOrder == null) {
-            Printer.println("Выбирите существующий Id");
-            copyOrder();
-        } else {
-            Printer.println("Скопированный заказ добавлен в список заказов");
-            Printer.println(cloneOrder.toString());
-            bookShop.addOrder(cloneOrder);
-        }
+        // TODO: 04.10.2018 надо переделать на работу с БД
+//        Order cloneOrder = bookShop.copyOrder(id);
+//        if (cloneOrder == null) {
+//            Printer.println("Выбирите существующий Id");
+//            copyOrder();
+//        } else {
+//            Printer.println("Скопированный заказ добавлен в список заказов");
+//            Printer.println(cloneOrder.toString());
+//            bookShop.addOrder(cloneOrder);
+//        }
     }
     private void exportOrder() {
         Printer.println("Экспортировать все записи заказов");

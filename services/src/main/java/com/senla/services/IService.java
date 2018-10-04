@@ -10,7 +10,4 @@ public interface IService<T> {
 
     void importFromCsv();
 
-    void readDataFromFile(String path);
-
-    void writeDataToFile();
 }

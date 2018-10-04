@@ -35,5 +35,4 @@ public interface IServiceOrder extends IService<Order> {
 
     Order getOrderById(Long id);
 
-    Order copyOrder(Long id);
 }

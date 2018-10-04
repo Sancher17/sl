@@ -1,10 +1,14 @@
-package com.senla.db;
+package com.senla.db.connection;
+
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class HelperJDBC {
+public class ConnectionDB {
+
+    private static final Logger log = Logger.getLogger(ConnectionDB.class);
 
     private static String dbName = "bookshop";
     private static String URL = "jdbc:mysql://localhost:3306/"+dbName+"?autoReconnect=true&useSSL=false";
@@ -14,7 +18,7 @@ public class HelperJDBC {
     private static Connection connection;
 
 
-    private HelperJDBC() {
+    private ConnectionDB() {
     }
 
     public static Connection getConnection() {
@@ -23,10 +27,8 @@ public class HelperJDBC {
            try {
                Class.forName("com.mysql.jdbc.Driver");
                connection = DriverManager.getConnection(URL, user, pass);
-               System.out.println("Connection OK");
            } catch (SQLException | ClassNotFoundException e) {
-               e.printStackTrace();
-               System.out.println("Connection Error");
+               log.error("Не удачное подключение к БД " + e);
            }
        }
        return connection;

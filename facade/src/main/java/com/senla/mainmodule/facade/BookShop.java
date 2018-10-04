@@ -116,9 +116,7 @@ public class BookShop extends Observable implements IBookShop, Observer {
     public Order getOrderById(Long id) {
         return orderService.getOrderById(id);
     }
-    public Order copyOrder(Long id) {
-        return orderService.copyOrder(id);
-    }
+
 
     //REQUEST
     public void addRequest(Request request) {
@@ -140,26 +138,6 @@ public class BookShop extends Observable implements IBookShop, Observer {
         return requestService.sortRequestsByAlphabet();
     }
 
-    //Save Data - write
-    public void writeBookDataToFile() {
-        bookService.writeDataToFile();
-    }
-    public void writeOrderDataToFile(){
-        orderService.writeDataToFile();
-    }
-    public void writeRequestDataToFile() {
-        requestService.writeDataToFile();
-    }
-
-    //Save Data - read
-    public void readBookFromFile() {
-        bookService.readDataFromFile(PATH_BOOK_DATA);
-    }
-    public void readOrderFromFile() {
-        orderService.readDataFromFile(PATH_ORDER_DATA);
-    }
-    public void readRequestFromFile() { requestService.readDataFromFile(PATH_REQUEST_DATA);
-    }
 
     // CSV - export
     public void exportBooksToCsv() {

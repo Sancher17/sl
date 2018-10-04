@@ -27,9 +27,6 @@ public class MenuExit extends Menu {
     }
 
     private void finalizationProgram(){
-        getBookShop().writeBookDataToFile();
-        getBookShop().writeOrderDataToFile();
-        getBookShop().writeRequestDataToFile();
         getScanner().close();
     }
 }

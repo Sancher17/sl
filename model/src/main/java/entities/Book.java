@@ -1,9 +1,6 @@
 package entities;
 
-
-import com.senla.fileworker.annotations.CsvEntity;
-import com.senla.fileworker.annotations.CsvProperty;
-import com.senla.fileworker.annotations.PropertyType;
+import com.senla.fileworker.annotations.*;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -11,7 +8,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @CsvEntity(fileName = "books.csv", valueSeparator =";", entityId = "id")
-public class Book implements Serializable, Cloneable {
+public class Book implements Cloneable {
 
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Long id;

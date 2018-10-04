@@ -1,41 +1,44 @@
 package com.senla.services.impl;
 
+import com.senla.db.IBookDao;
+import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
-import com.senla.repositories.IRepositoryBook;
 import com.senla.repositories.IRepositoryRequest;
 import com.senla.services.IServiceBook;
-import com.senla.util.comparators.book.*;
-import com.senla.util.dataworker.IDataWorker;
 import com.senla.util.date.DateUtil;
 import entities.Book;
 import entities.Request;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.*;
-
+import static com.senla.mainmodule.constants.Constants.ALLOW_MARK_REQUESTS;
+import static com.senla.mainmodule.constants.Constants.BOOK_IS_OLD;
 
 public class ServiceBook extends Service implements IServiceBook {
 
-    private IRepositoryBook repositoryBook;
+    private IBookDao bookDao;
     private IRepositoryRequest repositoryRequest;
-    private IDataWorker dataWorker;
     private IFileWorker fileWorker;
 
-    public ServiceBook(IRepositoryBook repositoryBook, IRepositoryRequest repositoryRequest) {
-        this.repositoryBook = repositoryBook;
-        this.repositoryRequest = repositoryRequest;
-        this.dataWorker = DependencyInjection.getBean(IDataWorker.class);
+    private Connection connection = ConnectionDB.getConnection();
+
+    public ServiceBook() {
+        this.bookDao = DependencyInjection.getBean(IBookDao.class);
+        this.repositoryRequest = DependencyInjection.getBean(IRepositoryRequest.class);
         this.fileWorker = DependencyInjection.getBean(IFileWorker.class);
     }
 
     @Override
     public void addBook(Book book) {
         notifyObservers("Добавлена книга: " + book.getNameBook());
-        repositoryBook.add(book);
+        bookDao.add(book);
         if (ALLOW_MARK_REQUESTS) {
             for (Request request : repositoryRequest.getAll()) {
                 if (book.getNameBook().equals(request.getRequireNameBook())) {
@@ -47,9 +50,9 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public void deleteBookById(Long id) {
-        if (repositoryBook.getById(id) != null) {
-            notifyObservers("Удалена книга: " + repositoryBook.getById(id));
-            repositoryBook.deleteById(id);
+        if (bookDao.getById(id) != null) {
+            notifyObservers("Удалена книга: " + bookDao.getById(id));
+            bookDao.deleteById(id);
         } else {
             notifyObservers("Книги с таким индексом нет !!!");
         }
@@ -58,39 +61,68 @@ public class ServiceBook extends Service implements IServiceBook {
     @Override
     public List<Book> sortByAlphabet() {
         notifyObservers("Книги отсортированы по алфавиту");
-        List<Book> sortedList = repositoryBook.getAll();
-        sortedList.sort(new ComparatorBookByAlphabet());
-        return sortedList;
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books ORDER BY nameBook";
+        try(PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet result = statement.executeQuery()) {
+            result.next();
+            createBookFromResultSet(books, result);
+        } catch (SQLException e) {
+
+        }
+        return books;
     }
 
     @Override
     public List<Book> sortByDatePublication() {
-        notifyObservers("Книги отсортированы по дате публикации");
-        List<Book> sortedList = repositoryBook.getAll();
-        sortedList.sort(new ComparatorBookByDatePublication());
-        return sortedList;
+        notifyObservers("Книги отсортированы по дате публикации\n");
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books ORDER BY dateOfPublication";
+        try(PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet result = statement.executeQuery()) {
+            result.next();
+            createBookFromResultSet(books, result);
+        } catch (SQLException e) {
+
+        }
+        return books;
     }
 
     @Override
     public List<Book> sortByPrice() {
         notifyObservers("Книги отсортированы по цене");
-        List<Book> sortedList = repositoryBook.getAll();
-        sortedList.sort(new ComparatorBookByPrice());
-        return sortedList;
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books ORDER BY price";
+        try(PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet result = statement.executeQuery()) {
+            result.next();
+            createBookFromResultSet(books, result);
+        } catch (SQLException e) {
+
+        }
+        return books;
     }
 
     @Override
     public List<Book> sortByAvailability() {
         notifyObservers("Книги отсортированы по доступности");
-        List<Book> sortedList = repositoryBook.getAll();
-        sortedList.sort(new ComparatorBookByAvailability());
-        return sortedList;
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books ORDER BY isAvailable";
+        try(PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet result = statement.executeQuery()) {
+            result.next();
+            createBookFromResultSet(books, result);
+        } catch (SQLException e) {
+
+        }
+        return books;
     }
 
     @Override
     public List<Book> getAll() {
-        return repositoryBook.getAll();
+        return bookDao.getAll();
     }
+
 
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByDate() {
@@ -107,13 +139,36 @@ public class ServiceBook extends Service implements IServiceBook {
         return newList;
     }
 
-    private List<Book> sortByDateAddedToShop() {
-        notifyObservers("Книги отсортированы по дате добавления в магазин");
-        List<Book> sortedList = repositoryBook.getAll();
-        sortedList.sort(new ComparatorBookByDateAddedToShop());
-        return sortedList;
+    private void createBookFromResultSet(List<Book> books, ResultSet result) throws SQLException {
+        while (result.next()) {
+            Book book = new Book();
+            book.setId(result.getLong("id"));
+            book.setDateAddedBookToStore(result.getDate("dateAddedBookToStore"));
+            book.setDateOfPublication(result.getDate("dateOfPublication"));
+            book.setDescription(result.getString("description"));
+            book.setAvailable(result.getBoolean("isAvailable"));
+            book.setOld(result.getBoolean("isOld"));
+            book.setNameBook(result.getString("nameBook"));
+            book.setPrice(result.getDouble("price"));
+            books.add(book);
+        }
     }
 
+    private List<Book> sortByDateAddedToShop() {
+        notifyObservers("Книги отсортированы по дате добавления в магазин");
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books ORDER BY dateAddedBookToStore";
+        try(PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet result = statement.executeQuery()) {
+            result.next();
+            createBookFromResultSet(books, result);
+        } catch (SQLException e) {
+
+        }
+        return books;
+    }
+
+    // TODO: 04.10.2018
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByPrice() {
         Date periodOfMonth = DateUtil.minusMonths(6);
@@ -131,13 +186,13 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public Book getBookById(Long id) {
-        return repositoryBook.getById(id);
+        return bookDao.getById(id);
     }
 
     @Override
     public String getBookDescriptionById(Long id) {
-        if (repositoryBook.getById(id) != null) {
-            Book book = repositoryBook.getById(id);
+        if (bookDao.getById(id) != null) {
+            Book book = bookDao.getById(id);
             return book.getDescription();
         }
         return null;
@@ -147,7 +202,7 @@ public class ServiceBook extends Service implements IServiceBook {
     public void markBookOld() {
         if (BOOK_IS_OLD != null) {
             Date periodOfMonth = DateUtil.minusMonths(BOOK_IS_OLD);
-            for (Book book : repositoryBook.getAll()) {
+            for (Book book : bookDao.getAll()) {
                 if (book.getDateAddedBookToStore().before(periodOfMonth)) {
                     book.setOld(true);
                 }
@@ -157,24 +212,14 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public void exportToCsv() {
-        super.writeToCsv(repositoryBook.getAll());
+        super.writeToCsv(bookDao.getAll());
     }
 
     @Override
     public void importFromCsv() {
-        List<Book> importListFromFile = fileWorker.importListFromFile(PATH_BOOK_CSV, Book.class);
-        notifyObservers(PATH_BOOK_CSV);
-        merge(importListFromFile, repositoryBook);
+//        List<Book> importListFromFile = fileWorker.importListFromFile(PATH_BOOK_CSV, Book.class);
+//        notifyObservers(PATH_BOOK_CSV);
+//        merge(importListFromFile, bookDao);
     }
 
-    @Override
-    public void readDataFromFile(String path) {
-        repositoryBook.getAll().clear();
-        repositoryBook.setAll(dataWorker.readDataFromFile(path));
-    }
-
-    @Override
-    public void writeDataToFile() {
-        dataWorker.writeDataToFile(repositoryBook.getAll());
-    }
 }

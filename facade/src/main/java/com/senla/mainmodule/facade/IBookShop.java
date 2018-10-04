@@ -37,7 +37,6 @@ public interface IBookShop {
     Double getOrdersFullAmountByPeriod(Date startDate, Date endDate) ;
     Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate);
     Order getOrderById(Long id);
-    Order copyOrder(Long id);
 
     void addRequest(Request request);
     List<Request> getRequests();
@@ -45,13 +44,6 @@ public interface IBookShop {
     List<Request> getNotCompletedRequests();
     List<Request>  sortRequestsByQuantity();
     List<Request>  sortRequestsByAlphabet();
-
-    void writeBookDataToFile();
-    void readBookFromFile();
-    void writeOrderDataToFile();
-    void readOrderFromFile();
-    void writeRequestDataToFile();
-    void readRequestFromFile();
 
     void exportBooksToCsv() ;
     void importBooksFromCsv();

@@ -7,7 +7,7 @@ import com.senla.fileworker.annotations.PropertyType;
 import java.io.Serializable;
 
 @CsvEntity(fileName = "requests.csv", valueSeparator =";")
-public class Request implements Serializable {
+public class Request implements Cloneable {
 
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Long id;

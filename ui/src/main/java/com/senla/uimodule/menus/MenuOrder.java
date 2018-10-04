@@ -205,15 +205,16 @@ public class MenuOrder extends Menu {
     private void copyOrder() {
         Printer.println("Копирование заказа, введите Id заказа который хотите копировать: ");
         Long id = scannerLong(getScanner());
-        Order cloneOrder = getBookShop().copyOrder(id);
-        if (cloneOrder == null) {
-            Printer.println("Выбирите существующий Id");
-            copyOrder();
-        }else {
-            Printer.println("Скопированный заказ добавлен в список заказов");
-            Printer.println(cloneOrder.toString());
-            getBookShop().addOrder(cloneOrder);
-        }
+        // TODO: 04.10.2018 надо переделать на работу с БД
+//        Order cloneOrder = getBookShop().copyOrder(id);
+//        if (cloneOrder == null) {
+//            Printer.println("Выбирите существующий Id");
+//            copyOrder();
+//        }else {
+//            Printer.println("Скопированный заказ добавлен в список заказов");
+//            Printer.println(cloneOrder.toString());
+//            getBookShop().addOrder(cloneOrder);
+//        }
     }
     private void exportOrder() {
         Printer.println("Экспортировать все записи заказов");

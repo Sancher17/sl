@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @CsvEntity(fileName = "orders.csv", valueSeparator =";")
-public class Order implements Serializable, Cloneable {
+public class Order implements Cloneable {
 
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Long id;
