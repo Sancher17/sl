@@ -6,7 +6,6 @@ import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
 import com.senla.services.IServiceOrder;
-import com.senla.util.comparators.order.ComparatorOrdersByState;
 import entities.Order;
 import org.apache.log4j.Logger;
 
@@ -27,6 +26,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
     private IOrderDao orderDao;
     private IBookDao bookDao;
     private IFileWorker fileWorker;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private Connection connection = ConnectionDB.getConnection();
 
@@ -91,26 +91,6 @@ public class ServiceOrder extends Service implements IServiceOrder {
         return getOrders("SELECT *  FROM orders ORDER BY isCompletedOrder");
     }
 
-    private List<Order> getOrders(String sql) {
-        List<Order> orders = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet result = statement.executeQuery()) {
-            result.next();
-            while (result.next()) {
-                Order order = new Order();
-                order.setId(result.getLong("id"));
-                order.setCompletedOrder(result.getBoolean("isCompletedOrder"));
-                order.setDateOfCompletedOrder(result.getDate("dateOfCompletedOrder"));
-                order.setDateOfStartedOrder(result.getDate("dateOfStartedOrder"));
-                order.setBook(bookDao.getById(result.getLong("book_id")));
-                orders.add(order);
-            }
-        } catch (SQLException e) {
-            log.error("Не удалось получить данные из БД " + e);
-        }
-        return orders;
-    }
-
     @Override
     public List<Order> getAll() {
         return orderDao.getAll();
@@ -123,17 +103,18 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public List<Order> getCompletedOrdersSortedByDateOfPeriod(Date startDate, Date endDate) {
+        return getOrdersByPeriod(startDate, endDate, "SELECT o.id, dateOfStartedOrder, dateOfCompletedOrder, b.price, isCompletedOrder, book_id FROM orders o JOIN books b on o.book_id = b.id WHERE isCompletedOrder='1' AND dateOfStartedOrder BETWEEN ? AND ? ORDER BY dateOfCompletedOrder;");
+    }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    @Override
+    public List<Order> getCompletedOrdersSortedByPriceOfPeriod(Date startDate, Date endDate) {
+        return getOrdersByPeriod(startDate, endDate, "SELECT o.id, dateOfStartedOrder, dateOfCompletedOrder, b.price, isCompletedOrder, book_id FROM orders o JOIN books b on o.book_id = b.id WHERE isCompletedOrder='1' AND dateOfStartedOrder BETWEEN ? AND ? ORDER BY b.price;");
+    }
 
+    private List<Order> getOrders(String sql) {
         List<Order> orders = new ArrayList<>();
-        // TODO: 04.10.2018 поменять на wildcard
-        String sql = "SELECT * FROM orders WHERE isCompletedOrder='1' AND dateOfStartedOrder BETWEEN " + "'"+sdf.format(startDate)+"'" + " AND " + "'"+sdf.format(endDate)+"'";
-
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet result = statement.executeQuery()) {
-
-            result.next();
             while (result.next()) {
                 Order order = new Order();
                 order.setId(result.getLong("id"));
@@ -149,28 +130,52 @@ public class ServiceOrder extends Service implements IServiceOrder {
         return orders;
     }
 
-    @Override
-    public List<Order> getCompletedOrdersSortedByPriceOfPeriod(Date startDate, Date endDate) {
-        List<Order> newList = new ArrayList<>();
-        List<Order> existList = sortOrdersByPrice();
-        for (Order order : existList) {
-            if (order.getDateOfCompletedOrder() != null) {
-                if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
-                    newList.add(order);
-                }
+    private List<Order> getOrdersByPeriod(Date startDate, Date endDate, String sql) {
+        List<Order> orders = new ArrayList<>();
+        ResultSet result = null;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, sdf.format(startDate));
+            statement.setString(2, sdf.format(endDate));
+            result = statement.executeQuery();
+            while (result.next()) {
+                Order order = new Order();
+                order.setId(result.getLong("id"));
+                order.setCompletedOrder(result.getBoolean("isCompletedOrder"));
+                order.setDateOfCompletedOrder(result.getDate("dateOfCompletedOrder"));
+                order.setDateOfStartedOrder(result.getDate("dateOfStartedOrder"));
+                order.setBook(bookDao.getById(result.getLong("book_id")));
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные из БД " + e);
+        } finally {
+            try {
+                if (result !=null)result.close();
+            } catch (SQLException e) {
+                log.error("Ошибка при закрытии: result " + e);
             }
         }
-        return newList;
+        return orders;
     }
 
     @Override
     public Double getFullAmountOfOrdersByPeriod(Date startDate, Date endDate) {
-        double amount = 0;
-        for (Order order : orderDao.getAll()) {
-            if (order.getDateOfCompletedOrder() != null) {
-                if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
-                    amount = amount + order.getBook().getPrice();
-                }
+        Double amount = null;
+        String sql = "SELECT SUM(b.price) FROM orders o JOIN books b on o.book_id = b.id WHERE dateOfStartedOrder BETWEEN ? AND ?;";
+        ResultSet result = null;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, sdf.format(startDate));
+            statement.setString(2, sdf.format(endDate));
+            result = statement.executeQuery();
+            result.next();
+            amount = result.getDouble(1);
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные из БД " + e);
+        } finally {
+            try {
+                if (result !=null)result.close();
+            } catch (SQLException e) {
+                log.error("Ошибка при закрытии: result " + e);
             }
         }
         return amount;
@@ -178,15 +183,25 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
-        int quantity = 0;
-        for (Order order : orderDao.getAll()) {
-            if (order.getCompletedOrder()) {
-                if (order.getDateOfCompletedOrder().after(startDate) & order.getDateOfCompletedOrder().before(endDate)) {
-                    quantity++;
-                }
+        Integer sum = null;
+        String sql = "SELECT SUM(isCompletedOrder) FROM orders WHERE isCompletedOrder='1' AND dateOfCompletedOrder BETWEEN ? AND ?;";
+        ResultSet result = null;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, sdf.format(startDate));
+            statement.setString(2, sdf.format(endDate));
+            result = statement.executeQuery();
+            result.next();
+            sum = result.getInt(1);
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные из БД " + e);
+        } finally {
+            try {
+                if (result !=null)result.close();
+            } catch (SQLException e) {
+                log.error("Ошибка при закрытии: result " + e);
             }
         }
-        return quantity;
+        return sum;
     }
 
     @Override

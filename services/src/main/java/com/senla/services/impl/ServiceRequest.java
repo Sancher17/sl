@@ -1,19 +1,20 @@
 package com.senla.services.impl;
 
 import com.senla.db.IRequestDao;
+import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
-import com.senla.repositories.IRepositoryRequest;
 import com.senla.services.IServiceRequest;
-import com.senla.util.comparators.request.ComparatorRequestsByAlphabet;
-import com.senla.util.comparators.request.ComparatorRequestsByQuantity;
+import entities.Order;
 import entities.Request;
 import org.apache.log4j.Logger;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_CSV;
 
 
 public class ServiceRequest extends Service implements IServiceRequest {
@@ -21,6 +22,8 @@ public class ServiceRequest extends Service implements IServiceRequest {
     private static final Logger log = Logger.getLogger(ServiceRequest.class);
     private IRequestDao requestDao;
     private IFileWorker fileWorker;
+
+    private Connection connection = ConnectionDB.getConnection();
 
     public ServiceRequest() {
         this.requestDao = DependencyInjection.getBean(IRequestDao.class);
@@ -48,17 +51,31 @@ public class ServiceRequest extends Service implements IServiceRequest {
     @Override
     public List<Request> sortRequestsByQuantity() {
         notifyObservers("Запросы отсортированы по количеству запросов");
-        List<Request> sortedList = requestDao.getAll();
-        sortedList.sort(new ComparatorRequestsByQuantity());
-        return sortedList;
+        return getRequests("SELECT * FROM request ORDER BY requireQuantity");
     }
 
     @Override
     public List<Request> sortRequestsByAlphabet() {
         notifyObservers("Запросы отсортированы по алфавиту");
-        List<Request> sortedList = requestDao.getAll();
-        sortedList.sort(new ComparatorRequestsByAlphabet());
-        return sortedList;
+        return getRequests("SELECT * FROM request ORDER BY requireNameBook");
+    }
+
+    private List<Request> getRequests(String sql) {
+        List<Request> requests = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet result = statement.executeQuery()) {
+            while (result.next()) {
+                Request request = new Request();
+                request.setId(result.getLong("id"));
+                request.setRequireNameBook(result.getString("requireNameBook"));
+                request.setRequireIsCompleted(result.getBoolean("requireIsCompleted"));
+                request.setRequireQuantity(result.getInt("requireQuantity"));
+                requests.add(request);
+            }
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные из БД " + e);
+        }
+        return requests;
     }
 
     @Override
