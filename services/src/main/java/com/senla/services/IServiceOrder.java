@@ -2,6 +2,7 @@ package com.senla.services;
 
 import entities.Order;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -13,13 +14,11 @@ public interface IServiceOrder extends IService<Order> {
 
     void setCompleteOrderById(Long id);
 
-    void setCompleteOrderById(Long id, Date dateOfCompleted);
+    List<Order> getCompletedOrdersSortedByDate();
 
-    List<Order> sortCompletedOrdersByDate();
+    List<Order> getOrdersSortedByPrice();
 
-    List<Order> sortOrdersByPrice();
-
-    List<Order> sortOrdersByState();
+    List<Order> getOrdersSortedByState();
 
     List<Order> getAll();
 

@@ -12,6 +12,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -22,30 +23,35 @@ public class OrderDaoTest {
     private IOrderDao orderDao = new OrderDao();
     private IBookDao bookDao = new BookDao();
     private Order order = new Order();
+    private Connection connection = ConnectionDB.getConnection();
 
     void init(){
         order.setDateOfStartedOrder(new Date());
         order.setDateOfCompletedOrder(new Date());
         order.setCompletedOrder(true);
-        order.setBook(bookDao.getById(5L));
+        try {
+            order.setBook(bookDao.getById(connection, 5L));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void add() {
+    public void add()  throws SQLException{
         init();
-        orderDao.add(order);
+        orderDao.add(connection, order);
     }
 
     @Test
-    public void deleteById() {
+    public void deleteById()  throws SQLException{
         Long id = 7L;
-        orderDao.deleteById(id);
-        assertNull(orderDao.getById(id));
+        orderDao.deleteById(connection, id);
+        assertNull(orderDao.getById(connection, id));
     }
 
     @Test
-    public void getById() {
-        Order order = orderDao.getById(5L);
+    public void getById()  throws SQLException {
+        Order order = orderDao.getById(connection, 5L);
         assertEquals(5, (long) order.getId());
     }
 
@@ -55,8 +61,8 @@ public class OrderDaoTest {
     }
 
     @Test
-    public void getAll() {
-        List<Order> list = orderDao.getAll();
+    public void getAll()  throws SQLException{
+        List<Order> list = orderDao.getAll(connection);
         assertNotNull(list);
         assertTrue(list.size() > 0);
     }

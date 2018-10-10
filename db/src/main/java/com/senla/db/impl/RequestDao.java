@@ -22,7 +22,7 @@ public class RequestDao implements IRequestDao {
     }
 
     @Override
-    public void add(Request request) {
+    public void add(Connection connection, Request request) {
         String sql = "INSERT INTO request (requireNameBook, requireIsCompleted, requireQuantity) VALUES (?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setString(1, request.getRequireNameBook());
@@ -35,7 +35,7 @@ public class RequestDao implements IRequestDao {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Connection connection, Long id) {
         String sql = "DELETE FROM request WHERE id =" + id;
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
@@ -45,7 +45,7 @@ public class RequestDao implements IRequestDao {
     }
 
     @Override
-    public Request getById(Long id) {
+    public Request getById(Connection connection, Long id) {
         String sql = "SELECT * FROM request WHERE id="+id;
         Request request = new Request();
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -64,12 +64,21 @@ public class RequestDao implements IRequestDao {
     }
 
     @Override
-    public void update(Request entity) {
-
+    public void update(Connection connection, Request request) {
+        String sql = "UPDATE request SET requireQuantity=?, requireIsCompleted=? WHERE id=?;";
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, request.getRequireQuantity());
+            statement.setBoolean(2, request.getRequireIsCompleted());
+            statement.setLong(3,request.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            log.error("Не удачная попытка обновить Request - " + e);
+        }
     }
 
+
     @Override
-    public List<Request> getAll() {
+    public List<Request> getAll(Connection connection) {
         List<Request> requests = new ArrayList<>();
         String sql = "SELECT * FROM request";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -89,7 +98,7 @@ public class RequestDao implements IRequestDao {
     }
 
     @Override
-    public void addAll(List<Request> notExistList) {
+    public void addAll(Connection connection, List<Request> requests) {
 
     }
 }

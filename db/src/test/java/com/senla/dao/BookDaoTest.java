@@ -1,11 +1,14 @@
 package com.senla.dao;
 
 import com.senla.db.IBookDao;
+import com.senla.db.connection.ConnectionDB;
 import com.senla.db.impl.BookDao;
 import com.senla.di.DependencyInjection;
 import entities.Book;
 import org.junit.Test;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +16,8 @@ import static org.junit.Assert.*;
 
 public class BookDaoTest {
 
-    private IBookDao bookDao = DependencyInjection.getBean(IBookDao.class);
+    private Connection connection = ConnectionDB.getConnection();
+    private IBookDao bookDao = new BookDao();
     private Book book = new Book();
     private Long currentId;
     private String name = "Test";
@@ -33,25 +37,25 @@ public class BookDaoTest {
     }
 
     @Test
-    public void add() {
+    public void add() throws SQLException {
         init();
-        bookDao.add(book);
-        Book testBook = bookDao.getByName(name);
+        bookDao.add(connection, book);
+        Book testBook = bookDao.getByName(connection, name);
         book.setId(testBook.getId());
         currentId = testBook.getId();
-        assertEquals(bookDao.getByName(book.getNameBook()), book);
+        assertEquals(bookDao.getByName(connection, book.getNameBook()), book);
     }
 
     @Test
-    public void deleteById() {
-        Book book = bookDao.getByName("Test");
-        bookDao.deleteById(book.getId());
-        assertNull(bookDao.getById(book.getId()));
+    public void deleteById() throws SQLException{
+        Book book = bookDao.getByName(connection, "Test");
+        bookDao.deleteById(connection, book.getId());
+        assertNull(bookDao.getById(connection, book.getId()));
     }
 
     @Test
-    public void getById() {
-        Book book = bookDao.getById(5L);
+    public void getById()  throws SQLException{
+        Book book = bookDao.getById(connection, 5L);
         assertEquals(5, (long) book.getId());
     }
 
@@ -60,8 +64,8 @@ public class BookDaoTest {
     }
 
     @Test
-    public void getAll() {
-        List<Book> list = bookDao.getAll();
+    public void getAll() throws SQLException {
+        List<Book> list = bookDao.getAll(connection);
         assertNotNull(list);
         assertTrue(list.size() > 0);
     }
@@ -72,6 +76,6 @@ public class BookDaoTest {
 
     @Test
     public void getByName() {
-//        /        assertEquals(bookDao.getByName(name), book);
+//        assertEquals(bookDao.getByName(name), book);
     }
 }

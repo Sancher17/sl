@@ -5,7 +5,6 @@ import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
 import com.senla.services.IServiceRequest;
-import entities.Order;
 import entities.Request;
 import org.apache.log4j.Logger;
 
@@ -16,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_CSV;
 
 public class ServiceRequest extends Service implements IServiceRequest {
 
@@ -34,17 +34,23 @@ public class ServiceRequest extends Service implements IServiceRequest {
     public void addBookRequest(Request request) {
         notifyObservers("Добавлен запрос на книгу: " + request.getRequireNameBook());
         boolean exist = false;
-        for (Request aRequest : requestDao.getAll()) {
-            if (aRequest != null) {
-                if (aRequest.getRequireNameBook().equals(request.getRequireNameBook())) {
-                    exist = true;
-                    aRequest.setRequireQuantity(aRequest.getRequireQuantity() + 1);
+        try {
+            for (Request aRequest : requestDao.getAll(connection)) {
+                if (aRequest != null) {
+                    if (aRequest.getRequireNameBook().equals(request.getRequireNameBook())) {
+                        exist = true;
+                        aRequest.setRequireQuantity(aRequest.getRequireQuantity() + 1);
+                        requestDao.update(connection, aRequest);
+                    }
                 }
             }
-        }
-        if (!exist) {
-            request.setRequireQuantity(1);
-            requestDao.add(request);
+            if (!exist) {
+                request.setRequireQuantity(1);
+                requestDao.add(connection, request);
+            }
+        }catch (SQLException e){
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
     }
 
@@ -80,40 +86,63 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public List<Request> getAll() {
-        return requestDao.getAll();
+        try {
+            return requestDao.getAll(connection);
+        }catch (SQLException e){
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
+        return null;
     }
 
     @Override
     public List<Request> getCompletedRequests() {
-        List<Request> requestList = new ArrayList<>();
-        for (Request request : requestDao.getAll()) {
-            if (request.getRequireIsCompleted()) {
-                requestList.add(request);
+        List<Request> requests = new ArrayList<>();
+        try {
+            for (Request request : requestDao.getAll(connection)) {
+                if (request.getRequireIsCompleted()) {
+                    requests.add(request);
+                }
             }
+            return requests;
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        return requestList;
+        return null;
     }
 
     @Override
     public List<Request> getNotCompletedRequests() {
-        List<Request> requestList = new ArrayList<>();
-        for (Request request : requestDao.getAll()) {
-            if (!request.getRequireIsCompleted()) {
-                requestList.add(request);
+        List<Request> requests = new ArrayList<>();
+        try {
+            for (Request request : requestDao.getAll(connection)) {
+                if (!request.getRequireIsCompleted()) {
+                    requests.add(request);
+                }
             }
+            return requests;
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        return requestList;
+        return null;
     }
 
     @Override
     public void exportToCsv() {
-        super.writeToCsv(requestDao.getAll());
+        try {
+            super.writeToCsv(requestDao.getAll(connection));
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
     }
 
     @Override
     public void importFromCsv() {
-//        List<Request> importListFromFile = fileWorker.importListFromFile(PATH_REQUEST_CSV, Request.class);
-//        notifyObservers(PATH_REQUEST_CSV);
-//        merge(importListFromFile, requestDao);
+        List<Request> importListFromFile = fileWorker.importListFromFile(PATH_REQUEST_CSV, Request.class);
+        notifyObservers(PATH_REQUEST_CSV);
+        merge(importListFromFile, requestDao);
     }
 }

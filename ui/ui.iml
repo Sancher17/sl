@@ -8,11 +8,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="util" />
     <orderEntry type="module" module-name="model" />
     <orderEntry type="module" module-name="facade" />
-    <orderEntry type="module" module-name="repositories" />
     <orderEntry type="module" module-name="di" />
-    <orderEntry type="module" module-name="util" />
     <orderEntry type="module" module-name="properties" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
   </component>

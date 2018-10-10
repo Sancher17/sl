@@ -2,10 +2,7 @@ package com.senla.db.impl;
 
 import com.senla.db.IBookDao;
 import com.senla.db.IOrderDao;
-import com.senla.db.connection.ConnectionDB;
-import com.senla.di.DependencyInjection;
 import entities.Order;
-import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,86 +10,147 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class OrderDao implements IOrderDao {
 
-    private static final Logger log = Logger.getLogger(OrderDao.class);
-    private Connection connection;
+    private static final String DATE_OF_STARTED_ORDER = "dateOfStartedOrder";
+    private static final String DATE_OF_COMPLETED_ORDER = "dateOfCompletedOrder";
+    private static final String IS_COMPLETED_ORDER = "isCompletedOrder";
+    private static final String BOOK_ID = "book_id";
+    private static final String ID = "id";
     private IBookDao bookDao = new BookDao();
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-
-    public OrderDao() {
-        connection = ConnectionDB.getConnection();
-    }
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public void add(Order order) {
+    public void add(Connection connection, Order order) throws SQLException {
         String sql = "INSERT INTO orders (dateOfStartedOrder, dateOfCompletedOrder, isCompletedOrder, book_id) VALUES (?,?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, sdf.format(order.getDateOfStartedOrder()));
-            statement.setString(2, sdf.format(order.getDateOfCompletedOrder()));
+            statement.setString(1, dateFormat.format(order.getDateOfStartedOrder()));
+            statement.setString(2, dateFormat.format(order.getDateOfCompletedOrder()));
             statement.setBoolean(3, order.getCompletedOrder());
             statement.setLong(4, order.getBook().getId());
             statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error("Не удачная попытка добавить Order в БД - " + e);
         }
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Connection connection, Long id) throws SQLException {
         String sql = "DELETE FROM orders WHERE id=" + id;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error("Не удачная попытка удалить Order из БД - " + e);
         }
     }
 
     @Override
-    public Order getById(Long id) {
-        String sql = "SELECT * FROM orders WHERE id=" + id;
+    public Order getById(Connection connection, Long id) throws SQLException {
+        return getOrder(connection, "SELECT * FROM orders WHERE id=" + id);
+    }
+
+    @Override
+    public void update(Connection connection, Order order) throws SQLException {
+        String sql = "UPDATE orders SET dateOfStartedOrder=?, dateOfCompletedOrder=?, isCompletedOrder=?, book_id=? WHERE id=?;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, dateFormat.format(order.getDateOfStartedOrder()));
+            statement.setString(2, dateFormat.format(order.getDateOfCompletedOrder()));
+            statement.setBoolean(3, order.getCompletedOrder());
+            statement.setLong(4, order.getBook().getId());
+            statement.setLong(5, order.getId());
+            statement.executeUpdate();
+        }
+    }
+
+    @Override
+    public List<Order> getAll(Connection connection) throws SQLException {
+        return getOrders(connection, "SELECT * FROM orders");
+    }
+
+    @Override
+    public void addAll(Connection connection, List<Order> orders) throws SQLException {
+        for (Order order : orders) {
+            add(connection, order);
+        }
+    }
+
+    @Override
+    public List<Order> getCompletedSortedByDate(Connection connection) throws SQLException {
+        return getOrders(connection,"SELECT * FROM orders WHERE isCompletedOrder='1' ORDER BY dateOfCompletedOrder");
+    }
+
+    @Override
+    public List<Order> getSortedByPrice(Connection connection) throws SQLException {
+        return getOrders(connection,"SELECT o.id, o.dateOfStartedOrder, o.dateOfCompletedOrder, o.isCompletedOrder, b.price  FROM orders o join books b on o.book_id = b.id ORDER BY b.price");
+    }
+
+    @Override
+    public List<Order> getSortedByState(Connection connection) throws SQLException {
+        return getOrders(connection,"SELECT *  FROM orders ORDER BY isCompletedOrder");
+    }
+
+    @Override
+    public List<Order> getCompleted(Connection connection) throws SQLException {
+        return getOrders(connection,"SELECT * FROM orders WHERE isCompletedOrder='1';");
+    }
+
+    @Override
+    public List<Order> getCompletedSortedByDateOfPeriod(Connection connection, Date startDate, Date endDate) throws SQLException {
+        return getOrdersByPeriod(connection, startDate, endDate, "SELECT o.id, dateOfStartedOrder, dateOfCompletedOrder, b.price, isCompletedOrder, book_id FROM orders o JOIN books b on o.book_id = b.id WHERE isCompletedOrder='1' AND dateOfStartedOrder BETWEEN ? AND ? ORDER BY dateOfCompletedOrder;");
+    }
+
+    @Override
+    public List<Order> getCompletedSortedByPriceOfPeriod(Connection connection, Date startDate, Date endDate) throws SQLException {
+        return getOrdersByPeriod(connection, startDate, endDate, "SELECT o.id, dateOfStartedOrder, dateOfCompletedOrder, b.price, isCompletedOrder, book_id FROM orders o JOIN books b on o.book_id = b.id WHERE isCompletedOrder='1' AND dateOfStartedOrder BETWEEN ? AND ? ORDER BY b.price;");
+    }
+
+    @Override
+    public Double getFullAmountByPeriod(Connection connection, Date startDate, Date endDate) throws SQLException {
+        Double amount;
+        String sql = "SELECT SUM(b.price) FROM orders o JOIN books b on o.book_id = b.id WHERE dateOfStartedOrder BETWEEN ? AND ?;";
+        ResultSet result;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, dateFormat.format(startDate));
+            statement.setString(2, dateFormat.format(endDate));
+            result = statement.executeQuery();
+            result.next();
+            amount = result.getDouble(1);
+        }
+        return amount;
+    }
+
+    @Override
+    public Integer getQuantityCompletedByPeriod(Connection connection, Date startDate, Date endDate) throws SQLException {
+        Integer sum;
+        String sql = "SELECT SUM(isCompletedOrder) FROM orders WHERE isCompletedOrder='1' AND dateOfCompletedOrder BETWEEN ? AND ?;";
+        ResultSet result;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, dateFormat.format(startDate));
+            statement.setString(2, dateFormat.format(endDate));
+            result = statement.executeQuery();
+            result.next();
+            sum = result.getInt(1);
+        }
+        return sum;
+    }
+
+    private Order getOrder(Connection connection, String sql) throws SQLException {
         Order order = new Order();
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet result = statement.executeQuery()) {
-           if (result.next()){
-               order.setId(result.getLong("id"));
-               order.setDateOfStartedOrder(result.getDate("dateOfStartedOrder"));
-               order.setDateOfCompletedOrder(result.getDate("dateOfCompletedOrder"));
-               order.setCompletedOrder(result.getBoolean("isCompletedOrder"));
-               order.setBook(bookDao.getById(result.getLong("book_id")));
-               return order;
-           }
-        } catch (SQLException e) {
-            log.error("Не удачная попытка получить Order из БД - " + e);
+            if (result.next()) {
+                order.setId(result.getLong(ID));
+                order.setDateOfStartedOrder(result.getDate(DATE_OF_STARTED_ORDER));
+                order.setDateOfCompletedOrder(result.getDate(DATE_OF_COMPLETED_ORDER));
+                order.setCompletedOrder(result.getBoolean(IS_COMPLETED_ORDER));
+                order.setBook(bookDao.getById(connection, result.getLong(BOOK_ID)));
+                return order;
+            }
         }
         return null;
     }
 
-    @Override
-    public void update(Order order) {
-//        String sql = "UPDATE books SET id = ?, dateAddedBookToStore = ?, dateOfPublication = ?, description = ? , isAvailable = ?, isOld = ?, nameBook = ?, price = ?";
-//        try (PreparedStatement statement = connection.prepareStatement(sql)){
-//            statement.setDouble(1, book.getId());
-//            statement.setString(2, sdf.format(book.getDateAddedBookToStore()));
-//            statement.setString(3, sdf.format(book.getDateOfPublication()));
-//            statement.setString(4, book.getDescription());
-//            statement.setBoolean(5, book.getAvailable());
-//            statement.setBoolean(6, book.getOld());
-//            statement.setString(7, book.getNameBook());
-//            statement.setDouble(8, book.getPrice());
-//            statement.executeUpdate();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    @Override
-    public List<Order> getAll() {
+    private List<Order> getOrders(Connection connection, String sql) throws SQLException {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT * FROM orders";
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet result = statement.executeQuery()) {
             while (result.next()) {
@@ -101,17 +159,30 @@ public class OrderDao implements IOrderDao {
                 order.setDateOfStartedOrder(result.getDate("dateOfStartedOrder"));
                 order.setDateOfCompletedOrder(result.getDate("dateOfCompletedOrder"));
                 order.setCompletedOrder(result.getBoolean("isCompletedOrder"));
-                order.setBook(bookDao.getById(result.getLong("book_id")));
+                order.setBook(bookDao.getById(connection, result.getLong("book_id")));
                 orders.add(order);
             }
-        } catch (SQLException e) {
-            log.error("Не удачная попытка получить все Orders из БД - " + e);
         }
         return orders;
     }
 
-    @Override
-    public void addAll(List<Order> entity) {
-
+    private List<Order> getOrdersByPeriod(Connection connection, Date startDate, Date endDate, String sql) throws SQLException {
+        List<Order> orders = new ArrayList<>();
+        ResultSet result;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, dateFormat.format(startDate));
+            statement.setString(2, dateFormat.format(endDate));
+            result = statement.executeQuery();
+            while (result.next()) {
+                Order order = new Order();
+                order.setId(result.getLong(ID));
+                order.setCompletedOrder(result.getBoolean(IS_COMPLETED_ORDER));
+                order.setDateOfCompletedOrder(result.getDate(DATE_OF_COMPLETED_ORDER));
+                order.setDateOfStartedOrder(result.getDate(DATE_OF_STARTED_ORDER));
+                order.setBook(bookDao.getById(connection, result.getLong(BOOK_ID)));
+                orders.add(order);
+            }
+        }
+        return orders;
     }
 }

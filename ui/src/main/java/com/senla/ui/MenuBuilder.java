@@ -1,4 +1,4 @@
-package com.senla.uiNew;
+package com.senla.ui;
 
 import com.senla.di.DependencyInjection;
 import com.senla.mainmodule.facade.IBookShop;
@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 
 import java.util.*;
 
-import static com.senla.mainmodule.constants.Constants.*;
 import static com.senla.util.ScannerHelper.*;
 
 class MenuBuilder implements Observer {
@@ -93,13 +92,7 @@ class MenuBuilder implements Observer {
 
     private void exit() {
         bookShop.deleteObserver(this);
-
         scanner.close();
-
-        Printer.println("\nВсе данные сохранены в файлы: ");
-        Printer.println(PATH_BOOK_DATA);
-        Printer.println(PATH_ORDER_DATA);
-        Printer.println(PATH_REQUEST_DATA);
         Printer.println("\nПрограмма завершена !!!");
         System.exit(0);
     }

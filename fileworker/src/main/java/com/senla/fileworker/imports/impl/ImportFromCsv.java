@@ -1,21 +1,12 @@
 package com.senla.fileworker.imports.impl;
 
-import com.senla.di.DependencyInjection;
 import com.senla.fileworker.annotations.CsvEntity;
 import com.senla.fileworker.annotations.CsvProperty;
 import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.fileworker.imports.parser.ParseDate;
-import com.senla.repositories.IRepository;
-import com.senla.repositories.IRepositoryBook;
-import com.senla.repositories.IRepositoryOrder;
-import com.senla.repositories.IRepositoryRequest;
-import entities.Book;
-import entities.Order;
-import entities.Request;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,18 +61,19 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
         return obj;
     }
 
+    // TODO: 10.10.2018
     private void getRepository(String s, Object obj, Field field) throws IllegalAccessException {
-        IRepository repo = null;
-        Type type = field.getType();
-        if (type.equals(Book.class)) {
-            repo = DependencyInjection.getBean(IRepositoryBook.class);
-        } else if (type.equals(Order.class)) {
-            repo = DependencyInjection.getBean(IRepositoryOrder.class);
-        } else if (type.equals(Request.class)) {
-            repo = DependencyInjection.getBean(IRepositoryRequest.class);
-        }
-        Long idEntity = Long.valueOf(s);
-        field.set(obj, repo.getById(idEntity));
+//        IRepository repo = null;
+//        Type type = field.getType();
+//        if (type.equals(Book.class)) {
+//            repo = DependencyInjection.getBean(IRepositoryBook.class);
+//        } else if (type.equals(Order.class)) {
+//            repo = DependencyInjection.getBean(IRepositoryOrder.class);
+//        } else if (type.equals(Request.class)) {
+//            repo = DependencyInjection.getBean(IRepositoryRequest.class);
+//        }
+//        Long idEntity = Long.valueOf(s);
+//        field.set(obj, repo.getById(idEntity));
     }
 
     private void setField(String[] temp, int count, Object obj, Field field) throws IllegalAccessException {

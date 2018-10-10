@@ -5,14 +5,11 @@ import com.senla.propertiesmodule.IPropertyHolder;
 import com.senla.services.IServiceBook;
 import com.senla.services.IServiceOrder;
 import com.senla.services.IServiceRequest;
-import com.senla.util.Printer;
 import entities.Book;
 import entities.Order;
 import entities.Request;
 
 import java.util.*;
-
-import static com.senla.mainmodule.constants.Constants.*;
 
 public class BookShop extends Observable implements IBookShop, Observer {
 
@@ -49,16 +46,16 @@ public class BookShop extends Observable implements IBookShop, Observer {
         bookService.deleteBookById(bookId);
     }
     public List<Book> sortBooksByAlphabet() {
-        return bookService.sortByAlphabet();
+        return bookService.getBooksSortedByAlphabet();
     }
     public List<Book> sortBooksByDatePublication() {
-        return bookService.sortByDatePublication();
+        return bookService.getBooksSortedByDatePublication();
     }
     public List<Book> sortBooksByPrice() {
-        return bookService.sortByPrice();
+        return bookService.getBooksSortedByPrice();
     }
     public List<Book> sortBooksByAvailability() {
-        return bookService.sortByAvailability();
+        return bookService.getBooksSortedByAvailability();
     }
     public List<Book> getBooks(){
         return bookService.getAll();
@@ -87,13 +84,13 @@ public class BookShop extends Observable implements IBookShop, Observer {
         orderService.setCompleteOrderById(orderId);
     }
     public List<Order> sortCompletedOrdersByDate() {
-        return orderService.sortCompletedOrdersByDate();
+        return orderService.getCompletedOrdersSortedByDate();
     }
     public List<Order> sortOrdersByPrice() {
-        return orderService.sortOrdersByPrice();
+        return orderService.getOrdersSortedByPrice();
     }
     public List<Order> sortOrdersByState() {
-        return orderService.sortOrdersByState();
+        return orderService.getOrdersSortedByState();
     }
     public List<Order> getOrders(){
         return orderService.getAll();

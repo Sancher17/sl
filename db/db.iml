@@ -49,5 +49,6 @@
     <orderEntry type="module" module-name="aliaksandr-kavalenka" />
     <orderEntry type="module" module-name="di" />
     <orderEntry type="module" module-name="properties" />
+    <orderEntry type="module" module-name="util" />
   </component>
 </module>

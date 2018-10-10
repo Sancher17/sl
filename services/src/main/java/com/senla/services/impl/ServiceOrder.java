@@ -2,22 +2,19 @@ package com.senla.services.impl;
 
 import com.senla.db.IBookDao;
 import com.senla.db.IOrderDao;
-import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
 import com.senla.services.IServiceOrder;
 import entities.Order;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static com.senla.mainmodule.constants.Constants.PATH_ORDER_CSV;
 
 public class ServiceOrder extends Service implements IServiceOrder {
 
@@ -26,9 +23,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
     private IOrderDao orderDao;
     private IBookDao bookDao;
     private IFileWorker fileWorker;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private Connection connection = ConnectionDB.getConnection();
 
     public ServiceOrder() {
         this.orderDao = DependencyInjection.getBean(IOrderDao.class);
@@ -38,16 +34,26 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public void addOrder(Order order) {
-        orderDao.add(order);
+        try {
+            orderDao.add(connection, order);
+        } catch (SQLException e) {
+            log.error("Не удалось добавить данные в БД " + e);
+            notifyObservers("Не удалось добавить данные в БД");
+        }
     }
 
     @Override
     public void deleteOrderById(Long id) {
-        if (orderDao.getById(id) != null) {
-            notifyObservers("Удален заказ: " + orderDao.getById(id));
-            orderDao.deleteById(id);
-        } else {
-            notifyObservers("Заказа с таким индексом нет !!!");
+        try {
+            if (orderDao.getById(connection, id) != null) {
+                notifyObservers("Удален заказ: " + orderDao.getById(connection, id));
+                orderDao.deleteById(connection, id);
+            } else {
+                notifyObservers("Заказа с таким индексом нет !!!");
+            }
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
     }
 
@@ -56,169 +62,149 @@ public class ServiceOrder extends Service implements IServiceOrder {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, -1);
         Date todayMinusHour = cal.getTime();
-        if (orderDao.getById(id) != null) {
-            Order order = orderDao.getById(id);
-            order.setCompletedOrder(true);
-            order.setDateOfCompletedOrder(todayMinusHour);
-            notifyObservers("Заказ отмечен выполненым \n" + orderDao.getById(id));
-        } else {
-            notifyObservers("Заказа с таким Id нет !!!");
+        try {
+            if (orderDao.getById(connection, id) != null) {
+                Order order = orderDao.getById(connection, id);
+                order.setCompletedOrder(true);
+                order.setDateOfCompletedOrder(todayMinusHour);
+                notifyObservers("Заказ отмечен выполненым \n" + orderDao.getById(connection, id));
+            } else {
+                notifyObservers("Заказа с таким Id нет !!!");
+            }
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
     }
 
     @Override
-    public void setCompleteOrderById(Long id, Date dateOfCompleted) {
-        Order order = orderDao.getById(id);
-        order.setCompletedOrder(true);
-        order.setDateOfCompletedOrder(dateOfCompleted);
-    }
-
-    @Override
-    public List<Order> sortCompletedOrdersByDate() {
+    public List<Order> getCompletedOrdersSortedByDate(){
         notifyObservers("Заказы отсортированы по дате исполнения\n");
-        return getOrders("SELECT * FROM orders WHERE isCompletedOrder='1' ORDER BY dateOfCompletedOrder");
+        try {
+            return orderDao.getCompletedSortedByDate(connection);
+        }catch (SQLException e){
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
+        return null;
     }
 
+
     @Override
-    public List<Order> sortOrdersByPrice() {
+    public List<Order> getOrdersSortedByPrice() {
         notifyObservers("Заказы отсортированы по цене");
-        return getOrders("SELECT o.id, o.dateOfStartedOrder, o.dateOfCompletedOrder, o.isCompletedOrder, b.price  FROM orders o join books b on o.book_id = b.id ORDER BY b.price");
+        try {
+            return orderDao.getSortedByPrice(connection);
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
+        return null;
     }
 
     @Override
-    public List<Order> sortOrdersByState() {
+    public List<Order> getOrdersSortedByState() {
         notifyObservers("Заказы отсортированы по состоянию выполнения");
-        return getOrders("SELECT *  FROM orders ORDER BY isCompletedOrder");
+        try {
+            return orderDao.getSortedByState(connection);
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
+        return null;
     }
 
     @Override
     public List<Order> getAll() {
-        return orderDao.getAll();
+        try {
+            return orderDao.getAll(connection);
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
+        return null;
     }
 
     @Override
-    public List<Order> getCompletedOrders() {
-        return getOrders("SELECT * FROM orders WHERE isCompletedOrder='1';");
+    public List<Order> getCompletedOrders(){
+        try {
+            return orderDao.getCompleted(connection);
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
+        return null;
     }
 
     @Override
     public List<Order> getCompletedOrdersSortedByDateOfPeriod(Date startDate, Date endDate) {
-        return getOrdersByPeriod(startDate, endDate, "SELECT o.id, dateOfStartedOrder, dateOfCompletedOrder, b.price, isCompletedOrder, book_id FROM orders o JOIN books b on o.book_id = b.id WHERE isCompletedOrder='1' AND dateOfStartedOrder BETWEEN ? AND ? ORDER BY dateOfCompletedOrder;");
+        try {
+            return orderDao.getCompletedSortedByDateOfPeriod(connection, startDate, endDate);
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
+        return null;
     }
 
     @Override
     public List<Order> getCompletedOrdersSortedByPriceOfPeriod(Date startDate, Date endDate) {
-        return getOrdersByPeriod(startDate, endDate, "SELECT o.id, dateOfStartedOrder, dateOfCompletedOrder, b.price, isCompletedOrder, book_id FROM orders o JOIN books b on o.book_id = b.id WHERE isCompletedOrder='1' AND dateOfStartedOrder BETWEEN ? AND ? ORDER BY b.price;");
-    }
-
-    private List<Order> getOrders(String sql) {
-        List<Order> orders = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet result = statement.executeQuery()) {
-            while (result.next()) {
-                Order order = new Order();
-                order.setId(result.getLong("id"));
-                order.setCompletedOrder(result.getBoolean("isCompletedOrder"));
-                order.setDateOfCompletedOrder(result.getDate("dateOfCompletedOrder"));
-                order.setDateOfStartedOrder(result.getDate("dateOfStartedOrder"));
-                order.setBook(bookDao.getById(result.getLong("book_id")));
-                orders.add(order);
-            }
+        try {
+            return orderDao.getCompletedSortedByPriceOfPeriod(connection, startDate, endDate);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные из БД " + e);
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        return orders;
-    }
-
-    private List<Order> getOrdersByPeriod(Date startDate, Date endDate, String sql) {
-        List<Order> orders = new ArrayList<>();
-        ResultSet result = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, sdf.format(startDate));
-            statement.setString(2, sdf.format(endDate));
-            result = statement.executeQuery();
-            while (result.next()) {
-                Order order = new Order();
-                order.setId(result.getLong("id"));
-                order.setCompletedOrder(result.getBoolean("isCompletedOrder"));
-                order.setDateOfCompletedOrder(result.getDate("dateOfCompletedOrder"));
-                order.setDateOfStartedOrder(result.getDate("dateOfStartedOrder"));
-                order.setBook(bookDao.getById(result.getLong("book_id")));
-                orders.add(order);
-            }
-        } catch (SQLException e) {
-            log.error("Не удалось получить данные из БД " + e);
-        } finally {
-            try {
-                if (result !=null)result.close();
-            } catch (SQLException e) {
-                log.error("Ошибка при закрытии: result " + e);
-            }
-        }
-        return orders;
+        return null;
     }
 
     @Override
     public Double getFullAmountOfOrdersByPeriod(Date startDate, Date endDate) {
-        Double amount = null;
-        String sql = "SELECT SUM(b.price) FROM orders o JOIN books b on o.book_id = b.id WHERE dateOfStartedOrder BETWEEN ? AND ?;";
-        ResultSet result = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, sdf.format(startDate));
-            statement.setString(2, sdf.format(endDate));
-            result = statement.executeQuery();
-            result.next();
-            amount = result.getDouble(1);
+        try {
+            return orderDao.getFullAmountByPeriod(connection, startDate, endDate);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные из БД " + e);
-        } finally {
-            try {
-                if (result !=null)result.close();
-            } catch (SQLException e) {
-                log.error("Ошибка при закрытии: result " + e);
-            }
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        return amount;
+        return null;
     }
 
     @Override
     public Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
-        Integer sum = null;
-        String sql = "SELECT SUM(isCompletedOrder) FROM orders WHERE isCompletedOrder='1' AND dateOfCompletedOrder BETWEEN ? AND ?;";
-        ResultSet result = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, sdf.format(startDate));
-            statement.setString(2, sdf.format(endDate));
-            result = statement.executeQuery();
-            result.next();
-            sum = result.getInt(1);
+        try {
+            return orderDao.getQuantityCompletedByPeriod(connection, startDate, endDate);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные из БД " + e);
-        } finally {
-            try {
-                if (result !=null)result.close();
-            } catch (SQLException e) {
-                log.error("Ошибка при закрытии: result " + e);
-            }
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        return sum;
+        return null;
     }
 
     @Override
     public Order getOrderById(Long id) {
-        return orderDao.getById(id);
+        try {
+            return orderDao.getById(connection, id);
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
+        return null;
     }
 
     @Override
     public void exportToCsv() {
-        super.writeToCsv(orderDao.getAll());
+        try {
+            super.writeToCsv(orderDao.getAll(connection));
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
     }
 
     @Override
     public void importFromCsv() {
-//        List<Order> importListFromFile = fileWorker.importListFromFile(PATH_ORDER_CSV, Order.class);
-//        notifyObservers(PATH_ORDER_CSV);
-//        merge(importListFromFile, orderDao);
+        List<Order> importListFromFile = fileWorker.importListFromFile(PATH_ORDER_CSV, Order.class);
+        notifyObservers(PATH_ORDER_CSV);
+        merge(importListFromFile, orderDao);
     }
-
 }

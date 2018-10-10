@@ -1,20 +1,27 @@
 package com.senla.services.impl;
 
+import com.senla.db.GenericDAO;
+import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
-import com.senla.repositories.IRepository;
+import org.apache.log4j.Logger;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import static com.senla.mainmodule.constants.Constants.*;
+import static com.senla.mainmodule.constants.Constants.FILE_NAME;
+import static com.senla.mainmodule.constants.Constants.PATH_FOR_CSV;
 
 public abstract class Service<T> extends Observable {
 
+    private static final Logger log = Logger.getLogger(Service.class);
     private List<Observer> subscribers = new ArrayList<>();
-    private IFileWorker IFileWorker = DependencyInjection.getBean(IFileWorker.class);
+    private IFileWorker fileWorker = DependencyInjection.getBean(IFileWorker.class);
+    Connection connection = ConnectionDB.getConnection();
 
     @Override
     public void addObserver(Observer o) {
@@ -33,30 +40,35 @@ public abstract class Service<T> extends Observable {
         }
     }
 
-    void writeToCsv(List list){
-        IFileWorker.exportToCsv(list);
+    void writeToCsv(List<T> list){
+        fileWorker.exportToCsv(list);
         notifyObservers("Файл сохранен в папку: " + PATH_FOR_CSV + FILE_NAME);
     }
 
-    void merge(List<T> importlist, IRepository<T> repository) {
+    void merge(List<T> importlist, GenericDAO<T> dao) {
         List<T> listExistingEntry = new ArrayList<>();
         List<T> listNotExistingEntry = new ArrayList<>();
         boolean exist;
-        for (T element : importlist) {
-            exist = false;
-            for (T bookExist : repository.getAll()) {
-                if (element.equals(bookExist)) {
-                    listExistingEntry.add(element);
-                    exist = true;
+        try {
+            for (T element : importlist) {
+                exist = false;
+                for (T bookExist : dao.getAll(connection)) {
+                    if (element.equals(bookExist)) {
+                        listExistingEntry.add(element);
+                        exist = true;
+                    }
+                }
+                if (!exist) {
+                    listNotExistingEntry.add(element);
                 }
             }
-            if (!exist){
-                listNotExistingEntry.add(element);
+            for (T element : listExistingEntry) {
+                dao.update(connection, element);
             }
+            dao.addAll(connection, listNotExistingEntry);
+        }catch (SQLException e){
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        for (T element : listExistingEntry) {
-            repository.update(element);
-        }
-        repository.addAll(listNotExistingEntry);
     }
 }

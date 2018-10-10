@@ -1,199 +1,188 @@
 package com.senla.services.impl;
 
 import com.senla.db.IBookDao;
+import com.senla.db.IRequestDao;
 import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
-import com.senla.repositories.IRepositoryRequest;
 import com.senla.services.IServiceBook;
 import com.senla.util.date.DateUtil;
 import entities.Book;
 import entities.Request;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.ALLOW_MARK_REQUESTS;
-import static com.senla.mainmodule.constants.Constants.BOOK_IS_OLD;
+import static com.senla.mainmodule.constants.Constants.*;
 
 public class ServiceBook extends Service implements IServiceBook {
 
+    private static final Logger log = Logger.getLogger(ServiceBook.class);
     private IBookDao bookDao;
-    private IRepositoryRequest repositoryRequest;
+    private IRequestDao requestDao;
     private IFileWorker fileWorker;
-
-    private Connection connection = ConnectionDB.getConnection();
 
     public ServiceBook() {
         this.bookDao = DependencyInjection.getBean(IBookDao.class);
-        this.repositoryRequest = DependencyInjection.getBean(IRepositoryRequest.class);
+        this.requestDao = DependencyInjection.getBean(IRequestDao.class);
         this.fileWorker = DependencyInjection.getBean(IFileWorker.class);
     }
 
     @Override
     public void addBook(Book book) {
         notifyObservers("Добавлена книга: " + book.getNameBook());
-        bookDao.add(book);
-        if (ALLOW_MARK_REQUESTS) {
-            for (Request request : repositoryRequest.getAll()) {
-                if (book.getNameBook().equals(request.getRequireNameBook())) {
-                    request.setRequireIsCompleted(true);
+        try {
+            connection.setAutoCommit(false);
+            bookDao.add(connection, book);
+            if (ALLOW_MARK_REQUESTS) {
+                List<Request> requests = requestDao.getAll(connection);
+                for (Request request : requests) {
+                    if (book.getNameBook().equals(request.getRequireNameBook())) {
+                        request.setRequireIsCompleted(true);
+                        requestDao.update(connection, request);
+                    }
                 }
+            }
+            connection.commit();
+        } catch (SQLException e) {
+            log.error("Не удачная попытка добавить Book в БД - " + e);
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                log.error("Не удачная попытка сделать rollback - " + e);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                log.error("Не удачная попытка вернуть setAutoCommit(true) - " + e);
             }
         }
     }
 
     @Override
     public void deleteBookById(Long id) {
-        if (bookDao.getById(id) != null) {
-            notifyObservers("Удалена книга: " + bookDao.getById(id));
-            bookDao.deleteById(id);
-        } else {
-            notifyObservers("Книги с таким индексом нет !!!");
+        try {
+            Book book = bookDao.getById(connection, id);
+            if (book != null) {
+                notifyObservers("Удалена книга: " + book);
+                bookDao.deleteById(connection, id);
+            } else {
+                notifyObservers("Книги с таким индексом нет !!!");
+            }
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
     }
 
     @Override
-    public List<Book> sortByAlphabet() {
+    public List<Book> getBooksSortedByAlphabet() {
         notifyObservers("Книги отсортированы по алфавиту");
-        List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books ORDER BY nameBook";
-        try(PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet result = statement.executeQuery()) {
-            result.next();
-            createBookFromResultSet(books, result);
+        try {
+            return bookDao.getSortedByAlphabet(connection);
         } catch (SQLException e) {
-
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        return books;
+        return null;
     }
 
     @Override
-    public List<Book> sortByDatePublication() {
+    public List<Book> getBooksSortedByDatePublication() {
         notifyObservers("Книги отсортированы по дате публикации\n");
-        List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books ORDER BY dateOfPublication";
-        try(PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet result = statement.executeQuery()) {
-            result.next();
-            createBookFromResultSet(books, result);
+        try {
+            return bookDao.getSortedByDatePublication(connection);
         } catch (SQLException e) {
-
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        return books;
+        return null;
     }
 
     @Override
-    public List<Book> sortByPrice() {
+    public List<Book> getBooksSortedByPrice() {
         notifyObservers("Книги отсортированы по цене");
-        List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books ORDER BY price";
-        try(PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet result = statement.executeQuery()) {
-            result.next();
-            createBookFromResultSet(books, result);
+        try {
+            return bookDao.getSortedByPrice(connection);
         } catch (SQLException e) {
-
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        return books;
+        return null;
     }
 
     @Override
-    public List<Book> sortByAvailability() {
+    public List<Book> getBooksSortedByAvailability() {
         notifyObservers("Книги отсортированы по доступности");
-        List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books ORDER BY isAvailable";
-        try(PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet result = statement.executeQuery()) {
-            result.next();
-            createBookFromResultSet(books, result);
+        try {
+            return bookDao.getSortedByAvailability(connection);
         } catch (SQLException e) {
-
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        return books;
+        return null;
+
     }
 
     @Override
     public List<Book> getAll() {
-        return bookDao.getAll();
+        try {
+            return bookDao.getAll(connection);
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
+        return null;
     }
-
 
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByDate() {
-        Date periodOfMonth = DateUtil.minusMonths(6);
-        List<Book> newList = new ArrayList<>();
-        List<Book> existList = sortByDateAddedToShop();
-        for (Book book : existList) {
-            if (book != null) {
-                if (book.getDateAddedBookToStore().before(periodOfMonth)) {
-                    newList.add(book);
-                }
-            }
-        }
-        return newList;
-    }
-
-    private void createBookFromResultSet(List<Book> books, ResultSet result) throws SQLException {
-        while (result.next()) {
-            Book book = new Book();
-            book.setId(result.getLong("id"));
-            book.setDateAddedBookToStore(result.getDate("dateAddedBookToStore"));
-            book.setDateOfPublication(result.getDate("dateOfPublication"));
-            book.setDescription(result.getString("description"));
-            book.setAvailable(result.getBoolean("isAvailable"));
-            book.setOld(result.getBoolean("isOld"));
-            book.setNameBook(result.getString("nameBook"));
-            book.setPrice(result.getDouble("price"));
-            books.add(book);
-        }
-    }
-
-    private List<Book> sortByDateAddedToShop() {
-        notifyObservers("Книги отсортированы по дате добавления в магазин");
-        List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books ORDER BY dateAddedBookToStore";
-        try(PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet result = statement.executeQuery()) {
-            result.next();
-            createBookFromResultSet(books, result);
+        notifyObservers("Книги добавленные в магазин более 6 месяцев назад\n");
+        try {
+            return bookDao.getPeriodMoreSixMonthByDate(connection);
         } catch (SQLException e) {
-
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        return books;
+        return null;
     }
 
-    // TODO: 04.10.2018
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByPrice() {
-        Date periodOfMonth = DateUtil.minusMonths(6);
-        List<Book> newList = new ArrayList<>();
-        List<Book> existList = sortByPrice();
-        for (Book book : existList) {
-            if (book != null) {
-                if (book.getDateAddedBookToStore().before(periodOfMonth)) {
-                    newList.add(book);
-                }
-            }
+        try {
+            return bookDao.getPeriodMoreSixMonthByDate(connection);
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
-        return newList;
+        return null;
     }
 
     @Override
     public Book getBookById(Long id) {
-        return bookDao.getById(id);
+        try {
+            return bookDao.getById(connection, id);
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
+        return null;
     }
 
     @Override
     public String getBookDescriptionById(Long id) {
-        if (bookDao.getById(id) != null) {
-            Book book = bookDao.getById(id);
-            return book.getDescription();
+        try {
+            Book book = bookDao.getById(connection, id);
+            if (book != null) {
+                return book.getDescription();
+            }
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
         }
         return null;
     }
@@ -202,24 +191,33 @@ public class ServiceBook extends Service implements IServiceBook {
     public void markBookOld() {
         if (BOOK_IS_OLD != null) {
             Date periodOfMonth = DateUtil.minusMonths(BOOK_IS_OLD);
-            for (Book book : bookDao.getAll()) {
-                if (book.getDateAddedBookToStore().before(periodOfMonth)) {
+            try {
+                List<Book> books = bookDao.getNewBooks(connection, periodOfMonth);
+                for (Book book : books) {
                     book.setOld(true);
+                    bookDao.update(connection, book);
                 }
+            } catch (SQLException e) {
+                log.error("Не удалось получить данные с БД " + e);
+                notifyObservers("Не удалось получить данные с БД");
             }
         }
     }
 
     @Override
     public void exportToCsv() {
-        super.writeToCsv(bookDao.getAll());
+        try {
+            super.writeToCsv(bookDao.getAll(connection));
+        } catch (SQLException e) {
+            log.error("Не удалось получить данные с БД " + e);
+            notifyObservers("Не удалось получить данные с БД");
+        }
     }
 
     @Override
     public void importFromCsv() {
-//        List<Book> importListFromFile = fileWorker.importListFromFile(PATH_BOOK_CSV, Book.class);
-//        notifyObservers(PATH_BOOK_CSV);
-//        merge(importListFromFile, bookDao);
+        List<Book> importListFromFile = fileWorker.importListFromFile(PATH_BOOK_CSV, Book.class);
+        notifyObservers(PATH_BOOK_CSV);
+        merge(importListFromFile, bookDao);
     }
-
 }

@@ -1,4 +1,4 @@
-package com.senla.uiNew;
+package com.senla.ui;
 
 import com.senla.util.Printer;
 
