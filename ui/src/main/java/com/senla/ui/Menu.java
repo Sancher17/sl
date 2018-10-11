@@ -8,7 +8,7 @@ import java.util.List;
 
 class Menu {
 
-    private static final String NO_MENU_WITH_SUNCH_NUMBER = "Нет меню с номером: ";
+    private static final String NO_MENU_WITH_SUCH_NUMBER = "Нет меню с номером: ";
     private static final String CHOOSE_ANOTHER_MENU = "Выбирите другое существующее меню";
     private final String name;
 
@@ -39,7 +39,7 @@ class Menu {
             List<Runnable> actions = new ArrayList<>(actionsMap.values());
             actions.get(actionNumber).run();
         } else {
-            Printer.println(NO_MENU_WITH_SUNCH_NUMBER + actionNumber);
+            Printer.println(NO_MENU_WITH_SUCH_NUMBER + actionNumber);
             Printer.println(CHOOSE_ANOTHER_MENU);
         }
     }

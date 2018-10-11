@@ -73,9 +73,8 @@ public abstract class Service<T> extends Observable {
             }
             dao.addAll(connection, listNotExistingEntry);
         } catch (SQLException e) {
-            String message = CAN_NOT_ADD_DATA_TO_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(CAN_NOT_ADD_DATA_TO_BD + e);
+            notifyObservers(CAN_NOT_ADD_DATA_TO_BD);
         }
     }
 }

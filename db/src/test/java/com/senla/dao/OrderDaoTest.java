@@ -25,32 +25,28 @@ public class OrderDaoTest {
     private Order order = new Order();
     private Connection connection = ConnectionDB.getConnection();
 
-    void init(){
+    void init() throws SQLException {
         order.setDateOfStartedOrder(new Date());
         order.setDateOfCompletedOrder(new Date());
         order.setCompletedOrder(true);
-        try {
-            order.setBook(bookDao.getById(connection, 5L));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        order.setBook(bookDao.getById(connection, 5L));
     }
 
     @Test
-    public void add()  throws SQLException{
+    public void add() throws SQLException {
         init();
         orderDao.add(connection, order);
     }
 
     @Test
-    public void deleteById()  throws SQLException{
+    public void deleteById() throws SQLException {
         Long id = 7L;
         orderDao.deleteById(connection, id);
         assertNull(orderDao.getById(connection, id));
     }
 
     @Test
-    public void getById()  throws SQLException {
+    public void getById() throws SQLException {
         Order order = orderDao.getById(connection, 5L);
         assertEquals(5, (long) order.getId());
     }
@@ -61,7 +57,7 @@ public class OrderDaoTest {
     }
 
     @Test
-    public void getAll()  throws SQLException{
+    public void getAll() throws SQLException {
         List<Order> list = orderDao.getAll(connection);
         assertNotNull(list);
         assertTrue(list.size() > 0);

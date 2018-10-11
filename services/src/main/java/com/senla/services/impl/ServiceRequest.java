@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_CSV;
@@ -54,9 +53,8 @@ public class ServiceRequest extends Service implements IServiceRequest {
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            String message = CAN_NOT_ADD_DATA_TO_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(CAN_NOT_ADD_DATA_TO_BD + e);
+            notifyObservers(CAN_NOT_ADD_DATA_TO_BD);
             try {
                 connection.setAutoCommit(true);
                 connection.rollback();
@@ -73,9 +71,8 @@ public class ServiceRequest extends Service implements IServiceRequest {
         try {
             return requestDao.getSortedByQuantity(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -87,9 +84,8 @@ public class ServiceRequest extends Service implements IServiceRequest {
         try {
             return requestDao.getSortedByAlphabet(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -100,9 +96,8 @@ public class ServiceRequest extends Service implements IServiceRequest {
         try {
             return requestDao.getAll(connection);
         }catch (SQLException e){
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -113,9 +108,8 @@ public class ServiceRequest extends Service implements IServiceRequest {
         try {
             return requestDao.getCompleted(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -126,9 +120,8 @@ public class ServiceRequest extends Service implements IServiceRequest {
         try {
             return requestDao.getNotCompleted(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -139,9 +132,8 @@ public class ServiceRequest extends Service implements IServiceRequest {
         try {
             super.writeToCsv(requestDao.getAll(connection));
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
     }
 

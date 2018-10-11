@@ -45,9 +45,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            String message = CAN_NOT_ADD_DATA_TO_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(CAN_NOT_ADD_DATA_TO_BD + e);
+            notifyObservers(CAN_NOT_ADD_DATA_TO_BD);
             try {
                 connection.setAutoCommit(true);
                 connection.rollback();
@@ -68,9 +67,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
                 notifyObservers(NO_ORDER_WITH_SUCH_INDEX);
             }
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
     }
 
@@ -90,9 +88,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
                 notifyObservers(NO_ORDER_WITH_SUCH_INDEX);
             }
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
     }
 
@@ -103,9 +100,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             return orderDao.getCompletedSortedByDate(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -118,9 +114,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             return orderDao.getSortedByPrice(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -132,9 +127,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             return orderDao.getSortedByState(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -145,9 +139,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             return orderDao.getAll(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -158,9 +151,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             return orderDao.getCompleted(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -171,9 +163,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             return orderDao.getCompletedSortedByDateOfPeriod(connection, startDate, endDate);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -184,9 +175,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             return orderDao.getCompletedSortedByPriceOfPeriod(connection, startDate, endDate);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -197,9 +187,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             return orderDao.getFullAmountByPeriod(connection, startDate, endDate);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -210,9 +199,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             return orderDao.getQuantityCompletedByPeriod(connection, startDate, endDate);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -223,9 +211,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             return orderDao.getById(connection, id);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -236,9 +223,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             orderDao.copyOrder(connection, id);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
     }
 
@@ -248,9 +234,8 @@ public class ServiceOrder extends Service implements IServiceOrder {
         try {
             super.writeToCsv(orderDao.getAll(connection));
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
     }
 

@@ -60,9 +60,8 @@ public class ServiceBook extends Service implements IServiceBook {
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            String message = CAN_NOT_ADD_DATA_TO_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(CAN_NOT_ADD_DATA_TO_BD + e);
+            notifyObservers(CAN_NOT_ADD_DATA_TO_BD);
             try {
                 connection.setAutoCommit(true);
                 connection.rollback();
@@ -76,6 +75,7 @@ public class ServiceBook extends Service implements IServiceBook {
     public void deleteBookById(Long id) {
         Connection connection = ConnectionDB.getConnection();
         try {
+            connection.setAutoCommit(false);
             Book book = bookDao.getById(connection, id);
             if (book != null) {
                 notifyObservers(BOOK_DELETED + book);
@@ -83,10 +83,17 @@ public class ServiceBook extends Service implements IServiceBook {
             } else {
                 notifyObservers(NO_BOOK_WITH_SUCH_INDEX);
             }
+            connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                log.error(CAN_NOT_DO_ROLLBACK + e);
+                notifyObservers(CAN_NOT_DO_ROLLBACK);
+            }
         }
     }
 
@@ -97,9 +104,8 @@ public class ServiceBook extends Service implements IServiceBook {
         try {
             return bookDao.getSortedByAlphabet(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -111,9 +117,8 @@ public class ServiceBook extends Service implements IServiceBook {
         try {
             return bookDao.getSortedByDatePublication(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -125,9 +130,8 @@ public class ServiceBook extends Service implements IServiceBook {
         try {
             return bookDao.getSortedByPrice(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -139,9 +143,8 @@ public class ServiceBook extends Service implements IServiceBook {
         try {
             return bookDao.getSortedByAvailability(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
 
@@ -153,9 +156,8 @@ public class ServiceBook extends Service implements IServiceBook {
         try {
             return bookDao.getAll(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -167,9 +169,8 @@ public class ServiceBook extends Service implements IServiceBook {
         try {
             return bookDao.getPeriodMoreSixMonthByDate(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -180,9 +181,8 @@ public class ServiceBook extends Service implements IServiceBook {
         try {
             return bookDao.getPeriodMoreSixMonthByDate(connection);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -193,9 +193,8 @@ public class ServiceBook extends Service implements IServiceBook {
         try {
             return bookDao.getById(connection, id);
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -209,9 +208,8 @@ public class ServiceBook extends Service implements IServiceBook {
                 return book.getDescription();
             }
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
     }
@@ -228,9 +226,8 @@ public class ServiceBook extends Service implements IServiceBook {
                     bookDao.update(connection, book);
                 }
             } catch (SQLException e) {
-                String message = NO_DATA_FROM_BD;
-                log.error(message + e);
-                notifyObservers(message);
+                log.error(NO_DATA_FROM_BD + e);
+                notifyObservers(NO_DATA_FROM_BD);
             }
         }
     }
@@ -241,9 +238,8 @@ public class ServiceBook extends Service implements IServiceBook {
         try {
             super.writeToCsv(bookDao.getAll(connection));
         } catch (SQLException e) {
-            String message = NO_DATA_FROM_BD;
-            log.error(message + e);
-            notifyObservers(message);
+            log.error(NO_DATA_FROM_BD + e);
+            notifyObservers(NO_DATA_FROM_BD);
         }
     }
 
