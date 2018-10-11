@@ -3,6 +3,7 @@ package com.senla.mainmodule.facade;
 import com.senla.di.DependencyInjection;
 import com.senla.propertiesmodule.IPropertyHolder;
 import com.senla.services.IServiceBook;
+import com.senla.services.IServiceExit;
 import com.senla.services.IServiceOrder;
 import com.senla.services.IServiceRequest;
 import entities.Book;
@@ -16,6 +17,7 @@ public class BookShop extends Observable implements IBookShop, Observer {
     private IServiceBook bookService;
     private IServiceOrder orderService;
     private IServiceRequest requestService;
+    private IServiceExit serviceExit;
     private IPropertyHolder propertyHolder;
     private List<Observer> subscribers = new ArrayList<>();
 
@@ -23,6 +25,7 @@ public class BookShop extends Observable implements IBookShop, Observer {
         this.bookService = DependencyInjection.getBean(IServiceBook.class);
         this.orderService = DependencyInjection.getBean(IServiceOrder.class);
         this.requestService = DependencyInjection.getBean(IServiceRequest.class);
+        this.serviceExit = DependencyInjection.getBean(IServiceExit.class);
         this.propertyHolder = DependencyInjection.getBean(IPropertyHolder.class);
 
         bookService.addObserver(this);
@@ -73,8 +76,8 @@ public class BookShop extends Observable implements IBookShop, Observer {
     }
 
     // ORDER
-    public void addOrder(Order order) {
-        orderService.addOrder(order);
+    public void addOrder(Long id) {
+        orderService.addOrder(id);
     }
     public void deleteOrderById(Long id) {
         orderService.deleteOrderById(id);
@@ -136,6 +139,10 @@ public class BookShop extends Observable implements IBookShop, Observer {
         return requestService.getRequestsSortedByAlphabet();
     }
 
+    // EXIT
+    public void closeConnection() {
+        serviceExit.closeConnection();
+    }
 
     // CSV - export
     public void exportBooksToCsv() {

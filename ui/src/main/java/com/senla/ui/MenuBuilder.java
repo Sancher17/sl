@@ -64,11 +64,12 @@ class MenuBuilder implements Observer {
     private static final String COPY_ORDER = "Копировать заказ";
     private static final String EXPORT_ORDERS = "Экспорт заказов";
     private static final String IMPORT_ORDERS = "Импорт заказов";
-    private static final String ENTER_ORDER_ID = "введите Id заказа который хотите удалить: ";
+    private static final String ENTER_ORDER_ID = "введите Id заказа: ";
     private static final String ORDERS_PRINT_HEAD = "id/Дата заказа/книга/отметка выполнения заказа/стоимость заказа/дата выполнения заказа";
     private static final String COMPLETED_ORDERS = "Выполненые заказы:";
     private static final String QUANTITY_COMPLETED_ORDERS_BY_PERIOD = "Количество выполненых заказов за период";
     private static final String PRINT_ORDER_BY_ID = "Заказ по Id";
+    private static final String NO_ORDER_WITH_SUCH_ID = "Нет заказа с таким ID";
 
 
     //REQUEST
@@ -81,6 +82,7 @@ class MenuBuilder implements Observer {
     private static final String EXPORT_REQUESTS = "Экспорт запросов";
     private static final String IMPORT_REQUESTS = "Импорт запросов";
     private static final String REQUESTS_PRINT_HEAD = "id/Название книги/удовлетворен запрос/количество запросов";
+
 
     private Menu menu;
     private static Date TODAY = new Date();
@@ -159,6 +161,7 @@ class MenuBuilder implements Observer {
     private void exit() {
         bookShop.deleteObserver(this);
         scanner.close();
+        bookShop.closeConnection();
         Printer.println(APPLICATION_STOPPED);
         System.exit(0);
     }
@@ -272,10 +275,7 @@ class MenuBuilder implements Observer {
         Printer.println(ADD_ORDER);
         Printer.print(ENTER_BOOK_ID);
         Long idBook = scannerLong(scanner);
-
-        Book book = bookShop.getBookById(idBook);
-        Order order = new Order(book);
-        bookShop.addOrder(order);
+        bookShop.addOrder(idBook);
     }
     private void deleteOrder() {
         Printer.println(DELETE_ORDER);
@@ -368,7 +368,10 @@ class MenuBuilder implements Observer {
         Printer.println(PRINT_ORDER_BY_ID);
         Printer.print(ENTER_ORDER_ID);
         Long id = scannerLong(scanner);
-        Printer.print(bookShop.getOrderById(id).toString());
+        Order order = bookShop.getOrderById(id);
+        if (order == null){
+            Printer.print(NO_ORDER_WITH_SUCH_ID);
+        }else Printer.print(order.toString());
     }
     private void setOrderCompleteById() {
         Printer.println(MARK_ORDER_AS_COMPLETE);

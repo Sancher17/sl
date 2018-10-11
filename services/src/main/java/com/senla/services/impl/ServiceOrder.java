@@ -1,10 +1,12 @@
 package com.senla.services.impl;
 
+import com.senla.db.IBookDao;
 import com.senla.db.IOrderDao;
 import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
 import com.senla.services.IServiceOrder;
+import entities.Book;
 import entities.Order;
 import org.apache.log4j.Logger;
 
@@ -20,30 +22,40 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     private static final Logger log = Logger.getLogger(ServiceOrder.class);
 
+    private static final String ADDED_ORDER = "Добавлен заказ ";
     private static final String ORDER_DELETED = "Удален заказ: ";
     private static final String NO_ORDER_WITH_SUCH_INDEX = "Заказа с таким индексом нет !!!";
     private static final String ORDER_MARKED_AS_COMPLETE = "Заказ отмечен выполненым";
     private static final String ORDERS_SORTED_BY_DATE_OF_COMPLETE = "Заказы отсортированы по дате исполнения";
     private static final String ORDERS_SORTED_BY_PRICE = "Заказы отсортированы по цене";
     private static final String ORDERS_SORTED_BY_STATE = "Заказы отсортированы по состоянию выполнения";
+    private static final String NO_BOOK_WITH_SUCH_ID = "Нет книги с таким ID\n";
 
     private IOrderDao orderDao;
+    private IBookDao bookDao;
     private IFileWorker fileWorker;
-
 
     public ServiceOrder() {
         this.orderDao = DependencyInjection.getBean(IOrderDao.class);
+        this.bookDao = DependencyInjection.getBean(IBookDao.class);
         this.fileWorker = DependencyInjection.getBean(IFileWorker.class);
     }
 
     @Override
-    public void addOrder(Order order) {
+    public void addOrder(Long id) {
         Connection connection = ConnectionDB.getConnection();
         try {
             connection.setAutoCommit(false);
+            Book book = bookDao.getById(connection, id);
+            if (book == null){
+                notifyObservers(NO_BOOK_WITH_SUCH_ID);
+                throw new SQLException();
+            }
+            Order order = new Order(book);
             orderDao.add(connection, order);
             connection.commit();
             connection.setAutoCommit(true);
+            notifyObservers(ADDED_ORDER + order);
         } catch (SQLException e) {
             log.error(CAN_NOT_ADD_DATA_TO_BD + e);
             notifyObservers(CAN_NOT_ADD_DATA_TO_BD);
@@ -105,7 +117,6 @@ public class ServiceOrder extends Service implements IServiceOrder {
         }
         return null;
     }
-
 
     @Override
     public List<Order> getOrdersSortedByPrice() {

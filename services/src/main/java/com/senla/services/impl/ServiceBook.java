@@ -24,12 +24,12 @@ public class ServiceBook extends Service implements IServiceBook {
 
     private static final String BOOK_ADDED = "Добавлена книга: ";
     private static final String BOOK_DELETED = "Удалена книга: ";
-    private static final String NO_BOOK_WITH_SUCH_INDEX = "Книги с таким индексом нет !!!";
-    private static final String BOOKS_SORTED_BY_ALPHABET = "Книги отсортированы по алфавиту";
-    private static final String BOOKS_SORTED_BY_DATE_OF_PUBLICATION = "Книги отсортированы по дате публикации";
-    private static final String BOOKS_SORTED_BY_PRICE = "Книги отсортированы по цене";
-    private static final String BOOKS_SORTED_BY_AVAILABILITY = "Книги отсортированы по доступности";
-    private static final String BOOKS_ADDED_TO_STORE_MORE_SIX_MONTH = "Книги добавленные в магазин более 6 месяцев назад";
+    private static final String NO_BOOK_WITH_SUCH_INDEX = "Книги с таким индексом нет !!!\n";
+    private static final String BOOKS_SORTED_BY_ALPHABET = "Книги отсортированы по алфавиту\n";
+    private static final String BOOKS_SORTED_BY_DATE_OF_PUBLICATION = "Книги отсортированы по дате публикации\n";
+    private static final String BOOKS_SORTED_BY_PRICE = "Книги отсортированы по цене\n";
+    private static final String BOOKS_SORTED_BY_AVAILABILITY = "Книги отсортированы по доступности\n";
+    private static final String BOOKS_ADDED_TO_STORE_MORE_SIX_MONTH = "Книги добавленные в магазин более 6 месяцев назад\n";
 
     private IBookDao bookDao;
     private IRequestDao requestDao;
@@ -220,14 +220,22 @@ public class ServiceBook extends Service implements IServiceBook {
         if (BOOK_IS_OLD != null) {
             Date periodOfMonth = DateUtil.minusMonths(BOOK_IS_OLD);
             try {
+                connection.setAutoCommit(false);
                 List<Book> books = bookDao.getNewBooks(connection, periodOfMonth);
                 for (Book book : books) {
                     book.setOld(true);
                     bookDao.update(connection, book);
                 }
+                connection.commit();
+                connection.setAutoCommit(true);
             } catch (SQLException e) {
                 log.error(NO_DATA_FROM_BD + e);
                 notifyObservers(NO_DATA_FROM_BD);
+                try {
+                    connection.rollback();
+                } catch (SQLException e1) {
+                    log.error(CAN_NOT_DO_ROLLBACK + e1);
+                }
             }
         }
     }

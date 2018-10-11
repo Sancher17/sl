@@ -25,12 +25,11 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void add(Connection connection, Order order) throws SQLException {
-        String sql = "INSERT INTO orders (dateOfStartedOrder, dateOfCompletedOrder, isCompletedOrder, book_id) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO orders (dateOfStartedOrder, isCompletedOrder, book_id) VALUES (?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, dateFormat.format(order.getDateOfStartedOrder()));
-            statement.setString(2, dateFormat.format(order.getDateOfCompletedOrder()));
-            statement.setBoolean(3, order.getCompletedOrder());
-            statement.setLong(4, order.getBook().getId());
+            statement.setBoolean(2, order.getCompletedOrder());
+            statement.setLong(3, order.getBook().getId());
             statement.executeUpdate();
         }
     }
@@ -80,7 +79,7 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public List<Order> getSortedByPrice(Connection connection) throws SQLException {
-        return getOrders(connection,"SELECT o.id, o.dateOfStartedOrder, o.dateOfCompletedOrder, o.isCompletedOrder, b.price  FROM orders o join books b on o.book_id = b.id ORDER BY b.price");
+        return getOrders(connection,"SELECT o.id, o.dateOfStartedOrder, o.dateOfCompletedOrder, o.isCompletedOrder, book_id FROM orders o join books b on o.book_id = b.id ORDER BY b.price");
     }
 
     @Override

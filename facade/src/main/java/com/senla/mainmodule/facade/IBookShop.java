@@ -24,7 +24,7 @@ public interface IBookShop {
     Book getBookById(Long id);
     String getBookDescriptionById(Long id);
 
-    void addOrder(Order order);
+    void addOrder(Long id);
     void deleteOrderById(Long id);
     void setOrderCompleteById(Long orderId);
     List<Order> sortCompletedOrdersByDate();
@@ -43,8 +43,10 @@ public interface IBookShop {
     List<Request> getRequests();
     List<Request> getCompletedRequests();
     List<Request> getNotCompletedRequests();
-    List<Request>  sortRequestsByQuantity();
-    List<Request>  sortRequestsByAlphabet();
+    List<Request> sortRequestsByQuantity();
+    List<Request> sortRequestsByAlphabet();
+
+    void closeConnection();
 
     void exportBooksToCsv() ;
     void importBooksFromCsv();

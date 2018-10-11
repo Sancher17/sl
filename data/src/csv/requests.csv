@@ -1,4 +1,6 @@
 id;requireNameBook;requireIsCompleted;requireQuantity;
-1;JavaScript;false;1;
+1;JavaScript;false;8;
 2;Oracle;false;1;
-3;Kotlin;false;2;
+3;Kotlin;false;3;
+5;Asd;true;2;
+6;Angular;false;1;

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IServiceOrder extends IService<Order> {
 
-    void addOrder(Order order);
+    void addOrder(Long id);
 
     void deleteOrderById(Long id);
 
