@@ -15,11 +15,77 @@ import static com.senla.util.ScannerHelper.*;
 class MenuBuilder implements Observer {
 
     private static final Logger log = Logger.getLogger(MenuBuilder.class.getSimpleName());
+    private static final String MENU_MAIN = "Главное меню";
+    private static final String MENU_BOOK = "Меню Book";
+    private static final String MENU_ORDER = "Меню Order";
+    private static final String MENU_REQUEST = "Меню Request";
+    private static final String EXIT = "Выход";
+    private static final String APPLICATION_STOPPED = "\nПрограмма завершена !!!";
+    private static final String NO_SUCH_MENU = "Выбрано не существующее меню ";
+
+    //BOOK
+    private static final String ADD_BOOK = "Добавить книгу";
+    private static final String DELETE_BOOK = "Удалить книгу";
+    private static final String PRINT_BOOKS = "Напечатать все книги";
+    private static final String SORT_BOOKS_BY_ALPHABET = "Сортировать книги по алфавиту";
+    private static final String SORT_BOOKS_BY_DATE_PUBLICATION = "Сортировать книги по дате публикации";
+    private static final String SORT_BOOKS_BY_PRICE = "Сортировать книги по цене";
+    private static final String SORT_BOOKS_BY_AVAILABILITY = "Сортировать книги по наличию";
+    private static final String PRINT_BOOKS_ADDED_MORE_SIX_MONTHS_SORTED_BY_DATE = "Напечатать книги добавленные более 6 месяцев назад / сортировка по дате";
+    private static final String PRINT_BOOKS_ADDED_MORE_SIX_MONTHS_SORTED_BY_PRICE = "Напечатать книги добавленные более 6 месяцев назад / сортировка по цене";
+    private static final String PRINT_DESCRIPTION_OF_BOOK = "Напечатать описание книги";
+    private static final String EXPORT_BOOKS = "Экспорт книг";
+    private static final String IMPORT_BOOKS = "Импорт книг";
+
+    private static final String ENTER_BOOK_NAME = "введите название книги: ";
+    private static final String ENTER_DATE = "введите дату публикации в формате (01.01.2018): ";
+    private static final String ENTER_PRICE = "введите цену в формате (55.05 или 55): ";
+    private static final String ENTER_DESCRIPTION = "введите описание книги: ";
+    private static final String ENTER_BOOK_ID = "введите Id книги: ";
+    private static final String DESCRIPTION_BY_ID = "Описание книги по Id";
+    private static final String NO_BOOK_WITH_SUCH_ID = "нет книги с таким ID";
+    private static final String NO_BOOKS_SUCH_CRETERIA = "нет книг по заданным критериям";
+    private static final String BOOKS_PRINT_HEAD = "id/Название/дата публикации/цена/наличие/дата добавления в магазин/описание/залежавсееся";
+
+    //ORDER
+    private static final String ADD_ORDER = "Добавить заказ";
+    private static final String DELETE_ORDER = "удалить заказ";
+    private static final String PRINT_ORDERS = "Напечатать все заказы";
+    private static final String PRINT_COMPLETED_ORDERS = "Напечатать все выполненые заказы";
+    private static final String PRINT_COMPLETED_ORDERS_SORTED_BY_DATE = "Напечатать все выполненые заказы / сортировка по дате";
+    private static final String PRINT_COMPLETED_ORDERS_SORTED_BY_PRICE = "Напечатать все выполненые заказы / сортировка по цене";
+    private static final String PRINT_SUM_ORDERS_BY_PERIOD = "Напечатать сумму всех заказов за период";
+    private static final String PRINT_QUANTITY_COMPLETED_ORDERS = "Напечатать количество всех выполненых заказов";
+    private static final String PRINT_ORDER = "Напечатать заказ";
+    private static final String SORT_COMPLETED_ORDERS_BY_DATE = "Сортировать выполненые заказы по дате";
+    private static final String SORT_ORDERS_BY_STATE = "Сортировать заказы по текущему состоянию";
+    private static final String SORT_ORDERS_BY_PRICE = "Сортировать заказы по цене";
+    private static final String MARK_ORDER_AS_COMPLETE = "Отметить заказ выполненым";
+    private static final String COPY_ORDER = "Копировать заказ";
+    private static final String EXPORT_ORDERS = "Экспорт заказов";
+    private static final String IMPORT_ORDERS = "Импорт заказов";
+    private static final String ENTER_ORDER_ID = "введите Id заказа который хотите удалить: ";
+    private static final String ORDERS_PRINT_HEAD = "id/Дата заказа/книга/отметка выполнения заказа/стоимость заказа/дата выполнения заказа";
+    private static final String COMPLETED_ORDERS = "Выполненые заказы:";
+    private static final String QUANTITY_COMPLETED_ORDERS_BY_PERIOD = "Количество выполненых заказов за период";
+    private static final String PRINT_ORDER_BY_ID = "Заказ по Id";
+
+
+    //REQUEST
+    private static final String ADD_REQUEST = "Добавить запрос";
+    private static final String PRINT_REQUESTS = "Напечатать все запросы";
+    private static final String PRINT_COMPLETED_REQUESTS = "Напечатать все выполненые запросы";
+    private static final String PRINT_NOT_COMPLETED_REQUESTS = "Напечатать все не выполненые запросы";
+    private static final String SORT_REQUEST_BY_ALPHABET = "Сортировать запросы по алфавиту";
+    private static final String SORT_REQUEST_BY_QUANTITY = "Сортироватьзапросы по количеству";
+    private static final String EXPORT_REQUESTS = "Экспорт запросов";
+    private static final String IMPORT_REQUESTS = "Импорт запросов";
+    private static final String REQUESTS_PRINT_HEAD = "id/Название книги/удовлетворен запрос/количество запросов";
+
     private Menu menu;
     private static Date TODAY = new Date();
     private Scanner scanner;
     private IBookShop bookShop = DependencyInjection.getBean(IBookShop.class);
-
 
     MenuBuilder() {
         init();
@@ -28,64 +94,64 @@ class MenuBuilder implements Observer {
     private void init(){
         bookShop.addObserver(this);
 
-        Menu main = new Menu("Главное меню");
-        Menu book = new Menu("Меню Book");
-        Menu order = new Menu("Меню Order");
-        Menu request = new Menu("Меню Request");
+        Menu main = new Menu(MENU_MAIN);
+        Menu book = new Menu(MENU_BOOK);
+        Menu order = new Menu(MENU_ORDER);
+        Menu request = new Menu(MENU_REQUEST);
 
         //главное меню
-        main.action("Меню Book", () -> activateMenu(book));
-        main.action("Меню Order", () -> activateMenu(order));
-        main.action("Меню Request", () -> activateMenu(request));
-        main.action("Выход", this::exit);
+        main.action(MENU_BOOK, () -> activateMenu(book));
+        main.action(MENU_ORDER, () -> activateMenu(order));
+        main.action(MENU_REQUEST, () -> activateMenu(request));
+        main.action(EXIT, this::exit);
 
         //book меню
-        book.action("Главное меню", () -> activateMenu(main));
-        book.action("Добавить книгу", this::addBook);
-        book.action("Удалить книгу", this::deleteBook);
-        book.action("Напечатать все книги", () -> printBooks(bookShop.getBooks()));
-        book.action("Сортировать книги по алфавиту", () -> printBooks(bookShop.sortBooksByAlphabet()));
-        book.action("Сортировать книги по дате публикации", () -> printBooks(bookShop.sortBooksByDatePublication()));
-        book.action("Сортировать книги по цене", () -> printBooks(bookShop.sortBooksByPrice()));
-        book.action("Сортировать книги по наличию", () -> printBooks(bookShop.sortBooksByAvailability()));
-        book.action("Напечатать книги добавленные более 6 месяцев назад / сортировка по дате", this::printBooksPeriodMoreSixMonthByDate);
-        book.action("Напечатать книги добавленные более 6 месяцев назад / сортировка по цене", this::printBooksPeriodMoreSixMonthByPrice);
-        book.action("Напечатать описание книги", this::printBookDescriptionById);
-        book.action("Экспорт книг", this::exportBook);
-        book.action("Импорт книг", this::importBook);
-        book.action("Выход", this::exit);
+        book.action(MENU_MAIN, () -> activateMenu(main));
+        book.action(ADD_BOOK, this::addBook);
+        book.action(DELETE_BOOK, this::deleteBook);
+        book.action(PRINT_BOOKS, () -> printBooks(bookShop.getBooks()));
+        book.action(SORT_BOOKS_BY_ALPHABET, () -> printBooks(bookShop.sortBooksByAlphabet()));
+        book.action(SORT_BOOKS_BY_DATE_PUBLICATION, () -> printBooks(bookShop.sortBooksByDatePublication()));
+        book.action(SORT_BOOKS_BY_PRICE, () -> printBooks(bookShop.sortBooksByPrice()));
+        book.action(SORT_BOOKS_BY_AVAILABILITY, () -> printBooks(bookShop.sortBooksByAvailability()));
+        book.action(PRINT_BOOKS_ADDED_MORE_SIX_MONTHS_SORTED_BY_DATE, this::printBooksPeriodMoreSixMonthByDate);
+        book.action(PRINT_BOOKS_ADDED_MORE_SIX_MONTHS_SORTED_BY_PRICE, this::printBooksPeriodMoreSixMonthByPrice);
+        book.action(PRINT_DESCRIPTION_OF_BOOK, this::printBookDescriptionById);
+        book.action(EXPORT_BOOKS, this::exportBook);
+        book.action(IMPORT_BOOKS, this::importBook);
+        book.action(EXIT, this::exit);
 
         //order меню
-        order.action("Главное меню", () -> activateMenu(main));
-        order.action("Добавить заказ", this::addOrder);
-        order.action("удалить заказ", this::deleteOrder);
-        order.action("Напечатать все заказы", () -> printOrders(bookShop.getOrders()));
-        order.action("Напечатать все выполненые заказы", this::printCompletedOrders);
-        order.action("Напечатать все выполненые заказы / сортировка по дате", this::printCompletedOrdersSortedByDateOfPeriod);
-        order.action("Напечатать все выполненые заказы / сортировка по цене", this::printCompletedOrdersSortedByPriceOfPeriod);
-        order.action("Напечатать сумму всех заказов за период", this::printOrdersFullAmountByPeriod);
-        order.action("Напечатать количество всех выполненых заказов", this::printQuantityCompletedOrdersByPeriod);
-        order.action("Напечатать заказ", this::printOrderById);
-        order.action("Сортировать выполненые заказы по дате", () -> printOrders(bookShop.sortCompletedOrdersByDate()));
-        order.action("Сортировать заказы по текущему состоянию", () -> printOrders(bookShop.sortOrdersByState()));
-        order.action("Сортировать заказы по цене", () -> printOrders(bookShop.sortOrdersByPrice()));
-        order.action("Отметить заказы выполненым", this::setOrderCompleteById);
-        order.action("Копировать заказ", this::copyOrder);
-        order.action("Экспорт заказов", this::exportOrder);
-        order.action("Импорт заказов", this::importOrder);
-        order.action("Выход", this::exit);
+        order.action(MENU_MAIN, () -> activateMenu(main));
+        order.action(ADD_ORDER, this::addOrder);
+        order.action(DELETE_ORDER, this::deleteOrder);
+        order.action(PRINT_ORDERS, () -> printOrders(bookShop.getOrders()));
+        order.action(PRINT_COMPLETED_ORDERS, this::printCompletedOrders);
+        order.action(PRINT_COMPLETED_ORDERS_SORTED_BY_DATE, this::printCompletedOrdersSortedByDateOfPeriod);
+        order.action(PRINT_COMPLETED_ORDERS_SORTED_BY_PRICE, this::printCompletedOrdersSortedByPriceOfPeriod);
+        order.action(PRINT_SUM_ORDERS_BY_PERIOD, this::printOrdersFullAmountByPeriod);
+        order.action(PRINT_QUANTITY_COMPLETED_ORDERS, this::printQuantityCompletedOrdersByPeriod);
+        order.action(PRINT_ORDER, this::printOrderById);
+        order.action(SORT_COMPLETED_ORDERS_BY_DATE, () -> printOrders(bookShop.sortCompletedOrdersByDate()));
+        order.action(SORT_ORDERS_BY_STATE, () -> printOrders(bookShop.sortOrdersByState()));
+        order.action(SORT_ORDERS_BY_PRICE, () -> printOrders(bookShop.sortOrdersByPrice()));
+        order.action(MARK_ORDER_AS_COMPLETE, this::setOrderCompleteById);
+        order.action(COPY_ORDER, this::copyOrder);
+        order.action(EXPORT_ORDERS, this::exportOrder);
+        order.action(IMPORT_ORDERS, this::importOrder);
+        order.action(EXIT, this::exit);
 
         //request menu
-        request.action("Главное меню", () -> activateMenu(main));
-        request.action("Добавить запрос", this::addRequest);
-        request.action("Напечатать все запросы", () -> printRequests(bookShop.getRequests()));
-        request.action("Напечатать все выполненые запросы", this::printCompletedRequests);
-        request.action("Напечатать все не выполненые запросы", this::printNotCompletedRequests);
-        request.action("Сортировать запросы по алфавиту",() ->  printRequests(bookShop.sortRequestsByAlphabet()));
-        request.action("Сортироватьзапросы по количеству",() -> printRequests(bookShop.sortRequestsByQuantity()));
-        request.action("Экспорт запросов", this::exportRequest);
-        request.action("Импорт запросов", this::importRequest);
-        request.action("Выход", this::exit);
+        request.action(MENU_MAIN, () -> activateMenu(main));
+        request.action(ADD_REQUEST, this::addRequest);
+        request.action(PRINT_REQUESTS, () -> printRequests(bookShop.getRequests()));
+        request.action(PRINT_COMPLETED_REQUESTS, this::printCompletedRequests);
+        request.action(PRINT_NOT_COMPLETED_REQUESTS, this::printNotCompletedRequests);
+        request.action(SORT_REQUEST_BY_ALPHABET,() ->  printRequests(bookShop.sortRequestsByAlphabet()));
+        request.action(SORT_REQUEST_BY_QUANTITY,() -> printRequests(bookShop.sortRequestsByQuantity()));
+        request.action(EXPORT_REQUESTS, this::exportRequest);
+        request.action(IMPORT_REQUESTS, this::importRequest);
+        request.action(EXIT, this::exit);
 
         activateMenu(main);
     }
@@ -93,7 +159,7 @@ class MenuBuilder implements Observer {
     private void exit() {
         bookShop.deleteObserver(this);
         scanner.close();
-        Printer.println("\nПрограмма завершена !!!");
+        Printer.println(APPLICATION_STOPPED);
         System.exit(0);
     }
 
@@ -106,7 +172,7 @@ class MenuBuilder implements Observer {
                 int actionNumber = scanner.nextInt();
                 menu.executeAction(actionNumber);
             } catch (InputMismatchException e) {
-                log.info("Выбрано не существующее меню "+ e);
+                log.info(NO_SUCH_MENU + e);
                 activateMenu(menu);
             }
         }
@@ -114,39 +180,39 @@ class MenuBuilder implements Observer {
 
     //book
     private void addBook() {
-        Printer.println("Добавить новую книгу");
-        Printer.print("введите название книги: ");
+        Printer.println(ADD_BOOK);
+        Printer.print(ENTER_BOOK_NAME);
         String nameBook = scannerString();
 
-        Printer.print("введите дату публикации в формате (01.01.2018): ");
+        Printer.print(ENTER_DATE);
         String datePublic = scannerString();
         Date datePublication = scannerDate(datePublic);
         if (datePublication == null) {
             addBook();
         }
 
-        Printer.print("введите цену в формате (55.05 или 55): ");
+        Printer.print(ENTER_PRICE);
 
         double price = scannerDouble(scanner);
         if (price == -1.0) {
             addBook();
         }
 
-        Printer.print("введите описание книги: ");
+        Printer.print(ENTER_DESCRIPTION);
         String description = scannerString();
 
         Book book = new Book(nameBook, datePublication, TODAY, price, description, true, false);
         bookShop.addBook(book);
     }
     private void deleteBook() {
-        Printer.println("Удалить книгу");
-        Printer.print("введите Id книги которую хотите удалить: ");
+        Printer.println(DELETE_BOOK);
+        Printer.print(ENTER_BOOK_ID);
         Long id = scannerLong(scanner);
         bookShop.deleteBookById(id);
     }
     private void printBookDescriptionById() {
-        Printer.println("Описание книги по Id");
-        Printer.print("введите Id книги описание которой хотите посмотреть: ");
+        Printer.println(DESCRIPTION_BY_ID);
+        Printer.print(ENTER_BOOK_ID);
         Long id = scannerLong(scanner);
         if (id == -1L) {
             printBookDescriptionById();
@@ -154,7 +220,7 @@ class MenuBuilder implements Observer {
         if (bookShop.getBookDescriptionById(id) != null) {
             Printer.println(bookShop.getBookDescriptionById(id));
         } else {
-            Printer.println("нет книги с таким ID");
+            Printer.println(NO_BOOK_WITH_SUCH_ID);
         }
     }
     private void printBooks(List<Book> list) {
@@ -166,7 +232,7 @@ class MenuBuilder implements Observer {
         }
     }
     private void printBooksPeriodMoreSixMonthByDate() {
-        Printer.println("Книги которые добавлены более 6 месяцев назад / сортировка по дате");
+        Printer.println(PRINT_BOOKS_ADDED_MORE_SIX_MONTHS_SORTED_BY_DATE);
         List<Book> tempList = bookShop.getBooksPeriodMoreSixMonthByDate();
         if (tempList.size() != 0) {
             printBookHead();
@@ -174,11 +240,11 @@ class MenuBuilder implements Observer {
                 Printer.println(book.toString());
             }
         } else {
-            Printer.println("нет книг по заданным критериям");
+            Printer.println(NO_BOOKS_SUCH_CRETERIA);
         }
     }
     private void printBooksPeriodMoreSixMonthByPrice() {
-        Printer.println("Книги которые добавлены более 6 месяцев назад / сортировка по цене");
+        Printer.println(PRINT_BOOKS_ADDED_MORE_SIX_MONTHS_SORTED_BY_PRICE);
         List<Book> tempList = bookShop.getBooksPeriodMoreSixMonthByPrice();
         if (tempList.size() != 0) {
             printBookHead();
@@ -186,25 +252,25 @@ class MenuBuilder implements Observer {
                 Printer.println(book.toString());
             }
         } else {
-            Printer.println("нет книг по заданным критериям");
+            Printer.println(NO_BOOKS_SUCH_CRETERIA);
         }
     }
     private void printBookHead() {
-        Printer.println("id/Название/дата публикации/цена/наличие/дата добавления в магазин/описание/залежавсееся");
+        Printer.println(BOOKS_PRINT_HEAD);
     }
     private void exportBook() {
-        Printer.println("Экспортировать все записи книг");
+        Printer.println(EXPORT_BOOKS);
         bookShop.exportBooksToCsv();
     }
     private void importBook() {
-        Printer.print("Импортированы записи книг из файла: ");
+        Printer.print(IMPORT_BOOKS);
         bookShop.importBooksFromCsv();
     }
 
     //order
     private void addOrder() {
-        Printer.println("Добавить новый заказ");
-        Printer.print("введите Id книги для добавления в заказ: ");
+        Printer.println(ADD_ORDER);
+        Printer.print(ENTER_BOOK_ID);
         Long idBook = scannerLong(scanner);
 
         Book book = bookShop.getBookById(idBook);
@@ -212,8 +278,8 @@ class MenuBuilder implements Observer {
         bookShop.addOrder(order);
     }
     private void deleteOrder() {
-        Printer.println("Удалить заказ");
-        Printer.print("введите Id заказа который хотите удалить: ");
+        Printer.println(DELETE_ORDER);
+        Printer.print(ENTER_ORDER_ID);
         Long id = scannerLong(scanner);
         bookShop.deleteOrderById(id);
     }
@@ -224,24 +290,24 @@ class MenuBuilder implements Observer {
         }
     }
     private void printOrderHead() {
-        Printer.println("id/Дата заказа/книга/отметка выполнения заказа/стоимость заказа/дата выполнения заказа");
+        Printer.println(ORDERS_PRINT_HEAD);
     }
     private void printCompletedOrders() {
-        Printer.println("Выполненые заказы:");
+        Printer.println(COMPLETED_ORDERS);
         printOrderHead();
         for (Order order : bookShop.getCompletedOrders()) {
             Printer.println(order.toString());
         }
     }
     private void printCompletedOrdersSortedByDateOfPeriod() {
-        Printer.println("Выполненые заказы за период / сортировка по дате");
-        Printer.print("введите начальную дату в формате (01.01.2018): ");
+        Printer.println(SORT_COMPLETED_ORDERS_BY_DATE);
+        Printer.print(ENTER_DATE);
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null) {
             printCompletedOrdersSortedByDateOfPeriod();
         }
 
-        Printer.print("введите конечную дату в формате (01.01.2018): ");
+        Printer.print(ENTER_DATE);
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null) {
             printCompletedOrdersSortedByDateOfPeriod();
@@ -252,14 +318,14 @@ class MenuBuilder implements Observer {
         }
     }
     private void printCompletedOrdersSortedByPriceOfPeriod() {
-        Printer.println("Выполненые заказы за период / сортировка по цене");
-        Printer.print("введите начальную дату в формате (01.01.2018): ");
+        Printer.println(PRINT_COMPLETED_ORDERS_SORTED_BY_PRICE);
+        Printer.print(ENTER_DATE);
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null) {
             printCompletedOrdersSortedByPriceOfPeriod();
         }
 
-        Printer.print("введите конечную дату в формате (01.01.2018): ");
+        Printer.print(ENTER_DATE);
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null) {
             printCompletedOrdersSortedByPriceOfPeriod();
@@ -269,14 +335,14 @@ class MenuBuilder implements Observer {
         }
     }
     private void printOrdersFullAmountByPeriod() {
-        Printer.println("Сумма заказов зв период");
-        Printer.print("введите начальную дату в формате (01.01.2018): ");
+        Printer.println(PRINT_SUM_ORDERS_BY_PERIOD);
+        Printer.print(ENTER_DATE);
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null) {
             printOrdersFullAmountByPeriod();
         }
 
-        Printer.print("введите конечную дату в формате (01.01.2018): ");
+        Printer.print(ENTER_DATE);
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null) {
             printOrdersFullAmountByPeriod();
@@ -284,14 +350,14 @@ class MenuBuilder implements Observer {
         Printer.print(bookShop.getOrdersFullAmountByPeriod(dateStart, dateEnd).toString());
     }
     private void printQuantityCompletedOrdersByPeriod() {
-        Printer.println("Количество выполненых заказов за период");
-        Printer.print("введите начальную дату в формате (01.01.2018): ");
+        Printer.println(QUANTITY_COMPLETED_ORDERS_BY_PERIOD);
+        Printer.print(ENTER_DATE);
         Date dateStart = scannerDate(scannerString());
         if (dateStart == null) {
             printQuantityCompletedOrdersByPeriod();
         }
 
-        Printer.print("введите конечную дату в формате (01.01.2018): ");
+        Printer.print(ENTER_DATE);
         Date dateEnd = scannerDate(scannerString());
         if (dateEnd == null) {
             printQuantityCompletedOrdersByPeriod();
@@ -299,58 +365,49 @@ class MenuBuilder implements Observer {
         Printer.print(bookShop.getQuantityCompletedOrdersByPeriod(dateStart, dateEnd).toString());
     }
     private void printOrderById() {
-        Printer.println("Заказ по Id");
-        Printer.print("введите позицию в списке заказов которую хотите посмотреть: ");
+        Printer.println(PRINT_ORDER_BY_ID);
+        Printer.print(ENTER_ORDER_ID);
         Long id = scannerLong(scanner);
         Printer.print(bookShop.getOrderById(id).toString());
     }
     private void setOrderCompleteById() {
-        Printer.println("Отметить заказ как выполненный");
-        Printer.print("введите Id заказа который хотите отметить как выполненный: ");
+        Printer.println(MARK_ORDER_AS_COMPLETE);
+        Printer.print(ENTER_ORDER_ID);
         Long id = scannerLong(scanner);
         bookShop.setOrderCompleteById(id);
     }
     private void copyOrder() {
-        Printer.println("Копирование заказа, введите Id заказа который хотите копировать: ");
+        Printer.println(COPY_ORDER+" "+ENTER_ORDER_ID);
         Long id = scannerLong(scanner);
-        // TODO: 04.10.2018 надо переделать на работу с БД
-//        Order cloneOrder = bookShop.copyOrder(id);
-//        if (cloneOrder == null) {
-//            Printer.println("Выбирите существующий Id");
-//            copyOrder();
-//        } else {
-//            Printer.println("Скопированный заказ добавлен в список заказов");
-//            Printer.println(cloneOrder.toString());
-//            bookShop.addOrder(cloneOrder);
-//        }
+        bookShop.copyOrder(id);
     }
     private void exportOrder() {
-        Printer.println("Экспортировать все записи заказов");
+        Printer.println(EXPORT_ORDERS);
         bookShop.exportOrderToCsv();
     }
     private void importOrder() {
-        Printer.print("Импортированы записи заказов из файла: ");
+        Printer.print(IMPORT_ORDERS);
         bookShop.importOrderFromCsv();
 
     }
 
     //request
     private void addRequest() {
-        Printer.print("введите название искомой книги: ");
+        Printer.print(ENTER_BOOK_NAME);
         String nameBook = scannerString();
 
         Request request = new Request(nameBook);
         bookShop.addRequest(request);
     }
     private void printNotCompletedRequests() {
-        Printer.println("Не выполненые запросы:");
+        Printer.println(PRINT_NOT_COMPLETED_REQUESTS);
         printRequestHead();
         for (Request request : bookShop.getNotCompletedRequests()) {
             Printer.println(request.toString());
         }
     }
     private void printCompletedRequests() {
-        Printer.println("Выполненые запросы:");
+        Printer.println(PRINT_COMPLETED_REQUESTS);
         printRequestHead();
         for (Request request : bookShop.getCompletedRequests()) {
             Printer.println(request.toString());
@@ -363,14 +420,14 @@ class MenuBuilder implements Observer {
         }
     }
     private void printRequestHead() {
-        Printer.println("id/Название книги/удовлетворен запрос/количество запросов");
+        Printer.println(REQUESTS_PRINT_HEAD);
     }
     private void exportRequest() {
-        Printer.println("Экспортировать все записи запросов");
+        Printer.println(EXPORT_REQUESTS);
         bookShop.exportRequestToCsv();
     }
     private void importRequest() {
-        Printer.print("Импортированы записи запросов из файла: ");
+        Printer.print(IMPORT_REQUESTS);
         bookShop.importRequestFromCsv();
     }
 

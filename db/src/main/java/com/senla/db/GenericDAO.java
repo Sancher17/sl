@@ -17,5 +17,4 @@ public interface GenericDAO<T> {
     List<T> getAll(Connection connection) throws SQLException;
 
     void addAll(Connection connection, List<T> notExistList) throws SQLException;
-
 }

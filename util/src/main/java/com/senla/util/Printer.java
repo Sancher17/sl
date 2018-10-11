@@ -13,8 +13,4 @@ public class Printer {
     public static void println(Object message){
         System.out.print(message);
     }
-
-    public void println(int message){
-        System.out.println(message);
-    }
 }

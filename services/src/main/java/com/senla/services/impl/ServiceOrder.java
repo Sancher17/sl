@@ -1,15 +1,15 @@
 package com.senla.services.impl;
 
-import com.senla.db.IBookDao;
 import com.senla.db.IOrderDao;
+import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
 import com.senla.services.IServiceOrder;
 import entities.Order;
 import org.apache.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -20,45 +20,63 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     private static final Logger log = Logger.getLogger(ServiceOrder.class);
 
+    private static final String ORDER_DELETED = "Удален заказ: ";
+    private static final String NO_ORDER_WITH_SUCH_INDEX = "Заказа с таким индексом нет !!!";
+    private static final String ORDER_MARKED_AS_COMPLETE = "Заказ отмечен выполненым";
+    private static final String ORDERS_SORTED_BY_DATE_OF_COMPLETE = "Заказы отсортированы по дате исполнения";
+    private static final String ORDERS_SORTED_BY_PRICE = "Заказы отсортированы по цене";
+    private static final String ORDERS_SORTED_BY_STATE = "Заказы отсортированы по состоянию выполнения";
+
     private IOrderDao orderDao;
-    private IBookDao bookDao;
     private IFileWorker fileWorker;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
     public ServiceOrder() {
         this.orderDao = DependencyInjection.getBean(IOrderDao.class);
-        this.bookDao = DependencyInjection.getBean(IBookDao.class);
         this.fileWorker = DependencyInjection.getBean(IFileWorker.class);
     }
 
     @Override
     public void addOrder(Order order) {
+        Connection connection = ConnectionDB.getConnection();
         try {
+            connection.setAutoCommit(false);
             orderDao.add(connection, order);
+            connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.error("Не удалось добавить данные в БД " + e);
-            notifyObservers("Не удалось добавить данные в БД");
+            String message = CAN_NOT_ADD_DATA_TO_BD;
+            log.error(message + e);
+            notifyObservers(message);
+            try {
+                connection.setAutoCommit(true);
+                connection.rollback();
+            } catch (SQLException e1) {
+                log.error(CAN_NOT_DO_ROLLBACK + e1);
+            }
         }
     }
 
     @Override
     public void deleteOrderById(Long id) {
+        Connection connection = ConnectionDB.getConnection();
         try {
             if (orderDao.getById(connection, id) != null) {
-                notifyObservers("Удален заказ: " + orderDao.getById(connection, id));
+                notifyObservers(ORDER_DELETED + orderDao.getById(connection, id));
                 orderDao.deleteById(connection, id);
             } else {
-                notifyObservers("Заказа с таким индексом нет !!!");
+                notifyObservers(NO_ORDER_WITH_SUCH_INDEX);
             }
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
     }
 
     @Override
     public void setCompleteOrderById(Long id) {
+        Connection connection = ConnectionDB.getConnection();
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, -1);
         Date todayMinusHour = cal.getTime();
@@ -67,24 +85,27 @@ public class ServiceOrder extends Service implements IServiceOrder {
                 Order order = orderDao.getById(connection, id);
                 order.setCompletedOrder(true);
                 order.setDateOfCompletedOrder(todayMinusHour);
-                notifyObservers("Заказ отмечен выполненым \n" + orderDao.getById(connection, id));
+                notifyObservers(ORDER_MARKED_AS_COMPLETE + orderDao.getById(connection, id));
             } else {
-                notifyObservers("Заказа с таким Id нет !!!");
+                notifyObservers(NO_ORDER_WITH_SUCH_INDEX);
             }
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
     }
 
     @Override
-    public List<Order> getCompletedOrdersSortedByDate(){
-        notifyObservers("Заказы отсортированы по дате исполнения\n");
+    public List<Order> getCompletedOrdersSortedByDate() {
+        Connection connection = ConnectionDB.getConnection();
+        notifyObservers(ORDERS_SORTED_BY_DATE_OF_COMPLETE);
         try {
             return orderDao.getCompletedSortedByDate(connection);
-        }catch (SQLException e){
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+        } catch (SQLException e) {
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
@@ -92,112 +113,144 @@ public class ServiceOrder extends Service implements IServiceOrder {
 
     @Override
     public List<Order> getOrdersSortedByPrice() {
-        notifyObservers("Заказы отсортированы по цене");
+        Connection connection = ConnectionDB.getConnection();
+        notifyObservers(ORDERS_SORTED_BY_PRICE);
         try {
             return orderDao.getSortedByPrice(connection);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
     public List<Order> getOrdersSortedByState() {
-        notifyObservers("Заказы отсортированы по состоянию выполнения");
+        Connection connection = ConnectionDB.getConnection();
+        notifyObservers(ORDERS_SORTED_BY_STATE);
         try {
             return orderDao.getSortedByState(connection);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
     public List<Order> getAll() {
+        Connection connection = ConnectionDB.getConnection();
         try {
             return orderDao.getAll(connection);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
-    public List<Order> getCompletedOrders(){
+    public List<Order> getCompletedOrders() {
+        Connection connection = ConnectionDB.getConnection();
         try {
             return orderDao.getCompleted(connection);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
     public List<Order> getCompletedOrdersSortedByDateOfPeriod(Date startDate, Date endDate) {
+        Connection connection = ConnectionDB.getConnection();
         try {
             return orderDao.getCompletedSortedByDateOfPeriod(connection, startDate, endDate);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
     public List<Order> getCompletedOrdersSortedByPriceOfPeriod(Date startDate, Date endDate) {
+        Connection connection = ConnectionDB.getConnection();
         try {
             return orderDao.getCompletedSortedByPriceOfPeriod(connection, startDate, endDate);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
     public Double getFullAmountOfOrdersByPeriod(Date startDate, Date endDate) {
+        Connection connection = ConnectionDB.getConnection();
         try {
             return orderDao.getFullAmountByPeriod(connection, startDate, endDate);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
     public Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
+        Connection connection = ConnectionDB.getConnection();
         try {
             return orderDao.getQuantityCompletedByPeriod(connection, startDate, endDate);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
     public Order getOrderById(Long id) {
+        Connection connection = ConnectionDB.getConnection();
         try {
             return orderDao.getById(connection, id);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
+    public void copyOrder(Long id) {
+        Connection connection = ConnectionDB.getConnection();
+        try {
+            orderDao.copyOrder(connection, id);
+        } catch (SQLException e) {
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
+        }
+    }
+
+    @Override
     public void exportToCsv() {
+        Connection connection = ConnectionDB.getConnection();
         try {
             super.writeToCsv(orderDao.getAll(connection));
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
     }
 

@@ -23,6 +23,7 @@ public class BookShop extends Observable implements IBookShop, Observer {
         this.bookService = DependencyInjection.getBean(IServiceBook.class);
         this.orderService = DependencyInjection.getBean(IServiceOrder.class);
         this.requestService = DependencyInjection.getBean(IServiceRequest.class);
+        this.propertyHolder = DependencyInjection.getBean(IPropertyHolder.class);
 
         bookService.addObserver(this);
         orderService.addObserver(this);
@@ -32,8 +33,6 @@ public class BookShop extends Observable implements IBookShop, Observer {
     }
 
     public void checkProperties() {
-        this.propertyHolder = DependencyInjection.getBean(IPropertyHolder.class);
-        propertyHolder.pathsForDataFiles();
         propertyHolder.allowMArkRequest();
         propertyHolder.bookIsOld();
     }
@@ -113,7 +112,9 @@ public class BookShop extends Observable implements IBookShop, Observer {
     public Order getOrderById(Long id) {
         return orderService.getOrderById(id);
     }
-
+    public void copyOrder(Long id) {
+        orderService.copyOrder(id);
+    }
 
     //REQUEST
     public void addRequest(Request request) {
@@ -129,10 +130,10 @@ public class BookShop extends Observable implements IBookShop, Observer {
         return requestService.getNotCompletedRequests();
     }
     public List<Request>  sortRequestsByQuantity() {
-        return requestService.sortRequestsByQuantity();
+        return requestService.getRequestsSortedByQuantity();
     }
     public List<Request>  sortRequestsByAlphabet() {
-        return requestService.sortRequestsByAlphabet();
+        return requestService.getRequestsSortedByAlphabet();
     }
 
 

@@ -10,6 +10,9 @@ import java.util.Scanner;
 public class ScannerHelper {
 
     private static final Logger log = Logger.getLogger(ScannerHelper.class);
+    private static final String INCORRECT_DATA = "не корректные введены даные";
+    private static final String DATE_PATTERN = "dd.M.yyyy";
+    private static final String DATE_PARSING_ERROR = "Ошибка парсинга даты ";
 
     private ScannerHelper() {}
 
@@ -23,8 +26,8 @@ public class ScannerHelper {
             number = Double.parseDouble(in.next());
             return number;
         } catch (NumberFormatException e) {
-            Printer.println("не корректные даные");
-            log.info("Не корректные введены данные " + e);
+            Printer.println(INCORRECT_DATA);
+            log.info(INCORRECT_DATA + e);
         }
         return number;
     }
@@ -34,15 +37,15 @@ public class ScannerHelper {
         try {
             return Long.parseLong(in.next());
         } catch (NumberFormatException e) {
-            Printer.println("не корректные даные");
-            log.info("Не корректные введены данные " + e);
+            Printer.println(INCORRECT_DATA);
+            log.info(INCORRECT_DATA + e);
         }
         return number;
     }
 
     public static Date scannerDate(String date) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
         try {
             String[] dates = date.split("\\.");
             if (dates[2].length() != 4) {
@@ -61,13 +64,13 @@ public class ScannerHelper {
                 throw new NumberFormatException();
             }
             try {
-                return sdf.parse(date);
+                return dateFormat.parse(date);
             } catch (ParseException e) {
-                log.error("Ошибка парсинга даты " + e);
+                log.error(DATE_PARSING_ERROR + e);
             }
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-            Printer.println("не корректные даные");
-            log.info("Не корректные введены данные " + e);
+            Printer.println(INCORRECT_DATA);
+            log.info(INCORRECT_DATA + e);
         }
         return null;
     }

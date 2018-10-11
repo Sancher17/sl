@@ -10,6 +10,8 @@ import java.util.Objects;
 @CsvEntity(fileName = "books.csv", valueSeparator =";", entityId = "id")
 public class Book implements Cloneable {
 
+    private static final String DATE_PATTERN = "dd.MM.Y";
+
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Long id;
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
@@ -116,7 +118,7 @@ public class Book implements Cloneable {
     }
 
     private String convertDate(Date date) {
-        return new SimpleDateFormat("dd.MM.Y").format(date.getTime());
+        return new SimpleDateFormat(DATE_PATTERN).format(date.getTime());
     }
 
 
@@ -145,10 +147,4 @@ public class Book implements Cloneable {
     public int hashCode() {
         return Objects.hash(id);
     }
-
-    @Override
-    protected Book clone() throws CloneNotSupportedException {
-        return (Book) super.clone();
-    }
-
 }

@@ -25,4 +25,6 @@ public interface IOrderDao extends GenericDAO<Order> {
     Double getFullAmountByPeriod(Connection connection, Date startDate, Date endDate) throws SQLException;
 
     Integer getQuantityCompletedByPeriod(Connection connection, Date startDate, Date endDate) throws SQLException;
+
+    void copyOrder(Connection connection, Long id) throws SQLException;
 }

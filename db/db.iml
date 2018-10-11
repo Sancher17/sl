@@ -50,5 +50,6 @@
     <orderEntry type="module" module-name="di" />
     <orderEntry type="module" module-name="properties" />
     <orderEntry type="module" module-name="util" />
+    <orderEntry type="module" module-name="facade" />
   </component>
 </module>

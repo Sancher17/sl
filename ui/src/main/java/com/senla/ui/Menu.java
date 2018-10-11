@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class Menu {
+class Menu {
 
+    private static final String NO_MENU_WITH_SUNCH_NUMBER = "Нет меню с номером: ";
+    private static final String CHOOSE_ANOTHER_MENU = "Выбирите другое существующее меню";
     private final String name;
 
     private LinkedHashMap<String, Runnable> actionsMap = new LinkedHashMap<>();
@@ -37,10 +39,8 @@ public class Menu {
             List<Runnable> actions = new ArrayList<>(actionsMap.values());
             actions.get(actionNumber).run();
         } else {
-            Printer.println("Нет меню с номером: " + actionNumber);
-            Printer.println("Выбирите другое существующее меню");
+            Printer.println(NO_MENU_WITH_SUNCH_NUMBER + actionNumber);
+            Printer.println(CHOOSE_ANOTHER_MENU);
         }
     }
-
-
 }

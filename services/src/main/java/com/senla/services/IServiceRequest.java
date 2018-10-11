@@ -8,9 +8,9 @@ public interface IServiceRequest extends IService <Request>{
 
     void addBookRequest(Request request);
 
-    List<Request> sortRequestsByQuantity();
+    List<Request> getRequestsSortedByQuantity();
 
-    List<Request> sortRequestsByAlphabet();
+    List<Request> getRequestsSortedByAlphabet();
 
     List<Request> getAll();
 

@@ -149,17 +149,23 @@ public class OrderDao implements IOrderDao {
         return null;
     }
 
+    @Override
+    public void copyOrder(Connection connection, Long id) throws SQLException {
+        Order order = getById(connection, id);
+        add(connection,order);
+    }
+
     private List<Order> getOrders(Connection connection, String sql) throws SQLException {
         List<Order> orders = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet result = statement.executeQuery()) {
             while (result.next()) {
                 Order order = new Order();
-                order.setId(result.getLong("id"));
-                order.setDateOfStartedOrder(result.getDate("dateOfStartedOrder"));
-                order.setDateOfCompletedOrder(result.getDate("dateOfCompletedOrder"));
-                order.setCompletedOrder(result.getBoolean("isCompletedOrder"));
-                order.setBook(bookDao.getById(connection, result.getLong("book_id")));
+                order.setId(result.getLong(ID));
+                order.setDateOfStartedOrder(result.getDate(DATE_OF_STARTED_ORDER));
+                order.setDateOfCompletedOrder(result.getDate(DATE_OF_COMPLETED_ORDER));
+                order.setCompletedOrder(result.getBoolean(IS_COMPLETED_ORDER));
+                order.setBook(bookDao.getById(connection, result.getLong(BOOK_ID)));
                 orders.add(order);
             }
         }

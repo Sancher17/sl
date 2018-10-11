@@ -9,8 +9,6 @@ import entities.Request;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +18,13 @@ import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_CSV;
 public class ServiceRequest extends Service implements IServiceRequest {
 
     private static final Logger log = Logger.getLogger(ServiceRequest.class);
+
+    private static final String ADDED_REQUEST = "Добавлен запрос на книгу: ";
+    private static final String REQUESTS_SORTED_BY_QUANTITY = "Запросы отсортированы по количеству запросов";
+    private static final String REQUESTS_SORTED_BY_ALPHABET = "Запросы отсортированы по алфавиту";
+
     private IRequestDao requestDao;
     private IFileWorker fileWorker;
-
-    private Connection connection = ConnectionDB.getConnection();
 
     public ServiceRequest() {
         this.requestDao = DependencyInjection.getBean(IRequestDao.class);
@@ -32,9 +33,11 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public void addBookRequest(Request request) {
-        notifyObservers("Добавлен запрос на книгу: " + request.getRequireNameBook());
+        Connection connection = ConnectionDB.getConnection();
+        notifyObservers(ADDED_REQUEST + request.getRequireNameBook());
         boolean exist = false;
         try {
+            connection.setAutoCommit(false);
             for (Request aRequest : requestDao.getAll(connection)) {
                 if (aRequest != null) {
                     if (aRequest.getRequireNameBook().equals(request.getRequireNameBook())) {
@@ -48,94 +51,97 @@ public class ServiceRequest extends Service implements IServiceRequest {
                 request.setRequireQuantity(1);
                 requestDao.add(connection, request);
             }
-        }catch (SQLException e){
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
-        }
-    }
-
-    @Override
-    public List<Request> sortRequestsByQuantity() {
-        notifyObservers("Запросы отсортированы по количеству запросов");
-        return getRequests("SELECT * FROM request ORDER BY requireQuantity");
-    }
-
-    @Override
-    public List<Request> sortRequestsByAlphabet() {
-        notifyObservers("Запросы отсортированы по алфавиту");
-        return getRequests("SELECT * FROM request ORDER BY requireNameBook");
-    }
-
-    private List<Request> getRequests(String sql) {
-        List<Request> requests = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet result = statement.executeQuery()) {
-            while (result.next()) {
-                Request request = new Request();
-                request.setId(result.getLong("id"));
-                request.setRequireNameBook(result.getString("requireNameBook"));
-                request.setRequireIsCompleted(result.getBoolean("requireIsCompleted"));
-                request.setRequireQuantity(result.getInt("requireQuantity"));
-                requests.add(request);
-            }
+            connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные из БД " + e);
+            String message = CAN_NOT_ADD_DATA_TO_BD;
+            log.error(message + e);
+            notifyObservers(message);
+            try {
+                connection.setAutoCommit(true);
+                connection.rollback();
+            } catch (SQLException e1) {
+                log.error(CAN_NOT_DO_ROLLBACK + e1);
+            }
         }
-        return requests;
+    }
+
+    @Override
+    public List<Request> getRequestsSortedByQuantity() {
+        Connection connection = ConnectionDB.getConnection();
+        notifyObservers(REQUESTS_SORTED_BY_QUANTITY);
+        try {
+            return requestDao.getSortedByQuantity(connection);
+        } catch (SQLException e) {
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Request> getRequestsSortedByAlphabet() {
+        Connection connection = ConnectionDB.getConnection();
+        notifyObservers(REQUESTS_SORTED_BY_ALPHABET);
+        try {
+            return requestDao.getSortedByAlphabet(connection);
+        } catch (SQLException e) {
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
+        }
+        return null;
     }
 
     @Override
     public List<Request> getAll() {
+        Connection connection = ConnectionDB.getConnection();
         try {
             return requestDao.getAll(connection);
         }catch (SQLException e){
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
     public List<Request> getCompletedRequests() {
-        List<Request> requests = new ArrayList<>();
+        Connection connection = ConnectionDB.getConnection();
         try {
-            for (Request request : requestDao.getAll(connection)) {
-                if (request.getRequireIsCompleted()) {
-                    requests.add(request);
-                }
-            }
-            return requests;
+            return requestDao.getCompleted(connection);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
     public List<Request> getNotCompletedRequests() {
-        List<Request> requests = new ArrayList<>();
+        Connection connection = ConnectionDB.getConnection();
         try {
-            for (Request request : requestDao.getAll(connection)) {
-                if (!request.getRequireIsCompleted()) {
-                    requests.add(request);
-                }
-            }
-            return requests;
+            return requestDao.getNotCompleted(connection);
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
         return null;
     }
 
     @Override
     public void exportToCsv() {
+        Connection connection = ConnectionDB.getConnection();
         try {
             super.writeToCsv(requestDao.getAll(connection));
         } catch (SQLException e) {
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+            String message = NO_DATA_FROM_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
     }
 

@@ -8,7 +8,8 @@ public interface IPropertyHolder {
 
     void allowMArkRequest();
 
-    void pathsForDataFiles();
-
     void pathsForCsvFiles();
+
+    void dbConnection();
+
 }

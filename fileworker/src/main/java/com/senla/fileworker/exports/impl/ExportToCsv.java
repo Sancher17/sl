@@ -1,7 +1,8 @@
-package com.senla.fileworker.exports;
+package com.senla.fileworker.exports.impl;
 
 import com.senla.fileworker.annotations.CsvEntity;
 import com.senla.fileworker.annotations.CsvProperty;
+import com.senla.fileworker.exports.IExportToCsv;
 import org.apache.log4j.Logger;
 
 import java.io.FileNotFoundException;
@@ -23,20 +24,26 @@ public class ExportToCsv<T> implements IExportToCsv {
 
     private static final Logger log = Logger.getLogger(ExportToCsv.class.getSimpleName());
 
+    private static final String NO_ACCESS_TO_DATA = "Нет доступа к данным ";
+    private static final String NO_FILE_FOR_WRITING = "Файл для записи не найден ";
+    private static final String WINDOWS_1251 = "Windows-1251";
+    private static final String NULL = "null";
+    private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
     @Override
     public void write(List list) {
         String data = null;
         try {
             data = readFromList(list);
         } catch (IllegalAccessException e) {
-            log.error("Нет доступа к данным " + e);
+            log.error(NO_ACCESS_TO_DATA + e);
         }
 
         try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(
-                new FileOutputStream(PATH_FOR_CSV + FILE_NAME), Charset.forName("Windows-1251")))) {
+                new FileOutputStream(PATH_FOR_CSV + FILE_NAME), Charset.forName(WINDOWS_1251)))) {
             pw.write(data);
         } catch (FileNotFoundException e) {
-            log.error("Файл для записи не нейден " + e);
+            log.error(NO_FILE_FOR_WRITING + e);
         }
     }
 
@@ -92,12 +99,11 @@ public class ExportToCsv<T> implements IExportToCsv {
     }
 
     private String checkDate(T element, Field field) throws IllegalAccessException {
-        DateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String testDate = String.valueOf(field.get(element));
-        if (testDate.equals("null")) {
-            return "null";
+        if (testDate.equals(NULL)) {
+            return NULL;
         }
-        return sdf.format(field.get(element));
+        return dateFormat.format(field.get(element));
     }
 
     private String twoLists(List value) {

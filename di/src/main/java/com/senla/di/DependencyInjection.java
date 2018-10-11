@@ -12,6 +12,9 @@ import java.util.List;
 public class DependencyInjection {
 
     private static final Logger log = Logger.getLogger(DependencyInjection.class);
+    public static final String NO_SUCH_CLASS = "Не найден класс ";
+    public static final String PROBLEM_WITH_DEPENDENCY = "Проблемы с разрешением зависимостей ";
+    public static final String PROBLEM_WITH_SINGELTON_DEPENDENCY = "Проблемы с разрешением зависимостей сингелтона ";
     private static IPropertyHolder property = new PropertyHolder();
 
     private DependencyInjection() {
@@ -28,8 +31,7 @@ public class DependencyInjection {
             }
             return (T) clazz.newInstance();
         } catch (ReflectiveOperationException e) {
-            log.error("Не найден класс " + e);
-            System.out.println("Не найден класс " + e);
+            log.error(NO_SUCH_CLASS + e);
             return null;
         } catch (ArrayIndexOutOfBoundsException e) {
             return getSingelton(anInterface);
@@ -49,7 +51,7 @@ public class DependencyInjection {
         } catch (ArrayIndexOutOfBoundsException e) {
             return getSingelton(aClass);
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-            log.error("Проблемы с разрешением зависимостей " + e);
+            log.error(PROBLEM_WITH_DEPENDENCY + e);
         }
         return null;
     }
@@ -59,7 +61,7 @@ public class DependencyInjection {
             Class<?> clazz = Class.forName(property.loadBean(aClass));
             return (T) clazz.getMethod("getInstance").invoke(null);
         } catch (IllegalAccessException | InvocationTargetException | ClassNotFoundException | NoSuchMethodException e) {
-            log.error("Проблемы с разрешением зависимостей сингелтона " + e);
+            log.error(PROBLEM_WITH_SINGELTON_DEPENDENCY + e);
         }
         return null;
     }

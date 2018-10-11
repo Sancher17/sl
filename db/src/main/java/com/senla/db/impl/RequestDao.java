@@ -14,91 +14,117 @@ import java.util.List;
 
 public class RequestDao implements IRequestDao {
 
-    private static final Logger log = Logger.getLogger(RequestDao.class);
-    private Connection connection;
-
-    public RequestDao() {
-        this.connection = ConnectionDB.getConnection();
-    }
+    private static final String ID = "id";
+    private static final String REQUIRE_NAME_BOOK = "requireNameBook";
+    private static final String REQUIRE_IS_COMPLETED = "requireIsCompleted";
+    private static final String REQUIRE_QUANTITY = "requireQuantity";
 
     @Override
-    public void add(Connection connection, Request request) {
+    public void add(Connection connection, Request request) throws SQLException {
         String sql = "INSERT INTO request (requireNameBook, requireIsCompleted, requireQuantity) VALUES (?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setString(1, request.getRequireNameBook());
             statement.setBoolean(2, request.getRequireIsCompleted());
             statement.setInt(3, request.getRequireQuantity());
             statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error("Не удачная попытка добавить Request в БД - " + e);
         }
     }
 
     @Override
-    public void deleteById(Connection connection, Long id) {
+    public void deleteById(Connection connection, Long id) throws SQLException {
         String sql = "DELETE FROM request WHERE id =" + id;
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error("Не удачная попытка удалить Request из БД - " + e);
         }
     }
 
     @Override
-    public Request getById(Connection connection, Long id) {
+    public Request getById(Connection connection, Long id) throws SQLException {
         String sql = "SELECT * FROM request WHERE id="+id;
         Request request = new Request();
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet result = statement.executeQuery();
             if(result.next()){
-                request.setId(result.getLong("id"));
-                request.setRequireNameBook(result.getString("requireNameBook"));
-                request.setRequireIsCompleted(result.getBoolean("requireIsCompleted"));
-                request.setRequireQuantity(result.getInt("requireQuantity"));
+                request.setId(result.getLong(ID));
+                request.setRequireNameBook(result.getString(REQUIRE_NAME_BOOK));
+                request.setRequireIsCompleted(result.getBoolean(REQUIRE_IS_COMPLETED));
+                request.setRequireQuantity(result.getInt(REQUIRE_QUANTITY));
                 return request;
             }
-        } catch (SQLException e) {
-            log.error("Не удачная попытка получить Request из БД - " + e);
         }
         return null;
     }
 
     @Override
-    public void update(Connection connection, Request request) {
+    public void update(Connection connection, Request request) throws SQLException{
         String sql = "UPDATE request SET requireQuantity=?, requireIsCompleted=? WHERE id=?;";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, request.getRequireQuantity());
             statement.setBoolean(2, request.getRequireIsCompleted());
             statement.setLong(3,request.getId());
             statement.execute();
-        } catch (SQLException e) {
-            log.error("Не удачная попытка обновить Request - " + e);
         }
     }
 
 
     @Override
-    public List<Request> getAll(Connection connection) {
+    public List<Request> getAll(Connection connection) throws SQLException{
         List<Request> requests = new ArrayList<>();
         String sql = "SELECT * FROM request";
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet result = statement.executeQuery();
             while (result.next()){
                 Request request = new Request();
-                request.setId(result.getLong("id"));
-                request.setRequireNameBook(result.getString("requireNameBook"));
-                request.setRequireIsCompleted(result.getBoolean("requireIsCompleted"));
-                request.setRequireQuantity(result.getInt("requireQuantity"));
+                request.setId(result.getLong(ID));
+                request.setRequireNameBook(result.getString(REQUIRE_NAME_BOOK));
+                request.setRequireIsCompleted(result.getBoolean(REQUIRE_IS_COMPLETED));
+                request.setRequireQuantity(result.getInt(REQUIRE_QUANTITY));
                 requests.add(request);
             }
-        } catch (SQLException e) {
-            log.error("Не удачная попытка получить список Request из БД - " + e);
         }
         return requests;
     }
 
     @Override
-    public void addAll(Connection connection, List<Request> requests) {
+    public void addAll(Connection connection, List<Request> requests) throws SQLException{
+        for (Request request : requests) {
+            add(connection, request);
+        }
+    }
 
+    @Override
+    public List<Request> getSortedByQuantity(Connection connection) throws SQLException {
+        return getRequests(connection, "SELECT * FROM request ORDER BY requireQuantity;");
+    }
+
+    @Override
+    public List<Request> getSortedByAlphabet(Connection connection) throws SQLException {
+        return getRequests(connection,"SELECT * FROM request ORDER BY requireNameBook;");
+    }
+
+    @Override
+    public List<Request> getCompleted(Connection connection) throws SQLException {
+        return getRequests(connection, "SELECT * FROM request WHERE requireIsCompleted='1';");
+    }
+
+    @Override
+    public List<Request> getNotCompleted(Connection connection) throws SQLException {
+        return getRequests(connection, "SELECT * FROM request WHERE requireIsCompleted='0';");
+    }
+
+    private List<Request> getRequests(Connection connection, String sql) throws SQLException {
+        List<Request> requests = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet result = statement.executeQuery()) {
+            while (result.next()){
+                Request request = new Request();
+                request.setId(result.getLong(ID));
+                request.setRequireNameBook(result.getString(REQUIRE_NAME_BOOK));
+                request.setRequireIsCompleted(result.getBoolean(REQUIRE_IS_COMPLETED));
+                request.setRequireQuantity(result.getInt(REQUIRE_QUANTITY));
+                requests.add(request);
+            }
+        }
+        return requests;
     }
 }

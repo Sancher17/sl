@@ -37,6 +37,7 @@ public interface IBookShop {
     Double getOrdersFullAmountByPeriod(Date startDate, Date endDate) ;
     Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate);
     Order getOrderById(Long id);
+    void copyOrder(Long id);
 
     void addRequest(Request request);
     List<Request> getRequests();
@@ -54,5 +55,4 @@ public interface IBookShop {
 
     void addObserver(Observer o);
     void deleteObserver(Observer o);
-
 }

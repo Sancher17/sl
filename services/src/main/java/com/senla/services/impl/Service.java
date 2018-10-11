@@ -18,10 +18,15 @@ import static com.senla.mainmodule.constants.Constants.PATH_FOR_CSV;
 
 public abstract class Service<T> extends Observable {
 
+    static final String NO_DATA_FROM_BD = "Не удалось получить данные с БД ";
+    static final String CAN_NOT_ADD_DATA_TO_BD = "Не удачная попытка добавить данные в БД ";
+    static final String CAN_NOT_DO_ROLLBACK = "Не удачная попытка сделать rollback ";
+    private static final String FILE_SAVED_IN_FOLDER = "Файл сохранен в папку: ";
+
     private static final Logger log = Logger.getLogger(Service.class);
+
     private List<Observer> subscribers = new ArrayList<>();
     private IFileWorker fileWorker = DependencyInjection.getBean(IFileWorker.class);
-    Connection connection = ConnectionDB.getConnection();
 
     @Override
     public void addObserver(Observer o) {
@@ -40,12 +45,13 @@ public abstract class Service<T> extends Observable {
         }
     }
 
-    void writeToCsv(List<T> list){
+    void writeToCsv(List<T> list) {
         fileWorker.exportToCsv(list);
-        notifyObservers("Файл сохранен в папку: " + PATH_FOR_CSV + FILE_NAME);
+        notifyObservers(FILE_SAVED_IN_FOLDER + PATH_FOR_CSV + FILE_NAME);
     }
 
     void merge(List<T> importlist, GenericDAO<T> dao) {
+        Connection connection = ConnectionDB.getConnection();
         List<T> listExistingEntry = new ArrayList<>();
         List<T> listNotExistingEntry = new ArrayList<>();
         boolean exist;
@@ -66,9 +72,10 @@ public abstract class Service<T> extends Observable {
                 dao.update(connection, element);
             }
             dao.addAll(connection, listNotExistingEntry);
-        }catch (SQLException e){
-            log.error("Не удалось получить данные с БД " + e);
-            notifyObservers("Не удалось получить данные с БД");
+        } catch (SQLException e) {
+            String message = CAN_NOT_ADD_DATA_TO_BD;
+            log.error(message + e);
+            notifyObservers(message);
         }
     }
 }

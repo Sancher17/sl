@@ -9,13 +9,15 @@ import java.util.Date;
 public class ParseDate {
 
     private static final Logger log = Logger.getLogger(ParseDate.class);
+    private static final String DATE_PARSING_ERROR = "Ошибка парсинга даты ";
+    private static final String DATE_PATTERN = "dd.M.yyyy";
 
     public static Date parseDate(String date) {
         try{
-            SimpleDateFormat sdf = new SimpleDateFormat("dd.M.yyyy");
-            return sdf.parse(date);
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+            return dateFormat.parse(date);
         }catch (ParseException e) {
-            log.error("Ошибка парсинга даты " + e);
+            log.error(DATE_PARSING_ERROR + e);
         }
         return null;
     }
