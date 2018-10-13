@@ -44,7 +44,7 @@ class MenuBuilder implements Observer {
     private static final String ENTER_BOOK_ID = "введите Id книги: ";
     private static final String DESCRIPTION_BY_ID = "Описание книги по Id";
     private static final String NO_BOOK_WITH_SUCH_ID = "нет книги с таким ID";
-    private static final String NO_BOOKS_SUCH_CRETERIA = "нет книг по заданным критериям";
+    private static final String NO_BOOKS_SUCH_CRITERIA = "нет книг по заданным критериям";
     private static final String BOOKS_PRINT_HEAD = "id/Название/дата публикации/цена/наличие/дата добавления в магазин/описание/залежавсееся";
 
     //ORDER
@@ -71,7 +71,6 @@ class MenuBuilder implements Observer {
     private static final String PRINT_ORDER_BY_ID = "Заказ по Id";
     private static final String NO_ORDER_WITH_SUCH_ID = "Нет заказа с таким ID";
 
-
     //REQUEST
     private static final String ADD_REQUEST = "Добавить запрос";
     private static final String PRINT_REQUESTS = "Напечатать все запросы";
@@ -82,7 +81,6 @@ class MenuBuilder implements Observer {
     private static final String EXPORT_REQUESTS = "Экспорт запросов";
     private static final String IMPORT_REQUESTS = "Импорт запросов";
     private static final String REQUESTS_PRINT_HEAD = "id/Название книги/удовлетворен запрос/количество запросов";
-
 
     private Menu menu;
     private static Date TODAY = new Date();
@@ -243,7 +241,7 @@ class MenuBuilder implements Observer {
                 Printer.println(book.toString());
             }
         } else {
-            Printer.println(NO_BOOKS_SUCH_CRETERIA);
+            Printer.println(NO_BOOKS_SUCH_CRITERIA);
         }
     }
     private void printBooksPeriodMoreSixMonthByPrice() {
@@ -255,7 +253,7 @@ class MenuBuilder implements Observer {
                 Printer.println(book.toString());
             }
         } else {
-            Printer.println(NO_BOOKS_SUCH_CRETERIA);
+            Printer.println(NO_BOOKS_SUCH_CRITERIA);
         }
     }
     private void printBookHead() {

@@ -12,9 +12,10 @@ import java.util.List;
 public class DependencyInjection {
 
     private static final Logger log = Logger.getLogger(DependencyInjection.class);
-    public static final String NO_SUCH_CLASS = "Не найден класс ";
-    public static final String PROBLEM_WITH_DEPENDENCY = "Проблемы с разрешением зависимостей ";
-    public static final String PROBLEM_WITH_SINGELTON_DEPENDENCY = "Проблемы с разрешением зависимостей сингелтона ";
+    private static final String NO_SUCH_CLASS = "Не найден класс ";
+    private static final String PROBLEM_WITH_DEPENDENCY = "Проблемы с разрешением зависимостей ";
+    private static final String PROBLEM_WITH_SINGELTON_DEPENDENCY = "Проблемы с разрешением зависимостей сингелтона ";
+
     private static IPropertyHolder property = new PropertyHolder();
 
     private DependencyInjection() {
