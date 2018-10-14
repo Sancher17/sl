@@ -8,7 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import static com.senla.propertiesmodule.constants.ConstantsProperties.*;
+import static com.senla.constants.Constants.*;
+
 
 public class PropertyHolder implements IPropertyHolder {
 
@@ -56,7 +57,7 @@ public class PropertyHolder implements IPropertyHolder {
 
     @Override
     public void pathsForCsvFiles() {
-        Constants.PATH_FOR_CSV = property.getProperty(PATH_EXPORT_TO_CSV);
+        PATH_FOR_CSV = property.getProperty(PATH_EXPORT_TO_CSV);
     }
 
     @Override
