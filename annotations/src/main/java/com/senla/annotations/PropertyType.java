@@ -1,4 +1,4 @@
-package com.senla.fileworker.annotations;
+package com.senla.annotations;
 
 public enum PropertyType {
 

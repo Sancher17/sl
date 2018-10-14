@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import static com.senla.mainmodule.constants.Constants.FILE_NAME;
-import static com.senla.mainmodule.constants.Constants.PATH_FOR_CSV;
+import static com.senla.constants.Constants.*;
+
 
 public abstract class Service<T> extends Observable {
 
@@ -45,6 +45,7 @@ public abstract class Service<T> extends Observable {
         }
     }
 
+    @SuppressWarnings("unchecked")
     void writeToCsv(List<T> list) {
         fileWorker.exportToCsv(list);
         notifyObservers(FILE_SAVED_IN_FOLDER + PATH_FOR_CSV + FILE_NAME);

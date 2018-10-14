@@ -3,7 +3,6 @@ package com.senla.dao;
 import com.senla.db.IBookDao;
 import com.senla.db.connection.ConnectionDB;
 import com.senla.db.impl.BookDao;
-import com.senla.di.DependencyInjection;
 import entities.Book;
 import org.junit.Test;
 
@@ -26,7 +25,7 @@ public class BookDaoTest {
     private Boolean isAvailable = true;
     private String description = "Book for test";
 
-    void init(){
+    private void init(){
         book.setNameBook(name);
         book.setPrice(price);
         book.setOld(isOld);

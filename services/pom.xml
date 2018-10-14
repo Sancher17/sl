@@ -10,28 +10,10 @@
         <version>1</version>
     </parent>
 
-    <artifactId>db</artifactId>
+    <artifactId>services</artifactId>
     <version>1</version>
 
     <dependencies>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.46</version>
-        </dependency>
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>apache-log4j-extras</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.bookshop</groupId>
-            <artifactId>util</artifactId>
-            <version>1</version>
-        </dependency>
-
         <dependency>
             <groupId>com.bookshop</groupId>
             <artifactId>model</artifactId>
@@ -40,7 +22,19 @@
 
         <dependency>
             <groupId>com.bookshop</groupId>
+            <artifactId>db</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bookshop</groupId>
             <artifactId>constants</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bookshop</groupId>
+            <artifactId>fileworker</artifactId>
             <version>1</version>
         </dependency>
     </dependencies>

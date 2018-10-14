@@ -1,10 +1,6 @@
 package entities;
 
-import com.senla.fileworker.annotations.CsvEntity;
-import com.senla.fileworker.annotations.CsvProperty;
-import com.senla.fileworker.annotations.PropertyType;
-
-import java.io.Serializable;
+import com.senla.annotations.*;
 
 @CsvEntity(fileName = "requests.csv", valueSeparator =";")
 public class Request implements Cloneable {

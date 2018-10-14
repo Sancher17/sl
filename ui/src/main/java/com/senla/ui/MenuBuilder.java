@@ -1,7 +1,7 @@
 package com.senla.ui;
 
 import com.senla.di.DependencyInjection;
-import com.senla.mainmodule.facade.IBookShop;
+import com.senla.facade.IBookShop;
 import com.senla.util.Printer;
 import entities.Book;
 import entities.Order;
@@ -164,6 +164,7 @@ class MenuBuilder implements Observer {
         System.exit(0);
     }
 
+    @SuppressWarnings("all")
     private void activateMenu(Menu menu) {
         this.menu = menu;
         Printer.println(menu.generateText());

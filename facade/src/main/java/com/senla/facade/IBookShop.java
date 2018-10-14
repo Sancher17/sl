@@ -1,5 +1,5 @@
 
-package com.senla.mainmodule.facade;
+package com.senla.facade;
 
 import entities.Book;
 import entities.Order;

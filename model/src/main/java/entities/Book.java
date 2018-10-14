@@ -1,8 +1,9 @@
 package entities;
 
-import com.senla.fileworker.annotations.*;
 
-import java.io.Serializable;
+
+import com.senla.annotations.*;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;

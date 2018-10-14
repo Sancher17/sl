@@ -1,4 +1,4 @@
-package com.senla.mainmodule.facade;
+package com.senla.facade;
 
 import com.senla.di.DependencyInjection;
 import com.senla.propertiesmodule.IPropertyHolder;
@@ -28,7 +28,7 @@ public class BookShop extends Observable implements IBookShop, Observer {
         this.serviceExit = DependencyInjection.getBean(IServiceExit.class);
         this.propertyHolder = DependencyInjection.getBean(IPropertyHolder.class);
 
-        bookService.addObserver(this);
+        Objects.requireNonNull(bookService).addObserver(this);
         orderService.addObserver(this);
         requestService.addObserver(this);
 

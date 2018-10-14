@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.PATH_REQUEST_CSV;
+import static com.senla.constants.Constants.*;
 
 public class ServiceRequest extends Service implements IServiceRequest {
 
@@ -126,6 +126,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void exportToCsv() {
         Connection connection = ConnectionDB.getConnection();
@@ -137,6 +138,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void importFromCsv() {
         List<Request> importListFromFile = fileWorker.importListFromFile(PATH_REQUEST_CSV, Request.class);

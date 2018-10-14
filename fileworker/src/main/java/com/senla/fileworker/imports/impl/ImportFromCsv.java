@@ -6,8 +6,6 @@ import com.senla.db.IOrderDao;
 import com.senla.db.IRequestDao;
 import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
-import com.senla.fileworker.annotations.CsvEntity;
-import com.senla.fileworker.annotations.CsvProperty;
 import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.fileworker.imports.parser.ParseDate;
 import entities.Book;
@@ -22,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.fileworker.annotations.PropertyType.CompositeProperty;
+import com.senla.annotations.*;
+
+import static com.senla.annotations.PropertyType.CompositeProperty;
 
 public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
 
@@ -42,6 +42,7 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
         return createdObjectList;
     }
 
+    @SuppressWarnings("unchecked")
     private <T> T getObject(String line, Class clazz)  {
         T obj = null;
         Class<?> aClass = null;
@@ -51,7 +52,7 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
         } catch (ClassNotFoundException e) {
             log.error(NO_CLASS_FOR_IMPORT_ENTITY + e);
         }
-        if (aClass.isAnnotationPresent(CsvEntity.class)) {
+        if (aClass != null && aClass.isAnnotationPresent(CsvEntity.class)) {
             Field[] fields = clazz.getDeclaredFields();
             int count = 0;
             try {
@@ -87,7 +88,9 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
         }
         Long idEntity = Long.valueOf(s);
         try {
-            field.set(obj, dao.getById(ConnectionDB.getConnection(),idEntity));
+            if (dao != null) {
+                field.set(obj, dao.getById(ConnectionDB.getConnection(),idEntity));
+            }
         } catch (SQLException e) {
             log.error(NO_ACCESS_TO_BD + e);
         }

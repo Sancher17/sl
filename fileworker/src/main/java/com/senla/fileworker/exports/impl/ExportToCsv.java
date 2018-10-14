@@ -1,7 +1,6 @@
 package com.senla.fileworker.exports.impl;
 
-import com.senla.fileworker.annotations.CsvEntity;
-import com.senla.fileworker.annotations.CsvProperty;
+import com.senla.annotations.*;
 import com.senla.fileworker.exports.IExportToCsv;
 import org.apache.log4j.Logger;
 
@@ -17,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.fileworker.annotations.PropertyType.CompositeProperty;
-import static com.senla.mainmodule.constants.Constants.*;
+import static com.senla.annotations.PropertyType.CompositeProperty;
+import static com.senla.constants.Constants.*;
 
 public class ExportToCsv<T> implements IExportToCsv {
 
@@ -30,6 +29,7 @@ public class ExportToCsv<T> implements IExportToCsv {
     private static final String NULL = "null";
     private DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
+    @SuppressWarnings("unchecked")
     @Override
     public void write(List list) {
         String data = null;
@@ -41,7 +41,9 @@ public class ExportToCsv<T> implements IExportToCsv {
 
         try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(
                 new FileOutputStream(PATH_FOR_CSV + FILE_NAME), Charset.forName(WINDOWS_1251)))) {
-            pw.write(data);
+            if (data != null) {
+                pw.write(data);
+            }
         } catch (FileNotFoundException e) {
             log.error(NO_FILE_FOR_WRITING + e);
         }

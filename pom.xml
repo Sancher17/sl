@@ -9,13 +9,82 @@
     <packaging>pom</packaging>
     <version>1</version>
 
-
     <modules>
-        <!--<module>module1</module>-->
-        <!--<module>nodule2</module>-->
+        <module>data</module>
+        <module>db</module>
+        <module>di</module>
+        <module>facade</module>
+        <module>fileworker</module>
+        <module>model</module>
+        <module>properties</module>
+        <module>services</module>
+        <module>ui</module>
+        <module>util</module>
+        <module>constants</module>
+        <module>annotations</module>
     </modules>
 
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <maven.test.skip>true</maven.test.skip>
+    </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.bookshop</groupId>
+            <artifactId>di</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                        <compress>true</compress>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>libs/</classpathPrefix>
+                            <mainClass>com.senla.ui.RunUi</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <version>3.1.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+                <version>3.1.1</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>

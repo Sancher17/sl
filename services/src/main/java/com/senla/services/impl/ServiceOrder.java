@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.PATH_ORDER_CSV;
+import static com.senla.constants.Constants.*;
 
 public class ServiceOrder extends Service implements IServiceOrder {
 
@@ -239,6 +239,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void exportToCsv() {
         Connection connection = ConnectionDB.getConnection();
@@ -250,6 +251,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void importFromCsv() {
         List<Order> importListFromFile = fileWorker.importListFromFile(PATH_ORDER_CSV, Order.class);

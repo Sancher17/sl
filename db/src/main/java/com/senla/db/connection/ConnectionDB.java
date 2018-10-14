@@ -8,7 +8,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static com.senla.mainmodule.constants.Constants.*;
+import static com.senla.constants.Constants.*;
+
 
 public class ConnectionDB {
 

@@ -1,6 +1,6 @@
 package com.senla.propertiesmodule;
 
-import com.senla.mainmodule.constants.Constants;
+import com.senla.constants.Constants;
 import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
@@ -8,8 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import static com.senla.mainmodule.constants.Constants.*;
-import static com.senla.propertiesmodule.constants.ConstantsProperties.PATH_FILE_PROPERTIES;
+import static com.senla.propertiesmodule.constants.ConstantsProperties.*;
 
 public class PropertyHolder implements IPropertyHolder {
 
@@ -57,7 +56,7 @@ public class PropertyHolder implements IPropertyHolder {
 
     @Override
     public void pathsForCsvFiles() {
-        PATH_FOR_CSV = property.getProperty(PATH_EXPORT_TO_CSV);
+        Constants.PATH_FOR_CSV = property.getProperty(PATH_EXPORT_TO_CSV);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.senla.mainmodule.constants;
+package com.senla.constants;
 
 public class Constants {
 

@@ -16,7 +16,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.mainmodule.constants.Constants.*;
+import static com.senla.constants.Constants.*;
+
 
 public class ServiceBook extends Service implements IServiceBook {
 
@@ -240,6 +241,7 @@ public class ServiceBook extends Service implements IServiceBook {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void exportToCsv() {
         Connection connection = ConnectionDB.getConnection();
@@ -251,6 +253,7 @@ public class ServiceBook extends Service implements IServiceBook {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void importFromCsv() {
         List<Book> importListFromFile = fileWorker.importListFromFile(PATH_BOOK_CSV, Book.class);
