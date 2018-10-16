@@ -1,26 +1,27 @@
 package com.senla.fileworker.imports.impl;
 
-import com.senla.db.GenericDAO;
-import com.senla.db.IBookDao;
-import com.senla.db.IOrderDao;
-import com.senla.db.IRequestDao;
-import com.senla.db.connection.ConnectionDB;
+import com.senla.annotations.CsvEntity;
+import com.senla.annotations.CsvProperty;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.fileworker.imports.parser.ParseDate;
+import com.senla.hibernate.GenericDAO;
+import com.senla.hibernate.IBookDao;
+import com.senla.hibernate.IOrderDao;
+import com.senla.hibernate.IRequestDao;
 import entities.Book;
 import entities.Order;
 import entities.Request;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.senla.annotations.*;
 
 import static com.senla.annotations.PropertyType.CompositeProperty;
 
@@ -30,6 +31,11 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
     private static final String NO_CLASS_FOR_IMPORT_ENTITY = "Не найден класс сущности импорта ";
     private static final String CAN_NOT_CREATE_INSTANCE = "Невозможно создать экземпляр класса / нет доступа к полям ";
     private static final String NO_ACCESS_TO_BD = "Нет доступа к БД ";
+
+    // TODO: 14.10.2018
+    private SessionFactory sessionFactory = new Configuration()
+            .configure("hibernate.cfg.xml")
+            .buildSessionFactory();
 
     public List<Object> importListFromFile(String path, Class clazz) {
         List<Object> createdObjectList = new ArrayList<>();
@@ -87,12 +93,10 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
             dao = DependencyInjection.getBean(IRequestDao.class);
         }
         Long idEntity = Long.valueOf(s);
-        try {
-            if (dao != null) {
-                field.set(obj, dao.getById(ConnectionDB.getConnection(),idEntity));
-            }
-        } catch (SQLException e) {
-            log.error(NO_ACCESS_TO_BD + e);
+        if (dao != null) {
+            // TODO: 14.10.2018  проверить работу
+            Session session = sessionFactory.openSession();
+            field.set(obj, dao.getById(session,idEntity));
         }
     }
 

@@ -1,19 +1,19 @@
 package com.senla.services.impl;
 
-import com.senla.db.GenericDAO;
-import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
+import com.senla.hibernate.GenericDAO;
+import com.senla.hibernate.util.HibernateUtil;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import static com.senla.constants.Constants.*;
+import static com.senla.constants.Constants.FILE_NAME;
+import static com.senla.constants.Constants.PATH_FOR_CSV;
 
 
 public abstract class Service<T> extends Observable {
@@ -27,6 +27,7 @@ public abstract class Service<T> extends Observable {
 
     private List<Observer> subscribers = new ArrayList<>();
     private IFileWorker fileWorker = DependencyInjection.getBean(IFileWorker.class);
+
 
     @Override
     public void addObserver(Observer o) {
@@ -52,30 +53,26 @@ public abstract class Service<T> extends Observable {
     }
 
     void merge(List<T> importlist, GenericDAO<T> dao) {
-        Connection connection = ConnectionDB.getConnection();
+        // TODO: 14.10.2018 могжет стоить убрать от сюда сессию
+        Session session = HibernateUtil.getSessionFactory().openSession();
         List<T> listExistingEntry = new ArrayList<>();
         List<T> listNotExistingEntry = new ArrayList<>();
         boolean exist;
-        try {
-            for (T element : importlist) {
-                exist = false;
-                for (T bookExist : dao.getAll(connection)) {
-                    if (element.equals(bookExist)) {
-                        listExistingEntry.add(element);
-                        exist = true;
-                    }
-                }
-                if (!exist) {
-                    listNotExistingEntry.add(element);
+        for (T element : importlist) {
+            exist = false;
+            for (T bookExist : dao.getAll(session)) {
+                if (element.equals(bookExist)) {
+                    listExistingEntry.add(element);
+                    exist = true;
                 }
             }
-            for (T element : listExistingEntry) {
-                dao.update(connection, element);
+            if (!exist) {
+                listNotExistingEntry.add(element);
             }
-            dao.addAll(connection, listNotExistingEntry);
-        } catch (SQLException e) {
-            log.error(CAN_NOT_ADD_DATA_TO_BD + e);
-            notifyObservers(CAN_NOT_ADD_DATA_TO_BD);
         }
+        for (T element : listExistingEntry) {
+            dao.update(session, element);
+        }
+        dao.addAll(session, listNotExistingEntry);
     }
 }

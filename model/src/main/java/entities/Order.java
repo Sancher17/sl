@@ -2,24 +2,37 @@ package entities;
 
 import com.senla.annotations.*;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-
+@Entity
+@Table(name = "orders")
 @CsvEntity(fileName = "orders.csv", valueSeparator =";")
-public class Order implements Cloneable {
+public class Order {
 
     private static final String DATE_PATTERN = "dd.MM.Y";
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Long id;
+
+    @Column(name = "dateOfStartedOrder")
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Date dateOfStartedOrder;
+
+    @Column(name = "dateOfCompletedOrder")
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Date dateOfCompletedOrder;
+
+    @Column(name = "isCompletedOrder")
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Boolean isCompletedOrder;
+
+//    @Column(name = "book_id")
     @CsvProperty(propertyType = PropertyType.CompositeProperty, keyField = "id")
     private Book book;
 

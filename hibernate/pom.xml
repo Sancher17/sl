@@ -2,24 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
     <parent>
-        <groupId>com.bookshop</groupId>
         <artifactId>bookshop</artifactId>
+        <groupId>com.bookshop</groupId>
         <version>1</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>db</artifactId>
-    <version>1</version>
+    <artifactId>hibernate</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.46</version>
-        </dependency>
 
+        <dependency>
+            <groupId>com.bookshop</groupId>
+            <artifactId>model</artifactId>
+            <version>1</version>
+        </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>apache-log4j-extras</artifactId>
@@ -34,15 +32,16 @@
 
         <dependency>
             <groupId>com.bookshop</groupId>
-            <artifactId>model</artifactId>
-            <version>1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.bookshop</groupId>
             <artifactId>constants</artifactId>
             <version>1</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.12</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
+
 
 </project>

@@ -22,7 +22,7 @@
 
         <dependency>
             <groupId>com.bookshop</groupId>
-            <artifactId>db</artifactId>
+            <artifactId>hibernate</artifactId>
             <version>1</version>
         </dependency>
 

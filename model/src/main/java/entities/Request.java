@@ -2,18 +2,30 @@ package entities;
 
 import com.senla.annotations.*;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "requests")
 @CsvEntity(fileName = "requests.csv", valueSeparator =";")
 public class Request implements Cloneable {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Long id;
+
+    @Column(name = "requireNameBook")
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private String requireNameBook;
+
+    @Column(name = "requireIsCompleted")
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Boolean requireIsCompleted;
+
+    @Column(name = "requireQuantity")
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Integer requireQuantity;
-
 
     public Request() {
     }
