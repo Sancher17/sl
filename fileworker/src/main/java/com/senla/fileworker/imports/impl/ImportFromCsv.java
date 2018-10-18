@@ -9,6 +9,7 @@ import com.senla.hibernate.GenericDAO;
 import com.senla.hibernate.IBookDao;
 import com.senla.hibernate.IOrderDao;
 import com.senla.hibernate.IRequestDao;
+import com.senla.hibernate.util.HibernateUtil;
 import entities.Book;
 import entities.Order;
 import entities.Request;
@@ -31,11 +32,6 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
     private static final String NO_CLASS_FOR_IMPORT_ENTITY = "Не найден класс сущности импорта ";
     private static final String CAN_NOT_CREATE_INSTANCE = "Невозможно создать экземпляр класса / нет доступа к полям ";
     private static final String NO_ACCESS_TO_BD = "Нет доступа к БД ";
-
-    // TODO: 14.10.2018
-    private SessionFactory sessionFactory = new Configuration()
-            .configure("hibernate.cfg.xml")
-            .buildSessionFactory();
 
     public List<Object> importListFromFile(String path, Class clazz) {
         List<Object> createdObjectList = new ArrayList<>();
@@ -94,8 +90,7 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
         }
         Long idEntity = Long.valueOf(s);
         if (dao != null) {
-            // TODO: 14.10.2018  проверить работу
-            Session session = sessionFactory.openSession();
+            Session session = HibernateUtil.getSessionFactory().openSession();
             field.set(obj, dao.getById(session,idEntity));
         }
     }

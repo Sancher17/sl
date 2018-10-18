@@ -77,7 +77,7 @@ class MenuBuilder implements Observer {
     private static final String PRINT_COMPLETED_REQUESTS = "Напечатать все выполненые запросы";
     private static final String PRINT_NOT_COMPLETED_REQUESTS = "Напечатать все не выполненые запросы";
     private static final String SORT_REQUEST_BY_ALPHABET = "Сортировать запросы по алфавиту";
-    private static final String SORT_REQUEST_BY_QUANTITY = "Сортироватьзапросы по количеству";
+    private static final String SORT_REQUEST_BY_QUANTITY = "Сортировать запросы по количеству";
     private static final String EXPORT_REQUESTS = "Экспорт запросов";
     private static final String IMPORT_REQUESTS = "Импорт запросов";
     private static final String REQUESTS_PRINT_HEAD = "id/Название книги/удовлетворен запрос/количество запросов";
@@ -159,7 +159,7 @@ class MenuBuilder implements Observer {
     private void exit() {
         bookShop.deleteObserver(this);
         scanner.close();
-        bookShop.closeConnection();
+        bookShop.closeSessionFactory();
         Printer.println(APPLICATION_STOPPED);
         System.exit(0);
     }

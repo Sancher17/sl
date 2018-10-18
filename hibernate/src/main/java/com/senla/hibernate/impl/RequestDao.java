@@ -34,7 +34,7 @@ public class RequestDao implements IRequestDao {
     }
 
     @Override
-    public void deleteById(Session session, Long id) {
+    public void delete(Session session, Request request) {
 
     }
 

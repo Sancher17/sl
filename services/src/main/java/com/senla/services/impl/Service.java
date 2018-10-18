@@ -3,8 +3,6 @@ package com.senla.services.impl;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
 import com.senla.hibernate.GenericDAO;
-import com.senla.hibernate.util.HibernateUtil;
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
@@ -20,14 +18,12 @@ public abstract class Service<T> extends Observable {
 
     static final String NO_DATA_FROM_BD = "Не удалось получить данные с БД ";
     static final String CAN_NOT_ADD_DATA_TO_BD = "Не удачная попытка добавить данные в БД ";
-    static final String CAN_NOT_DO_ROLLBACK = "Не удачная попытка сделать rollback ";
+    static final String CAN_NOT_WRITE_DATA_TO_FILE = "Не удачная запись данны в файл";
+    static final String CAN_NOT_ADD_DATA_FROM_FILE = "Не удачная попытка добавить данные из файла ";
+
     private static final String FILE_SAVED_IN_FOLDER = "Файл сохранен в папку: ";
-
-    private static final Logger log = Logger.getLogger(Service.class);
-
     private List<Observer> subscribers = new ArrayList<>();
     private IFileWorker fileWorker = DependencyInjection.getBean(IFileWorker.class);
-
 
     @Override
     public void addObserver(Observer o) {
@@ -52,9 +48,7 @@ public abstract class Service<T> extends Observable {
         notifyObservers(FILE_SAVED_IN_FOLDER + PATH_FOR_CSV + FILE_NAME);
     }
 
-    void merge(List<T> importlist, GenericDAO<T> dao) {
-        // TODO: 14.10.2018 могжет стоить убрать от сюда сессию
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    void merge(Session session, List<T> importlist, GenericDAO<T> dao) {
         List<T> listExistingEntry = new ArrayList<>();
         List<T> listNotExistingEntry = new ArrayList<>();
         boolean exist;

@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface IBookDao extends GenericDAO<Book> {
 
-    Book getByName(Session session, String name);
+    // TODO: 17.10.2018 не используется 
+//    Book getByName(Session session, String name);
 
     List<Book> getSortedByPrice(Session session);
 
@@ -23,6 +24,4 @@ public interface IBookDao extends GenericDAO<Book> {
     List<Book> getPeriodMoreSixMonthByPrice(Session session);
 
     List<Book> getNewBooks(Session session, Date periodOfMonth);
-
-
 }

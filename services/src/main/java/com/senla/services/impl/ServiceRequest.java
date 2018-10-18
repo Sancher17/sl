@@ -1,18 +1,18 @@
 package com.senla.services.impl;
 
-import com.senla.db.IRequestDao;
-import com.senla.db.connection.ConnectionDB;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
+import com.senla.hibernate.IRequestDao;
+import com.senla.hibernate.util.HibernateUtil;
 import com.senla.services.IServiceRequest;
 import entities.Request;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
-import static com.senla.constants.Constants.*;
+import static com.senla.constants.Constants.PATH_REQUEST_CSV;
 
 public class ServiceRequest extends Service implements IServiceRequest {
 
@@ -32,45 +32,41 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public void addBookRequest(Request request) {
-        Connection connection = ConnectionDB.getConnection();
-        notifyObservers(ADDED_REQUEST + request.getRequireNameBook());
+        Session session = HibernateUtil.getSessionFactory().openSession();
         boolean exist = false;
         try {
-            connection.setAutoCommit(false);
-            for (Request aRequest : requestDao.getAll(connection)) {
+            session.beginTransaction();
+            for (Request aRequest : requestDao.getAll(session)) {
                 if (aRequest != null) {
                     if (aRequest.getRequireNameBook().equals(request.getRequireNameBook())) {
                         exist = true;
                         aRequest.setRequireQuantity(aRequest.getRequireQuantity() + 1);
-                        requestDao.update(connection, aRequest);
+                        requestDao.update(session, aRequest);
                     }
                 }
             }
             if (!exist) {
                 request.setRequireQuantity(1);
-                requestDao.add(connection, request);
+                requestDao.add(session, request);
             }
-            connection.commit();
-            connection.setAutoCommit(true);
-        } catch (SQLException e) {
+            session.getTransaction().commit();
+            session.close();
+            notifyObservers(ADDED_REQUEST + request.getRequireNameBook());
+        } catch (HibernateException e) {
             log.error(CAN_NOT_ADD_DATA_TO_BD + e);
             notifyObservers(CAN_NOT_ADD_DATA_TO_BD);
-            try {
-                connection.setAutoCommit(true);
-                connection.rollback();
-            } catch (SQLException e1) {
-                log.error(CAN_NOT_DO_ROLLBACK + e1);
-            }
+            session.getTransaction().rollback();
+            session.close();
         }
     }
 
     @Override
     public List<Request> getRequestsSortedByQuantity() {
-        Connection connection = ConnectionDB.getConnection();
-        notifyObservers(REQUESTS_SORTED_BY_QUANTITY);
-        try {
-            return requestDao.getSortedByQuantity(connection);
-        } catch (SQLException e) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            List<Request> requests = requestDao.getSortedByQuantity(session);
+            notifyObservers(REQUESTS_SORTED_BY_QUANTITY);
+            return requests;
+        }  catch (HibernateException e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
         }
@@ -79,11 +75,11 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public List<Request> getRequestsSortedByAlphabet() {
-        Connection connection = ConnectionDB.getConnection();
-        notifyObservers(REQUESTS_SORTED_BY_ALPHABET);
-        try {
-            return requestDao.getSortedByAlphabet(connection);
-        } catch (SQLException e) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            List<Request> requests = requestDao.getSortedByAlphabet(session);
+            notifyObservers(REQUESTS_SORTED_BY_ALPHABET);
+            return requests;
+        }  catch (HibernateException e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
         }
@@ -92,10 +88,9 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public List<Request> getAll() {
-        Connection connection = ConnectionDB.getConnection();
-        try {
-            return requestDao.getAll(connection);
-        }catch (SQLException e){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            return requestDao.getAll(session);
+        }  catch (HibernateException e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
         }
@@ -104,10 +99,9 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public List<Request> getCompletedRequests() {
-        Connection connection = ConnectionDB.getConnection();
-        try {
-            return requestDao.getCompleted(connection);
-        } catch (SQLException e) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            return requestDao.getCompleted(session);
+        } catch (HibernateException e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
         }
@@ -116,10 +110,9 @@ public class ServiceRequest extends Service implements IServiceRequest {
 
     @Override
     public List<Request> getNotCompletedRequests() {
-        Connection connection = ConnectionDB.getConnection();
-        try {
-            return requestDao.getNotCompleted(connection);
-        } catch (SQLException e) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            return requestDao.getNotCompleted(session);
+        } catch (HibernateException e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
         }
@@ -129,12 +122,11 @@ public class ServiceRequest extends Service implements IServiceRequest {
     @SuppressWarnings("unchecked")
     @Override
     public void exportToCsv() {
-        Connection connection = ConnectionDB.getConnection();
-        try {
-            super.writeToCsv(requestDao.getAll(connection));
-        } catch (SQLException e) {
-            log.error(NO_DATA_FROM_BD + e);
-            notifyObservers(NO_DATA_FROM_BD);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            super.writeToCsv(requestDao.getAll(session));
+        } catch (HibernateException e) {
+            log.error(NO_DATA_FROM_BD + " / " + CAN_NOT_WRITE_DATA_TO_FILE + e);
+            notifyObservers(NO_DATA_FROM_BD + " / " + CAN_NOT_WRITE_DATA_TO_FILE);
         }
     }
 
@@ -143,6 +135,11 @@ public class ServiceRequest extends Service implements IServiceRequest {
     public void importFromCsv() {
         List<Request> importListFromFile = fileWorker.importListFromFile(PATH_REQUEST_CSV, Request.class);
         notifyObservers(PATH_REQUEST_CSV);
-        merge(importListFromFile, requestDao);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            merge(session, importListFromFile, requestDao);
+        } catch (Exception e) {
+            log.error(CAN_NOT_ADD_DATA_FROM_FILE + e);
+            notifyObservers(CAN_NOT_ADD_DATA_FROM_FILE);
+        }
     }
 }

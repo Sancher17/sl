@@ -46,7 +46,7 @@ public interface IBookShop {
     List<Request> sortRequestsByQuantity();
     List<Request> sortRequestsByAlphabet();
 
-    void closeConnection();
+    void closeSessionFactory();
 
     void exportBooksToCsv() ;
     void importBooksFromCsv();

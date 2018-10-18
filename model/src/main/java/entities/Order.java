@@ -32,7 +32,8 @@ public class Order {
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Boolean isCompletedOrder;
 
-//    @Column(name = "book_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "book_id")
     @CsvProperty(propertyType = PropertyType.CompositeProperty, keyField = "id")
     private Book book;
 

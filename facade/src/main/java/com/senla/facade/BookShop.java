@@ -140,8 +140,8 @@ public class BookShop extends Observable implements IBookShop, Observer {
     }
 
     // EXIT
-    public void closeConnection() {
-        serviceExit.closeConnection();
+    public void closeSessionFactory() {
+        serviceExit.closeSessionFactory();
     }
 
     // CSV - export

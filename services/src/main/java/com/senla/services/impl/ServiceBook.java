@@ -10,16 +10,13 @@ import com.senla.util.date.DateUtil;
 import entities.Book;
 import entities.Request;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import java.util.Date;
 import java.util.List;
 
-import static com.senla.constants.Constants.ALLOW_MARK_REQUESTS;
-import static com.senla.constants.Constants.BOOK_IS_OLD;
-import static com.senla.constants.Constants.PATH_BOOK_CSV;
-
+import static com.senla.constants.Constants.*;
 
 public class ServiceBook extends Service implements IServiceBook {
 
@@ -32,10 +29,6 @@ public class ServiceBook extends Service implements IServiceBook {
     private static final String BOOKS_SORTED_BY_DATE_OF_PUBLICATION = "Книги отсортированы по дате публикации\n";
     private static final String BOOKS_SORTED_BY_PRICE = "Книги отсортированы по цене\n";
     private static final String BOOKS_SORTED_BY_AVAILABILITY = "Книги отсортированы по доступности\n";
-    private static final String BOOKS_ADDED_TO_STORE_MORE_SIX_MONTH_SORTED_BY_DATE = "Книги добавленные в магазин более 6 месяцев назад, сортировка по дате\n";
-    private static final String BOOKS_ADDED_TO_STORE_MORE_SIX_MONTH_SORTED_BY_PRICE = "Книги добавленные в магазин более 6 месяцев назад, сортировка по цене\n";
-    public static final String CAN_NOT_WRITE_DATA_TO_FILE = "Не удачная запись данны в файл";
-    public static final String CAN_NOT_ADD_DATA_FROM_FILE = "Не удачная попытка добавить данные из файла ";
 
     private IBookDao bookDao;
     private IRequestDao requestDao;
@@ -49,19 +42,9 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public void addBook(Book book) {
-        /**с сайта Hibernate*/
-//        Session session = sessionFactory.openSession();
-//        session.beginTransaction();
-//        session.save( new Event( "Our very first event!", new Date() ) );
-//        session.save( new Event( "A follow up event", new Date() ) );
-//        session.getTransaction().commit();
-//        session.close();
-        /***/
-
         Session session = HibernateUtil.getSessionFactory().openSession();
-        notifyObservers(BOOK_ADDED + book.getNameBook());
         try {
-            session.beginTransaction();
+            session.getTransaction().begin();
             bookDao.add(session, book);
             if (ALLOW_MARK_REQUESTS) {
                 List<Request> requests = requestDao.getAll(session);
@@ -73,10 +56,15 @@ public class ServiceBook extends Service implements IServiceBook {
                 }
             }
             session.getTransaction().commit();
-            session.close();
-        } catch (HibernateException e) {
+            notifyObservers(BOOK_ADDED + book.getNameBook());
+        } catch (Exception e) {
             log.error(CAN_NOT_ADD_DATA_TO_BD + e);
-            session.getTransaction().rollback();
+            notifyObservers(CAN_NOT_ADD_DATA_TO_BD);
+            if (session.getTransaction().getStatus() == TransactionStatus.ACTIVE
+                    || session.getTransaction().getStatus() == TransactionStatus.MARKED_ROLLBACK) {
+                session.getTransaction().rollback();
+            }
+        } finally {
             session.close();
         }
     }
@@ -85,144 +73,120 @@ public class ServiceBook extends Service implements IServiceBook {
     public void deleteBookById(Long id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            session.beginTransaction();
+            session.getTransaction().begin();
             Book book = bookDao.getById(session, id);
             if (book != null) {
-                notifyObservers(BOOK_DELETED + book);
-                bookDao.deleteById(session, id);
+                bookDao.delete(session, book);
             } else {
                 notifyObservers(NO_BOOK_WITH_SUCH_INDEX);
             }
             session.getTransaction().commit();
-            session.close();
-        } catch (HibernateException e) {
+            notifyObservers(BOOK_DELETED + book);
+        } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
-            session.getTransaction().rollback();
+            if (session.getTransaction().getStatus() == TransactionStatus.ACTIVE
+                    || session.getTransaction().getStatus() == TransactionStatus.MARKED_ROLLBACK) {
+                session.getTransaction().rollback();
+            }
+        } finally {
             session.close();
         }
     }
 
     @Override
     public List<Book> getAll() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            List<Book> books = bookDao.getAll(session);
-            session.close();
-            return books;
-        } catch (HibernateException e) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return bookDao.getAll(session);
+        } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
-            session.close();
         }
         return null;
     }
 
     @Override
     public List<Book> getBooksSortedByAlphabet() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        notifyObservers(BOOKS_SORTED_BY_ALPHABET);
-        try {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Book> books = bookDao.getSortedByAlphabet(session);
-            session.close();
+            notifyObservers(BOOKS_SORTED_BY_ALPHABET);
             return books;
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
-            session.close();
         }
         return null;
     }
 
     @Override
     public List<Book> getBooksSortedByDatePublication() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        notifyObservers(BOOKS_SORTED_BY_DATE_OF_PUBLICATION);
-        try {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Book> books = bookDao.getSortedByDatePublication(session);
-            session.close();
+            notifyObservers(BOOKS_SORTED_BY_DATE_OF_PUBLICATION);
             return books;
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
-            session.close();
         }
         return null;
     }
 
     @Override
     public List<Book> getBooksSortedByPrice() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        notifyObservers(BOOKS_SORTED_BY_PRICE);
-        try {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Book> books = bookDao.getSortedByPrice(session);
-            session.close();
+            notifyObservers(BOOKS_SORTED_BY_PRICE);
             return books;
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
-            session.close();
         }
         return null;
     }
 
     @Override
     public List<Book> getBooksSortedByAvailability() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        notifyObservers(BOOKS_SORTED_BY_AVAILABILITY);
-        try {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Book> books = bookDao.getSortedByAvailability(session);
-            session.close();
+            notifyObservers(BOOKS_SORTED_BY_AVAILABILITY);
             return books;
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
-            session.close();
         }
         return null;
     }
 
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByDate() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        notifyObservers(BOOKS_ADDED_TO_STORE_MORE_SIX_MONTH_SORTED_BY_DATE);
-        try {
-            List<Book> books = bookDao.getPeriodMoreSixMonthByDate(session);
-            session.close();
-            return books;
-        } catch (HibernateException e) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+            return bookDao.getPeriodMoreSixMonthByDate(session);
+        } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
-            session.close();
         }
         return null;
     }
 
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByPrice() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        notifyObservers(BOOKS_ADDED_TO_STORE_MORE_SIX_MONTH_SORTED_BY_PRICE);
-        try {
-            List<Book> books = bookDao.getPeriodMoreSixMonthByPrice(session);
-            session.close();
-            return books;
-        } catch (HibernateException e) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return bookDao.getPeriodMoreSixMonthByPrice(session);
+        } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
-            session.close();
         }
         return null;
     }
 
     @Override
     public String getBookDescriptionById(Long id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Book book = bookDao.getById(session, id);
             if (book != null) {
                 return book.getDescription();
             }
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
         }
@@ -231,17 +195,13 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public Book getBookById(Long id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            Book book = bookDao.getById(session, id);
-            session.close();
-            return book;
-        } catch (HibernateException e) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return bookDao.getById(session, id);
+        } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
         }
         return null;
-
     }
 
     @Override
@@ -250,43 +210,47 @@ public class ServiceBook extends Service implements IServiceBook {
         if (BOOK_IS_OLD != null) {
             Date periodOfMonth = DateUtil.minusMonths(BOOK_IS_OLD);
             try {
-                session.beginTransaction();
+                session.getTransaction().begin();
                 List<Book> books = bookDao.getNewBooks(session, periodOfMonth);
                 for (Book book : books) {
                     book.setOld(true);
                     bookDao.update(session, book);
                 }
                 session.getTransaction().commit();
-                session.close();
-            } catch (HibernateException e) {
+            } catch (Exception e) {
                 log.error(NO_DATA_FROM_BD + e);
                 notifyObservers(NO_DATA_FROM_BD);
-                session.getTransaction().rollback();
+                if (session.getTransaction().getStatus() == TransactionStatus.ACTIVE
+                        || session.getTransaction().getStatus() == TransactionStatus.MARKED_ROLLBACK) {
+                    session.getTransaction().rollback();
+                }
+            } finally {
                 session.close();
             }
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void exportToCsv() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             super.writeToCsv(bookDao.getAll(session));
-            session.close();
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + " / " + CAN_NOT_WRITE_DATA_TO_FILE + e);
             notifyObservers(NO_DATA_FROM_BD + " / " + CAN_NOT_WRITE_DATA_TO_FILE);
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void importFromCsv() {
         List<Book> importListFromFile = fileWorker.importListFromFile(PATH_BOOK_CSV, Book.class);
         notifyObservers(PATH_BOOK_CSV);
-        try {
-            merge(importListFromFile, bookDao);
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            merge(session, importListFromFile, bookDao);
         } catch (Exception e) {
             log.error(CAN_NOT_ADD_DATA_FROM_FILE + e);
+            notifyObservers(CAN_NOT_ADD_DATA_FROM_FILE);
         }
     }
 }

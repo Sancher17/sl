@@ -5,7 +5,3 @@ id;nameBook;dateOfPublication;price;dateAddedBookToStore;isAvailable;description
 4;MongoDB;06.12.2017;99.0;04.09.2018;true;Книга об MongoDB;false;
 5;Patterns;18.09.2019;257.0;04.09.2018;true;Книга об Patterns;false;
 6;Junit;09.06.2018;25.0;04.09.2018;true;Книга о Junit;false;
-26;Alex;15.12.1980;999.0;03.10.2018;true;About me;false;
-31;Tom and Jerry;01.05.1960;159.0;09.10.2018;true;About mouse;false;
-33;Test;10.10.2018;12345.0;10.10.2018;true;Book for test;false;
-34;Дональд;01.05.2013;55.0;11.10.2018;true;фывфв;false;

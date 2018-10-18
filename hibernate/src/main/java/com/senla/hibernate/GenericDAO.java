@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface GenericDAO<T> {
 
-    void add(Session session, T obj);
+    void add(Session session, T t);
 
-    void deleteById(Session session, Long id);
+    void delete(Session session, T t);
 
     T getById(Session session, Long id);
 

@@ -1,34 +1,36 @@
 package com.test;
 
-import com.senla.hibernate.IBookDao;
-import com.senla.hibernate.impl.BookDao;
-import com.senla.hibernate.util.HibernateUtil;
-import entities.Book;
-import org.hibernate.Session;
+import com.senla.services.IServiceOrder;
+import com.senla.services.impl.ServiceOrder;
 
-import javax.persistence.NoResultException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TestHiber {
 
     public static void main(String[] args) {
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
+//        IServiceBook serviceBook = new ServiceBook();
+//        printList(serviceBook.getAll());
 
-        IBookDao bookDao = new BookDao();
-        Book book = bookDao.getById(session, 6L);
-//        System.out.println(book);
+        Calendar cal = Calendar.getInstance();
+        cal.set(2018, Calendar.JANUARY,1);
+        Date start = cal.getTime();
+        cal.set(2018,Calendar.OCTOBER,1);
+        Date dateEnd = cal.getTime();
 
-//        List<Book> books = bookDao.getAll(session);
-//        for (Book book1 : books) {
-//            System.out.println(book1);
-//        }
+        IServiceOrder serviceOrder = new ServiceOrder();
+//        printList(serviceOrder.getCompletedOrdersSortedByDate());
+//        printList(serviceOrder.getAll());
+        printList(serviceOrder.getCompletedOrdersSortedByPriceOfPeriod(start, dateEnd));
 
-        try {
-            Book book1 = bookDao.getByName(session, "Hoesy");
-            System.out.println(book1);
-        }catch (NoResultException e){
-            System.out.println("no result");
-        }
+
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private static void printList(List list) {
+        list.forEach(System.out::println);
     }
 }
