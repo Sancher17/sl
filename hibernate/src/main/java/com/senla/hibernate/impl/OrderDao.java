@@ -19,10 +19,6 @@ public class OrderDao implements IOrderDao {
     private static final String IS_COMPLETED_ORDER = "isCompletedOrder";
     private static final String ID = "id";
 
-    @Override
-    public void add(Session session, Order order) {
-        session.save(order);
-    }
 
     @Override
     public List<Order> getCompletedSortedByDate(Session session) {
@@ -98,42 +94,17 @@ public class OrderDao implements IOrderDao {
 
     @Override
     public void copyOrder(Session session, Long id) {
-        Order order = getById(session, id);
+        Order order = getById(session, id, Order.class);
         add(session, order);
     }
 
-    @Override
-    public void delete(Session session, Order order) {
-        session.delete(order);
-    }
-
-    @Override
-    public Order getById(Session session, Long id) {
-        return session.get(Order.class, id);
-    }
-
-    @Override
-    public void update(Session session, Order order) {
-        session.update(order);
-    }
-
-    @Override
-    public List<Order> getAll(Session session) {
-        return getOrdersSortedByOrder(session, ID);
-    }
-
-    @Override
-    public void addAll(Session session, List<Order> orders) {
-        for (Order order : orders) {
-            add(session, order);
-        }
-    }
 
     private List<Order> getOrdersSortedByOrder(Session session, String order) {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Order> criteria = builder.createQuery(Order.class);
         Root<Order> root = criteria.from(Order.class);
-        criteria.select(root).orderBy(builder.asc(root.get(order)));
+        criteria.select(root)
+                .orderBy(builder.asc(root.get(order)));
         Query<Order> query = session.createQuery(criteria);
         return query.list();
     }

@@ -3,6 +3,7 @@ package entities;
 import com.senla.annotations.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "requests")
@@ -35,17 +36,8 @@ public class Request implements Cloneable {
         this.requireIsCompleted = false;
     }
 
-    //getters setters
     public String getRequireNameBook() {
         return requireNameBook;
-    }
-
-    public void setRequireNameBook(String requireNameBook) {
-        this.requireNameBook = requireNameBook;
-    }
-
-    public Boolean getRequireIsCompleted() {
-        return requireIsCompleted;
     }
 
     public void setRequireIsCompleted(Boolean requireIsCompleted) {
@@ -74,5 +66,18 @@ public class Request implements Cloneable {
                 requireNameBook + "/" +
                 requireIsCompleted + "/" +
                 requireQuantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Request request = (Request) o;
+        return Objects.equals(id, request.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -47,7 +47,7 @@ public class ServiceBook extends Service implements IServiceBook {
             session.getTransaction().begin();
             bookDao.add(session, book);
             if (ALLOW_MARK_REQUESTS) {
-                List<Request> requests = requestDao.getAll(session);
+                List<Request> requests = requestDao.getAll(session, Request.class);
                 for (Request request : requests) {
                     if (book.getNameBook().equals(request.getRequireNameBook())) {
                         request.setRequireIsCompleted(true);
@@ -74,7 +74,7 @@ public class ServiceBook extends Service implements IServiceBook {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.getTransaction().begin();
-            Book book = bookDao.getById(session, id);
+            Book book = bookDao.getById(session, id, Book.class);
             if (book != null) {
                 bookDao.delete(session, book);
             } else {
@@ -97,7 +97,7 @@ public class ServiceBook extends Service implements IServiceBook {
     @Override
     public List<Book> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return bookDao.getAll(session);
+            return bookDao.getAll(session, Book.class);
         } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
@@ -182,7 +182,7 @@ public class ServiceBook extends Service implements IServiceBook {
     @Override
     public String getBookDescriptionById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Book book = bookDao.getById(session, id);
+            Book book = bookDao.getById(session, id, Book.class);
             if (book != null) {
                 return book.getDescription();
             }
@@ -196,7 +196,7 @@ public class ServiceBook extends Service implements IServiceBook {
     @Override
     public Book getBookById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return bookDao.getById(session, id);
+            return bookDao.getById(session, id, Book.class);
         } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
@@ -234,7 +234,7 @@ public class ServiceBook extends Service implements IServiceBook {
     @Override
     public void exportToCsv() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            super.writeToCsv(bookDao.getAll(session));
+            super.writeToCsv(bookDao.getAll(session, Book.class));
         } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + " / " + CAN_NOT_WRITE_DATA_TO_FILE + e);
             notifyObservers(NO_DATA_FROM_BD + " / " + CAN_NOT_WRITE_DATA_TO_FILE);
@@ -247,7 +247,7 @@ public class ServiceBook extends Service implements IServiceBook {
         List<Book> importListFromFile = fileWorker.importListFromFile(PATH_BOOK_CSV, Book.class);
         notifyObservers(PATH_BOOK_CSV);
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            merge(session, importListFromFile, bookDao);
+            merge(session, importListFromFile, bookDao, Book.class);
         } catch (Exception e) {
             log.error(CAN_NOT_ADD_DATA_FROM_FILE + e);
             notifyObservers(CAN_NOT_ADD_DATA_FROM_FILE);

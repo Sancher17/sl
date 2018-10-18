@@ -2,7 +2,7 @@ package com.senla.services.impl;
 
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.startModule.IFileWorker;
-import com.senla.hibernate.GenericDAO;
+import com.senla.hibernate.IGenericDao;
 import org.hibernate.Session;
 
 import java.util.ArrayList;
@@ -48,14 +48,14 @@ public abstract class Service<T> extends Observable {
         notifyObservers(FILE_SAVED_IN_FOLDER + PATH_FOR_CSV + FILE_NAME);
     }
 
-    void merge(Session session, List<T> importlist, GenericDAO<T> dao) {
+    void merge(Session session, List<T> importlist, IGenericDao<T> dao, Class<T> clazz) {
         List<T> listExistingEntry = new ArrayList<>();
         List<T> listNotExistingEntry = new ArrayList<>();
         boolean exist;
         for (T element : importlist) {
             exist = false;
-            for (T bookExist : dao.getAll(session)) {
-                if (element.equals(bookExist)) {
+            for (T tExist : dao.getAll(session, clazz)) {
+                if (element.equals(tExist)) {
                     listExistingEntry.add(element);
                     exist = true;
                 }

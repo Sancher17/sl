@@ -37,11 +37,6 @@ public class Order {
     @CsvProperty(propertyType = PropertyType.CompositeProperty, keyField = "id")
     private Book book;
 
-    public Order(Date dateOfStartedOrder, Book book) {
-        this.dateOfStartedOrder = dateOfStartedOrder;
-        this.book = book;
-        this.isCompletedOrder = false;
-    }
 
     public Order(Book book) {
         this.book = book;
@@ -51,24 +46,8 @@ public class Order {
 
     public Order(){}
 
-    public Date getDateOfStartedOrder() {
-        return dateOfStartedOrder;
-    }
-
-    public void setDateOfStartedOrder(Date dateOfStartedOrder) {
-        this.dateOfStartedOrder = dateOfStartedOrder;
-    }
-
-    public Date getDateOfCompletedOrder() {
-        return dateOfCompletedOrder;
-    }
-
     public void setDateOfCompletedOrder(Date dateOfCompletedOrder) {
         this.dateOfCompletedOrder = dateOfCompletedOrder;
-    }
-
-    public Boolean getCompletedOrder() {
-        return isCompletedOrder;
     }
 
     public void setCompletedOrder(Boolean completedOrder) {
@@ -99,6 +78,17 @@ public class Order {
     }
 
     @Override
+    public String toString() {
+
+        return  id +"/"+
+                convertDate(dateOfStartedOrder) + "/" +
+                book.getNameBook() + "/" +
+                isCompletedOrder + "/" +
+                book.getPrice() + "/" +
+                convertDate(dateOfCompletedOrder);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -109,16 +99,5 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-
-        return  id +"/"+
-                convertDate(dateOfStartedOrder) + "/" +
-                book.getNameBook() + "/" +
-                isCompletedOrder + "/" +
-                book.getPrice() + "/" +
-                convertDate(dateOfCompletedOrder);
     }
 }

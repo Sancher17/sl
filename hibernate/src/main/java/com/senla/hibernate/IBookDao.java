@@ -6,10 +6,7 @@ import org.hibernate.Session;
 import java.util.Date;
 import java.util.List;
 
-public interface IBookDao extends GenericDAO<Book> {
-
-    // TODO: 17.10.2018 не используется 
-//    Book getByName(Session session, String name);
+public interface IBookDao extends IGenericDao<Book> {
 
     List<Book> getSortedByPrice(Session session);
 

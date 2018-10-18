@@ -49,7 +49,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            Book book = bookDao.getById(session, id);
+            Book book = bookDao.getById(session, id, Book.class);
             if (book == null){
                 notifyObservers(NO_BOOK_WITH_SUCH_ID);
                 throw new Exception(NO_BOOK_WITH_SUCH_ID);
@@ -70,7 +70,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            Order order = orderDao.getById(session, id);
+            Order order = orderDao.getById(session, id, Order.class);
             if (order != null) {
                 orderDao.delete(session, order);
             } else {
@@ -95,7 +95,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            Order order = orderDao.getById(session, id);
+            Order order = orderDao.getById(session, id, Order.class);
             if (order != null) {
                 order.setCompletedOrder(true);
                 order.setDateOfCompletedOrder(nowMinusHour);
@@ -156,7 +156,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
     @Override
     public List<Order> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()){
-            return orderDao.getAll(session);
+            return orderDao.getAll(session, Order.class);
         } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
@@ -222,7 +222,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
     @Override
     public Order getOrderById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()){
-            return orderDao.getById(session, id);
+            return orderDao.getById(session, id, Order.class);
         } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
@@ -244,7 +244,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
     @Override
     public void exportToCsv() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()){
-            super.writeToCsv(orderDao.getAll(session));
+            super.writeToCsv(orderDao.getAll(session, Order.class));
         } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + " / " + CAN_NOT_WRITE_DATA_TO_FILE + e);
             notifyObservers(NO_DATA_FROM_BD + " / " + CAN_NOT_WRITE_DATA_TO_FILE);
@@ -257,7 +257,7 @@ public class ServiceOrder extends Service implements IServiceOrder {
         List<Order> importListFromFile = fileWorker.importListFromFile(PATH_ORDER_CSV, Order.class);
         notifyObservers(PATH_ORDER_CSV);
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            merge(session, importListFromFile, orderDao);
+            merge(session, importListFromFile, orderDao, Order.class);
         } catch (Exception e) {
             log.error(CAN_NOT_ADD_DATA_FROM_FILE + e);
             notifyObservers(CAN_NOT_ADD_DATA_FROM_FILE);

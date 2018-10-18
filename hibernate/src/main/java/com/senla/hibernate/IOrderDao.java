@@ -3,13 +3,11 @@ package com.senla.hibernate;
 import entities.Order;
 import org.hibernate.Session;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 
-public interface IOrderDao extends GenericDAO<Order> {
+public interface IOrderDao extends IGenericDao<Order> {
 
     List<Order> getCompletedSortedByDate(Session session);
 

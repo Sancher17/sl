@@ -5,7 +5,7 @@ import com.senla.annotations.CsvProperty;
 import com.senla.di.DependencyInjection;
 import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.fileworker.imports.parser.ParseDate;
-import com.senla.hibernate.GenericDAO;
+import com.senla.hibernate.IGenericDao;
 import com.senla.hibernate.IBookDao;
 import com.senla.hibernate.IOrderDao;
 import com.senla.hibernate.IRequestDao;
@@ -15,8 +15,6 @@ import entities.Order;
 import entities.Request;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -64,7 +62,7 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
                     if (field.isAnnotationPresent(CsvProperty.class)) {
                         CsvProperty attribute = field.getAnnotation(CsvProperty.class);
                         if (attribute.propertyType().equals(CompositeProperty)) {
-                            getDao(splitLine[count], obj, field);
+                            getDao(splitLine[count], obj, field, clazz);
                             count++;
                         }
                         setField(splitLine, count, obj, field);
@@ -78,8 +76,9 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
         return obj;
     }
 
-    private void getDao(String s, Object obj, Field field) throws IllegalAccessException {
-        GenericDAO dao = null;
+    @SuppressWarnings("unchecked")
+    private void getDao(String s, Object obj, Field field, Class<?> clazz ) throws IllegalAccessException {
+        IGenericDao dao = null;
         Type type = field.getType();
         if (type.equals(Book.class)) {
             dao = DependencyInjection.getBean(IBookDao.class);
@@ -91,7 +90,7 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
         Long idEntity = Long.valueOf(s);
         if (dao != null) {
             Session session = HibernateUtil.getSessionFactory().openSession();
-            field.set(obj, dao.getById(session,idEntity));
+            field.set(obj, dao.getById(session,idEntity, clazz));
         }
     }
 

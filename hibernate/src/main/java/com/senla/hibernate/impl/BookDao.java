@@ -3,11 +3,10 @@ package com.senla.hibernate.impl;
 import com.senla.hibernate.IBookDao;
 import com.senla.util.date.DateUtil;
 import entities.Book;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import javax.persistence.NoResultException;
+import javax.persistence.TemporalType;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -21,23 +20,6 @@ public class BookDao implements IBookDao {
     private static final String DATE_OF_PUBLICATION = "dateOfPublication";
     private static final String IS_AVAILABLE = "isAvailable";
     private static final String DATE_ADDED_BOOK_TO_STORE = "dateAddedBookToStore";
-    private static final String ID = "id";
-
-    @Override
-    public void add(Session session, Book book)throws HibernateException {
-        session.save(book);
-    }
-
-    // TODO: 17.10.2018 Не используется
-//    @Override
-//    public Book getByName(Session session, String name) {
-//        CriteriaBuilder builder = session.getCriteriaBuilder();
-//        CriteriaQuery<Book> criteria = builder.createQuery(Book.class);
-//        Root<Book> root = criteria.from(Book.class);
-//        criteria.select(root).where(builder.equal(root.get(NAME_BOOK), name));
-//        Query<Book> query = session.createQuery(criteria);
-//        return query.getSingleResult();
-//    }
 
     @Override
     public List<Book> getSortedByPrice(Session session) {
@@ -85,41 +67,22 @@ public class BookDao implements IBookDao {
 
     @Override
     public List<Book> getNewBooks(Session session, Date periodOfMonth) {
-        return null;// TODO: 16.10.2018
-    }
-
-    @Override
-    public void delete(Session session, Book book) {
-        session.delete(book);
-    }
-
-    @Override
-    public Book getById(Session session, Long id) {
-        return session.get(Book.class, id);
-    }
-
-    @Override
-    public void update(Session session, Book book) {
-        session.update(book);
-    }
-
-    @Override
-    public List<Book> getAll(Session session) {
-        return getBooksSortedByOrder(session, ID);
-    }
-
-    @Override
-    public void addAll(Session session, List<Book> books) {
-        for (Book book : books) {
-            add(session, book);
-        }
+        return session.createQuery(
+                "select b " +
+                        "from Book b " +
+                        "where b.dateAddedBookToStore > : periodOfMonth " +
+                        "order by b.dateAddedBookToStore",
+                Book.class)
+                .setParameter("periodOfMonth", periodOfMonth, TemporalType.DATE)
+                .getResultList();
     }
 
     private List<Book> getBooksSortedByOrder(Session session, String order) {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Book> criteria = builder.createQuery(Book.class);
         Root<Book> root = criteria.from(Book.class);
-        criteria.select(root).orderBy(builder.asc(root.get(order)));
+        criteria.select(root)
+                .orderBy(builder.asc(root.get(order)));
         Query<Book> query = session.createQuery(criteria);
         return query.list();
     }

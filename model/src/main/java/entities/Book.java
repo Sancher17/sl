@@ -48,7 +48,8 @@ public class Book implements Cloneable {
     @CsvProperty(propertyType = PropertyType.SimpleProperty)
     private Boolean isOld;
 
-    public Book(){}
+    public Book() {
+    }
 
     public Book(Long id, String nameBook, Date dateOfPublication, Date dateAddedBookToStore, Double price, String description, Boolean isAvailable, Boolean isOld) {
         this.id = id;
@@ -71,53 +72,16 @@ public class Book implements Cloneable {
         this.isOld = isOld;
     }
 
-    //getters setters
     public String getNameBook() {
         return nameBook;
     }
 
-    public void setNameBook(String nameBook) {
-        this.nameBook = nameBook;
-    }
-
-    public Date getDateOfPublication() {
-        return dateOfPublication;
-    }
-
-    public void setDateOfPublication(Date dateOfPublication) {
-        this.dateOfPublication = dateOfPublication;
-    }
-
-    public Date getDateAddedBookToStore() {
-        return dateAddedBookToStore;
-    }
-
-    public void setDateAddedBookToStore(Date dateAddedBookToStore) {
-        this.dateAddedBookToStore = dateAddedBookToStore;
-    }
-
-    public Double getPrice() {
+    Double getPrice() {
         return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Boolean getAvailable() {
-        return isAvailable;
-    }
-
-    public void setAvailable(Boolean available) {
-        isAvailable = available;
     }
 
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Long getId() {
@@ -128,10 +92,6 @@ public class Book implements Cloneable {
         this.id = id;
     }
 
-    public Boolean getOld() {
-        return isOld;
-    }
-
     public void setOld(Boolean old) {
         isOld = old;
     }
@@ -139,7 +99,6 @@ public class Book implements Cloneable {
     private String convertDate(Date date) {
         return new SimpleDateFormat(DATE_PATTERN).format(date.getTime());
     }
-
 
     @Override
     public String toString() {

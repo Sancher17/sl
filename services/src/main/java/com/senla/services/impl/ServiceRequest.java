@@ -9,6 +9,7 @@ import entities.Request;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
         boolean exist = false;
         try {
             session.beginTransaction();
-            for (Request aRequest : requestDao.getAll(session)) {
+            for (Request aRequest : requestDao.getAll(session, Request.class)) {
                 if (aRequest != null) {
                     if (aRequest.getRequireNameBook().equals(request.getRequireNameBook())) {
                         exist = true;
@@ -50,12 +51,15 @@ public class ServiceRequest extends Service implements IServiceRequest {
                 requestDao.add(session, request);
             }
             session.getTransaction().commit();
-            session.close();
             notifyObservers(ADDED_REQUEST + request.getRequireNameBook());
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             log.error(CAN_NOT_ADD_DATA_TO_BD + e);
             notifyObservers(CAN_NOT_ADD_DATA_TO_BD);
-            session.getTransaction().rollback();
+            if (session.getTransaction().getStatus() == TransactionStatus.ACTIVE
+                    || session.getTransaction().getStatus() == TransactionStatus.MARKED_ROLLBACK) {
+                session.getTransaction().rollback();
+            }
+        } finally {
             session.close();
         }
     }
@@ -89,7 +93,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
     @Override
     public List<Request> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()){
-            return requestDao.getAll(session);
+            return requestDao.getAll(session, Request.class);
         }  catch (HibernateException e) {
             log.error(NO_DATA_FROM_BD + e);
             notifyObservers(NO_DATA_FROM_BD);
@@ -123,7 +127,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
     @Override
     public void exportToCsv() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()){
-            super.writeToCsv(requestDao.getAll(session));
+            super.writeToCsv(requestDao.getAll(session, Request.class));
         } catch (HibernateException e) {
             log.error(NO_DATA_FROM_BD + " / " + CAN_NOT_WRITE_DATA_TO_FILE + e);
             notifyObservers(NO_DATA_FROM_BD + " / " + CAN_NOT_WRITE_DATA_TO_FILE);
@@ -136,7 +140,7 @@ public class ServiceRequest extends Service implements IServiceRequest {
         List<Request> importListFromFile = fileWorker.importListFromFile(PATH_REQUEST_CSV, Request.class);
         notifyObservers(PATH_REQUEST_CSV);
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            merge(session, importListFromFile, requestDao);
+            merge(session, importListFromFile, requestDao, Request.class);
         } catch (Exception e) {
             log.error(CAN_NOT_ADD_DATA_FROM_FILE + e);
             notifyObservers(CAN_NOT_ADD_DATA_FROM_FILE);
