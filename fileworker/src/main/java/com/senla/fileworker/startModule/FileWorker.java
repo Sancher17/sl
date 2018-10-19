@@ -4,6 +4,7 @@ import com.senla.di.DependencyInjection;
 import com.senla.fileworker.exports.IExportToCsv;
 import com.senla.fileworker.imports.IImportFromCsv;
 import com.senla.propertiesmodule.IPropertyHolder;
+import org.hibernate.Session;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +28,7 @@ public class FileWorker implements IFileWorker {
     }
 
     @Override
-    public List importListFromFile(String path, Class clazz) {
-        return importFromCsv.importListFromFile(path, clazz);
+    public List importListFromFile(String path, Session session, Class clazz) {
+        return importFromCsv.importListFromFile(path, session, clazz);
     }
 }

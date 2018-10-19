@@ -254,9 +254,9 @@ public class ServiceOrder extends Service implements IServiceOrder {
     @SuppressWarnings("unchecked")
     @Override
     public void importFromCsv() {
-        List<Order> importListFromFile = fileWorker.importListFromFile(PATH_ORDER_CSV, Order.class);
-        notifyObservers(PATH_ORDER_CSV);
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            List<Order> importListFromFile = fileWorker.importListFromFile(PATH_ORDER_CSV, session, Order.class);
+            notifyObservers(PATH_ORDER_CSV);
             merge(session, importListFromFile, orderDao, Order.class);
         } catch (Exception e) {
             log.error(CAN_NOT_ADD_DATA_FROM_FILE + e);

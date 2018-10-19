@@ -159,7 +159,7 @@ public class ServiceBook extends Service implements IServiceBook {
 
     @Override
     public List<Book> getBooksPeriodMoreSixMonthByDate() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return bookDao.getPeriodMoreSixMonthByDate(session);
         } catch (Exception e) {
             log.error(NO_DATA_FROM_BD + e);
@@ -244,9 +244,9 @@ public class ServiceBook extends Service implements IServiceBook {
     @SuppressWarnings("unchecked")
     @Override
     public void importFromCsv() {
-        List<Book> importListFromFile = fileWorker.importListFromFile(PATH_BOOK_CSV, Book.class);
-        notifyObservers(PATH_BOOK_CSV);
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            List<Book> importListFromFile = fileWorker.importListFromFile(PATH_BOOK_CSV, session, Book.class);
+            notifyObservers(PATH_BOOK_CSV);
             merge(session, importListFromFile, bookDao, Book.class);
         } catch (Exception e) {
             log.error(CAN_NOT_ADD_DATA_FROM_FILE + e);

@@ -13,10 +13,10 @@ public class ParseDate {
     private static final String DATE_PATTERN = "dd.M.yyyy";
 
     public static Date parseDate(String date) {
-        try{
+        try {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
             return dateFormat.parse(date);
-        }catch (ParseException e) {
+        } catch (ParseException e) {
             log.error(DATE_PARSING_ERROR + e);
         }
         return null;

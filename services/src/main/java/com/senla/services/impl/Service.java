@@ -64,6 +64,7 @@ public abstract class Service<T> extends Observable {
                 listNotExistingEntry.add(element);
             }
         }
+        session.clear();
         for (T element : listExistingEntry) {
             dao.update(session, element);
         }

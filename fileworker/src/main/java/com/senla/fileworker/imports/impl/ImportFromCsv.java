@@ -29,21 +29,20 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
     private static final Logger log = Logger.getLogger(ImportFromCsv.class.getSimpleName());
     private static final String NO_CLASS_FOR_IMPORT_ENTITY = "Не найден класс сущности импорта ";
     private static final String CAN_NOT_CREATE_INSTANCE = "Невозможно создать экземпляр класса / нет доступа к полям ";
-    private static final String NO_ACCESS_TO_BD = "Нет доступа к БД ";
 
-    public List<Object> importListFromFile(String path, Class clazz) {
+    public List<Object> importListFromFile(String path, Session session, Class clazz) {
         List<Object> createdObjectList = new ArrayList<>();
         List<String> rowList = read(path);
         rowList.remove(0);//remove head of the list
         for (String s : rowList) {
-            Object obj = getObject(s, clazz);
+            Object obj = getObject(s, session, clazz);
             createdObjectList.add(obj);
         }
         return createdObjectList;
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T getObject(String line, Class clazz)  {
+    private <T> T getObject(String line, Session session, Class clazz)  {
         T obj = null;
         Class<?> aClass = null;
         String[] splitLine = line.split(";");
@@ -62,7 +61,7 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
                     if (field.isAnnotationPresent(CsvProperty.class)) {
                         CsvProperty attribute = field.getAnnotation(CsvProperty.class);
                         if (attribute.propertyType().equals(CompositeProperty)) {
-                            getDao(splitLine[count], obj, field, clazz);
+                            getDao(splitLine[count], obj, field, session, clazz);
                             count++;
                         }
                         setField(splitLine, count, obj, field);
@@ -77,19 +76,21 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
     }
 
     @SuppressWarnings("unchecked")
-    private void getDao(String s, Object obj, Field field, Class<?> clazz ) throws IllegalAccessException {
+    private void getDao(String s, Object obj, Field field, Session session, Class<?> clazz ) throws IllegalAccessException {
         IGenericDao dao = null;
         Type type = field.getType();
         if (type.equals(Book.class)) {
             dao = DependencyInjection.getBean(IBookDao.class);
+            clazz = Book.class;
         } else if (type.equals(Order.class)) {
             dao = DependencyInjection.getBean(IOrderDao.class);
+            clazz = Order.class;
         } else if (type.equals(Request.class)) {
             dao = DependencyInjection.getBean(IRequestDao.class);
+            clazz = Request.class;
         }
         Long idEntity = Long.valueOf(s);
         if (dao != null) {
-            Session session = HibernateUtil.getSessionFactory().openSession();
             field.set(obj, dao.getById(session,idEntity, clazz));
         }
     }
@@ -100,7 +101,12 @@ public class ImportFromCsv extends ImportCsv implements IImportFromCsv {
         } else if (field.getType().equals(String.class)) {
             field.set(obj, temp[count]);
         } else if (field.getType().equals(Date.class)) {
-            field.set(obj, ParseDate.parseDate(temp[count]));
+            Date date = ParseDate.parseDate(temp[count]);
+            if (date == null){
+                field.set(obj, null);
+            }else {
+                field.set(obj, date);
+            }
         } else if (field.getType().equals(Double.class)) {
             field.set(obj, Double.valueOf(temp[count]));
         } else if (field.getType().equals(Boolean.class)) {

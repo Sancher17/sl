@@ -137,9 +137,9 @@ public class ServiceRequest extends Service implements IServiceRequest {
     @SuppressWarnings("unchecked")
     @Override
     public void importFromCsv() {
-        List<Request> importListFromFile = fileWorker.importListFromFile(PATH_REQUEST_CSV, Request.class);
-        notifyObservers(PATH_REQUEST_CSV);
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            List<Request> importListFromFile = fileWorker.importListFromFile(PATH_REQUEST_CSV, session, Request.class);
+            notifyObservers(PATH_REQUEST_CSV);
             merge(session, importListFromFile, requestDao, Request.class);
         } catch (Exception e) {
             log.error(CAN_NOT_ADD_DATA_FROM_FILE + e);
