@@ -2,6 +2,7 @@ package com.senla.propertiesmodule;
 
 import com.senla.constants.Constants;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,7 +11,7 @@ import java.util.Properties;
 
 import static com.senla.constants.Constants.*;
 
-
+@Component
 public class PropertyHolder implements IPropertyHolder {
 
     private static final Logger log = Logger.getLogger(PropertyHolder.class);

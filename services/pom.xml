@@ -37,6 +37,14 @@
             <artifactId>fileworker</artifactId>
             <version>1</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.bookshop</groupId>
+            <artifactId>api</artifactId>
+            <version>1</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

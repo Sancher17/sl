@@ -1,12 +1,13 @@
 package com.senla.ui;
 
-import com.senla.di.DependencyInjection;
-import com.senla.facade.IBookShop;
+import com.senla.api.facade.IBookShop;
+import com.senla.spring.AppContext;
 import com.senla.util.Printer;
 import entities.Book;
 import entities.Order;
 import entities.Request;
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.*;
 
@@ -85,13 +86,18 @@ class MenuBuilder implements Observer {
     private Menu menu;
     private static Date TODAY = new Date();
     private Scanner scanner;
-    private IBookShop bookShop = DependencyInjection.getBean(IBookShop.class);
+    private IBookShop bookShop;
+    private AnnotationConfigApplicationContext context =
+            new AnnotationConfigApplicationContext(AppContext.class);
 
     MenuBuilder() {
         init();
     }
 
     private void init(){
+
+        bookShop = context.getBean("bookShop",  IBookShop.class);
+
         bookShop.addObserver(this);
 
         Menu main = new Menu(MENU_MAIN);

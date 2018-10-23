@@ -1,34 +1,37 @@
 package com.senla.fileworker.startModule;
 
-import com.senla.di.DependencyInjection;
-import com.senla.fileworker.exports.IExportToCsv;
-import com.senla.fileworker.imports.IImportFromCsv;
+import com.senla.api.dao.IGenericDao;
+import com.senla.api.fileworker.IFileWorker;
+import com.senla.api.fileworker.exports.IExportToCsv;
+import com.senla.api.fileworker.imports.IImportFromCsv;
 import com.senla.propertiesmodule.IPropertyHolder;
 import org.hibernate.Session;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Objects;
 
+@Component
 public class FileWorker implements IFileWorker {
 
     private IExportToCsv exportToCsv;
     private IImportFromCsv importFromCsv;
-    private IPropertyHolder properties;
 
-    public FileWorker() {
-        this.exportToCsv = DependencyInjection.getBean(IExportToCsv.class);
-        this.importFromCsv = DependencyInjection.getBean(IImportFromCsv.class);
-        this.properties = DependencyInjection.getBean(IPropertyHolder.class);
-        Objects.requireNonNull(properties, "IPropertyHolder = null").pathsForCsvFiles();
+    public FileWorker(IExportToCsv exportToCsv, IImportFromCsv importFromCsv, IPropertyHolder properties) {
+        this.exportToCsv = exportToCsv;
+        this.importFromCsv = importFromCsv;
+        properties.pathsForCsvFiles();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void exportToCsv(List list) {
         exportToCsv.write(list);
     }
 
+
+    @SuppressWarnings("unchecked")
     @Override
-    public List importListFromFile(String path, Session session, Class clazz) {
-        return importFromCsv.importListFromFile(path, session, clazz);
+    public List importListFromFile(String path, Session session, Class clazz, IGenericDao dao) {
+        return importFromCsv.importListFromFile(path, session, clazz, dao);
     }
 }

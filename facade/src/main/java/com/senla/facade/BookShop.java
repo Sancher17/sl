@@ -1,39 +1,58 @@
 package com.senla.facade;
 
-import com.senla.di.DependencyInjection;
+import com.senla.api.facade.IBookShop;
+import com.senla.api.services.*;
 import com.senla.propertiesmodule.IPropertyHolder;
-import com.senla.services.IServiceBook;
-import com.senla.services.IServiceExit;
-import com.senla.services.IServiceOrder;
-import com.senla.services.IServiceRequest;
 import entities.Book;
 import entities.Order;
 import entities.Request;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Component
 public class BookShop extends Observable implements IBookShop, Observer {
 
-    private IServiceBook bookService;
-    private IServiceOrder orderService;
-    private IServiceRequest requestService;
+    private IServiceBook serviceBook;
+    private IServiceOrder serviceOrder;
+    private IServiceRequest serviceRequest;
     private IServiceExit serviceExit;
     private IPropertyHolder propertyHolder;
     private List<Observer> subscribers = new ArrayList<>();
 
-    public BookShop() {
-        this.bookService = DependencyInjection.getBean(IServiceBook.class);
-        this.orderService = DependencyInjection.getBean(IServiceOrder.class);
-        this.requestService = DependencyInjection.getBean(IServiceRequest.class);
-        this.serviceExit = DependencyInjection.getBean(IServiceExit.class);
-        this.propertyHolder = DependencyInjection.getBean(IPropertyHolder.class);
 
-        Objects.requireNonNull(bookService).addObserver(this);
-        orderService.addObserver(this);
-        requestService.addObserver(this);
+    public BookShop(IServiceBook serviceBook, IServiceOrder serviceOrder,
+                    IServiceRequest serviceRequest, IServiceExit serviceExit,
+                    IPropertyHolder propertyHolder) {
+        this.serviceBook = serviceBook;
+        this.serviceOrder = serviceOrder;
+        this.serviceRequest = serviceRequest;
+        this.serviceExit = serviceExit;
+        this.propertyHolder = propertyHolder;
+
+        serviceBook.addObserver(this);
+        serviceOrder.addObserver(this);
+        serviceRequest.addObserver(this);
 
         checkProperties();
     }
+
+//    public BookShop() {
+//        AnnotationConfigApplicationContext context =
+//                new AnnotationConfigApplicationContext(AppContext.class);
+//
+//        this.serviceBook = context.getBean("serviceBook", IServiceBook.class);
+//        this.serviceOrder = context.getBean("serviceOrder", IServiceOrder.class);
+//        this.serviceRequest = context.getBean("serviceRequest", IServiceRequest.class);
+//        this.serviceExit = context.getBean("serviceExit", IServiceExit.class);
+//        this.propertyHolder = context.getBean("propertyHolder", IPropertyHolder.class);
+//
+//        serviceBook.addObserver(this);
+//        serviceOrder.addObserver(this);
+//        serviceRequest.addObserver(this);
+//
+//        checkProperties();
+//    }
 
     public void checkProperties() {
         propertyHolder.allowMArkRequest();
@@ -42,101 +61,101 @@ public class BookShop extends Observable implements IBookShop, Observer {
 
     //BOOK
     public void addBook(Book book) {
-        bookService.addBook(book);
+        serviceBook.addBook(book);
     }
     public void deleteBookById(Long bookId) {
-        bookService.deleteBookById(bookId);
+        serviceBook.deleteBookById(bookId);
     }
     public List<Book> sortBooksByAlphabet() {
-        return bookService.getBooksSortedByAlphabet();
+        return serviceBook.getBooksSortedByAlphabet();
     }
     public List<Book> sortBooksByDatePublication() {
-        return bookService.getBooksSortedByDatePublication();
+        return serviceBook.getBooksSortedByDatePublication();
     }
     public List<Book> sortBooksByPrice() {
-        return bookService.getBooksSortedByPrice();
+        return serviceBook.getBooksSortedByPrice();
     }
     public List<Book> sortBooksByAvailability() {
-        return bookService.getBooksSortedByAvailability();
+        return serviceBook.getBooksSortedByAvailability();
     }
     public List<Book> getBooks(){
-        return bookService.getAll();
+        return serviceBook.getAll();
     }
     public List<Book> getBooksPeriodMoreSixMonthByDate() {
-        return bookService.getBooksPeriodMoreSixMonthByDate();
+        return serviceBook.getBooksPeriodMoreSixMonthByDate();
     }
     public List<Book> getBooksPeriodMoreSixMonthByPrice() {
-        return bookService.getBooksPeriodMoreSixMonthByPrice();
+        return serviceBook.getBooksPeriodMoreSixMonthByPrice();
     }
     public Book getBookById(Long id) {
-        return bookService.getBookById(id);
+        return serviceBook.getBookById(id);
     }
     public String getBookDescriptionById(Long id) {
-        return bookService.getBookDescriptionById(id);
+        return serviceBook.getBookDescriptionById(id);
     }
 
     // ORDER
     public void addOrder(Long id) {
-        orderService.addOrder(id);
+        serviceOrder.addOrder(id);
     }
     public void deleteOrderById(Long id) {
-        orderService.deleteOrderById(id);
+        serviceOrder.deleteOrderById(id);
     }
     public void setOrderCompleteById(Long orderId) {
-        orderService.setCompleteOrderById(orderId);
+        serviceOrder.setCompleteOrderById(orderId);
     }
     public List<Order> sortCompletedOrdersByDate() {
-        return orderService.getCompletedOrdersSortedByDate();
+        return serviceOrder.getCompletedOrdersSortedByDate();
     }
     public List<Order> sortOrdersByPrice() {
-        return orderService.getOrdersSortedByPrice();
+        return serviceOrder.getOrdersSortedByPrice();
     }
     public List<Order> sortOrdersByState() {
-        return orderService.getOrdersSortedByState();
+        return serviceOrder.getOrdersSortedByState();
     }
     public List<Order> getOrders(){
-        return orderService.getAll();
+        return serviceOrder.getAll();
     }
     public List<Order> getCompletedOrders() {
-        return orderService.getCompletedOrders();
+        return serviceOrder.getCompletedOrders();
     }
     public List<Order> getCompletedOrdersSortedByDateOfPeriod(Date dateStart, Date dateEnd) {
-        return orderService.getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd);
+        return serviceOrder.getCompletedOrdersSortedByDateOfPeriod(dateStart, dateEnd);
     }
     public List<Order> getCompletedOrdersSortedByPriceOfPeriod(Date dateStart, Date dateEnd) {
-        return orderService.getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd);
+        return serviceOrder.getCompletedOrdersSortedByPriceOfPeriod(dateStart, dateEnd);
     }
     public Double getOrdersFullAmountByPeriod(Date startDate, Date endDate) {
-        return orderService.getFullAmountOfOrdersByPeriod(startDate, endDate);
+        return serviceOrder.getFullAmountOfOrdersByPeriod(startDate, endDate);
     }
     public Integer getQuantityCompletedOrdersByPeriod(Date startDate, Date endDate) {
-        return orderService.getQuantityCompletedOrdersByPeriod(startDate, endDate);
+        return serviceOrder.getQuantityCompletedOrdersByPeriod(startDate, endDate);
     }
     public Order getOrderById(Long id) {
-        return orderService.getOrderById(id);
+        return serviceOrder.getOrderById(id);
     }
     public void copyOrder(Long id) {
-        orderService.copyOrder(id);
+        serviceOrder.copyOrder(id);
     }
 
     //REQUEST
     public void addRequest(Request request) {
-        requestService.addBookRequest(request);
+        serviceRequest.addBookRequest(request);
     }
     public List<Request> getRequests(){
-        return requestService.getAll();
+        return serviceRequest.getAll();
     }
     public List<Request> getCompletedRequests() {
-        return requestService.getCompletedRequests();
+        return serviceRequest.getCompletedRequests();
     }
     public List<Request> getNotCompletedRequests() {
-        return requestService.getNotCompletedRequests();
+        return serviceRequest.getNotCompletedRequests();
     }
     public List<Request>  sortRequestsByQuantity() {
-        return requestService.getRequestsSortedByQuantity();
+        return serviceRequest.getRequestsSortedByQuantity();
     }
     public List<Request>  sortRequestsByAlphabet() {
-        return requestService.getRequestsSortedByAlphabet();
+        return serviceRequest.getRequestsSortedByAlphabet();
     }
 
     // EXIT
@@ -146,24 +165,24 @@ public class BookShop extends Observable implements IBookShop, Observer {
 
     // CSV - export
     public void exportBooksToCsv() {
-        bookService.exportToCsv();
+        serviceBook.exportToCsv();
     }
     public void exportOrderToCsv() {
-        orderService.exportToCsv();
+        serviceOrder.exportToCsv();
     }
     public void exportRequestToCsv() {
-        requestService.exportToCsv();
+        serviceRequest.exportToCsv();
     }
 
     // CSV - import
     public void importBooksFromCsv() {
-        bookService.importFromCsv();
+        serviceBook.importFromCsv();
     }
     public void importOrderFromCsv() {
-        orderService.importFromCsv();
+        serviceOrder.importFromCsv();
     }
     public void importRequestFromCsv() {
-        requestService.importFromCsv();
+        serviceRequest.importFromCsv();
     }
 
     @Override
