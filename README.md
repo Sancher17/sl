@@ -1,9 +1,19 @@
-Скриншоты программы находятся в папке
+### Скриншоты программы находятся в папке: 
+##### src/main/screens/main.png
 
-src/main/screens/main.png
+## Скрины программы
 
-![Main](src/main/screens/login.png)
-![Main](src/main/screens/main.png)
-![Main](src/main/screens/search.png)
-![Main](src/main/screens/analitics.png)
-![Main](src/main/screens/storage.png)
+![login](src/main/screens/login.png)
+![main](src/main/screens/main.png)
+![search](src/main/screens/search.png)
+![analitics](src/main/screens/analitics.png)
+![storage](src/main/screens/storage.png)
+
+
+# ERD
+
+![storage](src/main/erd/erd.png)
+
+# Диаграммы переходов 
+
+### в разработке
