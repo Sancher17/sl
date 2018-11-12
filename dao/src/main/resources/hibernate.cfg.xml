@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD //EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">
+            jdbc:mysql://localhost:3306/cafe?serverTimezone=UTC&amp;useSSL=false</property>
+
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">1512</property>
+        <property name="hibernate.connection.provider_disables_autocommit">true</property>
+
+        <property name="show_sql">false</property>
+        <property name="hbm2ddl.auto">update</property>
+        <property name="use_sql_comments">false</property>
+        <property name="format_sql">false</property>
+        <property name="current_session_context_class">thread</property>
+
+        <mapping class="com.model.Categories"/>
+        <mapping class="com.model.Goods"/>
+        <mapping class="com.model.Order"/>
+        <mapping class="com.model.Discount"/>
+        <mapping class="com.model.NameGoods"/>
+        <mapping class="com.model.SizeGoods"/>
+        <mapping class="com.model.Storage"/>
+        <mapping class="com.model.UserType"/>
+        <mapping class="com.model.User"/>
+
+
+
+    </session-factory>
+</hibernate-configuration>

@@ -3,17 +3,23 @@
 
 ## Скрины программы
 
-![login](src/main/screens/login.png)
-![main](src/main/screens/main.png)
-![search](src/main/screens/search.png)
-![analitics](src/main/screens/analitics.png)
-![storage](src/main/screens/storage.png)
+![login](images/screens/login.png)
+
+![main](images/screens/main.png)
+
+![search](images/screens/search.png)
+
+![analitics](images/screens/analitics.png)
+
+![storage](images/screens/storage.png)
 
 
 # ERD
 
-![storage](src/main/erd/erd.png)
+![storage](images/erd/erd.png)
 
-# Диаграммы переходов 
+# Диаграммы переходов  - STD
 
-### в разработке
+![cashier](images/state_diagrams/cashier.png)
+
+![storkeeper](images/state_diagrams/storekeeper.png)
