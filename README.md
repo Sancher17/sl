@@ -1,5 +1,4 @@
-### Скриншоты программы находятся в папке: 
-##### src/main/screens/main.png
+### Все скриншоты проекта находятся в папке: images
 
 ## Workflow
 
@@ -16,7 +15,6 @@
 ![analitics](images/screens/analitics.png)
 
 ![storage](images/screens/storage.png)
-
 
 # ERD
 
