@@ -15,14 +15,27 @@ public class Goods {
     @Column(name = "name_id")
     private String name;
 
-    @Column(name = "price")
-    private Double price;
-
     @Column(name = "size_id")
     private int size_id;
 
+    @Column(name = "purchase_price")
+    private Double purchase_price;
+
+    @Column(name = "sell_price")
+    private Double sell_price;
+
+    @Column(name = "weight")
+    private Double weight;
+
+    @Column(name = "volume")
+    private Double volume;
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -33,14 +46,6 @@ public class Goods {
         this.name = name;
     }
 
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
     public int getSize_id() {
         return size_id;
     }
@@ -49,13 +54,48 @@ public class Goods {
         this.size_id = size_id;
     }
 
+    public Double getPurchase_price() {
+        return purchase_price;
+    }
+
+    public void setPurchase_price(Double purchase_price) {
+        this.purchase_price = purchase_price;
+    }
+
+    public Double getSell_price() {
+        return sell_price;
+    }
+
+    public void setSell_price(Double sell_price) {
+        this.sell_price = sell_price;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public Double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Double volume) {
+        this.volume = volume;
+    }
+
     @Override
     public String toString() {
         return "Goods{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", price=" + price +
                 ", size_id=" + size_id +
+                ", purchase_price=" + purchase_price +
+                ", sell_price=" + sell_price +
+                ", weight=" + weight +
+                ", volume=" + volume +
                 '}';
     }
 

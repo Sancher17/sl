@@ -22,7 +22,7 @@
         <mapping class="com.model.Categories"/>
         <mapping class="com.model.Goods"/>
         <mapping class="com.model.Order"/>
-        <mapping class="com.model.Discount"/>
+        <mapping class="com.model.PriceModifier"/>
         <mapping class="com.model.NameGoods"/>
         <mapping class="com.model.SizeGoods"/>
         <mapping class="com.model.Storage"/>

@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Orders")
-public class Order {
+@Table(name = "supply_orders")
+public class SupplyOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,7 @@ public class Order {
     @Column(name = "amount")
     private Double amount;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "order_goods",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "goods_id")})
+    // TODO: 13.11.2018 сделать
     private List<Goods> goods;
 
     public Long getId() {
@@ -70,7 +67,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "SupplyOrder{" +
                 "id=" + id +
                 ", created=" + created +
                 ", user_id=" + user_id +
@@ -83,7 +80,7 @@ public class Order {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
+        SupplyOrder order = (SupplyOrder) o;
         if (!id.equals(order.id)) return false;
         return user_id != null ? user_id.equals(order.user_id) : order.user_id == null;
     }

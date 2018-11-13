@@ -3,19 +3,22 @@ package com.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Discounts")
-public class Discount {
+@Table(name = "price_modifier")
+public class PriceModifier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "factor")
-    private Double factor;
+    @Column(name = "discount")
+    private Double discount;
+
+    @Column(name = "markup")
+    private Double markup;
 
     @Column(name = "category_id")
-   private Long category_id;
+    private Long category_id;
 
     @Column(name = "goods_id")
     private Long goods_id;
@@ -24,12 +27,24 @@ public class Discount {
         return id;
     }
 
-    public Double getFactor() {
-        return factor;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setFactor(Double factor) {
-        this.factor = factor;
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
+    public Double getMarkup() {
+        return markup;
+    }
+
+    public void setMarkup(Double markup) {
+        this.markup = markup;
     }
 
     public Long getCategory_id() {
@@ -50,9 +65,10 @@ public class Discount {
 
     @Override
     public String toString() {
-        return "Discount{" +
+        return "PriceModifier{" +
                 "id=" + id +
-                ", factor=" + factor +
+                ", discount=" + discount +
+                ", markup=" + markup +
                 ", category_id=" + category_id +
                 ", goods_id=" + goods_id +
                 '}';
@@ -62,8 +78,8 @@ public class Discount {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Discount discount = (Discount) o;
-        return id.equals(discount.id);
+        PriceModifier priceModifier = (PriceModifier) o;
+        return id.equals(priceModifier.id);
     }
 
     @Override
