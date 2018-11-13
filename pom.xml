@@ -12,6 +12,7 @@
         <module>model</module>
         <module>test</module>
         <module>dao</module>
+        <module>api</module>
     </modules>
 
     <properties>
@@ -42,6 +43,4 @@
             <version>5.3.7.Final</version>
         </dependency>
     </dependencies>
-
-
 </project>

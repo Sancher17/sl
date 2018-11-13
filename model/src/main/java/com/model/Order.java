@@ -29,6 +29,30 @@ public class Order {
         return goods;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
+    }
+
+    public void setGoods(List<Goods> goods) {
+        this.goods = goods;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -36,5 +60,19 @@ public class Order {
                 ", created=" + created +
                 ", user_id=" + user_id +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        if (!id.equals(order.id)) return false;
+        return user_id != null ? user_id.equals(order.user_id) : order.user_id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

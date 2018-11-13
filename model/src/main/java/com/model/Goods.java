@@ -25,10 +25,6 @@ public class Goods {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -61,5 +57,18 @@ public class Goods {
                 ", price=" + price +
                 ", size_id=" + size_id +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Goods goods = (Goods) o;
+        return id.equals(goods.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

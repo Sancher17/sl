@@ -23,6 +23,42 @@ public class User {
     @Column(name = "type_id")
     private Double type_id;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public String getLast_name() {
+        return last_name;
+    }
+
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Double getType_id() {
+        return type_id;
+    }
+
+    public void setType_id(Double type_id) {
+        this.type_id = type_id;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -32,5 +68,18 @@ public class User {
                 ", age=" + age +
                 ", type_id=" + type_id +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

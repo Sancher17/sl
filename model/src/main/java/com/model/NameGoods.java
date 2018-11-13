@@ -17,6 +17,26 @@ public class NameGoods {
     @Column(name = "category_id")
     private Long category_id;
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(Long category_id) {
+        this.category_id = category_id;
+    }
+
     @Override
     public String toString() {
         return "NameGoods{" +
@@ -24,5 +44,18 @@ public class NameGoods {
                 ", name='" + name + '\'' +
                 ", category_id=" + category_id +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NameGoods nameGoods = (NameGoods) o;
+        return id.equals(nameGoods.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

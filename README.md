@@ -1,6 +1,10 @@
 ### Скриншоты программы находятся в папке: 
 ##### src/main/screens/main.png
 
+## Workflow
+
+![login](images/workflow/workflow.png)
+
 ## Скрины программы
 
 ![login](images/screens/login.png)
@@ -23,3 +27,4 @@
 ![cashier](images/state_diagrams/cashier.png)
 
 ![storkeeper](images/state_diagrams/storekeeper.png)
+
