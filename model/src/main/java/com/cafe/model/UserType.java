@@ -1,10 +1,10 @@
-package com.model;
+package com.cafe.model;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "names_goods")
-public class NameGoods {
+@Table(name = "user_types")
+public class UserType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,35 +14,23 @@ public class NameGoods {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "category_id")
-    private Long category_id;
-
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public Long getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(Long category_id) {
-        this.category_id = category_id;
-    }
-
     @Override
     public String toString() {
-        return "NameGoods{" +
+        return "UserType{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", category_id=" + category_id +
                 '}';
     }
 
@@ -50,8 +38,8 @@ public class NameGoods {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NameGoods nameGoods = (NameGoods) o;
-        return id.equals(nameGoods.id);
+        UserType userType = (UserType) o;
+        return id.equals(userType.id);
     }
 
     @Override

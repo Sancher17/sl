@@ -19,15 +19,15 @@
         <property name="format_sql">false</property>
         <property name="current_session_context_class">thread</property>
 
-        <mapping class="com.model.Categories"/>
-        <mapping class="com.model.Goods"/>
-        <mapping class="com.model.Order"/>
-        <mapping class="com.model.PriceModifier"/>
-        <mapping class="com.model.NameGoods"/>
-        <mapping class="com.model.SizeGoods"/>
-        <mapping class="com.model.Storage"/>
-        <mapping class="com.model.UserType"/>
-        <mapping class="com.model.User"/>
+        <mapping class="com.cafe.model.Categories"/>
+        <mapping class="com.cafe.model.Goods"/>
+        <mapping class="com.cafe.model.Order"/>
+        <mapping class="com.cafe.model.PriceModifier"/>
+        <mapping class="com.cafe.model.NameGoods"/>
+        <mapping class="com.cafe.model.SizeGoods"/>
+        <mapping class="com.cafe.model.Storage"/>
+        <mapping class="com.cafe.model.UserType"/>
+        <mapping class="com.cafe.model.User"/>
 
     </session-factory>
 </hibernate-configuration>
