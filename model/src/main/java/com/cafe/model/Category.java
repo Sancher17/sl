@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class Categories {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class Categories {
 
     @Override
     public String toString() {
-        return "Categories{" +
+        return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", parent_id='" + parent_id + '\'' +
@@ -50,7 +50,7 @@ public class Categories {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Categories that = (Categories) o;
+        Category that = (Category) o;
         return id.equals(that.id);
     }
 

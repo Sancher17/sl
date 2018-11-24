@@ -1,9 +1,9 @@
 package com.cafe.services;
 
-import com.cafe.api.dao.IGoodsDao;
-import com.cafe.api.services.IGoodsService;
+import com.cafe.api.dao.IUsersDao;
+import com.cafe.api.services.IUsersService;
 import com.cafe.dao.util.HibernateUtil;
-import com.cafe.model.Goods;
+import com.cafe.model.User;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,19 +11,19 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class GoodsService implements IGoodsService {
+public class UsersService implements IUsersService {
 
     @Autowired
-    private IGoodsDao goodsDao;
+    private IUsersDao usersDao;
 
-    public GoodsService() {
+    public UsersService() {
         System.out.println(this.getClass().getSimpleName() + " -- constructor");
     }
 
     @Override
-    public List<Goods> getAll() {
+    public List<User> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return goodsDao.getAll(session, Goods.class);
+            return usersDao.getAll(session, User.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

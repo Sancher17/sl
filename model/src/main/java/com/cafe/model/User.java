@@ -23,6 +23,13 @@ public class User {
     @Column(name = "type_id")
     private Double type_id;
 
+    @Column(name = "login")
+    private String login;
+
+    @Column(name = "password")
+    private String password;
+
+
     public Long getId() {
         return id;
     }
@@ -59,6 +66,26 @@ public class User {
         this.type_id = type_id;
     }
 
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -67,6 +94,8 @@ public class User {
                 ", last_name='" + last_name + '\'' +
                 ", age=" + age +
                 ", type_id=" + type_id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 

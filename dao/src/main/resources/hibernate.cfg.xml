@@ -19,7 +19,7 @@
         <property name="format_sql">false</property>
         <property name="current_session_context_class">thread</property>
 
-        <mapping class="com.cafe.model.Categories"/>
+        <mapping class="com.cafe.model.Category"/>
         <mapping class="com.cafe.model.Goods"/>
         <mapping class="com.cafe.model.Order"/>
         <mapping class="com.cafe.model.PriceModifier"/>
