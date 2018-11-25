@@ -3,7 +3,7 @@ package com.cafe.model;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name="categories")
 public class Category {
 
     @Id

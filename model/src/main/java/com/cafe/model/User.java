@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
+@SecondaryTable(name = "user_types")
 public class User {
 
     @Id
@@ -12,16 +14,16 @@ public class User {
     private Long id;
 
     @Column(name = "first_name")
-    private String first_name;
+    private String firstName;
 
     @Column(name = "last_name")
-    private String last_name;
+    private String lastName;
 
     @Column(name = "age")
     private Integer age;
 
-    @Column(name = "type_id")
-    private Double type_id;
+    @Column(name = "name", table = "user_types")
+    private String type;
 
     @Column(name = "login")
     private String login;
@@ -38,16 +40,16 @@ public class User {
         this.id = id;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String first_name) {
+        this.firstName = first_name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String last_name) {
+        this.lastName = last_name;
     }
 
     public Integer getAge() {
@@ -58,16 +60,16 @@ public class User {
         this.age = age;
     }
 
-    public Double getType_id() {
-        return type_id;
+    public String getType() {
+        return type;
     }
 
-    public void setType_id(Double type_id) {
-        this.type_id = type_id;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
     public String getLogin() {
@@ -90,10 +92,10 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
+                ", first_name='" + firstName + '\'' +
+                ", last_name='" + lastName + '\'' +
                 ", age=" + age +
-                ", type_id=" + type_id +
+                ", type=" + type +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 '}';

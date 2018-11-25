@@ -2,15 +2,14 @@ package com.cafe.model;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "supply_orders")
-public class SupplyOrder {
+public class SupplyOrder{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "created")
@@ -23,7 +22,7 @@ public class SupplyOrder {
     private Double amount;
 
     // TODO: 13.11.2018 сделать
-    private List<Goods> goods;
+//    private List<Goods> goods;
 
     public Long getId() {
         return id;
@@ -57,13 +56,7 @@ public class SupplyOrder {
         this.amount = amount;
     }
 
-    public List<Goods> getGoods() {
-        return goods;
-    }
 
-    public void setGoods(List<Goods> goods) {
-        this.goods = goods;
-    }
 
     @Override
     public String toString() {
@@ -72,7 +65,6 @@ public class SupplyOrder {
                 ", created=" + created +
                 ", user_id=" + user_id +
                 ", amount=" + amount +
-                ", goods=" + goods +
                 '}';
     }
 

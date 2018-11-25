@@ -5,6 +5,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "goods")
 @Inheritance(strategy = InheritanceType.JOINED)
+@SecondaryTables({
+        @SecondaryTable(name = "names_goods"),
+        @SecondaryTable(name = "size_goods")})
 public class Goods {
 
     @Id
@@ -12,17 +15,17 @@ public class Goods {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name_id")
+    @Column(name = "name", table = "names_goods")
     private String name;
 
-    @Column(name = "size_id")
-    private int size_id;
+    @Column(name = "name", table = "size_goods")
+    private String size;
 
     @Column(name = "purchase_price")
-    private Double purchase_price;
+    private Double purchasePrice;
 
     @Column(name = "sell_price")
-    private Double sell_price;
+    private Double sellPrice;
 
     @Column(name = "weight")
     private Double weight;
@@ -38,36 +41,37 @@ public class Goods {
         this.id = id;
     }
 
+
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameId) {
+        this.name = nameId;
     }
 
-    public int getSize_id() {
-        return size_id;
+    public String getSize() {
+        return size;
     }
 
-    public void setSize_id(int size_id) {
-        this.size_id = size_id;
+    public void setSize(String sizeId) {
+        this.size = sizeId;
     }
 
-    public Double getPurchase_price() {
-        return purchase_price;
+    public Double getPurchasePrice() {
+        return purchasePrice;
     }
 
-    public void setPurchase_price(Double purchase_price) {
-        this.purchase_price = purchase_price;
+    public void setPurchasePrice(Double purchase_price) {
+        this.purchasePrice = purchase_price;
     }
 
-    public Double getSell_price() {
-        return sell_price;
+    public Double getSellPrice() {
+        return sellPrice;
     }
 
-    public void setSell_price(Double sell_price) {
-        this.sell_price = sell_price;
+    public void setSellPrice(Double sell_price) {
+        this.sellPrice = sell_price;
     }
 
     public Double getWeight() {
@@ -91,9 +95,9 @@ public class Goods {
         return "Goods{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", size_id=" + size_id +
-                ", purchase_price=" + purchase_price +
-                ", sell_price=" + sell_price +
+                ", size='" + size + '\'' +
+                ", purchase_price=" + purchasePrice +
+                ", sell_price=" + sellPrice +
                 ", weight=" + weight +
                 ", volume=" + volume +
                 '}';

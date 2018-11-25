@@ -20,13 +20,29 @@ public class UsersService implements IUsersService {
         System.out.println(this.getClass().getSimpleName() + " -- constructor");
     }
 
+
+    @Override
+    public void add(User user) {
+
+    }
+
+    @Override
+    public void update(User user) {
+
+    }
+
+    @Override
+    public void delete(User user) {
+
+    }
+
+    @Override
+    public User getById(Long id) {
+        return null;
+    }
+
     @Override
     public List<User> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return usersDao.getAll(session, User.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return usersDao.getAll(User.class);
     }
 }
