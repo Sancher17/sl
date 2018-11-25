@@ -7,11 +7,11 @@
 </head>
 <body>
 
-<form:form action="processForm" modelAttribute="student">
+<form:form action="processLogin" modelAttribute="login">
 
-    Firs name: <form:input path="first_name"/>
+    Firs name: <form:input path="password"/>
     <br><br>
-    Last name: <form:input path="last_name"/>
+    Last name: <form:input path="username"/>
 
     <input type="submit" value="Submit" />
 

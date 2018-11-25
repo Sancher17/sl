@@ -15,14 +15,14 @@ public class Category {
     private String name;
 
     @Column(name = "parent_id")
-    private String parent_id;
+    private Long parentCategoryId;
 
     @Override
     public String toString() {
         return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", parent_id='" + parent_id + '\'' +
+                ", parentCategoryId=" + parentCategoryId +
                 '}';
     }
 
@@ -38,12 +38,16 @@ public class Category {
         this.name = name;
     }
 
-    public String getParent_id() {
-        return parent_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setParent_id(String parent_id) {
-        this.parent_id = parent_id;
+    public Long getParentCategoryId() {
+        return parentCategoryId;
+    }
+
+    public void setParentCategoryId(Long parentCategoryId) {
+        this.parentCategoryId = parentCategoryId;
     }
 
     @Override

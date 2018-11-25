@@ -3,6 +3,7 @@ package com.cafe.services;
 import com.cafe.api.dao.IUsersDao;
 import com.cafe.api.services.IUsersService;
 import com.cafe.dao.util.HibernateUtil;
+import com.cafe.model.Login;
 import com.cafe.model.User;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,11 @@ public class UsersService implements IUsersService {
     @Override
     public List<User> getAll() {
         return usersDao.getAll(User.class);
+    }
+
+    
+    @Override
+    public User validateUser(Login login) {
+        return usersDao.validateUser(login);
     }
 }

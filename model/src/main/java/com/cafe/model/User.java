@@ -1,6 +1,9 @@
 package com.cafe.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "users")
@@ -25,9 +28,14 @@ public class User {
     @Column(name = "name", table = "user_types")
     private String type;
 
+
+    @NotNull(message = "is required")
+    @Size(min = 1, message = "is required")
     @Column(name = "login")
     private String login;
 
+    @NotNull(message = "is required")
+    @Size(min = 1, message = "is required")
     @Column(name = "password")
     private String password;
 
