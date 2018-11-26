@@ -4,9 +4,6 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--<context:component-scan base-package="com.cafe.api.services"/>-->
-    <!--<context:component-scan base-package="com.cafe.controllers"/>-->
-    <!--<context:component-scan base-package="com.cafe.services"/>-->
 
     <import resource="classpath:beans_web.xml"/>
     <import resource="classpath:beans_service.xml"/>
@@ -19,6 +16,10 @@
         <property name="prefix" value="/WEB-INF/view/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+
+
+
+
 
 
 </beans>

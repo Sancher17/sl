@@ -11,10 +11,12 @@
 
     <context:component-scan base-package="com.cafe" />
 
+    <bean id = "abstractDao" class = "com.cafe.dao.AbstractDao"/>
     <bean id = "goodsDao" class = "com.cafe.dao.GoodsDao"/>
     <bean id = "usersDao" class = "com.cafe.dao.UsersDao"/>
     <bean id = "categoryDao" class = "com.cafe.dao.CategoryDao"/>
-    <bean id = "abstractDao" class = "com.cafe.dao.AbstractDao"/>
+    <bean id = "orderDao" class = "com.cafe.dao.OrderDao"/>
+    <bean id = "nameGoodsDao" class = "com.cafe.dao.NameGoodsDao"/>
 
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

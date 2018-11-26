@@ -1,4 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <html>
   <head>
     <title>$Title$</title>
@@ -14,6 +17,8 @@
   <a href="hello/showForm">Hello World form</a>
   <br><br>
   <a href="student/showForm">Student form</a>
+  <br><br>
+  <a href="user/showForm">Пользователи</a>
   <br><br>
   <a href="user/showForm">Пользователи</a>
 

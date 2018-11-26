@@ -17,7 +17,7 @@ public class Order {
     private Date created;
 
     @Column(name = "user_id")
-    private Long user_id;
+    private Long userId;
 
     @Column(name = "amount")
     private Double amount;
@@ -44,12 +44,12 @@ public class Order {
         this.created = created;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setUserId(Long user_id) {
+        this.userId = user_id;
     }
 
     public Double getAmount() {
@@ -73,7 +73,7 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", created=" + created +
-                ", user_id=" + user_id +
+                ", user_id=" + userId +
                 ", amount=" + amount +
                 ", goods=" + goods +
                 '}';
@@ -85,7 +85,7 @@ public class Order {
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
         if (!id.equals(order.id)) return false;
-        return user_id != null ? user_id.equals(order.user_id) : order.user_id == null;
+        return userId != null ? userId.equals(order.userId) : order.userId == null;
     }
 
     @Override

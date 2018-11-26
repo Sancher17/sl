@@ -15,5 +15,7 @@
     <bean id="goodsService" class="com.cafe.services.GoodsService"/>
     <bean id="usersServices" class="com.cafe.services.UsersService"/>
     <bean id="categoryService" class="com.cafe.services.CategoryService"/>
+    <bean id="orderService" class="com.cafe.services.OrderService"/>
+    <bean id="nameGoodsService" class="com.cafe.services.NameGoodsService"/>
 
 </beans>

@@ -9,7 +9,6 @@
     <context:component-scan base-package="com.cafe.controllers" />
     <context:component-scan base-package="com.cafe.services" />
 
-    <!--<import resource="classpath:beans_service.xml"/>-->
     <import resource="classpath*:beans_service.xml"/>
 
 </beans>
