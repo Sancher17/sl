@@ -1,15 +1,13 @@
 package com.cafe.dao;
 
-import com.cafe.api.dao.IOrderDao;
-import com.cafe.model.Order;
+import com.cafe.api.dao.IStorageDao;
+import com.cafe.model.Storage;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class OrderDao extends AbstractDao<Order> implements IOrderDao {
+public class StorageDao extends AbstractDao<Storage> implements IStorageDao {
 
-    public OrderDao() {
+    public StorageDao() {
         System.out.println(this.getClass().getSimpleName() + " -- constructor");
     }
-
-
 }

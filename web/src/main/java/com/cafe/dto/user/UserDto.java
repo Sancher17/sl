@@ -7,16 +7,12 @@ public class UserDto {
     private Long id;
     private String firstName;
     private String lastName;
-    private String login;
-    private String password;
 
 
     public UserDto(User user) {
         this.id = user.getId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
-        this.login = user.getLogin();
-        this.password = user.getPassword();
     }
 
     public Long getId() {
@@ -43,19 +39,12 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

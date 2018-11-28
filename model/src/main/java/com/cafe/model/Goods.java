@@ -4,10 +4,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "goods")
-@Inheritance(strategy = InheritanceType.JOINED)
-@SecondaryTables({
-        @SecondaryTable(name = "names_goods"),
-        @SecondaryTable(name = "size_goods")})
 public class Goods {
 
     @Id
@@ -15,11 +11,13 @@ public class Goods {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", table = "names_goods")
-    private String name;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "name_id")
+    private NameGoods nameGoods;
 
-    @Column(name = "name", table = "size_goods")
-    private String size;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "size_id")
+    private SizeGoods sizeGoods;
 
     @Column(name = "purchase_price")
     private Double purchasePrice;
@@ -41,37 +39,36 @@ public class Goods {
         this.id = id;
     }
 
-
-    public String getName() {
-        return name;
+    public NameGoods getNameGoods() {
+        return nameGoods;
     }
 
-    public void setName(String nameId) {
-        this.name = nameId;
+    public void setNameGoods(NameGoods nameGoods) {
+        this.nameGoods = nameGoods;
     }
 
-    public String getSize() {
-        return size;
+    public SizeGoods getSizeGoods() {
+        return sizeGoods;
     }
 
-    public void setSize(String sizeId) {
-        this.size = sizeId;
+    public void setSizeGoods(SizeGoods sizeGoods) {
+        this.sizeGoods = sizeGoods;
     }
 
     public Double getPurchasePrice() {
         return purchasePrice;
     }
 
-    public void setPurchasePrice(Double purchase_price) {
-        this.purchasePrice = purchase_price;
+    public void setPurchasePrice(Double purchasePrice) {
+        this.purchasePrice = purchasePrice;
     }
 
     public Double getSellPrice() {
         return sellPrice;
     }
 
-    public void setSellPrice(Double sell_price) {
-        this.sellPrice = sell_price;
+    public void setSellPrice(Double sellPrice) {
+        this.sellPrice = sellPrice;
     }
 
     public Double getWeight() {
@@ -94,10 +91,10 @@ public class Goods {
     public String toString() {
         return "Goods{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", size='" + size + '\'' +
-                ", purchase_price=" + purchasePrice +
-                ", sell_price=" + sellPrice +
+                ", nameGoods=" + nameGoods +
+                ", sizeGoods=" + sizeGoods +
+                ", purchasePrice=" + purchasePrice +
+                ", sellPrice=" + sellPrice +
                 ", weight=" + weight +
                 ", volume=" + volume +
                 '}';

@@ -4,11 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.JOINED)
-@SecondaryTable(name = "user_types")
 public class User {
 
     @Id
@@ -25,9 +22,9 @@ public class User {
     @Column(name = "age")
     private Integer age;
 
-    @Column(name = "name", table = "user_types")
-    private String type;
-
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id")
+    private UserType userType;
 
     @NotNull(message = "is required")
     @Size(min = 1, message = "is required")
@@ -68,12 +65,12 @@ public class User {
         this.age = age;
     }
 
-    public String getType() {
-        return type;
+    public UserType getUserType() {
+        return userType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     public String getFirstName() {
@@ -100,10 +97,10 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", first_name='" + firstName + '\'' +
-                ", last_name='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", age=" + age +
-                ", type=" + type +
+                ", userType=" + userType +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 '}';

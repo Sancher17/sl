@@ -17,11 +17,13 @@ public class PriceModifier {
     @Column(name = "markup")
     private Double markup;
 
-    @Column(name = "category_id")
-    private Long category_id;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @Column(name = "goods_id")
-    private Long goods_id;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "goods_id")
+    private Goods goods;
 
     public Long getId() {
         return id;
@@ -47,20 +49,20 @@ public class PriceModifier {
         this.markup = markup;
     }
 
-    public Long getCategory_id() {
-        return category_id;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategory_id(Long category_id) {
-        this.category_id = category_id;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public Long getGoods_id() {
-        return goods_id;
+    public Goods getGoods() {
+        return goods;
     }
 
-    public void setGoods_id(Long goods_id) {
-        this.goods_id = goods_id;
+    public void setGoods(Goods goods) {
+        this.goods = goods;
     }
 
     @Override
@@ -69,8 +71,8 @@ public class PriceModifier {
                 "id=" + id +
                 ", discount=" + discount +
                 ", markup=" + markup +
-                ", category_id=" + category_id +
-                ", goods_id=" + goods_id +
+                ", category=" + category +
+                ", goods=" + goods +
                 '}';
     }
 

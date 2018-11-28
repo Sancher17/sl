@@ -4,8 +4,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "names_goods")
-@Inheritance(strategy = InheritanceType.JOINED)
-@SecondaryTable(name = "categories")
 public class NameGoods {
 
     @Id
@@ -16,11 +14,16 @@ public class NameGoods {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "name", table = "categories")
-    private String categoryName;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="category_id")
+    private Category category;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -31,12 +34,12 @@ public class NameGoods {
         this.name = name;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class NameGoods {
         return "NameGoods{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", category=" + categoryName +
+                ", category=" + category +
                 '}';
     }
 

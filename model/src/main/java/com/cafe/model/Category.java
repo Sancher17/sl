@@ -14,20 +14,16 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "parent_id")
-    private Long parentCategoryId;
-
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", parentCategoryId=" + parentCategoryId +
-                '}';
-    }
+   @OneToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "parent_id")
+    private Category parentCategory;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -38,16 +34,21 @@ public class Category {
         this.name = name;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Category getParentCategory() {
+        return parentCategory;
     }
 
-    public Long getParentCategoryId() {
-        return parentCategoryId;
+    public void setParentCategory(Category parentCategory) {
+        this.parentCategory = parentCategory;
     }
 
-    public void setParentCategoryId(Long parentCategoryId) {
-        this.parentCategoryId = parentCategoryId;
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parentCategory=" + parentCategory +
+                '}';
     }
 
     @Override

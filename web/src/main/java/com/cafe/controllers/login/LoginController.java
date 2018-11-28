@@ -1,4 +1,4 @@
-package com.cafe.controllers;
+package com.cafe.controllers.login;
 
 import com.cafe.api.services.IUsersService;
 import com.cafe.model.Login;

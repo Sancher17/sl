@@ -11,9 +11,5 @@ public class NameGoodsDao extends AbstractDao<NameGoods> implements INameGoodsDa
         System.out.println(this.getClass().getSimpleName() + " -- constructor");
     }
 
-    @Override
-    public List<NameGoods> getAll(Class clazz) {
-        return getSession().createQuery("select t from NameGoods t").getResultList();
 
-    }
 }

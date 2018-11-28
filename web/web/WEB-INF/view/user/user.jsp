@@ -6,14 +6,21 @@
 
 <page:template>
 
-  <jsp:body>
+    <jsp:body>
 
-    <h1>Главная страница</h1>
+<h1>Страница пользователей</h1>
 
+    <%--First Name: ${userAttribute.firstName}--%>
+    <%--<br>--%>
+    <%--Last Name: ${userAttribute.lastName}--%>
 
+<ul>
+    <c:forEach var="temp" items="${userAttribute.toArray()}">
+        <li> ${temp} </li>
+    </c:forEach>
+</ul>
 
-  </jsp:body>
-
+    </jsp:body>
 
 
 </page:template>

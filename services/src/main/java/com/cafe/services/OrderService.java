@@ -1,6 +1,6 @@
 package com.cafe.services;
 
-import com.cafe.api.dao.IOrdersDao;
+import com.cafe.api.dao.IOrderDao;
 import com.cafe.api.services.IOrderService;
 import com.cafe.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import java.util.List;
 public class OrderService implements IOrderService {
 
     @Autowired
-    IOrdersDao ordersDao;
+    IOrderDao ordersDao;
 
     public OrderService() {
         System.out.println(this.getClass().getSimpleName() + " -- constructor");
@@ -18,6 +18,9 @@ public class OrderService implements IOrderService {
 
     @Override
     public void add(Order order) {
+        Order order1 = new Order();
+
+
 
     }
 
@@ -33,7 +36,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order getById(Long id) {
-        return null;
+        return ordersDao.getById(id, Order.class);
 
     }
 

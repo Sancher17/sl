@@ -1,6 +1,6 @@
 package com.cafe.dao;
 
-import com.cafe.api.dao.IUsersDao;
+import com.cafe.api.dao.IUserDao;
 import com.cafe.model.Login;
 import com.cafe.model.User;
 import org.hibernate.Session;
@@ -13,9 +13,9 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-public class UsersDao extends AbstractDao<User> implements IUsersDao {
+public class UserDao extends AbstractDao<User> implements IUserDao {
 
-    public UsersDao() {
+    public UserDao() {
         System.out.println(this.getClass().getSimpleName() + " -- constructor");
     }
 
