@@ -1,5 +1,8 @@
 package com.cafe.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,29 +16,33 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @JsonView(Profile.PublicView.class)
     @Column(name = "first_name")
     private String firstName;
 
+    @JsonView(Profile.PublicView.class)
     @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "age")
     private Integer age;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
     private UserType userType;
+
 
     @NotNull(message = "is required")
     @Size(min = 1, message = "is required")
     @Column(name = "login")
     private String login;
 
+
     @NotNull(message = "is required")
     @Size(min = 1, message = "is required")
     @Column(name = "password")
     private String password;
-
 
     public Long getId() {
         return id;

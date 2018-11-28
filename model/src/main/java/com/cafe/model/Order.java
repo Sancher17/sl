@@ -1,5 +1,7 @@
 package com.cafe.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Order {
     @Column(name = "created")
     private Date created;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -23,6 +26,7 @@ public class Order {
     @Column(name = "amount")
     private Double amount;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "order_goods",
             joinColumns = {@JoinColumn(name = "order_id")},

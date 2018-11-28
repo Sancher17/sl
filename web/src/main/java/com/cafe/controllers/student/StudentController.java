@@ -32,6 +32,18 @@ public class StudentController {
         return "student-form";
     }
 
+//    @RequestMapping(value = "/getUser", method= RequestMethod.GET)
+//    public List<UserDto> ormFindAllUsers(Model model) {
+//        // TODO: 27.11.2018 пример
+//        List<User> users = usersService.getAll();
+//        List<UserDto> usersdto = usersService.getAll()
+//                .stream()
+//                .map(UserDto::new)
+//                .collect(Collectors.toList());
+//        model.addAttribute("userAttribute", usersdto);
+//        return usersdto;
+//    }
+
     @RequestMapping(value = "/getUser", method= RequestMethod.GET)
     public String ormFindAllUsers(Model model) {
         // TODO: 27.11.2018 пример

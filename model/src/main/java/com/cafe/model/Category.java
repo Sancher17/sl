@@ -1,5 +1,7 @@
 package com.cafe.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,6 +16,7 @@ public class Category {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
    @OneToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "parent_id")
     private Category parentCategory;

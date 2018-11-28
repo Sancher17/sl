@@ -14,6 +14,7 @@
 <a href="/">Главная страница</a><br>
 <a href="student/showForm">Student form</a><br>
 <a href="/student/getUser">Пользователи системы</a><br>
+<a href="/json/jsonTest">Json test</a><br>
 
 
 <jsp:doBody/>
