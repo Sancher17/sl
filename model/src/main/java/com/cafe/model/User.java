@@ -1,75 +1,59 @@
 package com.cafe.model;
 
+import com.cafe.model.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
-public class User {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class User extends GenericEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
-    @JsonView(Profile.PublicView.class)
     @Column(name = "first_name")
     private String firstName;
 
-    @JsonView(Profile.PublicView.class)
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "age")
-    private Integer age;
+    @Column(name = "date_birthday")
+    private LocalDateTime dateBirthday;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type_id")
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     private UserType userType;
 
-
-    @NotNull(message = "is required")
-    @Size(min = 1, message = "is required")
     @Column(name = "login")
     private String login;
 
-
-    @NotNull(message = "is required")
-    @Size(min = 1, message = "is required")
     @Column(name = "password")
     private String password;
 
-    public Long getId() {
-        return id;
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setFirstName(String first_name) {
-        this.firstName = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String last_name) {
-        this.lastName = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public Integer getAge() {
-        return age;
+    public LocalDateTime getDateBirthday() {
+        return dateBirthday;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setDateBirthday(LocalDateTime dateBirthday) {
+        this.dateBirthday = dateBirthday;
     }
 
     public UserType getUserType() {
@@ -78,10 +62,6 @@ public class User {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
-    }
-
-    public String getFirstName() {
-        return firstName;
     }
 
     public String getLogin() {
@@ -102,15 +82,17 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                ", userType=" + userType +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        String delimetre = String.valueOf('\'');
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("id='").append(getId()).append(delimetre);
+        sb.append(", firstName='").append(firstName).append(delimetre);
+        sb.append(", lastName='").append(lastName).append(delimetre);
+        sb.append(", dateBirthday=").append(dateBirthday).append(delimetre);
+        sb.append(", userType='").append(userType).append(delimetre);
+        sb.append(", login='").append(login).append(delimetre);
+        sb.append(", password='").append(password).append(delimetre);
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override
@@ -118,11 +100,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id.equals(user.id);
+        return getId().equals(user.getId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return getId().hashCode();
     }
 }

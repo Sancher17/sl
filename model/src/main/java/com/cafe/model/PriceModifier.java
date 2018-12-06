@@ -6,12 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "price_modifier")
-public class PriceModifier {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class PriceModifier extends GenericEntity {
 
     @Column(name = "discount")
     private Double discount;
@@ -29,13 +24,6 @@ public class PriceModifier {
     @JoinColumn(name = "goods_id")
     private Goods goods;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Double getDiscount() {
         return discount;
@@ -71,13 +59,14 @@ public class PriceModifier {
 
     @Override
     public String toString() {
-        return "PriceModifier{" +
-                "id=" + id +
-                ", discount=" + discount +
-                ", markup=" + markup +
-                ", category=" + category +
-                ", goods=" + goods +
-                '}';
+        final StringBuilder sb = new StringBuilder("PriceModifier{");
+        sb.append("id=").append(getId());
+        sb.append(", discount=").append(discount);
+        sb.append(", markup=").append(markup);
+        sb.append(", category=").append(category);
+        sb.append(", goods=").append(goods);
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override
@@ -85,11 +74,11 @@ public class PriceModifier {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PriceModifier priceModifier = (PriceModifier) o;
-        return id.equals(priceModifier.id);
+        return getId().equals(priceModifier.getId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return getId().hashCode();
     }
 }

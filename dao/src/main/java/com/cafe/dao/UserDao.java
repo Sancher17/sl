@@ -1,25 +1,31 @@
 package com.cafe.dao;
 
 import com.cafe.api.dao.IUserDao;
+import com.cafe.model.GenericEntity;
 import com.cafe.model.Login;
 import com.cafe.model.User;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+@EnableTransactionManagement
 @Repository
 public class UserDao extends AbstractDao<User> implements IUserDao {
 
-    public UserDao() {
-        System.out.println(this.getClass().getSimpleName() + " -- constructor");
-    }
 
     @Override
+    public Class<User> getChildClass() {
+        return User.class;
+    }
+
+    // TODO: 02.12.2018 удалить
     public User validateUser(Login login) {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -31,10 +37,5 @@ public class UserDao extends AbstractDao<User> implements IUserDao {
         Query<User> query = session.createQuery(criteria);
         List<User> users = query.list();
         return users.get(0);
-
-
-//        String sql = "select * from users where username='" + login.getUsername() + "' and password='" + login.getPassword();
-//        List<User> users = jdbcTemplate.query(sql, new UserMapper());
-//        return users.size() > 0 ? users.get(0) : null;
     }
 }

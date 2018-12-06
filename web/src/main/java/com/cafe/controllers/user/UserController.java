@@ -1,55 +1,68 @@
 package com.cafe.controllers.user;
 
+import com.cafe.api.services.IUserService;
+import com.cafe.dto.user.UserDto;
+import com.cafe.dto.user.UserFullDataDto;
 import com.cafe.model.User;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.cafe.util.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
 
-    // add an initbinder ... to convert trim input strings
-    // remove leading and trailing whitespace
-    // resolve issue for our validation
+    @Autowired
+    private IUserService userService;
 
-    @InitBinder
-    public void initBinder(WebDataBinder dataBinder) {
-        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
-        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    @GetMapping(value = "/all")
+    public List<UserDto> getAll() {
+        return userService.getAll()
+                .stream().map(UserDto::new)
+                .collect(Collectors.toList());
     }
 
-    @RequestMapping("/showForm")
-    private String showForm(Model model){
-        User user1 = new User();
-        user1.setLogin("123");
-        user1.setPassword("123");
-        model.addAttribute("user", user1);
-        return "user/user-form";
+    @PostMapping(value = "/all")
+    public List<UserFullDataDto> getAllData() {
+        return userService.getAll().stream()
+                .map(UserFullDataDto::new)
+                .collect(Collectors.toList());
     }
 
-    @RequestMapping("/processForm")
-    public String processForm(
-            @Valid @ModelAttribute("user") User user,
-            BindingResult bindingResult){
+    @GetMapping(value = "/{id}")
+    public UserDto getById(@PathVariable("id") Long id) {
+        return new UserDto(userService.getById(id));
+    }
 
-        System.out.println("User - " +
-                user.getFirstName() + " " +
-                user.getLastName() + " " +
-                user.getLogin() + " " +
-                user.getPassword());
+    @PutMapping
+    public void create(@RequestBody UserFullDataDto userDto) {
+        userService.add(dtoToModel(userDto));
+    }
 
-        if (bindingResult.hasErrors()){
-            return "user/user-form";
-        }else {
-            return "user/user-confirmation";
-        }
+    @PostMapping(value = "/{id}")
+    public void update(@RequestBody UserFullDataDto userDto, @PathVariable("id") Long id) {
+        User user = userService.getById(id);
+        user = dtoToModel(userDto);
+        userService.update(user);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        userService.delete(id);
+    }
+
+    private User dtoToModel(UserFullDataDto userDto) {
+        User user = new User();
+        user.setId(userDto.getId());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setDateBirthday(DateUtil.dateFromString(userDto.getDatBirthday()));
+        user.setUserType(userDto.getType());
+        user.setLogin(userDto.getLogin());
+        user.setPassword(userDto.getPassword());
+        return user;
     }
 }

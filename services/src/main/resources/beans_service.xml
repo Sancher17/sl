@@ -10,13 +10,13 @@
 
     <context:component-scan base-package="com.cafe.services"/>
 
-    <bean id="facadeService" class="com.cafe.services.FacadeService"/>
 
     <bean id="goodsService" class="com.cafe.services.GoodsService"/>
-    <bean id="usersServices" class="com.cafe.services.UsersService"/>
+    <bean id="userService" class="com.cafe.services.UserService"/>
     <bean id="categoryService" class="com.cafe.services.CategoryService"/>
     <bean id="orderService" class="com.cafe.services.OrderService"/>
     <bean id="nameGoodsService" class="com.cafe.services.NameGoodsService"/>
     <bean id="storageService" class="com.cafe.services.StorageService"/>
+    <bean id="reportService" class="com.cafe.services.ReportService"/>
 
 </beans>

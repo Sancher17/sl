@@ -1,34 +1,18 @@
 package com.cafe.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "storage")
-public class Storage {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    public Long id;
+public class Storage extends GenericEntity {
 
     @Column(name = "quantity")
     private Integer quantity;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "goods_id")
     private Goods goods;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Integer getQuantity() {
         return quantity;
@@ -49,11 +33,12 @@ public class Storage {
 
     @Override
     public String toString() {
-        return "Storage{" +
-                "id=" + id +
-                ", quantity=" + quantity +
-                ", goods=" + goods +
-                '}';
+        final StringBuilder sb = new StringBuilder("Storage{");
+        sb.append("id=").append(getId());
+        sb.append(", quantity=").append(quantity);
+        sb.append(", goods=").append(goods);
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override
@@ -61,11 +46,11 @@ public class Storage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Storage storage = (Storage) o;
-        return id.equals(storage.id);
+        return getId().equals(storage.getId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return getId().hashCode();
     }
 }

@@ -1,33 +1,13 @@
 package com.cafe.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "names_goods")
-public class NameGoods {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class NameGoods extends GenericEntity{
 
     @Column(name = "name")
     private String name;
-
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="category_id")
-    private Category category;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -37,21 +17,13 @@ public class NameGoods {
         this.name = name;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     @Override
     public String toString() {
-        return "NameGoods{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", category=" + category +
-                '}';
+        final StringBuilder sb = new StringBuilder("NameGoods{");
+        sb.append("id='").append(getId()).append('\'');
+        sb.append("name='").append(name).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override
@@ -59,11 +31,11 @@ public class NameGoods {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NameGoods nameGoods = (NameGoods) o;
-        return id.equals(nameGoods.id);
+        return getId().equals(nameGoods.getId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return getId().hashCode();
     }
 }

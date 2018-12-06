@@ -1,27 +1,24 @@
 package com.cafe.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.cafe.model.enums.GoodsSize;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "goods")
-public class Goods {
+public class Goods extends GenericEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "name_id")
     private NameGoods nameGoods;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "size_id")
-    private SizeGoods sizeGoods;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @Column(name = "size")
+    @Enumerated(EnumType.STRING)
+    private GoodsSize sizeGoods;
 
     @Column(name = "purchase_price")
     private Double purchasePrice;
@@ -35,13 +32,6 @@ public class Goods {
     @Column(name = "volume")
     private Double volume;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public NameGoods getNameGoods() {
         return nameGoods;
@@ -51,11 +41,11 @@ public class Goods {
         this.nameGoods = nameGoods;
     }
 
-    public SizeGoods getSizeGoods() {
+    public GoodsSize getSizeGoods() {
         return sizeGoods;
     }
 
-    public void setSizeGoods(SizeGoods sizeGoods) {
+    public void setSizeGoods(GoodsSize sizeGoods) {
         this.sizeGoods = sizeGoods;
     }
 
@@ -91,17 +81,27 @@ public class Goods {
         this.volume = volume;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
-        return "Goods{" +
-                "id=" + id +
-                ", nameGoods=" + nameGoods +
-                ", sizeGoods=" + sizeGoods +
-                ", purchasePrice=" + purchasePrice +
-                ", sellPrice=" + sellPrice +
-                ", weight=" + weight +
-                ", volume=" + volume +
-                '}';
+        final StringBuilder sb = new StringBuilder("Goods{");
+        sb.append("id=").append(getId());
+        sb.append("nameGoods=").append(nameGoods);
+//        sb.append(", category=").append(category);
+        sb.append(", sizeGoods=").append(sizeGoods);
+        sb.append(", purchasePrice=").append(purchasePrice);
+        sb.append(", sellPrice=").append(sellPrice);
+        sb.append(", weight=").append(weight);
+        sb.append(", volume=").append(volume);
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override
@@ -109,11 +109,11 @@ public class Goods {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Goods goods = (Goods) o;
-        return id.equals(goods.id);
+        return getId().equals(goods.getId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return getId().hashCode();
     }
 }

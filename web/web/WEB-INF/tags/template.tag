@@ -12,9 +12,16 @@
 <h1>Программа управления кафе</h1><br>
 
 <a href="/">Главная страница</a><br>
-<a href="student/showForm">Student form</a><br>
-<a href="/student/getUser">Пользователи системы</a><br>
+<a href="/user/getUsers">Пользователи системы</a><br>
 <a href="/json/jsonTest">Json test</a><br>
+<a href="/order/showOrders">Показать все ордера</a><br>
+
+<br><br>
+    <%--кнопка--%>
+    <form action="/user/getUsers">
+        <input type="submit" value="Показать юзеров" >
+    </form>
+<br><br>
 
 
 <jsp:doBody/>

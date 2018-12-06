@@ -1,17 +1,17 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 
-<beans xmlns = "http://www.springframework.org/schema/beans"
-       xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context = "http://www.springframework.org/schema/context"
-       xsi:schemaLocation =
-               "http://www.springframework.org/schema/beans
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans.xsd
    http://www.springframework.org/schema/context
    http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:component-scan base-package="com.cafe" />
 
-    <bean id = "abstractDao" class = "com.cafe.dao.AbstractDao"/>
+    <import resource="classpath*:beans_web.xml"/>
+
     <bean id = "goodsDao" class = "com.cafe.dao.GoodsDao"/>
     <bean id = "userDao" class = "com.cafe.dao.UserDao"/>
     <bean id = "categoryDao" class = "com.cafe.dao.CategoryDao"/>
@@ -20,23 +20,21 @@
     <bean id = "storageDao" class = "com.cafe.dao.StorageDao"/>
 
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-        <property name="url"
-                  value="jdbc:mysql://localhost:3306/cafe?serverTimezone=UTC&amp;useSSL=false"/>
-        <property name="username" value="root" />
-        <property name="password" value="1512" />
-    </bean>
-
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="dialect">org.hibernate.dialect.MySQL8Dialect</prop>
-                <prop key="show_sql">false</prop>
-                <prop key="hbm2ddl.auto">update</prop>
-            </props>
-        </property>
-        <property name="packagesToScan" value="com.cafe.model" />
-    </bean>
 </beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

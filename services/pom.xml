@@ -28,8 +28,6 @@
             <artifactId>dao</artifactId>
             <version>1</version>
         </dependency>
-
-
     </dependencies>
 
 

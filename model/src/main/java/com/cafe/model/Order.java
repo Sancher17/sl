@@ -1,48 +1,35 @@
 package com.cafe.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
-public class Order {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class Order extends GenericEntity{
 
     @Column(name = "created")
-    private Date created;
+    private LocalDateTime created;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "amount")
     private Double amount;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "order_goods",
             joinColumns = {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "goods_id")})
     private List<Goods> goods;
 
 
-    public Long getId() {
-        return id;
-    }
-
-    public Date getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
@@ -72,13 +59,14 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", created=" + created +
-                ", user=" + user +
-                ", amount=" + amount +
-                ", goods=" + goods +
-                '}';
+        final StringBuilder sb = new StringBuilder("Order{");
+        sb.append(" id=").append(getId());
+        sb.append(", created=").append(created);
+        sb.append(", user=").append(user);
+        sb.append(", amount=").append(amount);
+        sb.append(", goods=").append(goods);
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override
@@ -86,11 +74,11 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id != null ? id.equals(order.id) : order.id == null;
+        return getId() != null ? getId().equals(order.getId()) : order.getId() == null;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return getId() != null ? getId().hashCode() : 0;
     }
 }

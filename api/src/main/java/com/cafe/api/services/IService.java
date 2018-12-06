@@ -1,6 +1,5 @@
 package com.cafe.api.services;
 
-import com.cafe.api.dao.GenericDao;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +11,11 @@ public interface IService <T> {
 
    void update(T t);
 
-   void delete(T  t);
+   void delete(Long id);
 
    T getById(Long id);
 
    List<T> getAll();
 
+   T getByName(String name);
 }

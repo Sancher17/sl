@@ -5,9 +5,6 @@ import com.cafe.model.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface IUsersService extends IService<User>{
-
-    User validateUser(Login login);
-
+public interface IUserService extends IService<User>{
 
 }
