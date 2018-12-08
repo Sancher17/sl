@@ -1,18 +1,16 @@
 package com.cafe.dto.orders;
 
-import com.cafe.dto.goods.GoodsDto;
 import com.cafe.model.GenericEntity;
 import com.cafe.model.Goods;
 import com.cafe.model.Order;
 import com.cafe.util.DateUtil;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class OrderDtoSimpleData {
+public class OrderDtoSimple {
 
     private Long id;
     private String created;
@@ -22,7 +20,7 @@ public class OrderDtoSimpleData {
     private Double amount;
     private List<Long> listGoodsId;
 
-    public OrderDtoSimpleData(Order order) {
+    public OrderDtoSimple(Order order) {
         this.id = order.getId();
         this.created = DateUtil.stringFromDate(order.getCreated());
         this.userId = order.getUser().getId();
@@ -32,7 +30,7 @@ public class OrderDtoSimpleData {
         this.listGoodsId = listGoodsIdToDto(order.getGoods());
     }
 
-    public OrderDtoSimpleData() {
+    public OrderDtoSimple() {
     }
 
     private List<Long> listGoodsIdToDto(List<Goods> goodsList){

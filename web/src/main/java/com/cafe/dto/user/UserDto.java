@@ -4,7 +4,7 @@ import com.cafe.model.User;
 import com.cafe.model.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonView;
 
-@JsonView
+
 public class UserDto {
 
     private Long id;
@@ -51,14 +51,4 @@ public class UserDto {
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("UserDto{");
-        sb.append("id=").append(id);
-        sb.append(", firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", type='").append(type).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
 }

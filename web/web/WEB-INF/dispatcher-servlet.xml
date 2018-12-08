@@ -10,6 +10,7 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+
     <import resource="classpath:beans_web.xml"/>
     <import resource="classpath:beans_service.xml"/>
     <import resource="classpath:beans_dao.xml"/>
@@ -30,7 +31,9 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
     <bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
+    <!--<bean id="securityConfig" class="com.cafe.security.SecurityConfig"/>-->
 
 
 </beans>

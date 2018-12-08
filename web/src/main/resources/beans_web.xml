@@ -6,11 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.cafe.controllers" />
-    <context:component-scan base-package="com.cafe.services" />
-
-    <bean id="tokenRepository" class="com.cafe.security.TokenRepository"/>
-
+    <context:component-scan base-package="com.cafe" />
 
     <import resource="classpath*:beans_service.xml"/>
 
@@ -45,6 +41,14 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <!--from beans_dao END  -->
+
+    <bean id="jwtAuthFilter" class="com.cafe.security.auth.JwtAuthFilter"/>
+    <bean id="jwtAuthenticationEntryPoint" class="com.cafe.security.auth.JwtAuthenticationEntryPoint"/>
+    <bean id="jwtAuthenticationProvider" class="com.cafe.security.auth.JwtAuthenticationProvider"/>
+    <bean id="jwtService" class="com.cafe.security.service.JwtService"/>
+    <bean id="secretKeyProvider" class="com.cafe.security.auth.SecretKeyProvider"/>
+    <bean id="profileService" class="com.cafe.security.service.ProfileService"/>
+
 
 
 </beans>

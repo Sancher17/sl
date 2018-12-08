@@ -1,16 +1,13 @@
 package com.cafe.controllers.order;
 
 import com.cafe.api.services.*;
-import com.cafe.dto.goods.GoodsDto;
-import com.cafe.dto.orders.OrderDto;
-import com.cafe.dto.orders.OrderDtoSimpleData;
+import com.cafe.dto.orders.OrderDtoFull;
+import com.cafe.dto.orders.OrderDtoSimple;
 import com.cafe.model.*;
-import com.cafe.model.enums.GoodsSize;
-import com.cafe.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,36 +22,30 @@ public class OrderController {
     private IUserService userService;
 
     @Autowired
-    private INameGoodsService nameGoodsService;
-
-    @Autowired
-    private ICategoryService categoryService;
-
-    @Autowired
     private IGoodsService goodsService;
 
     @GetMapping(value = "/full")
-    public List<OrderDto> getAllFullData() {
+    public List<OrderDtoFull> getAllFullData() {
         return orderService.getAll()
-                .stream().map(OrderDto::new)
+                .stream().map(OrderDtoFull::new)
                 .collect(Collectors.toList());
     }
 
     @GetMapping(value = "/")
-    public List<OrderDtoSimpleData> getAll() {
+    public List<OrderDtoSimple> getAll() {
         return orderService.getAll()
-                .stream().map(OrderDtoSimpleData::new)
+                .stream().map(OrderDtoSimple::new)
                 .collect(Collectors.toList());
     }
 
     @GetMapping(value = "/{id}")
-    public OrderDto getById(@PathVariable("id") Long id) {
-        return new OrderDto(orderService.getById(id));
+    public OrderDtoFull getById(@PathVariable("id") Long id) {
+        return new OrderDtoFull(orderService.getById(id));
     }
 
     @PutMapping
-    public void create(@RequestBody OrderDto orderDto) {
-        orderService.add(dtoToModel(orderDto));
+    public void create(@RequestBody OrderDtoSimple orderDtoSimple) {
+        orderService.add(dtoToModel(orderDtoSimple, null));
     }
 
     @DeleteMapping(value = "/{id}")
@@ -63,28 +54,25 @@ public class OrderController {
     }
 
     @PostMapping(value = "/{id}")
-    public void update(@RequestBody OrderDto orderDto, @PathVariable("id") Long id) {
+    public void update(@RequestBody OrderDtoSimple orderDtoSimple, @PathVariable("id") Long id) {
         Order order = orderService.getById(id);
-        order = dtoToModel(orderDto);
+        order = dtoToModel(orderDtoSimple, id);
         orderService.update(order);
     }
 
-    private Order dtoToModel(OrderDto orderDto) {
+    private Order dtoToModel(OrderDtoSimple orderDtoSimple, Long id) {
         Order order = new Order();
-        order.setId(orderDto.getId());
-        order.setCreated(DateUtil.dateFromString(orderDto.getCreated()));
-        User user = userService.getById(orderDto.getUserId());
-        order.setUser(user);
-        order.setGoods(listGoodsToModel(orderDto.getGoods()));
+        order.setId(id);
+        order.setAmount(orderDtoSimple.getAmount());
+        order.setCreated(LocalDateTime.now());
+        order.setUser(userService.getById(orderDtoSimple.getUserId()));
+        order.setGoods(listGoodsToModel(orderDtoSimple.getListGoodsId()));
         return order;
     }
 
-    private List<Goods> listGoodsToModel(List<GoodsDto> dtoList){
-        List<Goods> goodsList = new ArrayList<>();
-        for (GoodsDto goodsDto : dtoList) {
-            Goods goods = goodsService.getById(goodsDto.getId());
-            goodsList.add(goods);
-        }
-        return goodsList;
+    private List<Goods> listGoodsToModel(List<Long> dtoGoodsIdList){
+        return dtoGoodsIdList.stream()
+                .map(dtoDataFromList -> goodsService.getById(dtoDataFromList))
+                .collect(Collectors.toList());
     }
 }

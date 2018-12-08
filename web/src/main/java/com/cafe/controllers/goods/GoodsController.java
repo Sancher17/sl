@@ -27,7 +27,7 @@ public class GoodsController {
     @Autowired
     private ICategoryService categoryService;
 
-    @GetMapping(value = "/all")
+    @GetMapping
     public List<GoodsDto> getAll() {
         return goodsService.getAll()
                 .stream().map(GoodsDto::new)

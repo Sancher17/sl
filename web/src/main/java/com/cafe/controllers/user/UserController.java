@@ -18,14 +18,14 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/")
     public List<UserDto> getAll() {
         return userService.getAll()
                 .stream().map(UserDto::new)
                 .collect(Collectors.toList());
     }
 
-    @PostMapping(value = "/all")
+    @PostMapping(value = "/")
     public List<UserFullDataDto> getAllData() {
         return userService.getAll().stream()
                 .map(UserFullDataDto::new)

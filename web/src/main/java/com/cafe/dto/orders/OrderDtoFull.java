@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class OrderDto {
+public class OrderDtoFull {
 
     private Long id;
     private String created;
@@ -22,9 +22,8 @@ public class OrderDto {
     private Double amount;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<GoodsDto> goods;
-    private List<Long> listGoodsId;
 
-    public OrderDto(Order order) {
+    public OrderDtoFull(Order order) {
         this.id = order.getId();
         this.created = DateUtil.stringFromDate(order.getCreated());
         this.userId = order.getUser().getId();
@@ -32,13 +31,6 @@ public class OrderDto {
         this.userLastName = order.getUser().getLastName();
         this.amount = order.getAmount();
         this.goods = listGoodsToDto(order.getGoods());
-        this.listGoodsId = listGoodsIdToDto(order.getGoods());
-    }
-
-    private List<Long> listGoodsIdToDto(List<Goods> goodsList){
-        return goodsList.stream()
-                .map(GenericEntity::getId)
-                .collect(Collectors.toList());
     }
 
 
@@ -48,7 +40,7 @@ public class OrderDto {
                 .collect(Collectors.toList());
     }
 
-    public OrderDto() {
+    public OrderDtoFull() {
     }
 
     public Long getId() {
@@ -105,13 +97,5 @@ public class OrderDto {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public List<Long> getListGoodsId() {
-        return listGoodsId;
-    }
-
-    public void setListGoodsId(List<Long> listGoodsId) {
-        this.listGoodsId = listGoodsId;
     }
 }

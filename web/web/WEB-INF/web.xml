@@ -9,9 +9,21 @@
         <param-value>/WEB-INF/applicationContext.xml </param-value>
     </context-param>
 
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+        <url-pattern>/goods</url-pattern>
+    </filter-mapping>
+
+
+    <!--закоментил и тогда заработал фильтр Спринга-->
+    <!--<listener>-->
+        <!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
+    <!--</listener>-->
 
     <servlet>
         <servlet-name>dispatcher</servlet-name>
@@ -22,5 +34,26 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+
+    <!--Антона реализация-->
+    <!--<filter>-->
+        <!--<filter-name>JwtAuthFilter</filter-name>-->
+        <!--<filter-class>com.cafe.security.auth.JwtAuthFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>JwtAuthFilter</filter-name>-->
+        <!--<url-pattern>/app/goods/*</url-pattern>-->
+    <!--</filter-mapping> -->
+    <!--конец реализации-->
+
+    <!--<filter>-->
+        <!--<filter-name>springSecurityFilterChain</filter-name>-->
+        <!--<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>springSecurityFilterChain</filter-name>-->
+        <!--<url-pattern>/</url-pattern>-->
+    <!--</filter-mapping>-->
 
 </web-app>
