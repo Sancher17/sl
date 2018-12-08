@@ -5,15 +5,14 @@ import com.cafe.security.auth.JwtAuthenticationEntryPoint;
 import com.cafe.security.auth.JwtAuthenticationProvider;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @EnableWebSecurity
-@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final Logger log = Logger.getLogger(SecurityConfig.class);
@@ -39,7 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         String[] patterns = new String[]{
                 "/login",
-                "/goods",
+//                "/goods/",
+//                "*goods*",
+//                "*/goods/*",
                 "/bower_components/**/*",
                 "/app/**/*",
                 "/index.html",
