@@ -15,11 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>com.cafe</groupId>
-            <artifactId>api</artifactId>
-            <version>1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.cafe</groupId>
             <artifactId>model</artifactId>
             <version>1</version>
         </dependency>

@@ -1,5 +1,6 @@
 package com.cafe.controllers.order;
 
+import com.cafe.api.dtoconverters.IOrderConverter;
 import com.cafe.api.services.*;
 import com.cafe.dto.orders.OrderDtoFull;
 import com.cafe.dto.orders.OrderDtoSimple;
@@ -19,10 +20,7 @@ public class OrderController {
     private IOrderService orderService;
 
     @Autowired
-    private IUserService userService;
-
-    @Autowired
-    private IGoodsService goodsService;
+    private IOrderConverter orderConverter;
 
     @GetMapping(value = "/full")
     public List<OrderDtoFull> getAllFullData() {
@@ -45,7 +43,7 @@ public class OrderController {
 
     @PutMapping
     public void create(@RequestBody OrderDtoSimple orderDtoSimple) {
-        orderService.add(dtoToModel(orderDtoSimple, null));
+        orderService.add(orderConverter.simpleToModel(orderDtoSimple, null));
     }
 
     @DeleteMapping(value = "/{id}")
@@ -56,23 +54,8 @@ public class OrderController {
     @PostMapping(value = "/{id}")
     public void update(@RequestBody OrderDtoSimple orderDtoSimple, @PathVariable("id") Long id) {
         Order order = orderService.getById(id);
-        order = dtoToModel(orderDtoSimple, id);
+        order = orderConverter.simpleToModel(orderDtoSimple, id);
         orderService.update(order);
     }
 
-    private Order dtoToModel(OrderDtoSimple orderDtoSimple, Long id) {
-        Order order = new Order();
-        order.setId(id);
-        order.setAmount(orderDtoSimple.getAmount());
-        order.setCreated(LocalDateTime.now());
-        order.setUser(userService.getById(orderDtoSimple.getUserId()));
-        order.setGoods(listGoodsToModel(orderDtoSimple.getListGoodsId()));
-        return order;
-    }
-
-    private List<Goods> listGoodsToModel(List<Long> dtoGoodsIdList){
-        return dtoGoodsIdList.stream()
-                .map(dtoDataFromList -> goodsService.getById(dtoDataFromList))
-                .collect(Collectors.toList());
-    }
 }

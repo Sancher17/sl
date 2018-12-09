@@ -4,21 +4,23 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-   http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+   http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd "
+       xmlns:tx="http://www.springframework.org/schema/tx">
 
-    <context:component-scan base-package="com.cafe" />
+    <context:component-scan base-package="com.cafe"/>
 
     <import resource="classpath*:beans_service.xml"/>
 
-    <!--from beans_dao  START  -->
+    <!--Hibernate-->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/cafe?serverTimezone=UTC&amp;useSSL=false"/>
-        <property name="username" value="root" />
-        <property name="password" value="1512" />
+        <property name="username" value="root"/>
+        <property name="password" value="1512"/>
     </bean>
-
-    <!--Case1 -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="hibernateProperties">
@@ -29,26 +31,25 @@
                 <prop key="current_session_context_class">thread</prop>
             </props>
         </property>
-        <property name="packagesToScan" value="com.cafe.model" />
+        <property name="packagesToScan" value="com.cafe"/>
     </bean>
 
-    <!--Case2 start  не работает ! -->
-    <!--<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">-->
-        <!--<property name="configLocation" value="hibernate.cfg.xml"/>-->
-    <!--</bean>-->
-
+    <!--Transaction Manager-->
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <!--from beans_dao END  -->
+    <tx:annotation-driven/>
 
+    <!--Spring Security Beans-->
     <bean id="jwtAuthFilter" class="com.cafe.security.auth.JwtAuthFilter"/>
     <bean id="jwtAuthenticationEntryPoint" class="com.cafe.security.auth.JwtAuthenticationEntryPoint"/>
     <bean id="jwtAuthenticationProvider" class="com.cafe.security.auth.JwtAuthenticationProvider"/>
     <bean id="jwtService" class="com.cafe.security.service.JwtService"/>
-    <bean id="secretKeyProvider" class="com.cafe.security.auth.SecretKeyProvider"/>
-    <bean id="profileService" class="com.cafe.security.service.ProfileService"/>
-
-
+    <!--Dto converters-->
+    <bean id="categoryConverter" class="com.cafe.dtoconverters.category.CategoryConverter"/>
+    <bean id="goodsConverter" class="com.cafe.dtoconverters.goods.GoodsConverter"/>
+    <bean id="orderConverter" class="com.cafe.dtoconverters.order.OrderConverter"/>
+    <bean id="storageConverter" class="com.cafe.dtoconverters.storage.StorageConverter"/>
+    <bean id="userConverter" class="com.cafe.dtoconverters.user.UserConverter"/>
 
 </beans>

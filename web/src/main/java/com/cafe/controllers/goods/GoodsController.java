@@ -1,5 +1,6 @@
 package com.cafe.controllers.goods;
 
+import com.cafe.api.dtoconverters.IGoodsConverter;
 import com.cafe.api.services.ICategoryService;
 import com.cafe.api.services.IGoodsService;
 import com.cafe.api.services.INameGoodsService;
@@ -20,12 +21,8 @@ public class GoodsController {
 
     @Autowired
     private IGoodsService goodsService;
-
     @Autowired
-    private INameGoodsService nameGoodsService;
-
-    @Autowired
-    private ICategoryService categoryService;
+    private IGoodsConverter goodsConverter;
 
     @GetMapping
     public List<GoodsDto> getAll() {
@@ -41,40 +38,16 @@ public class GoodsController {
 
     @PutMapping
     public void create(@RequestBody GoodsDto goodsDto) {
-        goodsService.add(dtoToModel(goodsDto));
+        goodsService.add(goodsConverter.toModel(goodsDto));
     }
 
     @PostMapping(value = "/{id}")
     public void update(@RequestBody GoodsDto dataDto, @PathVariable("id") Long id) {
-        Goods goods = goodsService.getById(id);
-        goods = dtoToModel(dataDto);
-        goodsService.update(goods);
+        goodsService.update(goodsConverter.updateEntity(goodsService.getById(id), dataDto));
     }
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") Long id) {
         goodsService.delete(id);
     }
 
-    private Goods dtoToModel(GoodsDto dataDto) {
-        Goods goods = new Goods();
-        goods.setId(dataDto.getId());
-        NameGoods nameGoods = nameGoodsService
-                .getByName(dataDto.getNameGoodsDto());
-        goods.setNameGoods(nameGoods);
-        Category category = categoryService
-                .getByName(dataDto.getCategory());
-        goods.setCategory(category);
-        goods.setSizeGoods( GoodsSize.valueOf(dataDto.getGoodsSize()));
-        goods.setPurchasePrice(dataDto.getPurchasePrice());
-        goods.setSellPrice(dataDto.getSellPrice());
-        goods.setVolume(dataDto.getVolume());
-        goods.setWeight(dataDto.getWeight());
-        return goods;
-    }
-
-    private List<GoodsDto> listGoodsToDto(List<Goods> goodsList){
-        return goodsList.stream()
-                .map(GoodsDto::new)
-                .collect(Collectors.toList());
-    }
 }

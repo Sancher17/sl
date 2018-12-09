@@ -3,6 +3,7 @@ package com.cafe.services;
 import com.cafe.api.dao.IGenericDao;
 import com.cafe.api.dao.IUserDao;
 import com.cafe.api.services.IUserService;
+import com.cafe.model.Login;
 import com.cafe.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,6 @@ public class UserService implements IUserService {
     @Override
     public void delete(Long id) {
         getDao().delete(id);
-
     }
 
     @Transactional
@@ -54,6 +54,16 @@ public class UserService implements IUserService {
 
     @Override
     public User getByName(String name) {
-        return null;
+        return getDao().getByName(name);
     }
+
+    @Override
+    public User getByLogin(Login login) {
+        return userDao.getByLogin(login);
+    }
+
+    public User getByNameLogin(String nameLogin) {
+        return userDao.getByNameLogin(nameLogin);
+    }
+
 }

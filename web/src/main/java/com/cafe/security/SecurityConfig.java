@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -27,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationEntryPoint jwtAuthEndPoint;
 
     @Override
-    public void configure(AuthenticationManagerBuilder auth)  throws Exception {
+    public void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(jwtAuthenticationProvider);
     }
 
@@ -38,9 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         String[] patterns = new String[]{
                 "/login",
-//                "/goods/",
-//                "*goods*",
-//                "*/goods/*",
                 "/bower_components/**/*",
                 "/app/**/*",
                 "/index.html",

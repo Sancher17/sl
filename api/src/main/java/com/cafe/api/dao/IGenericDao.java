@@ -1,9 +1,11 @@
 package com.cafe.api.dao;
 
+import com.cafe.model.GenericEntity;
+
 import java.util.Date;
 import java.util.List;
 
-public interface IGenericDao<T> {
+public interface IGenericDao<T extends GenericEntity> {
 
     void add(T t);
 
@@ -18,5 +20,5 @@ public interface IGenericDao<T> {
     List<T> getAll();
 
     Class<T> getChildClass();
-
+    
 }

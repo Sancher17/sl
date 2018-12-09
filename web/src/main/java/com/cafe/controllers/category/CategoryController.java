@@ -1,5 +1,6 @@
 package com.cafe.controllers.category;
 
+import com.cafe.api.dtoconverters.ICategoryConverter;
 import com.cafe.api.services.ICategoryService;
 import com.cafe.dto.category.CategoryDto;
 import com.cafe.model.Category;
@@ -16,6 +17,9 @@ public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
 
+    @Autowired
+    private ICategoryConverter categoryConverter;
+
     @GetMapping(value = "/all")
     public List<CategoryDto> getAll() {
         return categoryService.getAll()
@@ -25,19 +29,19 @@ public class CategoryController {
 
     @GetMapping(value = "/{id}")
     public CategoryDto getById(@PathVariable("id") Long id) {
-        return new CategoryDto(categoryService.getById(id));
+        return categoryConverter.toDto(categoryService.getById(id));
     }
 
     @PostMapping(value = "/{id}")
-    public void update(@RequestBody CategoryDto categoryDto, @PathVariable("id") Long id) {
+    public void update(@RequestBody CategoryDto categoryDto, @PathVariable("id") Long id) { ;
         Category category = categoryService.getById(id);
-        category = dtoToModel(categoryDto);
+        category = categoryConverter.toModel(categoryDto);
         categoryService.update(category);
     }
 
     @PutMapping
     public void create(@RequestBody CategoryDto categoryDto) {
-        categoryService.add(dtoToModel(categoryDto));
+        categoryService.add(categoryConverter.toModel(categoryDto));
     }
 
     @DeleteMapping(value = "/{id}")
@@ -45,12 +49,4 @@ public class CategoryController {
         categoryService.delete(id);
     }
 
-    private Category dtoToModel(CategoryDto categoryDto) {
-        Category category = new Category();
-        category.setId(categoryDto.getId());
-        category.setName(categoryDto.getCategory());
-        category.setParentCategory(
-                categoryService.getById(categoryDto.getParentCategoryId()));
-        return category;
-    }
 }

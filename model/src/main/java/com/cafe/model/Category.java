@@ -34,7 +34,7 @@ public class Category extends GenericEntity {
         final StringBuilder sb = new StringBuilder("Category{");
         sb.append("id=").append(getId());
         sb.append("name='").append(name).append('\'');
-        sb.append(", parentCategory=").append(parentCategory);
+//        sb.append(", parentCategory=").append(parentCategory);
         sb.append('}');
         return sb.toString();
     }

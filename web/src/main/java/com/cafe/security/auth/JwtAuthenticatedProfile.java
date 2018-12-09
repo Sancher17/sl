@@ -1,20 +1,20 @@
 package com.cafe.security.auth;
 
-import com.cafe.security.domain.MinimalProfile;
+import com.cafe.dto.user.UserDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import javax.security.auth.Subject;
 import java.util.Collection;
 import java.util.Collections;
 
 public class JwtAuthenticatedProfile implements Authentication {
 
-    private final MinimalProfile minimalProfile;
+    private UserDto userDto;
 
-    public JwtAuthenticatedProfile(MinimalProfile minimalProfile) {
-        this.minimalProfile = minimalProfile;
-        System.out.println("MinimalProfile" + this.getClass().getSimpleName());
+    JwtAuthenticatedProfile(UserDto userDto) {
+        this.userDto = userDto;
     }
 
     @Override
@@ -49,6 +49,11 @@ public class JwtAuthenticatedProfile implements Authentication {
 
     @Override
     public String getName() {
-        return minimalProfile.getUsername();
+        return null;
+    }
+
+    @Override
+    public boolean implies(Subject subject) {
+        return false;
     }
 }

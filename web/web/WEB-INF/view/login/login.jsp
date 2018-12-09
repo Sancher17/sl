@@ -12,10 +12,10 @@
     <table align="center">
         <tr>
             <td>
-                <form:label path="username">Username: </form:label>
+                <form:label path="login">Username: </form:label>
             </td>
             <td>
-                <form:input path="username" name="username" id="username" />
+                <form:input path="login" name="login" id="login" />
             </td>
         </tr>
         <tr>

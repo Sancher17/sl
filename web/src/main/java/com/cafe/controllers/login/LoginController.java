@@ -1,7 +1,7 @@
 package com.cafe.controllers.login;
 
-import com.cafe.security.auth.LoginCredentials;
-import com.cafe.security.domain.MinimalProfile;
+import com.cafe.dto.user.UserDto;
+import com.cafe.model.Login;
 import com.cafe.security.exceptions.FailedToLoginException;
 import com.cafe.security.service.JwtService;
 import com.cafe.security.service.LoginService;
@@ -26,20 +26,13 @@ public class LoginController {
     private  JwtService jwtService;
 
     @PostMapping()
-    public MinimalProfile login(@RequestBody LoginCredentials credentials, HttpServletResponse response) {
-        System.out.println("login controller");
-        MinimalProfile minimalProf = loginService
-                .login(credentials)//получили MinimalProfile
-                .map(minimalProfile -> {
-                        String token = jwtService.tokenFor(minimalProfile);
-                        response.setHeader("Token", token);
-                        log.info("credentials name: " + credentials.getUsername() + " // credentials pass: " + credentials.getPassword());
-                        log.info("token " + token);
-                        minimalProfile.setToken(token);
-                    return minimalProfile;
-                })
-                .orElseThrow(() -> new FailedToLoginException(credentials.getUsername()));
-
-        return minimalProf;
+    public UserDto login(@RequestBody Login credentials, HttpServletResponse response) {
+        UserDto userDto = loginService.login(credentials);
+        if (userDto != null) {
+            String token = jwtService.tokenFor(userDto);
+            response.setHeader("Token", token);
+            return userDto;
+        }
+        throw new FailedToLoginException(credentials.getLogin());
     }
 }

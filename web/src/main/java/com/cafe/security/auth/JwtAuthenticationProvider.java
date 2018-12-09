@@ -1,6 +1,6 @@
 package com.cafe.security.auth;
 
-import com.cafe.security.domain.MinimalProfile;
+import com.cafe.dto.user.UserDto;
 import com.cafe.security.exceptions.JwtAuthenticationException;
 import com.cafe.security.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        System.out.println("authenticate" + this.getClass().getSimpleName());
+        System.out.println("authenticate ------ " + this.getClass().getSimpleName());
         try {
-            Optional<MinimalProfile> possibleProfile =
+            Optional<UserDto> possibleProfile =
                     jwtService.verify((String) authentication.getCredentials());
             return new JwtAuthenticatedProfile(possibleProfile.get());
         } catch (Exception e) {

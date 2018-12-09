@@ -31,6 +31,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="api" />
+    <orderEntry type="module" module-name="dto" />
+    <orderEntry type="module" module-name="utils" />
     <orderEntry type="module" module-name="services" />
     <orderEntry type="module" module-name="dao" />
     <orderEntry type="module" module-name="model" />

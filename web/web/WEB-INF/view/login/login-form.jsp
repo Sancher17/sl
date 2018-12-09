@@ -11,7 +11,7 @@
 
     Firs name: <form:input path="password"/>
     <br><br>
-    Last name: <form:input path="username"/>
+    Last name: <form:input path="login"/>
 
     <input type="submit" value="Submit" />
 

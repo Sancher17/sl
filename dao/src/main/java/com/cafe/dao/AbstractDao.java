@@ -15,8 +15,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-@Repository
-public class AbstractDao<T extends GenericEntity> implements IGenericDao<T> {
+
+public abstract class AbstractDao<T extends GenericEntity> implements IGenericDao<T> {
 
     @Autowired
     private SessionFactory sessionFactory;

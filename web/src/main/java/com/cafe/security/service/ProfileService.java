@@ -1,42 +1,26 @@
 package com.cafe.security.service;
 
-import com.cafe.security.domain.DetailedProfile;
-import com.cafe.security.domain.MinimalProfile;
-import com.cafe.security.domain.Profile;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.cafe.api.services.IUserService;
+import com.cafe.dto.user.UserDto;
+import com.cafe.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
 
 @Component
 public class ProfileService {
-    private final List<Profile> profiles;
 
-    private final Path PROFILES_FILE = Paths.get(this.getClass().getResource("/profiles.json").toURI());
+    @Autowired
+    IUserService userService;
 
-    public ProfileService() throws IOException, URISyntaxException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        profiles = objectMapper.readValue(PROFILES_FILE.toFile(), new TypeReference<List<Profile>>() {
-        });
+
+    protected Optional<User> get(String nameLogin) {
+        return Optional.ofNullable(userService.getByNameLogin(nameLogin));
     }
 
-    protected Optional<Profile> get(String username) {
-        return profiles.stream()
-                .filter(profile -> profile.getLogin().getUsername().equals(username))
-                .findFirst();
+    public Optional<UserDto> minimal(String login) {
+        return get(login).map(UserDto::new);
     }
 
-    public Optional<MinimalProfile> minimal(String username) {
-        return get(username).map(profile -> new MinimalProfile(profile));
-    }
-
-    public Optional<DetailedProfile> detailed(String username) {
-        return get(username).map(profile -> new DetailedProfile(profile));
-    }
 }

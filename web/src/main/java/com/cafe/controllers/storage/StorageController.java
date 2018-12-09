@@ -1,5 +1,6 @@
 package com.cafe.controllers.storage;
 
+import com.cafe.api.dtoconverters.IStorageConverter;
 import com.cafe.api.services.IGoodsService;
 import com.cafe.api.services.IStorageService;
 import com.cafe.dto.storage.StorageDto;
@@ -19,7 +20,7 @@ public class StorageController {
     private IStorageService storageService;
 
     @Autowired
-    private IGoodsService goodsService;
+    private IStorageConverter storageConverter;
 
     @GetMapping
     public List<StorageDto> getAll() {
@@ -35,13 +36,13 @@ public class StorageController {
 
     @PutMapping
     public void create(@RequestBody StorageDto dataDto) {
-        storageService.add(dtoToModel(dataDto));
+        storageService.add(storageConverter.toModel(dataDto));
     }
 
     @PostMapping(value = "/{id}")
     public void update(@RequestBody StorageDto dataDto, @PathVariable("id") Long id) {
         Storage storage = storageService.getById(id);
-        storage = dtoToModel(dataDto);
+        storage = storageConverter.toModel(dataDto);
         storageService.update(storage);
     }
 
@@ -50,11 +51,5 @@ public class StorageController {
         storageService.delete(id);
     }
 
-    private Storage dtoToModel(StorageDto dataDto) {
-        Storage storage = new Storage();
-        storage.setQuantity(dataDto.getQuantity());
-        Goods goods = goodsService.getById(dataDto.getGoodsId());
-        storage.setGoods(goods);
-        return storage;
-    }
+
 }

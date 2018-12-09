@@ -1,10 +1,7 @@
 package com.cafe.security.auth;
 
-import com.cafe.controllers.login.LoginController;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.context.SecurityContextServerWebExchange;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -21,11 +18,10 @@ public class JwtAuthFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {    }
+    public void init(FilterConfig filterConfig) {}
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.info("doFilter");
         HttpServletRequest servletRequest = (HttpServletRequest) request;
         String authorization = servletRequest.getHeader("Authorization");
         if (authorization != null) {

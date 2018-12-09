@@ -9,8 +9,7 @@ public class JwtAuthToken implements Authentication {
 
     private String token;
 
-    public JwtAuthToken(String token) {
-        System.out.println("JwtAuthToken");
+    JwtAuthToken(String token) {
         this.token = token;
     }
 
@@ -41,7 +40,6 @@ public class JwtAuthToken implements Authentication {
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-
     }
 
     @Override

@@ -10,7 +10,7 @@
         <property name="hibernate.connection.url">
             jdbc:mysql://localhost:3306/cafe?serverTimezone=UTC&amp;useSSL=false</property>
 
-        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.login">root</property>
         <property name="hibernate.connection.password">1512</property>
         <property name="hibernate.connection.provider_disables_autocommit">true</property>
 

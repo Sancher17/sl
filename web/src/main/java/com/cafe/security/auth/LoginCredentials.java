@@ -3,19 +3,16 @@ package com.cafe.security.auth;
 
 public class LoginCredentials {
 
-    private String username;
+    private String login;
     private String password;
 
-    public LoginCredentials() {
-        System.out.println("LoginCredentials");
+
+    public String getLogin() {
+        return login;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {

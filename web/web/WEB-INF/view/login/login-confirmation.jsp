@@ -5,7 +5,7 @@
 </head>
 <body>
 
-The User is confermed: ${login.username} ${login.password}
+The User is confermed: ${login.login} ${login.password}
 
 
 </body>
