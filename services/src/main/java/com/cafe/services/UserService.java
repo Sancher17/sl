@@ -2,7 +2,9 @@ package com.cafe.services;
 
 import com.cafe.api.dao.IGenericDao;
 import com.cafe.api.dao.IUserDao;
+import com.cafe.api.dtoconverters.IUserConverter;
 import com.cafe.api.services.IUserService;
+import com.cafe.dto.user.UserDto;
 import com.cafe.model.Login;
 import com.cafe.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -65,5 +68,4 @@ public class UserService implements IUserService {
     public User getByNameLogin(String nameLogin) {
         return userDao.getByNameLogin(nameLogin);
     }
-
 }

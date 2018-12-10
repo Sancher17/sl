@@ -4,10 +4,7 @@ public class Login {
 
    private String login;
    private String password;
-   private String salt;
-   private String md5;
-   private String sha1;
-   private String sha256;
+    private String sha256;
 
     public String getLogin() {
         return login;
@@ -25,35 +22,21 @@ public class Login {
         this.password = password;
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getMd5() {
-        return md5;
-    }
-
-    public void setMd5(String md5) {
-        this.md5 = md5;
-    }
-
-    public String getSha1() {
-        return sha1;
-    }
-
-    public void setSha1(String sha1) {
-        this.sha1 = sha1;
-    }
-
     public String getSha256() {
         return sha256;
     }
 
     public void setSha256(String sha256) {
         this.sha256 = sha256;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Login{");
+        sb.append("login='").append(login).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", sha256='").append(sha256).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

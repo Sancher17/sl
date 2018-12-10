@@ -20,7 +20,7 @@ public class CategoryController {
     @Autowired
     private ICategoryConverter categoryConverter;
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/")
     public List<CategoryDto> getAll() {
         return categoryService.getAll()
                 .stream().map(CategoryDto::new)

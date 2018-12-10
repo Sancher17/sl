@@ -1,5 +1,7 @@
-package com.cafe.security.service;
+package com.cafe.services;
 
+import com.cafe.api.dtoconverters.IUserConverter;
+import com.cafe.api.services.IUserService;
 import com.cafe.dto.user.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -11,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.Optional;
 
 import static java.time.ZoneOffset.UTC;
 
@@ -21,7 +22,8 @@ public class JwtService {
     private static final Logger log = Logger.getLogger(JwtService.class);
 
     @Autowired
-    private ProfileService profileService;
+    private IUserService userService;
+
 
     private String secretKey = "theVerySecretKey";
 
@@ -30,13 +32,15 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(userDto.getLogin())
                 .setExpiration(expiration)
-                .signWith(SignatureAlgorithm.HS512, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
-
-    public Optional<UserDto> verify(String token) {
-        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-        return profileService.minimal(claims.getBody().getSubject());
+    public UserDto verify(String token) {
+        Jws<Claims> claims = Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token);
+        return new UserDto(userService.getByNameLogin(claims.getBody().getSubject()));
     }
+
 }

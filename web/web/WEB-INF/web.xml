@@ -20,7 +20,7 @@
         <url-pattern>/goods</url-pattern>
         <url-pattern>/goods/</url-pattern>
         <url-pattern>/storage</url-pattern>
-        <url-pattern>/storage/</url-pattern>
+        <url-pattern>/storage/*</url-pattern>
     </filter-mapping>
 
     <!--Dispatcher Servlet-->

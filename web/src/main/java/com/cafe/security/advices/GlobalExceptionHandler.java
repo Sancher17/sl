@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.security.SignatureException;
 
@@ -15,20 +16,24 @@ import static org.springframework.http.HttpStatus.*;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    public static final String NO_USER = "noUser";
+    public static final String NO_USER_WITH_SUCH_DATA = "Нет пользователя с такими данными ";
+
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(ProfileNotFoundException.class)
     public String profileNotFound() {
-        return "noUser";
+        return NO_USER;
     }
 
     @ResponseStatus(UNAUTHORIZED)
     @ExceptionHandler(FailedToLoginException.class)
-    public void failedToLogin() {
+    public String failedToLogin() {
+        return NO_USER_WITH_SUCH_DATA;
     }
 
     @ResponseStatus(FORBIDDEN)
     @ExceptionHandler(SignatureException.class)
-    public void failedToVerify() {
-        System.out.println("");
+    public String failedToVerify() {
+        return NO_USER_WITH_SUCH_DATA;
     }
 }

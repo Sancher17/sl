@@ -18,10 +18,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
-
     @Autowired
     private JwtAuthenticationProvider jwtAuthenticationProvider;
-
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthEndPoint;
 
@@ -37,12 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         String[] patterns = new String[]{
                 "/login",
-                "/bower_components/**/*",
-                "/app/**/*",
-                "/index.html",
-                "/home.html",
-                "/signin.html"
         };
+
         http.authorizeRequests()
                 .antMatchers(patterns)
                 .permitAll()

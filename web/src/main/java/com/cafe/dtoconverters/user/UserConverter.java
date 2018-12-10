@@ -15,7 +15,18 @@ public class UserConverter implements IUserConverter {
 
     @Override
     public UserDto toDto(User entity) {
+        UserDto userDto = new UserDto();
+        if (entity != null){
+            userDto.setId(entity.getId());
+            userDto.setFirstName(entity.getFirstName());
+            userDto.setLastName(entity.getLastName());
+            userDto.setType(entity.getUserType());
+            userDto.setLogin(entity.getLogin());
+            userDto.setPassword(entity.getPassword());
+            return userDto;
+        }
         return null;
+
     }
 
     @Override

@@ -5,6 +5,6 @@
     <title>No user</title>
 </head>
 <body>
-    <h2> No user with such credential</h2>
+    <h2> Нет пользователя с такими данными </h2>
 </body>
 </html>

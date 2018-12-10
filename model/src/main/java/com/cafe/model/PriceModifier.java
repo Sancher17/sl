@@ -1,7 +1,5 @@
 package com.cafe.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 
 @Entity
@@ -14,12 +12,10 @@ public class PriceModifier extends GenericEntity {
     @Column(name = "markup")
     private Double markup;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goods_id")
     private Goods goods;

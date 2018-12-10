@@ -13,6 +13,7 @@ public interface GenericConverter <E extends GenericEntity, D extends AbstractDt
 
     E updateEntity(E entity, D dto);
 
+// TODO: 09.12.2018 уадалить
 //    default List createFromEntities(final Collection entities) {
 //        return entities.stream()
 //                .map(this::createFrom)

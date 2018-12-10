@@ -13,10 +13,6 @@ public class JwtAuthFilter implements Filter {
 
     private static final Logger log = Logger.getLogger(JwtAuthFilter.class);
 
-    public JwtAuthFilter() {
-        log.info("bean created");
-    }
-
     @Override
     public void init(FilterConfig filterConfig) {}
 

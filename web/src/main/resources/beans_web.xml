@@ -44,7 +44,7 @@
     <bean id="jwtAuthFilter" class="com.cafe.security.auth.JwtAuthFilter"/>
     <bean id="jwtAuthenticationEntryPoint" class="com.cafe.security.auth.JwtAuthenticationEntryPoint"/>
     <bean id="jwtAuthenticationProvider" class="com.cafe.security.auth.JwtAuthenticationProvider"/>
-    <bean id="jwtService" class="com.cafe.security.service.JwtService"/>
+    <bean id="jwtService" class="com.cafe.services.JwtService"/>
     <!--Dto converters-->
     <bean id="categoryConverter" class="com.cafe.dtoconverters.category.CategoryConverter"/>
     <bean id="goodsConverter" class="com.cafe.dtoconverters.goods.GoodsConverter"/>

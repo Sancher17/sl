@@ -14,7 +14,6 @@ public class UserDto extends AbstractDto {
     private String login;
     private String password;
 
-
     public UserDto(User user) {
         this.id = user.getId();
         this.firstName = user.getFirstName();
@@ -24,6 +23,8 @@ public class UserDto extends AbstractDto {
         this.password = user.getPassword();
     }
 
+    public UserDto() {
+    }
 
     public Long getId() {
         return id;
