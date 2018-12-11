@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>web</artifactId>
+    <packaging>war</packaging>
 
 
     <dependencies>
@@ -31,14 +32,18 @@
             <artifactId>model</artifactId>
             <version>1</version>
         </dependency>
-        <dependency>
-            <groupId>com.cafe</groupId>
-            <artifactId>dtoConverter</artifactId>
-            <version>1</version>
-            <scope>compile</scope>
-        </dependency>
-
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webXml>src/web/WEB-INF/web.xml</webXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

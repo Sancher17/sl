@@ -1,11 +1,9 @@
 package com.cafe.dto.storage;
 
-import com.cafe.dto.AbstractDto;
 import com.cafe.model.Storage;
 import com.fasterxml.jackson.annotation.JsonView;
 
-@JsonView
-public class StorageDto extends AbstractDto {
+public class StorageDto {
 
     private Long id;
     private Integer quantity;
@@ -14,9 +12,6 @@ public class StorageDto extends AbstractDto {
     private String goodsCategory;
     private String size;
 
-    public StorageDto() {
-    }
-
     public StorageDto(Storage storage) {
         this.id = storage.getId();
         this.goodsId = storage.getGoods().getId();
@@ -24,6 +19,12 @@ public class StorageDto extends AbstractDto {
         this.goodsName = storage.getGoods().getNameGoods().getName();
         this.goodsCategory = storage.getGoods().getCategory().getName();
         this.size = storage.getGoods().getSizeGoods().name();
+    }
+
+    public Storage toModel(){
+        Storage storage = new Storage();
+        storage.setQuantity(quantity);
+        return storage;
     }
 
     public Long getId() {

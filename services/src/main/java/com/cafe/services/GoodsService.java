@@ -1,6 +1,5 @@
 package com.cafe.services;
 
-import com.cafe.api.dao.IGenericDao;
 import com.cafe.api.dao.IGoodsDao;
 import com.cafe.api.services.ICategoryService;
 import com.cafe.api.services.IGoodsService;
@@ -25,33 +24,30 @@ public class GoodsService implements IGoodsService {
     @Autowired
     private ICategoryService categoryService;
 
-    private IGenericDao<Goods> getDao() {
-        return goodsDao;
-    }
 
     @Override
     public void add(Goods goods) {
-        getDao().add(goods);
+        goodsDao.add(goods);
     }
 
     @Override
     public void update(Goods goods) {
-        getDao().update(goods);
+        goodsDao.update(goods);
     }
 
     @Override
     public void delete(Long id) {
-        getDao().delete(id);
+        goodsDao.delete(id);
     }
 
     @Override
     public Goods getById(Long id) {
-        return getDao().getById(id);
+        return goodsDao.getById(id);
     }
 
     @Override
     public List<Goods> getAll() {
-        return getDao().getAll();
+        return goodsDao.getAll();
     }
 
     @Override

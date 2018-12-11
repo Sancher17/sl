@@ -9,10 +9,9 @@ public class Storage extends GenericEntity {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goods_id")
     private Goods goods;
-
 
     public Integer getQuantity() {
         return quantity;

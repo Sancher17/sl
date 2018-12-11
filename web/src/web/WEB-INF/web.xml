@@ -6,8 +6,12 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml </param-value>
+        <param-value>WEB-INF/applicationContext.xml</param-value>
     </context-param>
+
+    <!--<listener>-->
+        <!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
+    <!--</listener>-->
 
     <!--Spring Security Filter-->
     <filter>
@@ -17,21 +21,26 @@
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/</url-pattern>
-        <url-pattern>/goods</url-pattern>
-        <url-pattern>/goods/</url-pattern>
-        <url-pattern>/storage</url-pattern>
-        <url-pattern>/storage/*</url-pattern>
+        <!--<url-pattern>/goods</url-pattern>-->
+        <!--<url-pattern>/goods/*</url-pattern>-->
+        <!--<url-pattern>/storage</url-pattern>-->
+        <!--<url-pattern>/storage/*</url-pattern>-->
     </filter-mapping>
 
     <!--Dispatcher Servlet-->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!--<init-param>-->
+            <!--<param-name>contextConfigLocation</param-name>-->
+            <!--<param-value>WEB-INF/applicationContext.xml</param-value>-->
+        <!--</init-param>-->
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
 
 </web-app>

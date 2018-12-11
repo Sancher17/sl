@@ -1,11 +1,10 @@
 package com.cafe.dto.user;
 
-import com.cafe.dto.AbstractDto;
 import com.cafe.model.User;
 import com.cafe.model.enums.UserType;
+import com.cafe.utils.DateUtil;
 
-
-public class UserDto extends AbstractDto {
+public class UserDto {
 
     private Long id;
     private String firstName;
@@ -13,6 +12,7 @@ public class UserDto extends AbstractDto {
     private UserType type;
     private String login;
     private String password;
+    private String dateBirthday;
 
     public UserDto(User user) {
         this.id = user.getId();
@@ -21,9 +21,18 @@ public class UserDto extends AbstractDto {
         this.type = user.getUserType();
         this.login = user.getLogin();
         this.password = user.getPassword();
+        this.dateBirthday = DateUtil.stringFromDate(user.getDateBirthday());
     }
 
-    public UserDto() {
+    public User toModel() {
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setDateBirthday(DateUtil.dateFromString(dateBirthday));
+        user.setUserType(type);
+        user.setPassword(password);
+        user.setLogin(login);
+        return user;
     }
 
     public Long getId() {

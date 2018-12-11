@@ -9,9 +9,7 @@ import java.util.List;
 
 public class NameGoodsDao extends AbstractDao<NameGoods> implements INameGoodsDao {
 
-    @Override
-    public Class<NameGoods> getChildClass() {
-        return NameGoods.class;
+    public NameGoodsDao() {
+        super(NameGoods.class);
     }
-
 }

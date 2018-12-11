@@ -9,7 +9,7 @@ public class Category extends GenericEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Category parentCategory;
 
@@ -34,7 +34,7 @@ public class Category extends GenericEntity {
         final StringBuilder sb = new StringBuilder("Category{");
         sb.append("id=").append(getId());
         sb.append("name='").append(name).append('\'');
-//        sb.append(", parentCategory=").append(parentCategory);
+        sb.append(", parentCategory=").append(parentCategory);
         sb.append('}');
         return sb.toString();
     }

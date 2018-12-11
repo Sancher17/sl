@@ -19,6 +19,6 @@ public interface IGenericDao<T extends GenericEntity> {
 
     List<T> getAll();
 
-    Class<T> getChildClass();
+//    Class<T> getChildClass();
     
 }

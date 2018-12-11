@@ -1,18 +1,11 @@
 package com.cafe.dto.orders;
 
-import com.cafe.dto.AbstractDto;
 import com.cafe.dto.goods.GoodsDto;
-import com.cafe.model.Goods;
-import com.cafe.model.Order;
-import com.cafe.utils.DateUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
-public class OrderDtoFull extends AbstractDto {
+public class OrderDtoFull {
 
     private Long id;
     private String created;
@@ -23,25 +16,6 @@ public class OrderDtoFull extends AbstractDto {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<GoodsDto> goods;
 
-    public OrderDtoFull(Order order) {
-        this.id = order.getId();
-        this.created = DateUtil.stringFromDate(order.getCreated());
-        this.userId = order.getUser().getId();
-        this.userFirstName = order.getUser().getFirstName();
-        this.userLastName = order.getUser().getLastName();
-        this.amount = order.getAmount();
-        this.goods = listGoodsToDto(order.getGoods());
-    }
-
-
-    private List<GoodsDto> listGoodsToDto(List<Goods> goodsList){
-        return goodsList.stream()
-                .map(GoodsDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public OrderDtoFull() {
-    }
 
     public Long getId() {
         return id;

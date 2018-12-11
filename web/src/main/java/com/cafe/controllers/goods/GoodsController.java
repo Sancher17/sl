@@ -1,6 +1,5 @@
 package com.cafe.controllers.goods;
 
-import com.cafe.api.dtoconverters.IGoodsConverter;
 import com.cafe.api.services.ICategoryService;
 import com.cafe.api.services.IGoodsService;
 import com.cafe.api.services.INameGoodsService;
@@ -8,7 +7,6 @@ import com.cafe.dto.goods.GoodsDto;
 import com.cafe.model.Category;
 import com.cafe.model.Goods;
 import com.cafe.model.NameGoods;
-import com.cafe.model.enums.GoodsSize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +20,9 @@ public class GoodsController {
     @Autowired
     private IGoodsService goodsService;
     @Autowired
-    private IGoodsConverter goodsConverter;
+    private ICategoryService categoryService;
+    @Autowired
+    private INameGoodsService nameGoodsService;
 
     @GetMapping
     public List<GoodsDto> getAll() {
@@ -36,18 +36,31 @@ public class GoodsController {
         return new GoodsDto(goodsService.getById(id));
     }
 
-    @PutMapping
-    public void create(@RequestBody GoodsDto goodsDto) {
-        goodsService.add(goodsConverter.toModel(goodsDto));
+
+    @PutMapping(value = "/test")
+    public void create() {
+        System.out.println();
     }
 
-    @PostMapping(value = "/{id}")
-    public void update(@RequestBody GoodsDto dataDto, @PathVariable("id") Long id) {
-        goodsService.update(goodsConverter.updateEntity(goodsService.getById(id), dataDto));
+
+    @PutMapping(value = "/")
+    public void create(@RequestBody GoodsDto goodsDto) {
+        Goods goods = new Goods();
+        NameGoods nameGoods = nameGoodsService.getByName(goodsDto.getNameGoodsDto());
+        goods.setNameGoods(nameGoods);
+        Category category = categoryService.getByName(goodsDto.getCategory());
+        goods.setCategory(category);
+        goods = goodsDto.toModel();
+        goodsService.add(goods);
     }
+
+    @PostMapping(value = "/")
+    public void update(@RequestBody GoodsDto goodsDto) {
+        goodsService.update(goodsDto.toModel());
+    }
+
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") Long id) {
         goodsService.delete(id);
     }
-
 }

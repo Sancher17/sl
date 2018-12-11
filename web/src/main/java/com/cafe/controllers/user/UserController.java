@@ -1,10 +1,8 @@
 package com.cafe.controllers.user;
 
-import com.cafe.api.dtoconverters.IUserConverter;
 import com.cafe.api.services.IUserService;
 import com.cafe.dto.user.UserDto;
 import com.cafe.dto.user.UserFullDataDto;
-import com.cafe.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +15,6 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
-    @Autowired
-    private IUserConverter userConverter;
 
 
     @GetMapping(value = "/")
@@ -28,7 +24,7 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "/all")
     public List<UserFullDataDto> getAllData() {
         return userService.getAll().stream()
                 .map(UserFullDataDto::new)
@@ -41,15 +37,13 @@ public class UserController {
     }
 
     @PutMapping
-    public void create(@RequestBody UserFullDataDto userDto) {
-        userService.add(userConverter.toModelFull(userDto));
+    public void create(@RequestBody UserDto userDto) {
+        userService.add(userDto.toModel());
     }
 
-    @PostMapping(value = "/{id}")
-    public void update(@RequestBody UserFullDataDto userDto, @PathVariable("id") Long id) {
-        User user = userService.getById(id);
-        user = userConverter.toModelFull(userDto);
-        userService.update(user);
+    @PostMapping(value = "/")
+    public void update(@RequestBody UserFullDataDto userDto) {
+        userService.update(userDto.toModelFull());
     }
 
     @DeleteMapping(value = "/{id}")

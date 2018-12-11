@@ -17,38 +17,35 @@ public class CategoryService implements ICategoryService {
     @Autowired
     private ICategoryDao categoryDao;
 
-    private IGenericDao<Category> getDao() {
-        return categoryDao;
-    }
 
     @Override
     public void add(Category category) {
-        getDao().add(category);
+        categoryDao.add(category);
     }
 
     @Override
     public void update(Category category) {
-        getDao().update(category);
+        categoryDao.update(category);
     }
 
     @Override
     public void delete(Long id) {
-        getDao().delete(id);
+        categoryDao.delete(id);
     }
 
     @Override
     public Category getById(Long id) {
-        return getDao().getById(id);
+        return categoryDao.getById(id);
     }
 
     @Override
     public List<Category> getAll() {
-        return getDao().getAll();
+        return categoryDao.getAll();
     }
 
     @Override
     public Category getByName(String name) {
-        return getDao().getByName(name);
+        return categoryDao.getByName(name);
     }
 
 }

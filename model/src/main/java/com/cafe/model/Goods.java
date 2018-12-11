@@ -1,6 +1,7 @@
 package com.cafe.model;
 
 import com.cafe.model.enums.GoodsSize;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -8,11 +9,11 @@ import javax.persistence.*;
 @Table(name = "goods")
 public class Goods extends GenericEntity {
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "name_id")
     private NameGoods nameGoods;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -94,7 +95,7 @@ public class Goods extends GenericEntity {
         final StringBuilder sb = new StringBuilder("Goods{");
         sb.append("id=").append(getId());
         sb.append("nameGoods=").append(nameGoods);
-//        sb.append(", category=").append(category);
+        sb.append(", category=").append(category);
         sb.append(", sizeGoods=").append(sizeGoods);
         sb.append(", purchasePrice=").append(purchasePrice);
         sb.append(", sellPrice=").append(sellPrice);

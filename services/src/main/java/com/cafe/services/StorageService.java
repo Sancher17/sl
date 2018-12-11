@@ -24,38 +24,34 @@ public class StorageService implements IStorageService {
     @Autowired
     private IStorageDao storageDao;
 
-    private IGenericDao<Storage> getDao() {
-        return storageDao;
-    }
-
     @Override
     public void add(Storage storage) {
-        getDao().add(storage);
+        storageDao.add(storage);
     }
 
     @Override
     public void update(Storage storage) {
-        getDao().update(storage);
+        storageDao.update(storage);
     }
 
     @Override
     public void delete(Long id) {
-        getDao().delete(id);
+        storageDao.delete(id);
     }
 
     @Override
     public Storage getById(Long id) {
-        return getDao().getById(id);
+        return storageDao.getById(id);
     }
 
     @Override
     public List<Storage> getAll() {
-        return getDao().getAll();
+        return storageDao.getAll();
     }
 
     @Override
     public Storage getByName(String name) {
-        return getDao().getByName(name);
+        return storageDao.getByName(name);
     }
 
     @Override

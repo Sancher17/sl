@@ -1,6 +1,6 @@
 package com.cafe.services;
 
-import com.cafe.api.dtoconverters.IUserConverter;
+import com.cafe.api.services.IJwtService;
 import com.cafe.api.services.IUserService;
 import com.cafe.dto.user.UserDto;
 import io.jsonwebtoken.Claims;
@@ -17,18 +17,17 @@ import java.util.Date;
 import static java.time.ZoneOffset.UTC;
 
 @Component
-public class JwtService {
+public class JwtService implements IJwtService {
 
     private static final Logger log = Logger.getLogger(JwtService.class);
 
     @Autowired
     private IUserService userService;
 
-
     private String secretKey = "theVerySecretKey";
 
     public String tokenFor(UserDto userDto) {
-        Date expiration = Date.from(LocalDateTime.now(UTC).plusMinutes(5).toInstant(UTC));
+        Date expiration = Date.from(LocalDateTime.now(UTC).plusHours(5).toInstant(UTC));
         return Jwts.builder()
                 .setSubject(userDto.getLogin())
                 .setExpiration(expiration)
@@ -42,5 +41,4 @@ public class JwtService {
                 .parseClaimsJws(token);
         return new UserDto(userService.getByNameLogin(claims.getBody().getSubject()));
     }
-
 }

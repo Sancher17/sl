@@ -17,37 +17,35 @@ public class NameGoodsService implements INameGoodsService {
     @Autowired
     private INameGoodsDao nameGoodsDao;
 
-    private IGenericDao<NameGoods> getDao(){
-        return nameGoodsDao;
-    }
+
 
     @Override
     public void add(NameGoods nameGoods) {
-        getDao().add(nameGoods);
+        nameGoodsDao.add(nameGoods);
     }
 
     @Override
     public void update(NameGoods nameGoods) {
-        getDao().update(nameGoods);
+        nameGoodsDao.update(nameGoods);
     }
 
     @Override
     public void delete(Long id) {
-        getDao().delete(id);
+        nameGoodsDao.delete(id);
     }
 
     @Override
     public NameGoods getById(Long id) {
-        return getDao().getById(id);
+        return nameGoodsDao.getById(id);
     }
 
     @Override
     public List<NameGoods> getAll() {
-        return getDao().getAll();
+        return nameGoodsDao.getAll();
     }
 
     @Override
     public NameGoods getByName(String name) {
-        return getDao().getByName(name);
+        return nameGoodsDao.getByName(name);
     }
 }

@@ -23,9 +23,10 @@ public class UserDao extends AbstractDao<User> implements IUserDao {
     private static final Logger log = Logger.getLogger(UserDao.class);
 
 
-    @Override
-    public Class<User> getChildClass() {
-        return User.class;
+    // TODO: 10.12.2018 protected
+
+    public UserDao(){
+        super(User.class);
     }
 
     @Override

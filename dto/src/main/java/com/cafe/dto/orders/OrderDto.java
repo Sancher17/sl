@@ -1,17 +1,16 @@
 package com.cafe.dto.orders;
 
-import com.cafe.model.GenericEntity;
+import com.cafe.dto.goods.GoodsDto;
 import com.cafe.model.Goods;
 import com.cafe.model.Order;
-
 import com.cafe.utils.DateUtil;
-import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-public class OrderDtoSimple {
+
+public class OrderDto {
 
     private Long id;
     private String created;
@@ -19,26 +18,36 @@ public class OrderDtoSimple {
     private String userFirstName;
     private String userLastName;
     private Double amount;
-    private List<Long> listGoodsId;
+    private List<GoodsDto> goodsList;
 
-    public OrderDtoSimple(Order order) {
+    public OrderDto(Order order) {
         this.id = order.getId();
         this.created = DateUtil.stringFromDate(order.getCreated());
         this.userId = order.getUser().getId();
         this.userFirstName = order.getUser().getFirstName();
         this.userLastName = order.getUser().getLastName();
         this.amount = order.getAmount();
-        this.listGoodsId = listGoodsIdToDto(order.getGoods());
+        this.goodsList = listGoodsToDto(order.getGoods());
     }
 
-    public OrderDtoSimple() {
+    public Order toModel() {
+        Order order = new Order();
+        order.setId(id);
+        order.setAmount(amount);
+        order.setCreated(LocalDateTime.now());
+        return order;
     }
 
-    private List<Long> listGoodsIdToDto(List<Goods> goodsList){
+    public OrderDto() {
+    }
+
+
+    private List<GoodsDto> listGoodsToDto(List<Goods> goodsList) {
         return goodsList.stream()
-                .map(GenericEntity::getId)
+                .map(GoodsDto::new)
                 .collect(Collectors.toList());
     }
+
 
     public Long getId() {
         return id;
@@ -88,11 +97,11 @@ public class OrderDtoSimple {
         this.userId = userId;
     }
 
-    public List<Long> getListGoodsId() {
-        return listGoodsId;
+    public List<GoodsDto> getGoodsList() {
+        return goodsList;
     }
 
-    public void setListGoodsId(List<Long> listGoodsId) {
-        this.listGoodsId = listGoodsId;
+    public void setGoodsList(List<GoodsDto> goodsList) {
+        this.goodsList = goodsList;
     }
 }

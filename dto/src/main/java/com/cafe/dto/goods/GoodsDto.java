@@ -1,9 +1,9 @@
 package com.cafe.dto.goods;
 
-import com.cafe.dto.AbstractDto;
 import com.cafe.model.Goods;
+import com.cafe.model.enums.GoodsSize;
 
-public class GoodsDto extends AbstractDto {
+public class GoodsDto {
 
     private Long id;
     private String nameGoodsDto;
@@ -14,15 +14,27 @@ public class GoodsDto extends AbstractDto {
     private Double weight;
     private Double volume;
 
+
     public GoodsDto(Goods goods) {
         this.id = goods.getId();
         this.nameGoodsDto = goods.getNameGoods().getName();
         this.category = goods.getCategory().getName();
-        this.goodsSize = goods.getSizeGoods().toString();
+        this.goodsSize = goods.getSizeGoods().name();
         this.purchasePrice = goods.getPurchasePrice();
         this.sellPrice = goods.getSellPrice();
         this.weight = goods.getWeight();
         this.volume = goods.getVolume();
+    }
+
+    public Goods toModel(){
+        Goods goods = new Goods();
+        goods.setId(id);
+        goods.setPurchasePrice(purchasePrice);
+        goods.setSellPrice(sellPrice);
+        goods.setWeight(weight);
+        goods.setVolume(volume);
+        goods.setSizeGoods(GoodsSize.valueOf(goodsSize));
+        return goods;
     }
 
     public GoodsDto() {

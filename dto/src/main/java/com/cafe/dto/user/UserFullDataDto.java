@@ -6,7 +6,6 @@ import com.cafe.utils.DateUtil;
 import com.fasterxml.jackson.annotation.JsonView;
 
 
-@JsonView
 public class UserFullDataDto {
 
     private Long id;
@@ -30,15 +29,15 @@ public class UserFullDataDto {
     public UserFullDataDto() {
     }
 
-    public User dtoToModel(UserFullDataDto dataDto){
+    public User toModelFull(){
         User user = new User();
-        user.setId(dataDto.getId());
-        user.setFirstName(dataDto.getFirstName());
-        user.setLastName(dataDto.getLastName());
-        user.setUserType(dataDto.getType());
-        user.setDateBirthday(DateUtil.dateFromString(dataDto.getDatBirthday()));
-        user.setLogin(dataDto.getLogin());
-        user.setPassword(dataDto.getPassword());
+        user.setId(this.getId());
+        user.setFirstName(this.getFirstName());
+        user.setLastName(this.getLastName());
+        user.setUserType(this.getType());
+        user.setDateBirthday(DateUtil.dateFromString(this.getDatBirthday()));
+        user.setLogin(this.getLogin());
+        user.setPassword(this.getPassword());
         return user;
     }
 

@@ -6,7 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,8 +20,14 @@ public abstract class AbstractDao<T extends GenericEntity> implements IGenericDa
     @Autowired
     private SessionFactory sessionFactory;
 
-    protected Session getSession(){
+    private Class clazz;
+
+   protected Session getSession(){
         return sessionFactory.getCurrentSession();
+    }
+
+    public AbstractDao(Class clazz){
+       this.clazz=clazz;
     }
 
     @Override
@@ -33,8 +38,8 @@ public abstract class AbstractDao<T extends GenericEntity> implements IGenericDa
     @Override
     public void delete(Long id) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaDelete<T> query = builder.createCriteriaDelete(getChildClass());
-        Root<T> root =query.from(getChildClass());
+        CriteriaDelete<T> query = builder.createCriteriaDelete(clazz);
+        Root<T> root =query.from(clazz);
         query.where(builder.equal(root.get("id"), id));
         getSession().createQuery(query).executeUpdate();
     }
@@ -46,14 +51,14 @@ public abstract class AbstractDao<T extends GenericEntity> implements IGenericDa
 
     @Override
     public T getById(Long id) {
-        return getSession().get(getChildClass(), id);
+        return (T) getSession().get(clazz, id);
     }
 
     @Override
     public T getByName(String name) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<T> criteria = builder.createQuery(getChildClass());
-        Root<T> root = criteria.from(getChildClass());
+        CriteriaQuery<T> criteria = builder.createQuery(clazz);
+        Root<T> root = criteria.from(clazz);
         criteria.where(builder.equal(root.get("name"), name));
         Query<T> query = getSession().createQuery(criteria);
         return query.getSingleResult();
@@ -63,15 +68,10 @@ public abstract class AbstractDao<T extends GenericEntity> implements IGenericDa
     public List<T> getAll() {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<T> criteria = builder.createQuery(getChildClass());
-        Root<T> root = criteria.from(getChildClass());
+        CriteriaQuery<T> criteria = builder.createQuery(clazz);
+        Root<T> root = criteria.from(clazz);
         criteria.select(root);
         TypedQuery<T> query = session.createQuery(criteria);
         return query.getResultList();
-    }
-
-    @Override
-    public Class<T> getChildClass() {
-        return null;
     }
 }

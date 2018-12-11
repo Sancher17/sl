@@ -12,6 +12,7 @@ import java.io.IOException;
 public class JwtAuthFilter implements Filter {
 
     private static final Logger log = Logger.getLogger(JwtAuthFilter.class);
+    public static final String AUTHORIZATION = "Authorization";
 
     @Override
     public void init(FilterConfig filterConfig) {}
@@ -19,7 +20,7 @@ public class JwtAuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest servletRequest = (HttpServletRequest) request;
-        String authorization = servletRequest.getHeader("Authorization");
+        String authorization = servletRequest.getHeader(AUTHORIZATION);
         if (authorization != null) {
             JwtAuthToken token = new JwtAuthToken(authorization.replaceAll("Bearer ", ""));
             SecurityContextHolder.getContext().setAuthentication(token);

@@ -2,17 +2,14 @@ package com.cafe.security.advices;
 
 import com.cafe.security.exceptions.FailedToLoginException;
 import com.cafe.security.exceptions.ProfileNotFoundException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.security.SignatureException;
 
 import static org.springframework.http.HttpStatus.*;
 
-//@ControllerAdvice
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

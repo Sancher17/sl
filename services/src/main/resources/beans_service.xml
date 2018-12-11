@@ -18,5 +18,6 @@
     <bean id="nameGoodsService" class="com.cafe.services.NameGoodsService"/>
     <bean id="storageService" class="com.cafe.services.StorageService"/>
     <bean id="reportService" class="com.cafe.services.ReportService"/>
+    <bean id="jwtService" class="com.cafe.services.JwtService"/>
 
 </beans>

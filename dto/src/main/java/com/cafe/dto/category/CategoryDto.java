@@ -1,32 +1,27 @@
 package com.cafe.dto.category;
 
-import com.cafe.dto.AbstractDto;
 import com.cafe.model.Category;
 
 
-public class CategoryDto extends AbstractDto {
+public class CategoryDto {
 
     private Long id;
-    private String category;
-    private String parentCategory;
+    private String categoryName;
+    private String parentCategoryName;
     private Long parentCategoryId;
 
     public CategoryDto(Category category) {
         this.id = category.getId();
-        this.category = category.getName();
-        this.parentCategory = category.getParentCategory().getName();
+        this.categoryName = category.getName();
+        this.parentCategoryName = category.getParentCategory().getName();
         this.parentCategoryId = category.getParentCategory().getId();
     }
 
-//    public Category fromDtoToModel(CategoryDto categoryDto) {
-//        Category category = new Category();
-//        category.setId(categoryDto.getId());
-//        category.setName(categoryDto.getName());
-//        category.setParentCategory(categoryDto.getParentCategory());
-//        return category;
-//    }
-
-    public CategoryDto() {
+    public Category toModel(){
+        Category category = new Category();
+        category.setId(id);
+        category.setName(categoryName);
+        return category;
     }
 
     public Long getId() {
@@ -37,20 +32,20 @@ public class CategoryDto extends AbstractDto {
         this.id = id;
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
-    public String getParentCategory() {
-        return parentCategory;
+    public String getParentCategoryName() {
+        return parentCategoryName;
     }
 
-    public void setParentCategory(String parentCategory) {
-        this.parentCategory = parentCategory;
+    public void setParentCategoryName(String parentCategoryName) {
+        this.parentCategoryName = parentCategoryName;
     }
 
     public Long getParentCategoryId() {

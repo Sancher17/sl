@@ -1,6 +1,5 @@
 package com.cafe.controllers.category;
 
-import com.cafe.api.dtoconverters.ICategoryConverter;
 import com.cafe.api.services.ICategoryService;
 import com.cafe.dto.category.CategoryDto;
 import com.cafe.model.Category;
@@ -17,9 +16,6 @@ public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
 
-    @Autowired
-    private ICategoryConverter categoryConverter;
-
     @GetMapping(value = "/")
     public List<CategoryDto> getAll() {
         return categoryService.getAll()
@@ -29,19 +25,21 @@ public class CategoryController {
 
     @GetMapping(value = "/{id}")
     public CategoryDto getById(@PathVariable("id") Long id) {
-        return categoryConverter.toDto(categoryService.getById(id));
+        return new CategoryDto(categoryService.getById(id));
     }
 
-    @PostMapping(value = "/{id}")
-    public void update(@RequestBody CategoryDto categoryDto, @PathVariable("id") Long id) { ;
-        Category category = categoryService.getById(id);
-        category = categoryConverter.toModel(categoryDto);
-        categoryService.update(category);
+    @PostMapping(value = "/")
+    public void update(@RequestBody CategoryDto categoryDto) {
+        categoryService.update(categoryDto.toModel());
     }
 
     @PutMapping
     public void create(@RequestBody CategoryDto categoryDto) {
-        categoryService.add(categoryConverter.toModel(categoryDto));
+        Category category = new Category();
+        category.setName(categoryDto.getCategoryName());
+        Category parentCategory = categoryService.getByName(categoryDto.getParentCategoryName());
+        category.setParentCategory(parentCategory);
+        categoryService.add(category);
     }
 
     @DeleteMapping(value = "/{id}")
