@@ -9,7 +9,7 @@ import java.util.List;
 
 public class NameGoodsDao extends AbstractDao<NameGoods> implements INameGoodsDao {
 
-    public NameGoodsDao() {
+    protected NameGoodsDao() {
         super(NameGoods.class);
     }
 }

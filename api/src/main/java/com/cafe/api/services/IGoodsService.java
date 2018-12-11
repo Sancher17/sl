@@ -9,5 +9,5 @@ import java.util.List;
 public interface IGoodsService extends IService<Goods>{
 
 
-
+    List<Goods> getListByName(String name);
 }

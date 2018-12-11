@@ -16,7 +16,6 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-
     @GetMapping(value = "/")
     public List<UserDto> getAll() {
         return userService.getAll()
@@ -24,7 +23,7 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping(value = "/all")
+    @GetMapping(value = "/all")
     public List<UserFullDataDto> getAllData() {
         return userService.getAll().stream()
                 .map(UserFullDataDto::new)
@@ -34,6 +33,11 @@ public class UserController {
     @GetMapping(value = "/{id}")
     public UserDto getById(@PathVariable("id") Long id) {
         return new UserDto(userService.getById(id));
+    }
+
+    @GetMapping(value = "/name")
+    public UserDto getByName(@RequestParam(value = "name") String name) {
+        return new UserDto(userService.getByName(name));
     }
 
     @PutMapping

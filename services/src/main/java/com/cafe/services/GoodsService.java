@@ -18,13 +18,6 @@ public class GoodsService implements IGoodsService {
     @Autowired
     private IGoodsDao goodsDao;
 
-    @Autowired
-    private INameGoodsService nameGoodsService;
-
-    @Autowired
-    private ICategoryService categoryService;
-
-
     @Override
     public void add(Goods goods) {
         goodsDao.add(goods);
@@ -55,7 +48,8 @@ public class GoodsService implements IGoodsService {
         return null;
     }
 
-
-
-
+    @Override
+    public List<Goods> getListByName(String name) {
+        return goodsDao.getListByName(name);
+    }
 }

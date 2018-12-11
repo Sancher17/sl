@@ -10,4 +10,9 @@ import java.util.List;
 public interface IOrderDao extends IGenericDao<Order> {
 
     List<Order> getListByPeriod(LocalDateTime start, LocalDateTime end);
+
+    List<Order> getListGoodsById(Long id);
+
+    List<Order> getListOrdersForUser(Long id);
+
 }

@@ -18,7 +18,6 @@ public class OrderService implements IOrderService {
     @Autowired
     private IOrderDao orderDao;
 
-
     @Override
     public void add(Order order) {
         // сумма цен товаров из ордера
@@ -55,9 +54,20 @@ public class OrderService implements IOrderService {
         return null;
     }
 
-    // TODO: 04.12.2018 разобраться с интерфейсами
     @Override
     public List<Order> getListByPeriod(LocalDateTime start, LocalDateTime end) {
         return orderDao.getListByPeriod(start, end);
     }
+
+    public List<Order> getListGoodsById(Long id) {
+        return orderDao.getListGoodsById(id);
+    }
+
+    @Override
+    public List<Order> getListOrdersForUser(Long id){
+        return orderDao.getListOrdersForUser(id);
+    }
+
+
+
 }

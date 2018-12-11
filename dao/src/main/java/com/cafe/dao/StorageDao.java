@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public class StorageDao extends AbstractDao<Storage> implements IStorageDao {
 
-    public StorageDao() {
+    protected StorageDao() {
         super(Storage.class);
     }
 
@@ -25,12 +25,27 @@ public class StorageDao extends AbstractDao<Storage> implements IStorageDao {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Storage> criteria = builder.createQuery(Storage.class);
+        Root<Storage> root = getStorageRoot(criteria);
+        criteria.select(root);
+        Query<Storage> query = session.createQuery(criteria);
+        return query.getResultList();
+    }
+
+    @Override
+    public Storage getById(Long id) {
+        CriteriaBuilder builder = getCriteriaBuilder();
+        CriteriaQuery<Storage> criteria = builder.createQuery(Storage.class);
+        Root<Storage> root = getStorageRoot(criteria);
+        criteria.where(builder.equal(root.get(Storage_.ID), id));
+        Query<Storage> query = getSession().createQuery(criteria);
+        return query.getSingleResult();
+    }
+
+    private Root<Storage> getStorageRoot(CriteriaQuery<Storage> criteria) {
         Root<Storage> root = criteria.from(Storage.class);
         Fetch<Storage, Goods> goods = root.fetch(Storage_.goods);
         goods.fetch(Goods_.nameGoods);
         goods.fetch(Goods_.category);
-        criteria.select(root);
-        Query<Storage> query = session.createQuery(criteria);
-        return query.getResultList();
+        return root;
     }
 }

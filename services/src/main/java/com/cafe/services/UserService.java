@@ -17,31 +17,26 @@ public class UserService implements IUserService {
     @Autowired
     private IUserDao userDao;
 
-    @Transactional
     @Override
     public void add(User user) {
         userDao.add(user);
     }
 
-    @Transactional
     @Override
     public void update(User user) {
         userDao.update(user);
     }
 
-    @Transactional
     @Override
     public void delete(Long id) {
         userDao.delete(id);
     }
 
-    @Transactional
     @Override
     public User getById(Long id) {
         return userDao.getById(id);
     }
 
-    @Transactional
     @Override
     public List<User> getAll() {
         return userDao.getAll();

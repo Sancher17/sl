@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public class GoodsDao extends AbstractDao<Goods> implements IGoodsDao {
 
-    public GoodsDao() {
+    protected GoodsDao() {
         super(Goods.class);
     }
 
@@ -25,8 +25,8 @@ public class GoodsDao extends AbstractDao<Goods> implements IGoodsDao {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<Goods> criteria = builder.createQuery(Goods.class);
         Root<Goods> root = criteria.from(Goods.class);
-        // TODO: 11.12.2018 проверить запрос - старая версия вроде не работала
-//        criteria.where(builder.equal(root.get("name"), name));
+        root.fetch(Goods_.NAME_GOODS);
+        root.fetch(Goods_.CATEGORY);
         criteria.where(builder.equal(root.get(Goods_.nameGoods).get(NameGoods_.name), name));
         Query<Goods> query = getSession().createQuery(criteria);
         return query.getResultList();
@@ -34,14 +34,29 @@ public class GoodsDao extends AbstractDao<Goods> implements IGoodsDao {
 
     @Override
     public List<Goods> getAll() {
-        Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaBuilder builder = getCriteriaBuilder();
         CriteriaQuery<Goods> criteria = builder.createQuery(Goods.class);
-        Root<Goods> root = criteria.from(Goods.class);
-        root.fetch(Goods_.nameGoods);//case1
-        root.fetch(Goods_.CATEGORY);//case2
+        Root<Goods> root = getGoodsRoot(criteria);
         criteria.select(root);
-        Query<Goods> query = session.createQuery(criteria);
+        Query<Goods> query = getSession().createQuery(criteria);
         return query.getResultList();
+    }
+
+    @Override
+    public Goods getById(Long id) {
+        CriteriaBuilder builder = getCriteriaBuilder();
+        CriteriaQuery<Goods> criteria = builder.createQuery(Goods.class);
+        Root<Goods> root = getGoodsRoot(criteria);
+        criteria.where(builder.equal(root.get(Goods_.ID), id));
+        Query<Goods> query = getSession().createQuery(criteria);
+        return query.getSingleResult();
+    }
+
+    private Root<Goods> getGoodsRoot(CriteriaQuery<Goods> criteria) {
+        Root<Goods> root = criteria.from(Goods.class);
+        root.fetch(Goods_.NAME_GOODS);
+        root.fetch(Goods_.CATEGORY);
+        criteria.select(root);
+        return root;
     }
 }

@@ -3,6 +3,8 @@ package com.cafe.dto.goods;
 import com.cafe.model.Goods;
 import com.cafe.model.enums.GoodsSize;
 
+import java.util.List;
+
 public class GoodsDto {
 
     private Long id;

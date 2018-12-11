@@ -1,20 +1,12 @@
 package com.cafe.services;
 
-import com.cafe.api.dao.IGenericDao;
 import com.cafe.api.dao.IStorageDao;
 import com.cafe.api.services.IStorageService;
-import com.cafe.model.Goods;
-import com.cafe.model.Order;
 import com.cafe.model.Storage;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Service

@@ -6,4 +6,5 @@ public interface IReportService {
 
     Double getSumOfSalesByPeriod(LocalDateTime start, LocalDateTime end);
 
+    Integer getQuantitySoldGoods(Long id);
 }

@@ -22,12 +22,12 @@ public abstract class AbstractDao<T extends GenericEntity> implements IGenericDa
 
     private Class clazz;
 
-   protected Session getSession(){
+    protected Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 
-    public AbstractDao(Class clazz){
-       this.clazz=clazz;
+    public AbstractDao(Class clazz) {
+        this.clazz = clazz;
     }
 
     @Override
@@ -39,7 +39,7 @@ public abstract class AbstractDao<T extends GenericEntity> implements IGenericDa
     public void delete(Long id) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaDelete<T> query = builder.createCriteriaDelete(clazz);
-        Root<T> root =query.from(clazz);
+        Root<T> root = query.from(clazz);
         query.where(builder.equal(root.get("id"), id));
         getSession().createQuery(query).executeUpdate();
     }
@@ -73,5 +73,10 @@ public abstract class AbstractDao<T extends GenericEntity> implements IGenericDa
         criteria.select(root);
         TypedQuery<T> query = session.createQuery(criteria);
         return query.getResultList();
+    }
+
+    protected CriteriaBuilder getCriteriaBuilder() {
+        Session session = getSession();
+        return session.getCriteriaBuilder();
     }
 }

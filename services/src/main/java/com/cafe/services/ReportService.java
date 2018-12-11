@@ -32,4 +32,15 @@ public class ReportService implements IReportService {
         return orders.stream().flatMap(order -> order.getGoods()
                 .stream()).mapToDouble(Goods::getSellPrice).sum();
     }
+
+    @Override
+    public Integer getQuantitySoldGoods(Long id) {
+        List<Order> orders = orderDao.getAll();
+//        Integer sum = orders.stream()
+//                .flatMap(order -> order.getGoods().stream().
+        return null;
+    }
+
+
+
 }

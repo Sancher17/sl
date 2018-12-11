@@ -36,12 +36,12 @@ public class GoodsController {
         return new GoodsDto(goodsService.getById(id));
     }
 
-
-    @PutMapping(value = "/test")
-    public void create() {
-        System.out.println();
+    @GetMapping(value = "/name")
+    public List<GoodsDto> getById(@RequestParam(value = "name") String name) {
+        return goodsService.getListByName(name)
+                .stream().map(GoodsDto::new)
+                .collect(Collectors.toList());
     }
-
 
     @PutMapping(value = "/")
     public void create(@RequestBody GoodsDto goodsDto) {

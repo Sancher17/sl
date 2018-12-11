@@ -1,6 +1,5 @@
 package com.cafe.controllers.order;
 
-import com.cafe.api.services.IGoodsService;
 import com.cafe.api.services.IOrderService;
 import com.cafe.api.services.IUserService;
 import com.cafe.dto.goods.GoodsDto;
@@ -22,8 +21,6 @@ public class OrderController {
     private IOrderService orderService;
     @Autowired
     private IUserService userService;
-    @Autowired
-    private IGoodsService goodsService;
 
     @GetMapping(value = "/full")
     public List<OrderDto> getAllFullData() {
@@ -64,4 +61,6 @@ public class OrderController {
     public void update(@RequestBody OrderDto orderDto) {
         orderService.update(orderDto.toModel());
     }
+
+
 }

@@ -1,6 +1,5 @@
 package com.cafe.services;
 
-import com.cafe.api.dao.IGenericDao;
 import com.cafe.api.dao.INameGoodsDao;
 import com.cafe.api.services.INameGoodsService;
 import com.cafe.model.NameGoods;
@@ -16,8 +15,6 @@ public class NameGoodsService implements INameGoodsService {
 
     @Autowired
     private INameGoodsDao nameGoodsDao;
-
-
 
     @Override
     public void add(NameGoods nameGoods) {
